@@ -275,8 +275,12 @@ export function PdfWorkflowEngine({
   }
 
   async function copyOcrText() {
-    await navigator.clipboard?.writeText(ocrSampleText);
+    await navigator.clipboard?.writeText(getOcrText());
     setCopied(true);
+  }
+
+  function getOcrText() {
+    return runtimeArtifact?.text ?? ocrSampleText;
   }
 
   function downloadPrimaryResult() {
@@ -424,7 +428,7 @@ export function PdfWorkflowEngine({
             onPrimary={downloadPrimaryResult}
             onSecondary={
               config.slug === "ocr-pdf"
-                ? () => downloadTextFile("dockdocs-ocr-text.txt", ocrSampleText)
+                ? () => downloadTextFile("dockdocs-ocr-text.txt", getOcrText())
                 : undefined
             }
             onCopy={config.slug === "ocr-pdf" ? copyOcrText : undefined}
@@ -761,7 +765,7 @@ function ResultPreview({
       <textarea
         readOnly
         rows={4}
-        value={ocrSampleText}
+        value={text ?? ocrSampleText}
         className="mt-4 w-full resize-none rounded-lg border border-[#bbf7d0] bg-white p-3 text-sm leading-6 text-[#0f172a]"
       />
     );
@@ -944,6 +948,8 @@ function getWorkflowSpec(config: PdfToolPageConfig): WorkflowSpec {
     case "ocr-pdf":
       return {
         ...base,
+        maxFileSize: 25 * mb,
+        maxTotalSize: 25 * mb,
         processLabel: zh
           ? "正在从扫描 PDF 中提取文字。"
           : "Extracting text from scanned PDF pages.",
@@ -1169,6 +1175,12 @@ function getWorkflowResult(
         preview: "document",
       };
     case "ocr-pdf":
+      const ocrText = artifact?.text ?? ocrSampleText;
+      const ocrLineCount = ocrText
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean).length;
+
       return {
         title: zh ? "OCR 文本已提取" : "OCR text extracted",
         description: zh
@@ -1176,11 +1188,20 @@ function getWorkflowResult(
           : "Text can be copied or downloaded as a text file.",
         rows: [
           [zh ? "源文件" : "Source", files[0]?.file.name ?? "Scanned PDF"],
-          [zh ? "文本行数" : "Text lines", "4"],
+          [zh ? "处理页面" : "Processed pages", String(artifact?.processedPages ?? 1)],
+          [zh ? "文本行数" : "Text lines", String(ocrLineCount)],
+          [
+            zh ? "置信度" : "Confidence",
+            artifact?.confidence
+              ? `${Math.round(artifact.confidence)}%`
+              : zh
+                ? "需要复核"
+                : "Review recommended",
+          ],
           [zh ? "输出" : "Output", ".txt"],
-          [zh ? "状态" : "Status", zh ? "需要复核" : "Review recommended"],
         ],
         preview: "text",
+        previewText: ocrText,
       };
     case "jpg-to-pdf":
       return {

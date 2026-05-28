@@ -1,9 +1,11 @@
 import { PDFDocument } from "pdf-lib";
+import { runOcrPdfFirstPage } from "./ocr-runtime";
 
 export type PdfRuntimeSlug =
   | "compress-pdf"
   | "merge-pdf"
   | "split-pdf"
+  | "ocr-pdf"
   | "jpg-to-pdf";
 
 export type PdfRuntimeProgress = {
@@ -14,7 +16,7 @@ export type PdfRuntimeProgress = {
 export type PdfRuntimeArtifact = {
   fileName: string;
   blob: Blob;
-  outputType: "pdf" | "zip";
+  outputType: "pdf" | "zip" | "text";
   pageCount?: number;
   fileCount?: number;
   rangeCount?: number;
@@ -22,6 +24,9 @@ export type PdfRuntimeArtifact = {
   originalSize?: number;
   compressedSize?: number;
   savedPercent?: number;
+  text?: string;
+  confidence?: number;
+  processedPages?: number;
 };
 
 type PdfRuntimeInput = {
@@ -44,6 +49,7 @@ export function isRealPdfRuntimeSlug(slug: string): slug is PdfRuntimeSlug {
     slug === "compress-pdf" ||
     slug === "merge-pdf" ||
     slug === "split-pdf" ||
+    slug === "ocr-pdf" ||
     slug === "jpg-to-pdf"
   );
 }
@@ -73,6 +79,16 @@ export async function runPdfRuntime({
     return splitPdfFile(files[0], pageRanges, outputFileName, locale, signal, onProgress);
   }
 
+  if (slug === "ocr-pdf") {
+    return runOcrPdfFirstPage({
+      file: files[0],
+      outputFileName,
+      locale,
+      signal,
+      onProgress,
+    });
+  }
+
   return imagesToPdf(files, outputFileName, signal, onProgress);
 }
 
@@ -100,6 +116,10 @@ export function getPdfRuntimeErrorMessage(error: unknown, locale: "en" | "zh") {
     return zh
       ? "无法读取其中一张图片。请使用 JPG、PNG 或 WebP 图片重试。"
       : "One image could not be read. Try JPG, PNG, or WebP images.";
+  }
+
+  if (/ocr|canvas|recognized|pages|PDF/i.test(message)) {
+    return message;
   }
 
   return zh
