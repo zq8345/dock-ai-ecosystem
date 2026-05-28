@@ -11,6 +11,7 @@ export type PdfRuntimeSlug =
 export type PdfRuntimeProgress = {
   progress: number;
   stepIndex?: number;
+  detail?: string;
 };
 
 export type PdfRuntimeArtifact = {
@@ -27,6 +28,7 @@ export type PdfRuntimeArtifact = {
   text?: string;
   confidence?: number;
   processedPages?: number;
+  ocrLanguage?: string;
 };
 
 type PdfRuntimeInput = {
@@ -35,6 +37,7 @@ type PdfRuntimeInput = {
   pageRanges: string;
   outputFileName: string;
   locale: "en" | "zh";
+  ocrLanguage?: "eng" | "chi_sim";
   signal?: AbortSignal;
   onProgress?: (progress: PdfRuntimeProgress) => void;
 };
@@ -60,6 +63,7 @@ export async function runPdfRuntime({
   pageRanges,
   outputFileName,
   locale,
+  ocrLanguage = "eng",
   signal,
   onProgress,
 }: PdfRuntimeInput): Promise<PdfRuntimeArtifact> {
@@ -83,6 +87,8 @@ export async function runPdfRuntime({
     return runOcrPdfFirstPage({
       file: files[0],
       outputFileName,
+      pageRanges,
+      language: ocrLanguage,
       locale,
       signal,
       onProgress,

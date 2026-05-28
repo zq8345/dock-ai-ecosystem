@@ -1,8 +1,12 @@
 import type { PdfRuntimeArtifact, PdfRuntimeProgress } from "./pdf-runtime";
 
+type OcrLanguage = "eng" | "chi_sim";
+
 type OcrRuntimeInput = {
   file: File;
   outputFileName: string;
+  pageRanges: string;
+  language: OcrLanguage;
   locale: "en" | "zh";
   signal?: AbortSignal;
   onProgress?: (progress: PdfRuntimeProgress) => void;
@@ -36,12 +40,32 @@ type PdfJsPage = {
   cleanup?: () => void;
 };
 
+type RenderedPage = {
+  canvas: HTMLCanvasElement;
+  cleanup: () => void;
+};
+
 const maxOcrPdfSize = 25 * 1024 * 1024;
 const maxRenderPixels = 4_000_000;
+const maxOcrPages = 3;
+
+const localOcrAssets = {
+  pdfWorker: "/ocr/pdfjs/pdf.worker.mjs",
+  tesseractWorker: "/ocr/tesseract/worker.min.js",
+  tesseractCore: "/ocr/tesseract-core",
+  langPath: "/ocr/lang/",
+};
+
+const languageLabels: Record<OcrLanguage, string> = {
+  eng: "English",
+  chi_sim: "Chinese",
+};
 
 export async function runOcrPdfFirstPage({
   file,
   outputFileName,
+  pageRanges,
+  language,
   locale,
   signal,
   onProgress,
@@ -51,64 +75,133 @@ export async function runOcrPdfFirstPage({
   if (file.size > maxOcrPdfSize) {
     throw new Error(
       locale === "zh"
-        ? "OCR MVP 当前支持 25 MB 以下的 PDF。请先拆分或压缩文件后重试。"
-        : "The OCR MVP currently supports PDFs up to 25 MB. Split or compress the file and try again.",
+        ? "OCR 当前支持 25 MB 以下的 PDF。请先拆分或压缩文件后重试。"
+        : "OCR currently supports PDFs up to 25 MB. Split or compress the file and try again.",
     );
   }
 
-  emitProgress(onProgress, 4, 0);
-  const rendered = await renderFirstPdfPage(file, signal, (progress) => {
-    emitProgress(onProgress, progress, progress < 22 ? 0 : 1);
-  });
+  emitProgress(onProgress, 4, 0, locale === "zh" ? "正在加载 PDF..." : "Loading PDF...");
+  const pdf = await loadPdfDocument(file, signal);
 
-  throwIfAborted(signal);
-  const ocr = await recognizeCanvas(rendered.canvas, signal, (progress) => {
-    emitProgress(onProgress, 34 + progress * 58, 2);
-  });
-  rendered.cleanup();
-
-  throwIfAborted(signal);
-  const text = normalizeOcrText(ocr.text);
-  if (!text) {
-    throw new Error(
+  try {
+    const pages = parseOcrPageRanges(pageRanges, pdf.numPages, locale);
+    emitProgress(
+      onProgress,
+      16,
+      0,
       locale === "zh"
-        ? "未能从第一页识别出文字。请尝试更清晰的扫描件或图片型 PDF。"
-        : "No text was recognized on the first page. Try a clearer scan or image-based PDF.",
+        ? `已选择 ${pages.length} 页，正在加载 OCR 引擎...`
+        : `${pages.length} page${pages.length === 1 ? "" : "s"} selected. Loading OCR worker...`,
     );
+
+    const worker = await createOcrWorker(language, signal, (progress) => {
+      emitProgress(
+        onProgress,
+        16 + progress * 10,
+        1,
+        locale === "zh"
+          ? `正在加载 ${languageLabels[language]} OCR 模型...`
+          : `Loading ${languageLabels[language]} OCR model...`,
+      );
+    });
+
+    try {
+      const recognizedPages: Array<{
+        pageNumber: number;
+        text: string;
+        confidence?: number;
+      }> = [];
+
+      for (let index = 0; index < pages.length; index += 1) {
+        throwIfAborted(signal);
+        const pageNumber = pages[index];
+        const pageProgressBase = 28 + (index / pages.length) * 62;
+        const pageProgressSize = 62 / pages.length;
+
+        const rendered = await renderPdfPage(pdf, pageNumber, signal, (progress) => {
+          emitProgress(
+            onProgress,
+            pageProgressBase + progress * (pageProgressSize * 0.28),
+            1,
+            locale === "zh"
+              ? `正在渲染第 ${pageNumber} 页...`
+              : `Rendering page ${pageNumber}...`,
+          );
+        });
+
+        try {
+          const ocr = await recognizeCanvas(worker, rendered.canvas, signal, (progress) => {
+            emitProgress(
+              onProgress,
+              pageProgressBase + pageProgressSize * 0.28 + progress * (pageProgressSize * 0.64),
+              2,
+              locale === "zh"
+                ? `正在识别第 ${pageNumber} 页，共 ${pages.length} 页...`
+                : `Recognizing page ${pageNumber} of ${pages.length}...`,
+            );
+          });
+
+          recognizedPages.push({
+            pageNumber,
+            text: normalizeOcrText(ocr.text),
+            confidence: ocr.confidence,
+          });
+        } finally {
+          rendered.cleanup();
+        }
+
+        emitProgress(
+          onProgress,
+          pageProgressBase + pageProgressSize * 0.95,
+          2,
+          locale === "zh"
+            ? `第 ${pageNumber} 页识别完成。`
+            : `Page ${pageNumber} recognized.`,
+        );
+      }
+
+      throwIfAborted(signal);
+      const text = combinePageText(recognizedPages);
+      if (!text) {
+        throw new Error(
+          locale === "zh"
+            ? "未能从所选页面识别出文字。请尝试更清晰的扫描件或图片型 PDF。"
+            : "No text was recognized on the selected pages. Try a clearer scan or image-based PDF.",
+        );
+      }
+
+      emitProgress(onProgress, 96, 3, locale === "zh" ? "正在合并文本..." : "Combining text...");
+      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      emitProgress(onProgress, 100, 3, locale === "zh" ? "OCR 完成。" : "OCR complete.");
+
+      return {
+        fileName: outputFileName,
+        blob,
+        outputType: "text",
+        pageCount: pdf.numPages,
+        fileCount: 1,
+        text,
+        confidence: averageConfidence(recognizedPages),
+        processedPages: pages.length,
+        ocrLanguage: language,
+      };
+    } finally {
+      await worker.terminate().catch(() => undefined);
+    }
+  } finally {
+    await pdf.destroy?.().catch(() => undefined);
   }
-
-  emitProgress(onProgress, 96, 3);
-  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-  emitProgress(onProgress, 100, 3);
-
-  return {
-    fileName: outputFileName,
-    blob,
-    outputType: "text",
-    pageCount: rendered.pageCount,
-    fileCount: 1,
-    text,
-    confidence: ocr.confidence,
-    processedPages: 1,
-  };
 }
 
-async function renderFirstPdfPage(
-  file: File,
-  signal: AbortSignal | undefined,
-  onProgress: (progress: number) => void,
-) {
+async function loadPdfDocument(file: File, signal?: AbortSignal) {
   const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
   throwIfAborted(signal);
 
-  onProgress(8);
-  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    "pdfjs-dist/legacy/build/pdf.worker.mjs",
-    import.meta.url,
-  ).toString();
+  pdfjs.GlobalWorkerOptions.workerSrc = localOcrAssets.pdfWorker;
   const documentInit = {
     data: new Uint8Array(await file.arrayBuffer()),
   } as unknown as Parameters<typeof pdfjs.getDocument>[0];
+
   const loadingTask = pdfjs.getDocument(documentInit);
   const pdf = (await loadingTask.promise) as unknown as PdfJsDocument;
   throwIfAborted(signal);
@@ -117,8 +210,17 @@ async function renderFirstPdfPage(
     throw new Error("This PDF does not contain pages.");
   }
 
-  onProgress(18);
-  const page = await pdf.getPage(1);
+  return pdf;
+}
+
+async function renderPdfPage(
+  pdf: PdfJsDocument,
+  pageNumber: number,
+  signal: AbortSignal | undefined,
+  onProgress: (progress: number) => void,
+): Promise<RenderedPage> {
+  onProgress(0.05);
+  const page = await pdf.getPage(pageNumber);
   const baseViewport = page.getViewport({ scale: 1 });
   const scale = Math.min(
     2,
@@ -136,23 +238,23 @@ async function renderFirstPdfPage(
 
   context.fillStyle = "#ffffff";
   context.fillRect(0, 0, canvas.width, canvas.height);
-  onProgress(24);
+  onProgress(0.35);
   await page.render({ canvas, canvasContext: context, viewport }).promise;
   throwIfAborted(signal);
-  onProgress(32);
+  onProgress(1);
 
   return {
     canvas,
-    pageCount: pdf.numPages,
     cleanup: () => {
       page.cleanup?.();
-      void pdf.destroy?.();
+      canvas.width = 1;
+      canvas.height = 1;
     },
   };
 }
 
-async function recognizeCanvas(
-  canvas: HTMLCanvasElement,
+async function createOcrWorker(
+  language: OcrLanguage,
   signal: AbortSignal | undefined,
   onProgress: (progress: number) => void,
 ) {
@@ -165,29 +267,125 @@ async function recognizeCanvas(
   signal?.addEventListener("abort", abortWorker, { once: true });
   try {
     throwIfAborted(signal);
-    worker = (await createWorker("eng", 1, {
+    worker = (await createWorker(language, 1, {
+      workerPath: localOcrAssets.tesseractWorker,
+      corePath: localOcrAssets.tesseractCore,
+      langPath: localOcrAssets.langPath,
+      workerBlobURL: false,
+      gzip: true,
       logger: (message) => {
-        if (message.status === "recognizing text") {
-          onProgress(Math.max(0.1, Math.min(0.98, message.progress)));
-          return;
-        }
-
-        onProgress(Math.min(0.3, Math.max(0.02, message.progress * 0.3)));
+        onProgress(Math.max(0.02, Math.min(0.98, message.progress || 0.1)));
       },
     })) as TesseractWorker;
 
     throwIfAborted(signal);
-    const result = await worker.recognize(canvas, {}, { text: true });
-    throwIfAborted(signal);
-
-    return {
-      text: result.data.text,
-      confidence: result.data.confidence,
-    };
+    return worker;
+  } catch (error) {
+    await worker?.terminate().catch(() => undefined);
+    throw error;
   } finally {
     signal?.removeEventListener("abort", abortWorker);
-    await worker?.terminate().catch(() => undefined);
   }
+}
+
+async function recognizeCanvas(
+  worker: TesseractWorker,
+  canvas: HTMLCanvasElement,
+  signal: AbortSignal | undefined,
+  onProgress: (progress: number) => void,
+) {
+  throwIfAborted(signal);
+  const result = await worker.recognize(
+    canvas,
+    {},
+    { text: true },
+  );
+  throwIfAborted(signal);
+  onProgress(1);
+
+  return {
+    text: result.data.text,
+    confidence: result.data.confidence,
+  };
+}
+
+function parseOcrPageRanges(
+  value: string,
+  pageCount: number,
+  locale: "en" | "zh",
+) {
+  const zh = locale === "zh";
+  const clean = value.trim() || "1";
+  const pageNumbers: number[] = [];
+
+  for (const part of clean.split(",").map((item) => item.trim()).filter(Boolean)) {
+    const [rawStart, rawEnd] = part.split("-").map((item) => Number(item.trim()));
+    const start = rawStart;
+    const end = rawEnd || rawStart;
+
+    if (!Number.isInteger(start) || !Number.isInteger(end) || start < 1 || end < start) {
+      throw new Error(
+        zh ? `OCR 页面范围无效：${part}` : `Invalid OCR page range: ${part}`,
+      );
+    }
+
+    if (end > pageCount) {
+      throw new Error(
+        zh
+          ? `OCR 页面范围 ${part} 超出文档页数。当前 PDF 共 ${pageCount} 页。`
+          : `OCR page range ${part} is outside this PDF. The file has ${pageCount} pages.`,
+      );
+    }
+
+    for (let page = start; page <= end; page += 1) {
+      if (!pageNumbers.includes(page)) {
+        pageNumbers.push(page);
+      }
+    }
+  }
+
+  if (!pageNumbers.length) {
+    throw new Error(zh ? "请输入 OCR 页面范围。" : "Enter an OCR page range.");
+  }
+
+  if (pageNumbers.length > maxOcrPages) {
+    throw new Error(
+      zh
+        ? `OCR 当前一次最多处理 ${maxOcrPages} 页。请缩小页面范围。`
+        : `OCR currently processes up to ${maxOcrPages} pages at a time. Choose a smaller range.`,
+    );
+  }
+
+  return pageNumbers;
+}
+
+function combinePageText(
+  pages: Array<{
+    pageNumber: number;
+    text: string;
+  }>,
+) {
+  return pages
+    .map((page) => `--- Page ${page.pageNumber} ---\n${normalizeOcrText(page.text)}`)
+    .filter((block) => block.trim())
+    .join("\n\n")
+    .trim();
+}
+
+function averageConfidence(
+  pages: Array<{
+    confidence?: number;
+  }>,
+) {
+  const values = pages
+    .map((page) => page.confidence)
+    .filter((value): value is number => typeof value === "number" && Number.isFinite(value));
+
+  if (!values.length) {
+    return undefined;
+  }
+
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
 }
 
 function normalizeOcrText(text: string) {
@@ -202,10 +400,12 @@ function emitProgress(
   onProgress: ((progress: PdfRuntimeProgress) => void) | undefined,
   progress: number,
   stepIndex: number,
+  detail?: string,
 ) {
   onProgress?.({
     progress: Math.max(0, Math.min(100, progress)),
     stepIndex,
+    detail,
   });
 }
 

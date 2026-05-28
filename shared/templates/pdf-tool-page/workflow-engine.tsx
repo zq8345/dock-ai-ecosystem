@@ -24,6 +24,8 @@ type UploadedFile = {
   file: File;
 };
 
+type OcrLanguage = "eng" | "chi_sim";
+
 type WorkflowSpec = {
   acceptedLabel: string;
   minFiles: number;
@@ -68,8 +70,10 @@ export function PdfWorkflowEngine({
   const [error, setError] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [pageRanges, setPageRanges] = useState("1");
+  const [ocrLanguage, setOcrLanguage] = useState<OcrLanguage>("eng");
   const [ocrConfirmed, setOcrConfirmed] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [progressDetail, setProgressDetail] = useState("");
   const [runtimeArtifact, setRuntimeArtifact] =
     useState<PdfRuntimeArtifact | null>(null);
 
@@ -131,7 +135,10 @@ export function PdfWorkflowEngine({
       return;
     }
 
-    if (config.slug === "split-pdf" && !isValidPageRange(pageRanges)) {
+    if (
+      (config.slug === "split-pdf" || config.slug === "ocr-pdf") &&
+      !isValidPageRange(pageRanges)
+    ) {
       setError(
         zh
           ? "请输入有效页面范围，例如 1-4, 12-18。"
@@ -155,6 +162,7 @@ export function PdfWorkflowEngine({
     setRuntimeArtifact(null);
     setProgress(0);
     setStepIndex(0);
+    setProgressDetail("");
     setStatus("processing");
 
     const runId = processingRunRef.current + 1;
@@ -163,7 +171,11 @@ export function PdfWorkflowEngine({
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
-    const applyProgress = (nextProgress: number, nextStepIndex?: number) => {
+    const applyProgress = (
+      nextProgress: number,
+      nextStepIndex?: number,
+      detail?: string,
+    ) => {
       if (processingRunRef.current !== runId) {
         return;
       }
@@ -177,6 +189,7 @@ export function PdfWorkflowEngine({
             Math.floor((safeProgress / 100) * spec.steps.length),
           ),
       );
+      setProgressDetail(detail ?? "");
     };
 
     try {
@@ -185,11 +198,15 @@ export function PdfWorkflowEngine({
           slug: config.slug,
           files: files.map((item) => item.file),
           pageRanges,
+          ocrLanguage,
           outputFileName: spec.outputFileName,
           locale,
           signal: controller.signal,
-          onProgress: ({ progress: nextProgress, stepIndex: nextStepIndex }) =>
-            applyProgress(nextProgress, nextStepIndex),
+          onProgress: ({
+            progress: nextProgress,
+            stepIndex: nextStepIndex,
+            detail,
+          }) => applyProgress(nextProgress, nextStepIndex, detail),
         });
 
         if (processingRunRef.current !== runId || controller.signal.aborted) {
@@ -263,11 +280,13 @@ export function PdfWorkflowEngine({
     setFiles([]);
     setProgress(0);
     setStepIndex(0);
+    setProgressDetail("");
     setError("");
     setIsDragging(false);
     setCopied(false);
     setRuntimeArtifact(null);
     setOcrConfirmed(false);
+    setOcrLanguage("eng");
     setPageRanges("1");
     if (inputRef.current) {
       inputRef.current.value = "";
@@ -397,8 +416,10 @@ export function PdfWorkflowEngine({
             files={files}
             totalSize={totalSize}
             pageRanges={pageRanges}
+            ocrLanguage={ocrLanguage}
             ocrConfirmed={ocrConfirmed}
             onPageRangesChange={setPageRanges}
+            onOcrLanguageChange={setOcrLanguage}
             onOcrConfirmedChange={setOcrConfirmed}
             onRemoveFile={removeFile}
             onMoveFile={moveFile}
@@ -408,7 +429,7 @@ export function PdfWorkflowEngine({
 
         {status === "processing" ? (
           <WorkflowProgress
-            title={spec.steps[stepIndex] ?? spec.processLabel}
+            title={progressDetail || spec.steps[stepIndex] || spec.processLabel}
             description={spec.processLabel}
             progress={progress}
             statusText={zh ? "处理中" : "Processing"}
@@ -491,8 +512,10 @@ function ReadyWorkflowState({
   files,
   totalSize,
   pageRanges,
+  ocrLanguage,
   ocrConfirmed,
   onPageRangesChange,
+  onOcrLanguageChange,
   onOcrConfirmedChange,
   onRemoveFile,
   onMoveFile,
@@ -502,8 +525,10 @@ function ReadyWorkflowState({
   files: UploadedFile[];
   totalSize: number;
   pageRanges: string;
+  ocrLanguage: OcrLanguage;
   ocrConfirmed: boolean;
   onPageRangesChange: (value: string) => void;
+  onOcrLanguageChange: (value: OcrLanguage) => void;
   onOcrConfirmedChange: (value: boolean) => void;
   onRemoveFile: (id: string) => void;
   onMoveFile: (index: number, direction: -1 | 1) => void;
@@ -567,34 +592,64 @@ function ReadyWorkflowState({
         ))}
       </ol>
 
-      {config.slug === "split-pdf" ? (
+      {config.slug === "split-pdf" || config.slug === "ocr-pdf" ? (
         <label className="mt-4 block">
           <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
-            {zh ? "页面范围" : "Page ranges"}
+            {config.slug === "ocr-pdf"
+              ? zh
+                ? "OCR 页面范围"
+                : "OCR page ranges"
+              : zh
+                ? "页面范围"
+                : "Page ranges"}
           </span>
           <input
             value={pageRanges}
             onChange={(event) => onPageRangesChange(event.target.value)}
-            placeholder="1-4, 12-18"
+            placeholder={config.slug === "ocr-pdf" ? "1, 1-3, 1,3" : "1-4, 12-18"}
             className="mt-2 min-h-11 w-full rounded-lg border border-[#cbd5e1] bg-white px-3 py-2 text-sm font-medium text-[#0f172a] outline-none transition focus:border-[#0f172a]"
           />
+          {config.slug === "ocr-pdf" ? (
+            <p className="mt-2 text-xs font-medium text-[#475569]">
+              {zh
+                ? "当前浏览器端 OCR 一次最多处理 3 页。"
+                : "Browser-side OCR currently processes up to 3 pages at a time."}
+            </p>
+          ) : null}
         </label>
       ) : null}
 
       {config.slug === "ocr-pdf" ? (
-        <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-lg border border-[#cbd5e1] bg-[#f8fafc] p-3 text-sm leading-6 text-[#334155]">
-          <input
-            type="checkbox"
-            checked={ocrConfirmed}
-            onChange={(event) => onOcrConfirmedChange(event.target.checked)}
-            className="mt-1 h-4 w-4 accent-[#0f172a]"
-          />
-          <span>
-            {zh
-              ? "我确认这是扫描件或图片型 PDF，需要 OCR 提取文字。"
-              : "I confirm this is a scanned or image-based PDF that needs OCR text extraction."}
-          </span>
-        </label>
+        <>
+          <label className="mt-4 block">
+            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
+              {zh ? "OCR 语言" : "OCR language"}
+            </span>
+            <select
+              value={ocrLanguage}
+              onChange={(event) =>
+                onOcrLanguageChange(event.target.value as OcrLanguage)
+              }
+              className="mt-2 min-h-11 w-full rounded-lg border border-[#cbd5e1] bg-white px-3 py-2 text-sm font-medium text-[#0f172a] outline-none transition focus:border-[#0f172a]"
+            >
+              <option value="eng">{zh ? "英语" : "English"}</option>
+              <option value="chi_sim">{zh ? "中文（简体）" : "Chinese (Simplified)"}</option>
+            </select>
+          </label>
+          <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-lg border border-[#cbd5e1] bg-[#f8fafc] p-3 text-sm leading-6 text-[#334155]">
+            <input
+              type="checkbox"
+              checked={ocrConfirmed}
+              onChange={(event) => onOcrConfirmedChange(event.target.checked)}
+              className="mt-1 h-4 w-4 accent-[#0f172a]"
+            />
+            <span>
+              {zh
+                ? "我确认这是扫描件或图片型 PDF，需要 OCR 提取文字。"
+                : "I confirm this is a scanned or image-based PDF that needs OCR text extraction."}
+            </span>
+          </label>
+        </>
       ) : null}
 
       <WorkflowActionButton type="button" onClick={onStart} className="mt-4 w-full">
@@ -957,12 +1012,12 @@ function getWorkflowSpec(config: PdfToolPageConfig): WorkflowSpec {
         secondaryResultLabel: zh ? "下载文本" : "Download text",
         outputFileName: "dockdocs-ocr-text.txt",
         steps: zh
-          ? ["检查扫描质量...", "识别文字区域...", "提取 OCR 文本...", "准备文本输出..."]
+          ? ["加载 PDF...", "渲染页面...", "识别所选页面...", "合并文本输出..."]
           : [
-              "Checking scan quality...",
-              "Recognizing text regions...",
-              "Extracting OCR text...",
-              "Preparing text output...",
+              "Loading PDF...",
+              "Rendering pages...",
+              "Recognizing selected pages...",
+              "Combining text output...",
             ],
       };
     case "jpg-to-pdf":
@@ -1189,6 +1244,16 @@ function getWorkflowResult(
         rows: [
           [zh ? "源文件" : "Source", files[0]?.file.name ?? "Scanned PDF"],
           [zh ? "处理页面" : "Processed pages", String(artifact?.processedPages ?? 1)],
+          [
+            zh ? "OCR 语言" : "OCR language",
+            artifact?.ocrLanguage === "chi_sim"
+              ? zh
+                ? "中文（简体）"
+                : "Chinese"
+              : zh
+                ? "英语"
+                : "English",
+          ],
           [zh ? "文本行数" : "Text lines", String(ocrLineCount)],
           [
             zh ? "置信度" : "Confidence",
