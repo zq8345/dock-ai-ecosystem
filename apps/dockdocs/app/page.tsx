@@ -186,6 +186,33 @@ const workflowLinks = [
   { title: "Extract scanned text", href: "/ocr-pdf" },
 ];
 
+const resourceLinks = [
+  {
+    title: "PDF workflow resources",
+    href: "/resources/",
+    description:
+      "A crawlable hub for PDF tools, AI document workflows, OCR, and conversion paths.",
+  },
+  {
+    title: "Step-by-step PDF guides",
+    href: "/guides/",
+    description:
+      "Practical guides for compression, merging, splitting, OCR, JPG to PDF, and PDF to Word.",
+  },
+  {
+    title: "AI PDF guides",
+    href: "/ai-pdf-guides/",
+    description:
+      "AI-readable guidance for OCR, scanned PDF text extraction, summaries, and document review.",
+  },
+  {
+    title: "Help and FAQ",
+    href: "/help/",
+    description:
+      "Support content for uploads, privacy-first handling, local processing, and file formats.",
+  },
+];
+
 const faq = [
   {
     question: "What is DockDocs?",
@@ -525,6 +552,42 @@ export default function Home() {
                 <h3 className="font-semibold">{workflow.title}</h3>
                 <span className="mt-5 inline-block text-sm text-[#475569] transition group-hover:translate-x-0.5 group-hover:text-[#0f172a]">
                   Open tool -&gt;
+                </span>
+              </a>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section className="border-y border-[#cbd5e1] bg-[#f8fafc]">
+        <Container>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-[0.16em] text-[#334155]">
+                Search and AI discovery
+              </p>
+              <h2 className="mt-4 text-3xl font-semibold leading-tight">
+                Crawlable hubs connect tools, guides, and support.
+              </h2>
+            </div>
+            <p className="max-w-xl leading-7 text-[#334155]">
+              DockDocs keeps the PDF tools homepage connected to resource hubs,
+              blog guides, support pages, and AI-ready document workflows.
+            </p>
+          </div>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {resourceLinks.map((resource) => (
+              <a
+                key={resource.href}
+                href={resource.href}
+                className="group rounded-lg border border-[#cbd5e1] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#0f172a] hover:shadow-[0_16px_32px_rgba(24,24,20,0.08)]"
+              >
+                <h3 className="font-semibold">{resource.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[#334155]">
+                  {resource.description}
+                </p>
+                <span className="mt-5 inline-block text-sm font-semibold text-[#0f172a] transition group-hover:translate-x-0.5">
+                  Explore hub -&gt;
                 </span>
               </a>
             ))}

@@ -3,9 +3,11 @@ import {
   PdfToolPage,
   type PdfToolPageConfig,
 } from "../../../../shared/templates/pdf-tool-page";
+import { languageAlternates } from "@/lib/i18n";
 
 const splitPdfConfig = {
   slug: "split-pdf",
+  alternateLanguages: languageAlternates("split-pdf"),
   title: "Split PDF Online Free | DockDocs",
   description:
     "Split PDF files into separate pages or extract page ranges online. Fast, secure, and AI-ready PDF split workflow.",

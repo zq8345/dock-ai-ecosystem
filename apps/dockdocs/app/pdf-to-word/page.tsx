@@ -3,9 +3,11 @@ import {
   PdfToolPage,
   type PdfToolPageConfig,
 } from "../../../../shared/templates/pdf-tool-page";
+import { languageAlternates } from "@/lib/i18n";
 
 const pdfToWordConfig = {
   slug: "pdf-to-word",
+  alternateLanguages: languageAlternates("pdf-to-word"),
   title: "PDF to Word Converter Online Free | DockDocs",
   description:
     "Convert PDF files to editable Word documents online. Fast, secure, and AI-ready PDF conversion workflow.",

@@ -3,9 +3,11 @@ import {
   PdfToolPage,
   type PdfToolPageConfig,
 } from "../../../../shared/templates/pdf-tool-page";
+import { languageAlternates } from "@/lib/i18n";
 
 const mergePdfConfig = {
   slug: "merge-pdf",
+  alternateLanguages: languageAlternates("merge-pdf"),
   title: "Merge PDF Files Online Free | DockDocs",
   description:
     "Merge multiple PDF files into one organized document online. Fast, secure, and AI-ready PDF merge workflow.",

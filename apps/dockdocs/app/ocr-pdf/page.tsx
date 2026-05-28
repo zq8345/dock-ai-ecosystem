@@ -3,9 +3,11 @@ import {
   PdfToolPage,
   type PdfToolPageConfig,
 } from "../../../../shared/templates/pdf-tool-page";
+import { languageAlternates } from "@/lib/i18n";
 
 const ocrPdfConfig = {
   slug: "ocr-pdf",
+  alternateLanguages: languageAlternates("ocr-pdf"),
   title: "OCR PDF Online Free | DockDocs",
   description:
     "Extract text from scanned PDF files online using AI-powered OCR workflows inside DockDocs.",

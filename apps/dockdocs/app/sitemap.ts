@@ -1,48 +1,68 @@
 import type { MetadataRoute } from "next";
-import { blogArticlePath, blogArticleSlugs } from "@/lib/blog";
-import { locales, localizedPath, routeSlugs } from "@/lib/i18n";
+import {
+  blogArticleAlternates,
+  blogArticlePath,
+  blogArticleSlugs,
+} from "@/lib/blog";
+import {
+  languageAlternates,
+  locales,
+  localizedPath,
+  pathForSlug,
+  routeSlugs,
+} from "@/lib/i18n";
 
 export const dynamic = "force-static";
 
 const baseUrl = "https://dockdocs.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const localPages = [
-    "/",
-    "/jpg-to-pdf/",
-    "/compress-pdf/",
-    "/merge-pdf/",
-    "/split-pdf/",
-    "/pdf-to-word/",
-    "/ocr-pdf/",
-    "/ai-workspace/",
-    "/resources/",
-    "/guides/",
-    "/ai-pdf-guides/",
-    "/about/",
-    "/blog/",
-    "/help/",
-    "/faq/",
-    "/contact/",
-    "/privacy-policy/",
-    "/terms/",
-    "/sitemap/",
-  ];
-  const localizedPages = locales.flatMap((locale) =>
-    routeSlugs.map((slug) => localizedPath(locale, slug)),
-  );
-  const blogPages = blogArticleSlugs.map((slug) => blogArticlePath(slug));
-  const localizedBlogPages = locales.flatMap((locale) =>
-    blogArticleSlugs.map((slug) => blogArticlePath(slug, locale)),
-  );
   const now = new Date();
 
   return [
-    ...[...localPages, ...localizedPages, ...blogPages, ...localizedBlogPages].map((path) => ({
-      url: `${baseUrl}${path}`,
-      lastModified: now,
-      changeFrequency: path.includes("/blog/") ? ("weekly" as const) : ("monthly" as const),
-      priority: path === "/" ? 1 : path.includes("/blog/") ? 0.7 : 0.6,
-    })),
+    ...routeSlugs.map((slug) =>
+      createSitemapEntry(pathForSlug(slug), now, languageAlternates(slug)),
+    ),
+    ...locales.flatMap((locale) =>
+      routeSlugs.map((slug) =>
+        createSitemapEntry(
+          localizedPath(locale, slug),
+          now,
+          languageAlternates(slug),
+        ),
+      ),
+    ),
+    ...blogArticleSlugs.map((slug) =>
+      createSitemapEntry(blogArticlePath(slug), now, blogArticleAlternates(slug)),
+    ),
+    ...locales.flatMap((locale) =>
+      blogArticleSlugs.map((slug) =>
+        createSitemapEntry(
+          blogArticlePath(slug, locale),
+          now,
+          blogArticleAlternates(slug),
+        ),
+      ),
+    ),
   ];
+}
+
+function createSitemapEntry(
+  path: string,
+  lastModified: Date,
+  languages: Record<string, string>,
+): MetadataRoute.Sitemap[number] {
+  return {
+    url: `${baseUrl}${path}`,
+    lastModified,
+    changeFrequency: path.includes("/blog/")
+      ? "weekly"
+      : path === "/"
+        ? "weekly"
+        : "monthly",
+    priority: path === "/" ? 1 : path.includes("/blog/") ? 0.7 : 0.6,
+    alternates: {
+      languages,
+    },
+  };
 }

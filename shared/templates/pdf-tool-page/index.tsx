@@ -69,6 +69,12 @@ type WorkflowState = {
   secondaryActionLabel?: string;
 };
 
+type IndexingLink = {
+  label: string;
+  href: string;
+  description: string;
+};
+
 const siteUrl = "https://dockdocs.app";
 
 const pdfTools = {
@@ -166,6 +172,10 @@ const templateCopy = {
     relatedTitle: "Continue with another PDF workflow.",
     relatedDescription:
       "Move between DockDocs PDF tools without leaving the product platform.",
+    indexingEyebrow: "Recommended reading",
+    indexingTitle: "Related guides and support for this workflow.",
+    indexingDescription:
+      "Continue from the tool page into crawlable DockDocs guides, resources, help content, and AI-readable workflow hubs.",
   },
   zh: {
     toolEyebrow: "DockDocs PDF 工具",
@@ -181,6 +191,10 @@ const templateCopy = {
     relatedTools: "相关工具",
     relatedTitle: "继续使用其它 PDF 工作流。",
     relatedDescription: "在 DockDocs PDF 工具之间继续处理文档。",
+    indexingEyebrow: "推荐阅读",
+    indexingTitle: "与当前工作流相关的指南和支持内容。",
+    indexingDescription:
+      "从工具页继续进入 DockDocs 指南、资源、帮助内容和 AI 可读取的工作流中心。",
   },
 } as const;
 
@@ -228,6 +242,9 @@ export function createPdfToolSchema(config: PdfToolPageConfig) {
         url: pageUrl,
         name: config.title,
         description: config.description,
+        significantLink: getIndexingLinks(config).map((link) =>
+          absoluteHref(link.href, config.locale),
+        ),
         isPartOf: {
           "@type": "WebSite",
           name: "DockDocs",
@@ -320,6 +337,7 @@ export function PdfToolPage({ config }: { config: PdfToolPageConfig }) {
       <FeaturesSection config={config} />
       <HowItWorksSection config={config} />
       <FaqSection config={config} />
+      <IndexingLinksSection config={config} />
       {config.relatedTools === false ? null : config.relatedTools ?? (
         <RelatedPdfTools
           currentSlug={config.slug}
@@ -635,6 +653,41 @@ function RelatedPdfTools({
   );
 }
 
+function IndexingLinksSection({ config }: { config: PdfToolPageConfig }) {
+  const locale = config.locale ?? "en";
+  const copy = templateCopy[locale];
+  const links = getIndexingLinks(config);
+
+  return (
+    <Section className="border-b border-[#cbd5e1] bg-white">
+      <Container>
+        <SectionIntro
+          eyebrow={copy.indexingEyebrow}
+          title={copy.indexingTitle}
+          description={copy.indexingDescription}
+        />
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {links.map((link) => (
+            <a
+              key={link.href}
+              href={localizeTemplateHref(link.href, config.locale)}
+              className="group rounded-xl border border-[#cbd5e1] bg-[#f8fafc] p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#0f172a] hover:bg-white hover:shadow-[0_16px_32px_rgba(24,24,20,0.08)]"
+            >
+              <h3 className="font-semibold text-[#0f172a]">{link.label}</h3>
+              <p className="mt-3 text-sm leading-6 text-[#334155]">
+                {link.description}
+              </p>
+              <span className="mt-5 inline-block text-sm font-semibold text-[#0f172a] transition group-hover:translate-x-0.5">
+                {locale === "zh" ? "继续阅读" : "Continue"} -&gt;
+              </span>
+            </a>
+          ))}
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
 function CtaSection({ config }: { config: PdfToolPageConfig }) {
   return (
     <Section bordered={false} className="bg-white">
@@ -656,6 +709,108 @@ function CtaSection({ config }: { config: PdfToolPageConfig }) {
       </Container>
     </Section>
   );
+}
+
+function getIndexingLinks(config: PdfToolPageConfig): IndexingLink[] {
+  const locale = config.locale ?? "en";
+  const zh = locale === "zh";
+  const common = [
+    {
+      label: zh ? "PDF 工作流资源" : "PDF workflow resources",
+      href: "/resources",
+      description: zh
+        ? "按工作流整理 PDF 工具、OCR、转换和 AI 文档路径。"
+        : "Explore a structured hub for PDF tools, OCR, conversion, and AI document paths.",
+    },
+    {
+      label: zh ? "PDF 指南" : "PDF guides",
+      href: "/guides",
+      description: zh
+        ? "阅读压缩、合并、拆分、转换和日常文档任务的步骤指南。"
+        : "Read step-by-step guidance for compression, merging, splitting, conversion, and everyday document tasks.",
+    },
+    {
+      label: zh ? "帮助与 FAQ" : "Help and FAQ",
+      href: "/help",
+      description: zh
+        ? "了解上传、隐私优先处理、本地处理、AI 限制和支持格式。"
+        : "Understand uploads, privacy-first handling, local processing, AI limits, and supported formats.",
+    },
+  ];
+
+  const articleLinks: Record<string, IndexingLink[]> = {
+    "compress-pdf": [
+      {
+        label: zh ? "如何减小 PDF 文件体积" : "How to reduce PDF file size",
+        href: "/blog/how-to-reduce-pdf-file-size",
+        description: zh
+          ? "了解如何为邮件、门户和日常共享减小 PDF 体积。"
+          : "Learn how to make PDFs smaller for email, portals, and everyday sharing.",
+      },
+    ],
+    "merge-pdf": [
+      {
+        label: zh ? "如何在线合并 PDF" : "How to merge PDF files online",
+        href: "/blog/how-to-merge-pdf-files-online",
+        description: zh
+          ? "了解多个 PDF 如何变成一个清晰的文档包。"
+          : "Learn how multiple PDFs become one organized document packet.",
+      },
+    ],
+    "split-pdf": [
+      {
+        label: zh ? "如何拆分 PDF 页面" : "How to split PDF pages",
+        href: "/blog/how-to-split-pdf-pages",
+        description: zh
+          ? "了解如何提取页面范围并导出更小的文档。"
+          : "Learn how to extract page ranges and export smaller documents.",
+      },
+    ],
+    "pdf-to-word": [
+      {
+        label: zh ? "PDF 转 Word 编辑指南" : "PDF to Word for editing",
+        href: "/blog/pdf-to-word-for-editing",
+        description: zh
+          ? "了解如何把固定 PDF 准备为可编辑文档工作流。"
+          : "Learn how to prepare fixed PDFs for editable document workflows.",
+      },
+    ],
+    "ocr-pdf": [
+      {
+        label: zh ? "OCR PDF 转文本" : "OCR PDF to text online",
+        href: "/blog/ocr-pdf-to-text-online",
+        description: zh
+          ? "了解扫描 PDF 如何变成可搜索、可复用的文本。"
+          : "Learn how scanned PDFs become searchable and reusable text.",
+      },
+    ],
+    "jpg-to-pdf": [
+      {
+        label: zh ? "图片转 PDF 工作流" : "Best JPG to PDF workflow",
+        href: "/blog/best-jpg-to-pdf-workflow",
+        description: zh
+          ? "了解照片、扫描图和图片文件如何整理为 PDF。"
+          : "Learn how photos, scans, and image files become organized PDFs.",
+      },
+    ],
+  };
+
+  return [...(articleLinks[config.slug] ?? []), ...common];
+}
+
+function localizeTemplateHref(href: string, locale?: "en" | "zh") {
+  const clean = href === "/" ? "" : href.replace(/\/+$/g, "");
+  const path = clean ? `${clean}/` : "/";
+
+  if (!locale) {
+    return path;
+  }
+
+  return path === "/" ? `/${locale}/` : `/${locale}${path}`;
+}
+
+function absoluteHref(href: string, locale?: "en" | "zh") {
+  return `${siteUrl}${localizeTemplateHref(href, locale)}`;
 }
 
 function SectionIntro({
