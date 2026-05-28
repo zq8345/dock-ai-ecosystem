@@ -4,34 +4,6 @@ import {
   type PdfToolPageConfig,
 } from "../../../../shared/templates/pdf-tool-page";
 
-const relatedPdfTools = [
-  {
-    name: "Compress PDF",
-    href: "/compress-pdf",
-    description: "Reduce the size of exported or shared PDF documents.",
-  },
-  {
-    name: "Merge PDF",
-    href: "/merge-pdf",
-    description: "Combine multiple PDFs into one organized document.",
-  },
-  {
-    name: "Split PDF",
-    href: "/split-pdf",
-    description: "Extract pages or separate large PDF files into smaller files.",
-  },
-  {
-    name: "PDF to Word",
-    href: "/pdf-to-word",
-    description: "Convert PDF files into editable Word document workflows.",
-  },
-  {
-    name: "OCR PDF",
-    href: "/ocr-pdf",
-    description: "Extract text from scanned PDFs with AI-ready OCR workflows.",
-  },
-];
-
 const jpgToPdfConfig = {
   slug: "jpg-to-pdf",
   title: "JPG to PDF Converter Online Free | DockDocs",
@@ -62,6 +34,8 @@ const jpgToPdfConfig = {
       "Drag and drop JPG images here, or choose photos from your device.",
     buttonLabel: "Choose JPG images",
     multiple: true,
+    accept: "image/jpeg,image/png,image/webp",
+    fileBadge: "IMG",
     note: "JPG and photo workflows. Built for image-to-PDF document creation.",
   },
   benefitsTitle: "Create PDFs from images without a heavy editor",
@@ -145,50 +119,6 @@ const jpgToPdfConfig = {
         "Common photo-to-PDF workflows include receipts, notes, forms, ID scans, signed pages, whiteboards, and document photos.",
     },
   ],
-  relatedTools: (
-    <section
-      id="related-tools"
-      aria-labelledby="related-pdf-tools-title"
-      className="px-5 py-16 sm:px-6 lg:px-8"
-    >
-      <div className="mx-auto max-w-6xl">
-        <div className="max-w-2xl">
-          <p className="text-sm font-medium uppercase tracking-[0.16em] text-[color:var(--muted)]">
-            Related Tools
-          </p>
-          <h2 id="related-pdf-tools-title" className="mt-4 text-3xl font-semibold leading-tight">
-            Continue with another PDF workflow.
-          </h2>
-          <p className="mt-4 leading-7 text-[color:var(--muted)]">
-            Move from JPG to PDF into compression, merging, splitting,
-            conversion, or OCR inside DockDocs.
-          </p>
-        </div>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {relatedPdfTools.map((tool) => (
-            <a
-              key={tool.href}
-              href={tool.href}
-              className="group rounded-lg border border-[color:var(--line)] p-5 transition hover:border-[color:var(--foreground)]"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <h3 className="font-semibold">{tool.name}</h3>
-                <span
-                  aria-hidden="true"
-                  className="text-[color:var(--muted)] transition group-hover:translate-x-0.5 group-hover:text-[color:var(--foreground)]"
-                >
-                  -&gt;
-                </span>
-              </div>
-              <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
-                {tool.description}
-              </p>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
-  ),
   cta: {
     eyebrow: "JPG to PDF",
     title: "Turn images into a PDF-ready document workflow.",

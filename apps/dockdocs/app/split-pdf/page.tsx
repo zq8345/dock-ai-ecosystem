@@ -74,9 +74,9 @@ const splitPdfConfig = {
         "Designed for contracts, scanned packets, forms, reports, and application files.",
     },
     {
-      title: "Responsive dark mode",
+      title: "Responsive DockDocs UI",
       description:
-        "The same quiet DockDocs interface works across desktop, tablet, and mobile screens.",
+        "The same clean DockDocs interface works across desktop, tablet, and mobile screens.",
     },
   ],
   workflowTitle: "How PDF splitting fits into document work",

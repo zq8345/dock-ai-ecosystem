@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next";
-import { dockBrands } from "@dock/shared/config";
 
 export const dynamic = "force-static";
 
@@ -15,6 +14,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/pdf-to-word/",
     "/ocr-pdf/",
     "/ai-workspace/",
+    "/about/",
+    "/blog/",
+    "/help/",
+    "/faq/",
+    "/contact/",
     "/privacy-policy/",
     "/terms/",
     "/sitemap/",
@@ -27,12 +31,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: path === "/" ? 1 : 0.6,
-    })),
-    ...dockBrands.filter((tool) => tool.url !== baseUrl).map((tool) => ({
-      url: tool.url,
-      lastModified: now,
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
     })),
   ];
 }

@@ -4,20 +4,11 @@
 @source "../../../shared";
 
 :root {
-  color-scheme: light dark;
-  --background: #f7f7f4;
-  --foreground: #171717;
-  --muted: #6b6b63;
-  --line: #deded7;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #111111;
-    --foreground: #f4f4ef;
-    --muted: #a7a79d;
-    --line: #2c2c2a;
-  }
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --muted: #334155;
+  --line: #cbd5e1;
 }
 
 * {

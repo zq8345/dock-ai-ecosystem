@@ -3,6 +3,10 @@ import { RelatedTools } from "@/components/RelatedTools";
 const footerLinks = [
   { name: "Related Tools", href: "#related-tools" },
   { name: "AI Office Workspace", href: "/ai-workspace" },
+  { name: "About", href: "/about" },
+  { name: "Help", href: "/help" },
+  { name: "FAQ", href: "/faq" },
+  { name: "Contact", href: "/contact" },
   { name: "Privacy Policy", href: "/privacy-policy" },
   { name: "Terms", href: "/terms" },
   { name: "Sitemap", href: "/sitemap" },

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { dockBrands } from "@dock/shared/config";
-
 export const metadata: Metadata = {
   title: "Sitemap",
-  description: "Sitemap for DockDocs, DockIMG, DockSEO, and DockText.",
+  description: "Sitemap for DockDocs PDF tools and trust pages.",
+  alternates: {
+    canonical: "/sitemap/",
+  },
 };
 
 export default function SitemapPage() {
@@ -16,7 +17,11 @@ export default function SitemapPage() {
     { name: "PDF to Word", href: "/pdf-to-word" },
     { name: "OCR PDF", href: "/ocr-pdf" },
     { name: "AI Workspace", href: "/ai-workspace" },
-    ...dockBrands.map((brand) => ({ name: brand.name, href: brand.url })),
+    { name: "About", href: "/about" },
+    { name: "Blog", href: "/blog" },
+    { name: "Help", href: "/help" },
+    { name: "FAQ", href: "/faq" },
+    { name: "Contact", href: "/contact" },
     { name: "Privacy Policy", href: "/privacy-policy" },
     { name: "Terms", href: "/terms" },
   ];

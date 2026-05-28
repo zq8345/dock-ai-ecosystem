@@ -74,9 +74,9 @@ const ocrPdfConfig = {
         "Designed for forms, reports, receipts, contracts, and scanned document packets.",
     },
     {
-      title: "Responsive dark mode",
+      title: "Responsive DockDocs UI",
       description:
-        "The same quiet DockDocs interface works across desktop, tablet, and mobile screens.",
+        "The same clean DockDocs interface works across desktop, tablet, and mobile screens.",
     },
   ],
   workflowTitle: "How OCR PDF fits into document work",

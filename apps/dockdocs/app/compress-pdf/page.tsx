@@ -74,9 +74,9 @@ const compressPdfConfig = {
         "Designed for reports, contracts, scans, invoices, forms, and business documents.",
     },
     {
-      title: "Responsive dark mode UI",
+      title: "Responsive DockDocs UI",
       description:
-        "A modern layout that adapts across screens and follows system dark mode.",
+        "A clean light SaaS layout that adapts across desktop, tablet, and mobile screens.",
     },
   ],
   workflowTitle: "How PDF compression fits into document work",

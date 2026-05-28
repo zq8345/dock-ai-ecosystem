@@ -6,23 +6,23 @@ export type Tool = {
 
 export const tools: Tool[] = [
   {
-    name: "DockDocs",
-    href: "https://dockdocs.app",
-    description: "AI document tools for office files, writing, and workflows.",
+    name: "JPG to PDF",
+    href: "/jpg-to-pdf",
+    description: "Convert JPG, PNG, and WebP images into PDF documents.",
   },
   {
-    name: "DockIMG",
-    href: "https://dockimg.app",
-    description: "AI image tools for fast visual editing and conversion.",
+    name: "Compress PDF",
+    href: "/compress-pdf",
+    description: "Reduce PDF file size for sharing, portals, and email.",
   },
   {
-    name: "DockSEO",
-    href: "https://dockseo.app",
-    description: "SEO tools for search snippets, metadata, and content checks.",
+    name: "OCR PDF",
+    href: "/ocr-pdf",
+    description: "Extract text from scanned and image-based PDF files.",
   },
   {
-    name: "DockText",
-    href: "https://docktext.app",
-    description: "Text tools for rewriting, cleanup, summaries, and formatting.",
+    name: "AI Workspace",
+    href: "/ai-workspace",
+    description: "Review, summarize, and work with documents using AI layers.",
   },
 ];
