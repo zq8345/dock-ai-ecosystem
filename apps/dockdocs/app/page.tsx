@@ -213,7 +213,7 @@ export default function Home() {
             <div className="inline-flex rounded-full border border-[#cbd5e1] bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#334155] shadow-sm">
               DockDocs PDF Tools
             </div>
-            <h1 className="mt-6 max-w-4xl break-all text-2xl font-semibold leading-tight sm:text-6xl sm:leading-[1.04]">
+            <h1 className="mt-6 max-w-4xl break-words text-2xl font-semibold leading-tight sm:text-6xl sm:leading-[1.04]">
               Privacy-first PDF tools for everyday documents.
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-[#334155] sm:text-lg">

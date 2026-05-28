@@ -342,7 +342,7 @@ function HeroSection({ config }: { config: PdfToolPageConfig }) {
           <div className="inline-flex rounded-full border border-[#cbd5e1] bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#334155] shadow-sm">
             {copy.toolEyebrow}
           </div>
-          <h1 className="mt-6 max-w-4xl break-all text-2xl font-semibold leading-[1.08] sm:text-6xl sm:leading-[1.04]">
+          <h1 className="mt-6 max-w-4xl break-words text-2xl font-semibold leading-[1.08] sm:text-6xl sm:leading-[1.04]">
             {config.heroTitle}
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-[#334155] sm:text-lg">
@@ -438,7 +438,7 @@ function WorkflowSimulator({ config }: { config: PdfToolPageConfig }) {
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
               {copy.workflowEyebrow}
             </p>
-            <h2 className="mt-4 text-3xl font-semibold leading-tight">
+            <h2 className="mt-4 break-words text-2xl font-semibold leading-tight sm:text-3xl">
               {copy.workflowTitle}
             </h2>
           </div>
@@ -460,27 +460,27 @@ function WorkflowSimulator({ config }: { config: PdfToolPageConfig }) {
                   {state.status}
                 </span>
               </div>
-              <h3 className="mt-5 text-lg font-semibold">{state.title}</h3>
+              <h3 className="mt-5 break-words text-lg font-semibold">{state.title}</h3>
               <p className="mt-3 text-sm leading-6 text-[#334155]">
                 {state.description}
               </p>
               {state.preview ? (
-                <div className="mt-5 rounded-lg border border-[#cbd5e1] bg-[#f8fafc] p-4 text-sm text-[#334155]">
+                <div className="mt-5 overflow-hidden rounded-lg border border-[#cbd5e1] bg-[#f8fafc] p-4 text-sm text-[#334155]">
                   {state.preview}
                 </div>
               ) : null}
               {state.actionLabel ? (
-                <div className="mt-5 flex flex-wrap gap-2">
+                <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                   <button
                     type="button"
-                    className="rounded-full bg-[#0f172a] px-4 py-2 text-xs font-semibold text-white shadow-sm"
+                    className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-[#0f172a] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_26px_rgba(15,23,42,0.16)] transition hover:bg-[#111827] sm:w-auto"
                   >
                     {state.actionLabel}
                   </button>
                   {state.secondaryActionLabel ? (
                     <button
                       type="button"
-                      className="rounded-full border border-[#cbd5e1] bg-white px-4 py-2 text-xs font-semibold text-[#0f172a]"
+                      className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-[#cbd5e1] bg-white px-5 py-3 text-sm font-semibold text-[#0f172a] shadow-sm transition hover:border-[#0f172a] sm:w-auto"
                     >
                       {state.secondaryActionLabel}
                     </button>
@@ -672,8 +672,8 @@ function SectionIntro({
       <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
         {eyebrow}
       </p>
-      <h2 className="mt-4 text-3xl font-semibold leading-tight text-[#0f172a]">
-        {title}
+      <h2 className="mt-4 text-2xl font-semibold leading-tight text-[#0f172a] sm:text-3xl">
+        <span className="break-words">{title}</span>
       </h2>
       {description ? (
         <p className="mt-4 leading-7 text-[#334155]">{description}</p>
@@ -685,7 +685,7 @@ function SectionIntro({
 function InfoCard({ item }: { item: PdfToolItem }) {
   return (
     <div className="h-full rounded-xl border border-[#cbd5e1] bg-white p-5 shadow-sm transition hover:border-[#0f172a]">
-      <h3 className="text-lg font-semibold text-[#0f172a]">{item.title}</h3>
+      <h3 className="break-words text-lg font-semibold text-[#0f172a]">{item.title}</h3>
       <p className="mt-3 text-sm leading-6 text-[#334155]">
         {item.description}
       </p>
@@ -773,7 +773,7 @@ function ImageOrderPreview() {
           <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-md bg-[#0f172a] text-xs font-semibold text-white">
             {index + 1}
           </div>
-          <p className="mt-2 truncate text-xs">{file}</p>
+          <p className="mt-2 break-all text-xs leading-4">{file}</p>
         </div>
       ))}
     </div>
@@ -874,7 +874,7 @@ function getWorkflowStates(config: PdfToolPageConfig): WorkflowState[] {
           title: zh ? "可编辑文档输出" : "Editable document output",
           description: zh ? "Word 风格预览让用户在下载前理解结果。" : "A Word-ready preview gives users confidence before download.",
           preview: <DocumentPreview />,
-          actionLabel: zh ? "下载 DOCX" : "Download DOCX",
+          actionLabel: zh ? "下载 .docx" : "Download .docx",
         },
       ];
     case "ocr-pdf":
@@ -896,8 +896,8 @@ function getWorkflowStates(config: PdfToolPageConfig): WorkflowState[] {
           title: zh ? "复制或下载文本" : "Copy or download text",
           description: zh ? "结果状态提供复制文本和下载文本操作。" : "The result state includes copy text and download text actions.",
           preview: <TextOutputPreview />,
-          actionLabel: zh ? "复制文本" : "Copy text",
-          secondaryActionLabel: zh ? "下载 .txt" : "Download .txt",
+          actionLabel: zh ? "复制提取文本" : "Copy extracted text",
+          secondaryActionLabel: zh ? "下载文本" : "Download text",
         },
       ];
     case "jpg-to-pdf":

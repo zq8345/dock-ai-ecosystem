@@ -24,7 +24,7 @@ export function SaasInfoPage({
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
             {page.eyebrow}
           </p>
-          <h1 className="mt-5 max-w-4xl break-all text-2xl font-semibold leading-tight sm:text-6xl">
+          <h1 className="mt-5 max-w-4xl break-words text-2xl font-semibold leading-tight sm:text-6xl">
             {page.heroTitle}
           </h1>
           <p className="mt-6 max-w-3xl text-base leading-8 text-[#334155] sm:text-lg">

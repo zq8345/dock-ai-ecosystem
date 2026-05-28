@@ -3,9 +3,11 @@ import {
   PdfToolPage,
   type PdfToolPageConfig,
 } from "../../../../shared/templates/pdf-tool-page";
+import { languageAlternates } from "@/lib/i18n";
 
 const jpgToPdfConfig = {
   slug: "jpg-to-pdf",
+  alternateLanguages: languageAlternates("jpg-to-pdf"),
   title: "JPG to PDF Converter Online Free | DockDocs",
   description:
     "Convert JPG images to PDF online for free. Fast, secure, and privacy-first JPG to PDF workflows inside DockDocs.",

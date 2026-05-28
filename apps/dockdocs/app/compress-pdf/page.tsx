@@ -3,9 +3,11 @@ import {
   PdfToolPage,
   type PdfToolPageConfig,
 } from "../../../../shared/templates/pdf-tool-page";
+import { languageAlternates } from "@/lib/i18n";
 
 const compressPdfConfig = {
   slug: "compress-pdf",
+  alternateLanguages: languageAlternates("compress-pdf"),
   title: "Compress PDF Online Free | DockDocs",
   description:
     "Compress PDF files online with AI-powered optimization. Fast, secure, and free PDF compression tool.",

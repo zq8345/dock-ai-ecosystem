@@ -203,7 +203,7 @@ function LocalizedHome({ locale }: { locale: Locale }) {
             <p className="inline-flex rounded-full border border-[#cbd5e1] bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#334155] shadow-sm">
               {copy.eyebrow}
             </p>
-            <h1 className="mt-6 max-w-4xl break-all text-2xl font-semibold leading-tight sm:text-6xl">
+            <h1 className="mt-6 max-w-4xl break-words text-2xl font-semibold leading-tight sm:text-6xl">
               {copy.heroTitle}
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-[#334155] sm:text-lg">
@@ -316,7 +316,7 @@ function LocalizedAiWorkspace({ locale }: { locale: Locale }) {
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
             {copy.eyebrow}
           </p>
-          <h1 className="mt-5 max-w-4xl break-all text-2xl font-semibold leading-tight sm:text-6xl">
+          <h1 className="mt-5 max-w-4xl break-words text-2xl font-semibold leading-tight sm:text-6xl">
             {copy.heroTitle}
           </h1>
           <p className="mt-6 max-w-3xl text-base leading-8 text-[#334155] sm:text-lg">
@@ -421,7 +421,7 @@ function LocalizedSitemap({ locale }: { locale: Locale }) {
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
             Sitemap
           </p>
-          <h1 className="mt-5 max-w-4xl break-all text-2xl font-semibold leading-tight sm:text-6xl">
+          <h1 className="mt-5 max-w-4xl break-words text-2xl font-semibold leading-tight sm:text-6xl">
             {copy.heading}
           </h1>
         </Container>

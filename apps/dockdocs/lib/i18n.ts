@@ -335,14 +335,14 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
         "Use this page to understand how DockDocs tool pages are organized, what files each workflow expects, and where AI features fit.",
       sections: [
         {
-          title: "Using DockDocs tools",
+          title: "Upload behavior and supported formats",
           description:
-            "Each tool page has a focused upload area, a simulated processing state, and a result/export step so users understand the intended workflow.",
+            "Each tool page states what users can upload, what the workflow is preparing, and which export action appears at the end.",
           items: [
             {
-              title: "Upload guidance",
+              title: "Upload behavior",
               description:
-                "PDF tools accept PDF files. JPG to PDF accepts JPG, PNG, and WebP images. Use the tool that matches the output you need.",
+                "Choose files from the upload card for the selected workflow. PDF tools are PDF-focused, while JPG to PDF accepts image files for document creation.",
             },
             {
               title: "Supported formats",
@@ -357,22 +357,22 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
           ],
         },
         {
-          title: "Privacy and AI limits",
+          title: "Local processing, privacy-first handling, and AI limits",
           description:
-            "DockDocs is designed around privacy-first document handling and clear limits for AI-assisted features.",
+            "DockDocs is designed around local-first document preparation where possible, privacy-first handling, and clear limits for AI-assisted features.",
           items: [
             {
-              title: "Local processing explanation",
+              title: "Local processing",
               description:
-                "Where possible, DockDocs favors browser-first and local-first workflow design so simple document preparation can happen close to the user before any future cloud or AI step.",
+                "Where possible, DockDocs favors browser-first and local-first workflow design so simple document preparation can happen close to the user before any future cloud or AI step is introduced.",
             },
             {
-              title: "Privacy handling",
+              title: "Privacy-first handling",
               description:
                 "Tool pages should explain upload expectations, processing purpose, retention policy, and deletion behavior before production processing is enabled.",
             },
             {
-              title: "AI feature limitations",
+              title: "AI limitations",
               description:
                 "OCR, summaries, and Chat with PDF can help review documents, but users should verify important outputs before filing, signing, or sharing.",
             },
@@ -674,14 +674,14 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
         "本页说明 DockDocs 工具页如何组织、每个工作流接受哪些文件，以及 AI 功能的使用边界。",
       sections: [
         {
-          title: "使用 DockDocs 工具",
+          title: "上传行为与支持格式",
           description:
-            "每个工具页都有明确的上传区域、处理状态和结果导出步骤，让用户知道下一步会发生什么。",
+            "每个工具页都会说明可上传的文件、当前工作流准备做什么，以及最后会提供哪种导出操作。",
           items: [
             {
-              title: "上传指南",
+              title: "上传行为",
               description:
-                "PDF 工具接受 PDF 文件；JPG 转 PDF 接受 JPG、PNG 和 WebP 图片。请根据目标输出选择工具。",
+                "从所选工具的上传卡片选择文件。PDF 工具主要面向 PDF 文件，JPG 转 PDF 接受图片文件并生成文档。",
             },
             {
               title: "支持格式",
@@ -696,22 +696,22 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
           ],
         },
         {
-          title: "隐私与 AI 限制",
+          title: "本地处理、隐私优先与 AI 限制",
           description:
-            "DockDocs 采用隐私优先的文档处理方向，并清楚说明 AI 辅助功能的边界。",
+            "DockDocs 尽可能采用本地优先的文档准备方式，强调隐私优先处理，并清楚说明 AI 辅助功能的边界。",
           items: [
             {
-              title: "本地处理说明",
+              title: "本地处理",
               description:
-                "在可行的情况下，DockDocs 倾向于浏览器优先、本地优先的设计，让简单文档准备尽量靠近用户完成。",
+                "在可行的情况下，DockDocs 倾向于浏览器优先、本地优先的设计，让简单文档准备尽量在用户侧完成，再进入未来可能的云端或 AI 步骤。",
             },
             {
-              title: "隐私处理",
+              title: "隐私优先处理",
               description:
                 "生产处理上线前，应明确说明上传目的、处理方式、保留时间和删除规则。",
             },
             {
-              title: "AI 功能限制",
+              title: "AI 限制",
               description:
                 "OCR、摘要和 PDF 问答可以辅助审阅，但重要输出仍需用户自行核对。",
             },
