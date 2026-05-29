@@ -31,6 +31,7 @@ const copy = {
     source: "Source",
     characters: "Characters sent",
     provider: "Provider",
+    download: "Download summary",
     executive: "Executive Summary",
     keyPoints: "Key Points",
     actionItems: "Action Items",
@@ -56,6 +57,7 @@ const copy = {
     source: "来源",
     characters: "发送字符数",
     provider: "Provider",
+    download: "下载摘要",
     executive: "执行摘要",
     keyPoints: "关键要点",
     actionItems: "行动项",
@@ -327,6 +329,14 @@ export function AiSummaryWorkflow({
                 </div>
               </dl>
 
+              <button
+                type="button"
+                onClick={() => downloadSummary(result, locale)}
+                className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-[#0f172a] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_26px_rgba(15,23,42,0.16)] transition hover:bg-[#111827]"
+              >
+                {t.download}
+              </button>
+
               <SummaryBlock title={t.executive} body={result.executiveSummary} />
               <SummaryList title={t.keyPoints} items={result.keyPoints} />
               <SummaryList title={t.actionItems} items={result.actionItems} />
@@ -337,6 +347,45 @@ export function AiSummaryWorkflow({
       </div>
     </section>
   );
+}
+
+function downloadSummary(result: AiSummaryResult, locale: AiSummaryLocale) {
+  const labels =
+    locale === "zh"
+      ? {
+          executive: "执行摘要",
+          keyPoints: "关键要点",
+          actionItems: "行动项",
+          nextSteps: "建议下一步",
+        }
+      : {
+          executive: "Executive Summary",
+          keyPoints: "Key Points",
+          actionItems: "Action Items",
+          nextSteps: "Suggested Next Steps",
+        };
+
+  const text = [
+    labels.executive,
+    result.executiveSummary,
+    "",
+    labels.keyPoints,
+    ...result.keyPoints.map((item) => `- ${item}`),
+    "",
+    labels.actionItems,
+    ...result.actionItems.map((item) => `- ${item}`),
+    "",
+    labels.nextSteps,
+    ...result.nextSteps.map((item) => `- ${item}`),
+  ].join("\n");
+
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "dockdocs-ai-summary.txt";
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
 function SummaryBlock({ title, body }: { title: string; body: string }) {
