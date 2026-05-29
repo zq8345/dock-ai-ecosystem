@@ -232,6 +232,29 @@ async function generateProviderAnswer({
 
   const firstResult = parseProviderAnswer(first.responseText);
   if (firstResult) {
+    if (isUnsupportedRefusal(firstResult.answer) && firstResult.references.length > 0) {
+      const repair = await callProvider({
+        provider,
+        body: createRepairProviderRequest(
+          provider.model,
+          context,
+          question,
+          locale,
+          first.providerContent,
+        ),
+        signal,
+      });
+
+      const repairedResult = parseProviderAnswer(repair.responseText);
+      if (repairedResult) {
+        return {
+          result: repairedResult,
+          usage: repair.usage ?? first.usage,
+          attempts: 2,
+        };
+      }
+    }
+
     return {
       result: firstResult,
       usage: first.usage,
@@ -285,6 +308,9 @@ function createProviderRequest(
           "Return only valid json.",
           "Do not use markdown, code fences, prose, or comments before or after the json.",
           "Use only the provided document context. If the answer is not in the context, say that the document text does not contain enough evidence.",
+          "For OCR text, treat noisy mixed-language lines, labels, dates, amounts, invoice numbers, contract IDs, party names, and table-like key-value pairs as valid evidence when they appear in the context.",
+          "If any relevant evidence appears in the context or in your references, answer from that evidence instead of refusing.",
+          "Do not require the context language to match the question language; translate the evidence into the requested answer language when needed.",
           "Always include exactly these keys: answer, references.",
           "references must be an array of short strings naming the relevant page, section, or quote from the context.",
           "Example json output:",
@@ -354,6 +380,8 @@ function createRepairProviderRequest(
         content: [
           `Language: ${outputLanguage}.`,
           "The previous provider output was empty, non-json, or missing keys.",
+          "If the previous output refused to answer but included references with relevant evidence, correct the refusal and answer from those references and the source text.",
+          "For OCR and mixed-language text, use visible key-value evidence such as dates, amounts, invoice numbers, contract IDs, parties, service scope, and payment terms.",
           "Create a valid json answer from the source text below.",
           "Use only the source text.",
           "",
@@ -439,6 +467,21 @@ function normalizeAnswer(value: unknown): AiChatAnswer | null {
     answer,
     references,
   };
+}
+
+function isUnsupportedRefusal(answer: string) {
+  const normalized = answer.toLowerCase();
+  return [
+    "not contain enough evidence",
+    "does not contain enough evidence",
+    "not enough evidence",
+    "insufficient evidence",
+    "无法回答",
+    "不能回答",
+    "没有足够",
+    "不包含足够",
+    "不足够证据",
+  ].some((phrase) => normalized.includes(phrase));
 }
 
 function selectRelevantContext(text: string, question: string, maxCharacters: number) {
