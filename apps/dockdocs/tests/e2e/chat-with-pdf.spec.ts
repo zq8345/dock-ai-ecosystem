@@ -35,7 +35,7 @@ const smokeRoutes = [
 ];
 
 test.beforeEach(async ({ page }) => {
-  await page.route("https://unpkg.com/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs", async (route) => {
+  await page.route("https://unpkg.com/pdfjs-dist@*/build/pdf.worker.min.mjs", async (route) => {
     await route.fulfill({
       body: fs.readFileSync(resolvedWorkerPath, "utf8"),
       contentType: "text/javascript",
@@ -65,6 +65,10 @@ test("uploads a real small PDF and shows selected, processing, and success state
   await expect(page.getByTestId("document-status")).toContainText("Ready: extracted");
   await expect(page.getByTestId("result-state")).toContainText("Selectable text extracted");
   await expect(page.getByTestId("source-intelligence-panel")).toContainText("1 page indexed");
+
+  await page.getByTestId("knowledge-card-summary").click();
+  await expect(page.getByTestId("chat-input")).toHaveValue("Create an executive summary of this PDF.");
+  await expect(page.getByTestId("ask-button")).toBeEnabled();
 });
 
 test("knowledge cards fill the chat question", async ({ page }) => {

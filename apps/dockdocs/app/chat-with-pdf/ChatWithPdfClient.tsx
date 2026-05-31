@@ -103,8 +103,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
 
     try {
       const pdfjs = await import("pdfjs-dist");
-      pdfjs.GlobalWorkerOptions.workerSrc =
-        "https://unpkg.com/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs";
+      pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
       const buffer = await file.arrayBuffer();
       const pdf = await pdfjs.getDocument({ data: buffer }).promise;
