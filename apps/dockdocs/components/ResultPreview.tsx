@@ -1,4 +1,5 @@
 import { runtimeCopy } from "@/lib/copy";
+import { Button, ButtonLink } from "@dock/shared/ui";
 
 type ResultLabels = {
   states: Record<"empty" | "processing" | "success" | "error", string>;
@@ -41,9 +42,17 @@ export function ResultPreview({
   const isEmpty = state === "empty";
   const isProcessing = state === "processing";
   const isError = state === "error";
+  const stateTone =
+    isError
+      ? "bg-[color:var(--error-surface)] text-[color:var(--error)]"
+      : isProcessing
+        ? "bg-[color:var(--soft-accent)] text-[color:var(--accent-strong)]"
+        : state === "success"
+          ? "bg-[color:var(--success-surface)] text-[color:var(--success)]"
+          : "border border-[color:var(--line)] text-[color:var(--muted)]";
 
   return (
-    <section className="rounded-xl border border-[color:var(--line)] bg-[color:var(--surface)] p-5">
+    <section className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5">
       <div className="flex items-center justify-between gap-4 border-b border-[color:var(--line)] pb-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)]">
@@ -51,21 +60,13 @@ export function ResultPreview({
           </p>
           <h2 className="mt-1 text-xl font-semibold">{title}</h2>
         </div>
-        <span
-          className={
-            isError
-              ? "rounded-md bg-[#fef2f2] px-2.5 py-1 text-xs font-semibold text-[#991b1b]"
-              : isProcessing
-                ? "rounded-md bg-[color:var(--soft-accent)] px-2.5 py-1 text-xs font-semibold text-[color:var(--accent-strong)]"
-                : "rounded-md bg-[#dcfce7] px-2.5 py-1 text-xs font-semibold text-[#166534]"
-          }
-        >
+        <span className={`rounded-[var(--radius-sm)] px-2.5 py-1 text-xs font-semibold ${stateTone}`}>
           {labels.states[state]}
         </span>
       </div>
 
       {isEmpty || isError ? (
-        <div className="mt-5 rounded-xl border border-dashed border-[color:var(--line)] bg-[color:var(--background)] p-6">
+        <div className="mt-5 rounded-[var(--radius)] border border-dashed border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-6">
           <p className="font-semibold">
             {isError ? labels.resultUnavailable : labels.waitingForOutput}
           </p>
@@ -113,18 +114,18 @@ export function ResultPreview({
               </div>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <button className="min-h-10 rounded-md bg-[color:var(--foreground)] px-4 text-sm font-semibold text-[color:var(--background)]">
+                <Button type="button" variant="primary">
                   {labels.copy}
-                </button>
-                <button className="min-h-10 rounded-md border border-[color:var(--line)] px-4 text-sm font-semibold">
+                </Button>
+                <Button type="button" variant="secondary">
                   {labels.download}
-                </button>
-                <a
+                </Button>
+                <ButtonLink
                   href="/chat-with-pdf"
-                  className="inline-flex min-h-10 items-center justify-center rounded-md border border-[color:var(--line)] px-4 text-sm font-semibold"
+                  variant="secondary"
                 >
                   {cta}
-                </a>
+                </ButtonLink>
               </div>
             </>
           )}

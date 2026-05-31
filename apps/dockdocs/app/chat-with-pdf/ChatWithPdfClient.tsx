@@ -226,7 +226,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
       id="workspace"
       aria-label="Chat with PDF workspace"
       data-testid="chat-workspace"
-      className="overflow-hidden rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[0_24px_80px_rgba(15,23,42,0.10)]"
+      className="overflow-hidden rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] shadow-[0_24px_80px_rgba(15,23,42,0.10)]"
     >
       <div className="flex items-center justify-between border-b border-[color:var(--line)] px-4 py-3 sm:px-5">
         <div>
@@ -235,12 +235,12 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
           </p>
           <p className="mt-1 text-sm font-semibold">{copy.workspaceTitle}</p>
         </div>
-        <span className="rounded-md border border-[color:var(--line)] px-2.5 py-1 text-xs font-semibold text-[color:var(--muted)]">
+        <span className="rounded-[var(--radius-sm)] border border-[color:var(--line)] px-2.5 py-1 text-xs font-semibold text-[color:var(--muted)]">
           {copy.mvp}
         </span>
       </div>
 
-      <div className="grid min-h-[680px] lg:grid-cols-[300px_minmax(0,1fr)] xl:grid-cols-[310px_minmax(0,1fr)_300px] 2xl:grid-cols-[330px_minmax(0,1fr)_320px]">
+      <div className="grid lg:min-h-[680px] lg:grid-cols-[300px_minmax(0,1fr)] xl:grid-cols-[310px_minmax(0,1fr)_300px] 2xl:grid-cols-[330px_minmax(0,1fr)_320px]">
         <aside
           data-testid="document-sidebar"
           className="border-b border-[color:var(--line)] bg-[color:var(--background)] p-4 sm:p-5 lg:border-b-0 lg:border-r"
@@ -253,9 +253,9 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
           </div>
           <label
             data-testid="upload-panel"
-            className="mt-4 flex cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-[color:var(--line)] bg-[color:var(--surface)] px-4 py-7 text-center transition hover:border-[color:var(--foreground)]"
+            className="mt-4 flex cursor-pointer flex-col items-center justify-center rounded-[var(--radius)] border border-dashed border-[color:var(--line)] bg-[color:var(--surface)] px-4 py-7 text-center transition hover:border-[color:var(--foreground)]"
           >
-            <span className="flex h-12 w-12 items-center justify-center rounded-md bg-[color:var(--soft-accent)] text-sm font-semibold text-[color:var(--accent-strong)]">
+            <span className="flex h-12 w-12 items-center justify-center rounded-[var(--radius-sm)] bg-[color:var(--soft-accent)] text-sm font-semibold text-[color:var(--accent-strong)]">
               PDF
             </span>
             <span className="mt-4 text-sm font-semibold">{copy.choosePdf}</span>
@@ -273,7 +273,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
 
           <div
             data-testid={documentState === "error" ? "document-error-state" : "document-status"}
-            className="mt-5 rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4"
+            className="mt-5 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)]">
               {copy.documentStatus}
@@ -281,7 +281,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
             <p className="mt-3 break-words text-sm font-semibold">{activeDocumentName}</p>
             <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">{status}</p>
             {documentState === "error" && error && (
-              <p className="mt-1 text-sm leading-6 text-[#991b1b]">{error}</p>
+              <p className="mt-1 text-sm leading-6 text-[color:var(--error)]">{error}</p>
             )}
             {isExtracting && (
               <div className="mt-4 h-2 overflow-hidden rounded-full bg-[color:var(--line)]">
@@ -292,14 +292,14 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
 
           <div
             data-testid="result-state"
-            className="mt-5 grid gap-3 rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4 text-sm"
+            className="mt-5 grid gap-3 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 text-sm"
           >
             <CheckLine label={copy.checks[0]} active={documentText.length > 0} />
             <CheckLine label={copy.checks[1]} active={Boolean(providerReference.provider)} />
             <CheckLine label={copy.checks[2]} active={resultGenerated} />
           </div>
 
-          <div className="mt-5 rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4">
+          <div className="mt-5 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)]">
               {copy.collectionsLabel}
             </p>
@@ -309,8 +309,8 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
                   key={collection.name}
                   className={
                     index === 0
-                      ? "flex items-center justify-between rounded-md bg-[color:var(--soft-accent)] px-3 py-2 text-left text-sm font-semibold text-[color:var(--accent-strong)]"
-                      : "flex items-center justify-between rounded-md px-3 py-2 text-left text-sm text-[color:var(--muted)] transition hover:bg-black/5 dark:hover:bg-white/10"
+                      ? "flex items-center justify-between rounded-[var(--radius-sm)] bg-[color:var(--soft-accent)] px-3 py-2 text-left text-sm font-semibold text-[color:var(--accent-strong)]"
+                      : "flex items-center justify-between rounded-[var(--radius-sm)] px-3 py-2 text-left text-sm text-[color:var(--muted)] transition hover:bg-black/5 dark:hover:bg-white/10"
                   }
                 >
                   <span>{collection.name}</span>
@@ -320,7 +320,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
             </div>
           </div>
 
-          <div className="mt-5 rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4">
+          <div className="mt-5 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)]">
               {copy.historyLabel}
             </p>
@@ -331,7 +331,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
                     key={`${item}-${index}`}
                     type="button"
                     onClick={() => setQuestion(item)}
-                    className="rounded-md px-3 py-2 text-left text-sm leading-5 text-[color:var(--muted)] transition hover:bg-black/5 hover:text-[color:var(--foreground)] dark:hover:bg-white/10"
+                    className="rounded-[var(--radius-sm)] px-3 py-2 text-left text-sm leading-5 text-[color:var(--muted)] transition hover:bg-black/5 hover:text-[color:var(--foreground)] dark:hover:bg-white/10"
                   >
                     {item}
                   </button>
@@ -341,11 +341,8 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
           </div>
         </aside>
 
-        <div
-          data-testid="conversation-workspace"
-          className="flex min-h-[680px] min-w-0 flex-col"
-        >
-          <div className="border-b border-[color:var(--line)] p-4 sm:p-5">
+        <div className="flex min-w-0 flex-col lg:min-h-[680px]">
+          <div className="order-1 border-b border-[color:var(--line)] p-4 sm:p-5">
             <div className="flex flex-col gap-4 2xl:flex-row 2xl:items-start 2xl:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)]">
@@ -365,10 +362,13 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
             </div>
           </div>
 
-          <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-5">
+          <div
+            data-testid="conversation-workspace"
+            className="order-3 max-h-none flex-1 space-y-4 overflow-y-auto p-4 sm:p-5 lg:order-2"
+          >
             {messages.length === 0 ? (
               <div className="grid gap-4">
-                <div className="rounded-lg border border-[color:var(--line)] bg-[color:var(--background)] p-5">
+                <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-5">
                   <p className="font-semibold">{copy.starterTitle}</p>
                   <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
                     {copy.starterDescription}
@@ -379,7 +379,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
                         key={suggestion}
                         type="button"
                         onClick={() => setQuestion(suggestion)}
-                        className="rounded-md border border-[color:var(--line)] bg-[color:var(--surface)] px-3 py-2 text-left text-xs font-semibold text-[color:var(--muted)] transition hover:border-[color:var(--foreground)] hover:text-[color:var(--foreground)]"
+                        className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] px-3 py-2 text-left text-xs font-semibold text-[color:var(--muted)] transition hover:border-[color:var(--foreground)] hover:text-[color:var(--foreground)]"
                       >
                         {suggestion}
                       </button>
@@ -404,8 +404,8 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
                   key={`${message.role}-${index}`}
                   className={
                     message.role === "user"
-                      ? "ml-auto max-w-2xl rounded-lg bg-[color:var(--foreground)] p-4 text-[color:var(--background)]"
-                      : "max-w-2xl rounded-lg border border-[color:var(--line)] bg-[color:var(--background)] p-4"
+                      ? "ml-auto max-w-2xl rounded-[var(--radius)] bg-[color:var(--foreground)] p-4 text-[color:var(--background)]"
+                      : "max-w-2xl rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-4"
                   }
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.12em] opacity-75">
@@ -418,7 +418,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
             {error && (
               <div
                 data-testid="chat-error-state"
-                className="rounded-lg border border-[#fecaca] bg-[#fef2f2] p-4 text-sm leading-6 text-[#991b1b]"
+                className="rounded-[var(--radius)] border border-[color:var(--error-line)] bg-[color:var(--error-surface)] p-4 text-sm leading-6 text-[color:var(--error)]"
               >
                 {error}
               </div>
@@ -427,7 +427,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
 
           <form
             onSubmit={askQuestion}
-            className="border-t border-[color:var(--line)] bg-[color:var(--surface)] p-4"
+            className="order-2 border-t border-[color:var(--line)] bg-[color:var(--surface)] p-4 lg:order-3"
           >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
               <label className="flex-1">
@@ -438,14 +438,14 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
                   onChange={(event) => setQuestion(event.target.value)}
                   placeholder={copy.placeholder}
                   rows={2}
-                  className="min-h-20 w-full resize-none rounded-md border border-[color:var(--line)] bg-[color:var(--background)] px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-[color:var(--muted)] focus:border-[color:var(--foreground)] sm:min-h-11"
+                  className="min-h-20 w-full resize-none rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-[color:var(--muted)] focus:border-[color:var(--foreground)] sm:min-h-11"
                 />
               </label>
               <button
                 data-testid="ask-button"
                 type="submit"
                 disabled={!canAsk}
-                className="min-h-11 rounded-md bg-[color:var(--accent)] px-5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45 sm:min-w-28"
+                className="min-h-11 rounded-[var(--radius-sm)] bg-[color:var(--accent)] px-5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45 sm:min-w-28"
               >
                 {isAsking ? copy.asking : copy.ask}
               </button>
@@ -503,7 +503,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
               }
             />
           </div>
-          <div className="mt-5 rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4">
+          <div className="mt-5 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)]">
               {copy.knowledgeCardsLabel}
             </p>
@@ -514,7 +514,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
                   data-testid={`knowledge-card-${["summary", "risks", "actions"][index]}-side`}
                   type="button"
                   onClick={() => setQuestion(card.prompt)}
-                  className="rounded-md border border-[color:var(--line)] bg-[color:var(--background)] p-3 text-left transition hover:border-[color:var(--foreground)]"
+                  className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-3 text-left transition hover:border-[color:var(--foreground)]"
                 >
                   <span className="text-sm font-semibold">{card.title}</span>
                   <span className="mt-1 block text-xs leading-5 text-[color:var(--muted)]">
@@ -524,7 +524,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
               ))}
             </div>
           </div>
-          <div className="mt-5 rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4">
+          <div className="mt-5 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)]">
               {copy.suggestedActions}
             </p>
@@ -534,14 +534,14 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
                   key={action}
                   type="button"
                   onClick={() => setQuestion(copy.knowledgeCards[index]?.prompt ?? action)}
-                  className="rounded-md border border-[color:var(--line)] px-3 py-2 text-xs font-semibold text-[color:var(--muted)] transition hover:border-[color:var(--foreground)] hover:text-[color:var(--foreground)]"
+                  className="rounded-[var(--radius-sm)] border border-[color:var(--line)] px-3 py-2 text-xs font-semibold text-[color:var(--muted)] transition hover:border-[color:var(--foreground)] hover:text-[color:var(--foreground)]"
                 >
                   {action}
                 </button>
               ))}
             </div>
           </div>
-          <div className="mt-5 rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4">
+          <div className="mt-5 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4">
             <p className="text-sm font-semibold">{copy.groundedTitle}</p>
             <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
               {copy.groundedDescription}
@@ -569,7 +569,7 @@ function KnowledgeCard({
       data-testid={testId}
       type="button"
       onClick={onClick}
-      className="rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4 text-left transition hover:-translate-y-0.5 hover:border-[color:var(--foreground)]"
+      className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 text-left transition hover:-translate-y-0.5 hover:border-[color:var(--foreground)]"
     >
       <span className="text-sm font-semibold">{title}</span>
       <span className="mt-2 block text-sm leading-6 text-[color:var(--muted)]">
@@ -582,12 +582,12 @@ function KnowledgeCard({
 function StatePill({ state, label }: { state: RuntimeState; label: string }) {
   const className =
     state === "error"
-      ? "rounded-md bg-[#fef2f2] px-2 py-1 text-xs font-semibold text-[#991b1b]"
+      ? "rounded-[var(--radius-sm)] bg-[color:var(--error-surface)] px-2 py-1 text-xs font-semibold text-[color:var(--error)]"
       : state === "processing"
-        ? "rounded-md bg-[color:var(--soft-accent)] px-2 py-1 text-xs font-semibold text-[color:var(--accent-strong)]"
+        ? "rounded-[var(--radius-sm)] bg-[color:var(--soft-accent)] px-2 py-1 text-xs font-semibold text-[color:var(--accent-strong)]"
         : state === "success"
-          ? "rounded-md bg-[#dcfce7] px-2 py-1 text-xs font-semibold text-[#166534]"
-          : "rounded-md border border-[color:var(--line)] px-2 py-1 text-xs font-semibold text-[color:var(--muted)]";
+          ? "rounded-[var(--radius-sm)] bg-[color:var(--success-surface)] px-2 py-1 text-xs font-semibold text-[color:var(--success)]"
+          : "rounded-[var(--radius-sm)] border border-[color:var(--line)] px-2 py-1 text-xs font-semibold text-[color:var(--muted)]";
 
   return <span className={className}>{label}</span>;
 }
@@ -604,7 +604,7 @@ function SourceCard({
   return (
     <div
       data-testid={testId}
-      className="rounded-lg border border-[color:var(--line)] bg-[color:var(--surface)] p-4"
+      className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4"
     >
       <p className="text-sm font-semibold">{title}</p>
       <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">{value}</p>
@@ -614,7 +614,7 @@ function SourceCard({
 
 function MiniStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md border border-[color:var(--line)] bg-[color:var(--background)] px-3 py-2">
+    <div className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-2">
       <p className="font-semibold">{value}</p>
       <p className="mt-1 text-[color:var(--muted)]">{label}</p>
     </div>

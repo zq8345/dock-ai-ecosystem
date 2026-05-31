@@ -43,11 +43,19 @@ export function UploadPanel({
 }: UploadPanelProps) {
   const isBusy = state === "processing";
   const hasFile = Boolean(fileName);
+  const stateTone =
+    state === "error"
+      ? "border-[color:var(--error-line)] bg-[color:var(--error-surface)] text-[color:var(--error)]"
+      : state === "success"
+        ? "border-[color:var(--success-line)] bg-[color:var(--success-surface)] text-[color:var(--success)]"
+        : state === "processing" || state === "selected"
+          ? "border-[color:var(--soft-accent)] bg-[color:var(--soft-accent)] text-[color:var(--accent-strong)]"
+          : "border-[color:var(--line)] bg-[color:var(--surface)] text-[color:var(--muted)]";
 
   return (
     <section
       aria-label={title}
-      className="rounded-xl border border-[color:var(--line)] bg-[color:var(--surface)] p-4 shadow-[0_20px_70px_rgba(15,23,42,0.08)] sm:p-5"
+      className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 shadow-[0_20px_70px_rgba(15,23,42,0.08)] sm:p-5"
     >
       <div className="flex items-center justify-between gap-4 border-b border-[color:var(--line)] pb-4">
         <div>
@@ -56,13 +64,13 @@ export function UploadPanel({
           </p>
           <h2 className="mt-1 text-lg font-semibold">{title}</h2>
         </div>
-        <span className="rounded-md border border-[color:var(--line)] px-2.5 py-1 text-xs font-semibold text-[color:var(--muted)]">
+        <span className={`rounded-[var(--radius-sm)] border px-2.5 py-1 text-xs font-semibold ${stateTone}`}>
           {labels.states[state]}
         </span>
       </div>
 
-      <label className="mt-5 flex min-h-56 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[color:var(--line)] bg-[color:var(--background)] px-4 py-8 text-center transition hover:border-[color:var(--accent)] hover:bg-[color:var(--soft-accent)]/40">
-        <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[color:var(--soft-accent)] text-sm font-semibold text-[color:var(--accent-strong)]">
+      <label className="mt-5 flex min-h-52 cursor-pointer flex-col items-center justify-center rounded-[var(--radius)] border border-dashed border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-4 py-7 text-center transition hover:border-[color:var(--accent)] hover:bg-[color:var(--soft-accent)]/40 sm:min-h-56 sm:py-8">
+        <span className="flex h-12 w-12 items-center justify-center rounded-[var(--radius)] bg-[color:var(--soft-accent)] text-sm font-semibold text-[color:var(--accent-strong)]">
           PDF
         </span>
         <span className="mt-4 text-xl font-semibold">
@@ -71,7 +79,7 @@ export function UploadPanel({
         <span className="mt-2 max-w-md text-sm leading-6 text-[color:var(--muted)]">
           {hasFile ? labels.selectedDescription : description}
         </span>
-        <span className="mt-5 inline-flex min-h-11 items-center justify-center rounded-md bg-[color:var(--accent)] px-5 text-sm font-semibold text-white transition hover:opacity-90">
+        <span className="mt-5 inline-flex min-h-11 items-center justify-center rounded-[var(--radius-sm)] bg-[color:var(--accent)] px-5 text-sm font-semibold text-white transition hover:opacity-90">
           {isBusy ? labels.processing : cta}
         </span>
         {interactive && (
@@ -97,13 +105,13 @@ export function UploadPanel({
       )}
 
       {state === "success" && (
-        <p className="mt-4 rounded-md border border-[#bbf7d0] bg-[#f0fdf4] px-3 py-2 text-sm text-[#166534]">
+        <p className="mt-4 rounded-[var(--radius-sm)] border border-[color:var(--success-line)] bg-[color:var(--success-surface)] px-3 py-2 text-sm text-[color:var(--success)]">
           {labels.successMessage}
         </p>
       )}
 
       {state === "error" && errorMessage && (
-        <p className="mt-4 rounded-md border border-[#fecaca] bg-[#fef2f2] px-3 py-2 text-sm text-[#991b1b]">
+        <p className="mt-4 rounded-[var(--radius-sm)] border border-[color:var(--error-line)] bg-[color:var(--error-surface)] px-3 py-2 text-sm text-[color:var(--error)]">
           {errorMessage}
         </p>
       )}
@@ -113,7 +121,7 @@ export function UploadPanel({
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md border border-[color:var(--line)] bg-[color:var(--surface)] px-3 py-2">
+    <div className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] px-3 py-2">
       <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--muted)]">
         {label}
       </p>

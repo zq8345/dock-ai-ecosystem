@@ -31,7 +31,7 @@ export function LanguageSwitcher() {
 
   return (
     <nav aria-label="Language" className="flex items-center">
-      <div className="inline-flex items-center rounded-full border border-slate-200 bg-white p-1 text-xs font-medium text-slate-500 shadow-sm">
+      <div className="inline-flex items-center rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] p-1 text-xs font-semibold text-[color:var(--muted)] shadow-sm">
         {languageOptions.map((option) => {
           const isActive = option.locale === activeLocale;
 
@@ -40,10 +40,10 @@ export function LanguageSwitcher() {
               key={option.locale}
               href={localizedPath(option.locale, slug)}
               aria-current={isActive ? "page" : undefined}
-              className={`rounded-full px-2.5 py-1 transition ${
+              className={`rounded-[var(--radius-sm)] px-2.5 py-1 transition ${
                 isActive
-                  ? "bg-slate-950 text-white"
-                  : "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                  ? "bg-[color:var(--foreground)] text-[color:var(--background)]"
+                  : "hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)]"
               }`}
             >
               {option.label}

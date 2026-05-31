@@ -44,7 +44,7 @@ export function RelatedTools({ compact = false }: RelatedToolsProps) {
             <a
               key={tool.href}
               href={tool.href}
-              className="group rounded-xl border border-[color:var(--line)] p-5 transition hover:border-[color:var(--foreground)]"
+              className="group rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 transition hover:-translate-y-0.5 hover:border-[color:var(--foreground)]"
             >
               <div className="flex items-center justify-between gap-4">
                 <h3 className="font-semibold">{tool.name}</h3>

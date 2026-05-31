@@ -7,15 +7,21 @@ import { UserAccountControls } from "@/components/UserAccountControls";
 export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-[color:var(--line)] bg-[color:var(--background)]/90 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-3 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-        <a href="/" className="shrink-0" aria-label="DockDocs home">
-          <BrandMark />
-        </a>
-        <HeaderProductNav />
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-3 sm:px-6 lg:px-8">
+        <div className="flex min-w-0 flex-wrap items-center justify-between gap-3">
+          <a href="/" className="min-w-0 shrink-0" aria-label="DockDocs home">
+            <BrandMark />
+          </a>
+          <div className="flex shrink-0 items-center gap-2">
+            <LanguageSwitcher />
+          </div>
+        </div>
+        <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <HeaderProductNav />
+          <div className="flex flex-wrap items-center gap-2 sm:justify-end">
           <BrandNav />
-          <LanguageSwitcher />
           <UserAccountControls />
+          </div>
         </div>
       </div>
     </header>

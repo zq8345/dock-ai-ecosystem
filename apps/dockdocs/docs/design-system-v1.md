@@ -138,16 +138,17 @@ Types:
 
 - Primary: filled accent blue for the main next action.
 - Secondary: bordered neutral button for alternate routes.
-- Utility: black/foreground fill for copy/download when paired with result content.
-- Text action: small accent text for low-risk navigation.
+- Ghost: neutral text button for low-risk navigation and compact header actions.
+- Danger: error surface and error text for destructive or unrecoverable actions.
 
 Rules:
 
 - Minimum touch target: `44px` height.
-- Radius: `8px` or `12px`, not mixed randomly within the same component group.
+- Radius: `8px` for buttons and compact controls.
 - Button labels must be action verbs: `Upload PDF`, `Start chat`, `Copy`, `Download`.
 - Disabled buttons must explain why through adjacent state text or placeholder guidance.
 - Do not use multiple primary buttons in the same decision area.
+- Loading buttons must keep their size stable and expose `aria-busy`.
 
 ### Inputs
 
@@ -185,12 +186,20 @@ Rules:
 
 ### Cards
 
+Variants:
+
+- Default: `--surface`, `--line`, 12px radius.
+- Elevated: default card plus restrained shadow for primary upload/workspace surfaces.
+- Interactive: default card plus border and small lift on hover.
+- Muted: `--surface-subtle` for empty states, nested status areas, and compact previews.
+
 Rules:
 
 - Cards represent repeated items, panels, upload/result surfaces, dashboard stats, or modal-like framed tools.
 - Use `--surface`, `--line`, and `12px` radius.
 - Avoid decorative shadows except for primary upload/workspace surfaces where depth clarifies interactivity.
 - Keep card headings compact and scannable.
+- Do not use raw hex colors for status cards; use success, warning, and error tokens.
 
 ### Navigation
 
@@ -209,6 +218,8 @@ Rules:
 - Primary navigation should wrap gracefully before overflowing.
 - Active states use `--soft-accent` plus `--accent-strong`.
 - Keep cross-product navigation consistent across DockDocs, DockIMG, DockText, and FateBeat.
+- Language switching stays visible on mobile but should not displace the primary page action.
+- Header controls may wrap into multiple rows at 390px; horizontal scrolling is not acceptable.
 
 ### Workspace Layout
 
@@ -224,6 +235,26 @@ Rules:
 - Tablet should collapse to two columns or stacked inspector.
 - Mobile should become a single-column task flow with primary action first.
 - Side panels must be useful but not visually heavier than the main workspace.
+- Chat with PDF mobile order: document/upload status, chat input, conversation, then sources/references.
+
+### Dashboard IA
+
+Dashboard surfaces should look like an AI Document Platform control center, not a static link hub.
+
+Required areas:
+
+- Overview: documents, conversations, summaries, and workflows.
+- Recent Documents: document name, type, status, and next action.
+- Recent Conversations: question or task, source document, and source/result status.
+- AI Actions: Chat with PDF, Summarize, OCR, Convert, and Compress.
+- Workspace Health: storage, processing, and provider placeholder status.
+- Recommended Next Steps: one to three action-oriented suggestions.
+
+Rules:
+
+- Dashboard cards use 12px radius and `--surface` / `--surface-subtle`.
+- Mobile dashboard stacks into a single column with overview and empty-state guidance before dense lists.
+- Provider status can be a placeholder unless a real account/runtime integration exists.
 
 ### Empty States
 
@@ -321,4 +352,3 @@ Rules:
 - New product UI should import or mirror shared primitives before adding local ad hoc styles.
 - Raw hex colors are allowed only when introducing or revising semantic tokens.
 - Runtime, provider, deploy, SEO, and API logic are outside the Design System scope.
-

@@ -112,3 +112,40 @@ for (const viewport of [
     expect(metrics.scrollWidth).toBe(metrics.clientWidth);
   });
 }
+
+test("dashboard IA is visible in English and Chinese", async ({ page }) => {
+  await page.goto("/dashboard");
+  await expect(page.getByRole("heading", { name: "Document workspace overview." })).toBeVisible();
+  await expect(page.getByText("Conversations", { exact: true })).toBeVisible();
+  await expect(page.getByText("Workspace health", { exact: true })).toBeVisible();
+  await expect(page.getByText("Recommended next steps", { exact: true })).toBeVisible();
+
+  await page.goto("/zh/dashboard");
+  await expect(page.getByRole("heading", { name: "文档工作区概览。" })).toBeVisible();
+  await expect(page.getByText("最近对话", { exact: true })).toBeVisible();
+  await expect(page.getByText("工作区健康", { exact: true })).toBeVisible();
+  await expect(page.getByText("建议下一步", { exact: true })).toBeVisible();
+});
+
+test("primary routes load and mobile 390 has no horizontal overflow", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+
+  for (const route of [
+    "/",
+    "/chat-with-pdf",
+    "/dashboard",
+    "/zh",
+    "/zh/chat-with-pdf",
+    "/zh/dashboard",
+  ]) {
+    const response = await page.goto(route);
+    expect(response?.status()).toBe(200);
+
+    const metrics = await page.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }));
+
+    expect(metrics.scrollWidth).toBe(metrics.clientWidth);
+  }
+});

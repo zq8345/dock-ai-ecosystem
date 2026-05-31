@@ -89,7 +89,7 @@ export function UserAccountControls() {
 
   if (state.loading) {
     return (
-      <div className="rounded-full border border-[color:var(--line)] px-3 py-2 text-xs font-semibold text-[color:var(--muted)]">
+      <div className="rounded-[var(--radius-sm)] border border-[color:var(--line)] px-3 py-2 text-xs font-semibold text-[color:var(--muted)]">
         {copy.account}
       </div>
     );
@@ -100,17 +100,17 @@ export function UserAccountControls() {
       <div className="flex flex-wrap items-center justify-end gap-2 text-xs sm:text-sm">
         <a
           href="/my-chats"
-          className="rounded-full border border-[color:var(--line)] px-3 py-2 font-semibold text-[color:var(--foreground)] transition hover:bg-black/5"
+        className="rounded-[var(--radius-sm)] border border-[color:var(--line)] px-3 py-2 font-semibold text-[color:var(--foreground)] transition hover:bg-black/5"
         >
           {copy.myChats}
         </a>
-        <span className="max-w-[180px] truncate rounded-full bg-[color:var(--soft-accent)] px-3 py-2 font-semibold text-[color:var(--accent-strong)]">
+        <span className="max-w-[180px] truncate rounded-[var(--radius-sm)] bg-[color:var(--soft-accent)] px-3 py-2 font-semibold text-[color:var(--accent-strong)]">
           {state.user.name || state.user.email || copy.signedIn}
         </span>
         <button
           type="button"
           onClick={handleLogout}
-          className="rounded-full border border-[color:var(--line)] px-3 py-2 font-semibold text-[color:var(--muted)] transition hover:bg-black/5 hover:text-[color:var(--foreground)]"
+          className="rounded-[var(--radius-sm)] border border-[color:var(--line)] px-3 py-2 font-semibold text-[color:var(--muted)] transition hover:bg-black/5 hover:text-[color:var(--foreground)]"
         >
           {copy.logout}
         </button>
@@ -123,7 +123,7 @@ export function UserAccountControls() {
       <button
         type="button"
         onClick={() => oauthLogin("google")}
-        className="rounded-full bg-[color:var(--accent)] px-3 py-2 font-semibold text-white transition hover:opacity-90"
+        className="rounded-[var(--radius-sm)] bg-[color:var(--accent)] px-3 py-2 font-semibold text-white transition hover:opacity-90"
       >
         {copy.continueGoogle}
       </button>
@@ -132,12 +132,12 @@ export function UserAccountControls() {
         onClick={() =>
           setState((current) => ({ ...current, emailOpen: !current.emailOpen }))
         }
-        className="rounded-full border border-[color:var(--line)] px-3 py-2 font-semibold text-[color:var(--muted)] transition hover:bg-black/5 hover:text-[color:var(--foreground)]"
+        className="rounded-[var(--radius-sm)] border border-[color:var(--line)] px-3 py-2 font-semibold text-[color:var(--muted)] transition hover:bg-black/5 hover:text-[color:var(--foreground)]"
       >
         {copy.email}
       </button>
       {state.emailOpen ? (
-        <div className="grid w-full gap-2 rounded-xl border border-[color:var(--line)] bg-[color:var(--surface)] p-3 shadow-sm sm:w-72">
+        <div className="grid w-full gap-2 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-3 shadow-sm sm:w-72">
           <input
             value={state.email}
             onChange={(event) =>
@@ -145,7 +145,7 @@ export function UserAccountControls() {
             }
             placeholder={copy.email}
             type="email"
-            className="min-h-10 rounded-md border border-[color:var(--line)] bg-[color:var(--background)] px-3 text-sm outline-none focus:border-[color:var(--accent)]"
+            className="min-h-10 rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 text-sm outline-none focus:border-[color:var(--accent)]"
           />
           <input
             value={state.password}
@@ -157,18 +157,18 @@ export function UserAccountControls() {
             }
             placeholder={copy.password}
             type="password"
-            className="min-h-10 rounded-md border border-[color:var(--line)] bg-[color:var(--background)] px-3 text-sm outline-none focus:border-[color:var(--accent)]"
+            className="min-h-10 rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 text-sm outline-none focus:border-[color:var(--accent)]"
           />
           <button
             type="button"
             onClick={handleEmailLogin}
             disabled={!state.email || !state.password}
-            className="min-h-10 rounded-md bg-[color:var(--accent)] px-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+            className="min-h-10 rounded-[var(--radius-sm)] bg-[color:var(--accent)] px-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             {copy.login}
           </button>
           {state.error ? (
-            <p className="text-xs leading-5 text-red-700">{state.error}</p>
+            <p className="text-xs leading-5 text-[color:var(--error)]">{state.error}</p>
           ) : null}
         </div>
       ) : null}
