@@ -5,18 +5,22 @@ const provider = deepSeekApiKey
   ? {
       name: "DeepSeek",
       apiKey: deepSeekApiKey,
-      baseUrl:
+      endpoint: normalizeChatCompletionsEndpoint(
         process.env.DEEPSEEK_BASE_URL ||
-        process.env.DEEPSEEK_API_URL ||
-        process.env.DOCKDOCS_AI_SUMMARY_API_URL ||
+          process.env.DEEPSEEK_API_URL ||
+          process.env.DOCKDOCS_AI_SUMMARY_API_URL,
         "https://api.deepseek.com",
+      ),
       model: process.env.DEEPSEEK_MODEL || process.env.DOCKDOCS_AI_SUMMARY_MODEL || "deepseek-chat",
     }
   : openAiApiKey
     ? {
         name: "OpenAI",
         apiKey: openAiApiKey,
-        baseUrl: process.env.OPENAI_BASE_URL || "https://api.openai.com/v1",
+        endpoint: normalizeChatCompletionsEndpoint(
+          process.env.OPENAI_BASE_URL,
+          "https://api.openai.com/v1",
+        ),
         model: process.env.OPENAI_MODEL || "gpt-4o-mini",
       }
     : null;
@@ -71,7 +75,7 @@ exports.handler = async function handler(event) {
   const clippedDocumentText = documentText.slice(0, 40000);
 
   try {
-    const response = await fetch(`${provider.baseUrl.replace(/\/$/, "")}/chat/completions`, {
+    const response = await fetch(provider.endpoint, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${provider.apiKey}`,
@@ -134,6 +138,21 @@ exports.handler = async function handler(event) {
     });
   }
 };
+
+function normalizeChatCompletionsEndpoint(value, fallback) {
+  const rawUrl = String(value || fallback || "").trim();
+  const normalizedUrl = rawUrl.replace(/\/+$/, "");
+
+  if (!normalizedUrl) {
+    return "https://api.deepseek.com/chat/completions";
+  }
+
+  if (/\/chat\/completions$/i.test(normalizedUrl)) {
+    return normalizedUrl;
+  }
+
+  return `${normalizedUrl}/chat/completions`;
+}
 
 function parseProviderJson(content) {
   try {
