@@ -256,6 +256,39 @@ Rules:
 - Mobile dashboard stacks into a single column with overview and empty-state guidance before dense lists.
 - Provider status can be a placeholder unless a real account/runtime integration exists.
 
+### Content Surfaces
+
+Content pages include Blog, Guides, Resources, GEO hubs, programmatic GEO articles, and SaaS trust/info pages. They should feel like product documentation inside the DockDocs workspace, not a separate SEO microsite.
+
+Surface rules:
+
+- Use `--surface` for main reading sections and `--surface-subtle` for supporting panels, quick answers, metadata cards, and nested list blocks.
+- Use `--line` for borders and dividers; avoid raw hex borders in content components.
+- Use `--muted` for summaries, excerpts, metadata, table secondary cells, and helper text.
+- Use `--foreground` for headings, strong values, and dark CTA surfaces.
+- Content cards use `12px` radius. Compact inline links, list items, and step rows use `8px`.
+- Shadows should be restrained and should clarify grouping only; content pages should not look like stacked marketing cards.
+
+Reading layout:
+
+- Hero content should stay under roughly `max-w-4xl`.
+- Article body columns should keep readable text around `max-w-3xl` to `max-w-4xl`; sidebars should be secondary and sticky only on desktop.
+- Tables may scroll horizontally inside their own framed container, but the page itself must not overflow at `390px`.
+- Use section spacing of `48px` to `64px` on desktop and tighter `32px` to `48px` on mobile.
+
+CTA placement:
+
+- Content hero pages may include one primary CTA and one secondary CTA.
+- Long articles should end with a single framed CTA surface that returns users to the relevant workflow.
+- In-page SEO/GEO links should use neutral secondary styling, not primary button styling, unless they are the main next action.
+
+Mobile content rules:
+
+- At `390px`, all content cards, quick answers, tables, and CTA rows must stack without horizontal page overflow.
+- CTA buttons may wrap but must remain at least `44px` high.
+- Sidebar metadata should appear after the hero content or stack below the primary article content.
+- Chinese and English headings must use `break-words` when they can contain long file, product, or workflow names.
+
 ### Empty States
 
 Rules:

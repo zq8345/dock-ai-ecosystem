@@ -40,21 +40,21 @@ export function BlogIndexPage({
   const schema = createBlogIndexSchema(locale, canonicalPath);
 
   return (
-    <main className="bg-white text-[#0f172a]">
+    <main className="bg-[color:var(--surface)] text-[color:var(--foreground)]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <Section className="border-b border-[#cbd5e1] bg-white py-0">
+      <Section className="border-b border-[color:var(--line)] bg-[color:var(--surface)] py-0">
         <Container className="grid min-h-[64vh] items-center gap-12 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:py-24">
           <div>
-            <p className="inline-flex rounded-full border border-[#cbd5e1] bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#334155] shadow-sm">
+            <p className="inline-flex rounded-full border border-[color:var(--line)] bg-[color:var(--surface)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)] shadow-sm">
               {copy.eyebrow}
             </p>
             <h1 className="mt-6 max-w-4xl break-words text-3xl font-semibold leading-[1.08] sm:text-6xl sm:leading-[1.04]">
               {copy.heroTitle}
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#334155] sm:text-lg">
+            <p className="mt-6 max-w-2xl text-base leading-8 text-[color:var(--muted)] sm:text-lg">
               {copy.heroDescription}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -64,15 +64,15 @@ export function BlogIndexPage({
               <ButtonLink
                 href={localizedHref("/help", locale, useLocalePrefix)}
                 variant="outline"
-                className="bg-white"
+                className="bg-[color:var(--surface)]"
               >
                 {copy.secondaryAction}
               </ButtonLink>
             </div>
           </div>
-          <div className="rounded-2xl border border-[#cbd5e1] bg-white p-4 shadow-[0_32px_90px_rgba(24,24,20,0.10)]">
-            <div className="rounded-xl border border-[#cbd5e1] bg-[#f8fafc] p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
+          <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 shadow-[0_32px_90px_rgba(24,24,20,0.10)]">
+            <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
                 {locale === "zh" ? "SEO 工作流地图" : "SEO workflow map"}
               </p>
               <div className="mt-5 grid gap-3">
@@ -83,11 +83,11 @@ export function BlogIndexPage({
                     <a
                       key={article.slug}
                       href={articleHref(article.slug, locale, useLocalePrefix)}
-                      className="group rounded-xl border border-[#cbd5e1] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#0f172a] hover:shadow-[0_16px_32px_rgba(24,24,20,0.08)]"
+                      className="group rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 transition hover:-translate-y-0.5 hover:border-[color:var(--foreground)] hover:shadow-[0_16px_32px_rgba(24,24,20,0.08)]"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#475569]">
+                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)]">
                             {article.category}
                           </p>
                           <h2 className="mt-2 text-base font-semibold leading-6">
@@ -96,7 +96,7 @@ export function BlogIndexPage({
                         </div>
                         <span
                           aria-hidden="true"
-                          className="text-[#334155] transition group-hover:translate-x-0.5 group-hover:text-[#0f172a]"
+                          className="text-[color:var(--muted)] transition group-hover:translate-x-0.5 group-hover:text-[color:var(--foreground)]"
                         >
                           -&gt;
                         </span>
@@ -110,18 +110,18 @@ export function BlogIndexPage({
         </Container>
       </Section>
 
-      <Section className="bg-[#f8fafc]">
+      <Section className="bg-[color:var(--surface-subtle)]">
         <Container>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
                 Blog
               </p>
               <h2 className="mt-4 text-3xl font-semibold leading-tight">
                 {copy.featuredTitle}
               </h2>
             </div>
-            <p className="max-w-xl leading-7 text-[#334155]">
+            <p className="max-w-xl leading-7 text-[color:var(--muted)]">
               {copy.featuredDescription}
             </p>
           </div>
@@ -133,23 +133,23 @@ export function BlogIndexPage({
                 <a
                   key={article.slug}
                   href={articleHref(article.slug, locale, useLocalePrefix)}
-                  className="group rounded-xl border border-[#cbd5e1] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#0f172a] hover:shadow-[0_18px_40px_rgba(24,24,20,0.08)]"
+                  className="group rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[color:var(--foreground)] hover:shadow-[0_18px_40px_rgba(24,24,20,0.08)]"
                 >
                   <div className="flex items-center justify-between gap-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
                       {article.category}
                     </p>
-                    <span className="rounded-full border border-[#cbd5e1] px-3 py-1 text-xs font-semibold text-[#334155]">
+                    <span className="rounded-full border border-[color:var(--line)] px-3 py-1 text-xs font-semibold text-[color:var(--muted)]">
                       {content.readingTime}
                     </span>
                   </div>
                   <h3 className="mt-4 text-xl font-semibold leading-tight">
                     {content.title}
                   </h3>
-                  <p className="mt-4 text-sm leading-6 text-[#334155]">
+                  <p className="mt-4 text-sm leading-6 text-[color:var(--muted)]">
                     {content.excerpt}
                   </p>
-                  <span className="mt-5 inline-block text-sm font-semibold text-[#0f172a] transition group-hover:translate-x-0.5">
+                  <span className="mt-5 inline-block text-sm font-semibold text-[color:var(--foreground)] transition group-hover:translate-x-0.5">
                     {locale === "zh" ? "阅读指南" : "Read guide"} -&gt;
                   </span>
                 </a>
@@ -159,17 +159,17 @@ export function BlogIndexPage({
         </Container>
       </Section>
 
-      <Section className="bg-white">
+      <Section className="bg-[color:var(--surface)]">
         <Container>
-          <div className="grid gap-8 rounded-2xl border border-[#cbd5e1] bg-white p-6 shadow-[0_24px_60px_rgba(24,24,20,0.08)] sm:p-8 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="grid gap-8 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-6 shadow-[0_24px_60px_rgba(24,24,20,0.08)] sm:p-8 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
                 Internal SEO graph
               </p>
               <h2 className="mt-4 text-3xl font-semibold leading-tight">
                 {copy.workflowTitle}
               </h2>
-              <p className="mt-5 leading-7 text-[#334155]">
+              <p className="mt-5 leading-7 text-[color:var(--muted)]">
                 {copy.workflowDescription}
               </p>
             </div>
@@ -208,7 +208,7 @@ export function BlogIndexPage({
                 <a
                   key={link.href}
                   href={localizedHref(link.href, locale, useLocalePrefix)}
-                  className="rounded-xl border border-[#cbd5e1] bg-[#f8fafc] p-5 text-sm font-semibold transition hover:border-[#0f172a] hover:bg-white"
+                  className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-5 text-sm font-semibold transition hover:border-[color:var(--foreground)] hover:bg-[color:var(--surface)]"
                 >
                   {link.label}
                   <span aria-hidden="true" className="ml-2">
@@ -247,25 +247,25 @@ export function BlogArticlePage({
   });
 
   return (
-    <main className="bg-white text-[#0f172a]">
+    <main className="bg-[color:var(--surface)] text-[color:var(--foreground)]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
       <article>
-        <Section className="border-b border-[#cbd5e1] bg-white py-0">
+        <Section className="border-b border-[color:var(--line)] bg-[color:var(--surface)] py-0">
           <Container className="grid gap-12 py-16 lg:grid-cols-[0.85fr_0.45fr] lg:py-24">
             <div>
               <a
                 href={blogPath}
-                className="inline-flex rounded-full border border-[#cbd5e1] bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#334155] shadow-sm transition hover:border-[#0f172a]"
+                className="inline-flex rounded-full border border-[color:var(--line)] bg-[color:var(--surface)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)] shadow-sm transition hover:border-[color:var(--foreground)]"
               >
                 {article.category}
               </a>
               <h1 className="mt-6 max-w-4xl break-words text-3xl font-semibold leading-[1.08] sm:text-6xl sm:leading-[1.04]">
                 {content.title}
               </h1>
-              <p className="mt-6 max-w-3xl text-base leading-8 text-[#334155] sm:text-lg">
+              <p className="mt-6 max-w-3xl text-base leading-8 text-[color:var(--muted)] sm:text-lg">
                 {content.excerpt}
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -275,14 +275,14 @@ export function BlogArticlePage({
                 <ButtonLink
                   href={localizedHref("/help", locale, useLocalePrefix)}
                   variant="outline"
-                  className="bg-white"
+                  className="bg-[color:var(--surface)]"
                 >
                   {locale === "zh" ? "查看帮助中心" : "Read help guidance"}
                 </ButtonLink>
               </div>
             </div>
-            <aside className="rounded-2xl border border-[#cbd5e1] bg-[#f8fafc] p-5 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
+            <aside className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-5 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
                 {locale === "zh" ? "文章信息" : "Article details"}
               </p>
               <dl className="mt-5 grid gap-3 text-sm">
@@ -302,23 +302,23 @@ export function BlogArticlePage({
           useLocalePrefix={useLocalePrefix}
         />
 
-        <Section className="bg-[#f8fafc]">
+        <Section className="bg-[color:var(--surface-subtle)]">
           <Container className="grid gap-10 lg:grid-cols-[0.72fr_0.28fr] lg:items-start">
-            <div className="rounded-2xl border border-[#cbd5e1] bg-white p-5 shadow-sm sm:p-8">
+            <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-sm sm:p-8">
               <div className="prose-none">
                 {content.sections.map((section, index) => (
                   <section
                     key={section.heading}
-                    className={index === 0 ? "" : "mt-12 border-t border-[#e2e8f0] pt-10"}
+                    className={index === 0 ? "" : "mt-12 border-t border-[color:var(--line)] pt-10"}
                   >
-                    <h2 className="text-2xl font-semibold leading-tight text-[#0f172a] sm:text-3xl">
+                    <h2 className="text-2xl font-semibold leading-tight text-[color:var(--foreground)] sm:text-3xl">
                       {section.heading}
                     </h2>
                     <div className="mt-5 grid gap-5">
                       {section.paragraphs.map((paragraph) => (
                         <p
                           key={paragraph}
-                          className="text-base leading-8 text-[#334155]"
+                          className="text-base leading-8 text-[color:var(--muted)]"
                         >
                           {paragraph}
                         </p>
@@ -330,7 +330,7 @@ export function BlogArticlePage({
                           <a
                             key={`${section.heading}-${link.href}`}
                             href={localizedHref(link.href, locale, useLocalePrefix)}
-                            className="rounded-full border border-[#cbd5e1] bg-[#f8fafc] px-4 py-2 text-sm font-semibold text-[#0f172a] transition hover:border-[#0f172a] hover:bg-white"
+                            className="rounded-full border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-4 py-2 text-sm font-semibold text-[color:var(--foreground)] transition hover:border-[color:var(--foreground)] hover:bg-[color:var(--surface)]"
                           >
                             {link.label}
                           </a>
@@ -365,41 +365,41 @@ export function BlogArticlePage({
           </Container>
         </Section>
 
-        <Section className="bg-white">
+        <Section className="bg-[color:var(--surface)]">
           <Container className="grid gap-10 lg:grid-cols-[0.8fr_1fr]">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
                 FAQ
               </p>
               <h2 className="mt-4 text-3xl font-semibold leading-tight">
                 {locale === "zh" ? "相关问题" : "Related questions"}
               </h2>
             </div>
-            <div className="divide-y divide-[#cbd5e1] border-y border-[#cbd5e1]">
+            <div className="divide-y divide-[color:var(--line)] border-y border-[color:var(--line)]">
               {geoFaq.map((faq) => (
                 <details key={faq.question} className="group py-5">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-6 font-semibold">
                     {faq.question}
-                    <span className="text-[#475569] transition group-open:rotate-45">
+                    <span className="text-[color:var(--muted)] transition group-open:rotate-45">
                       +
                     </span>
                   </summary>
-                  <p className="mt-4 leading-7 text-[#334155]">{faq.answer}</p>
+                  <p className="mt-4 leading-7 text-[color:var(--muted)]">{faq.answer}</p>
                 </details>
               ))}
             </div>
           </Container>
         </Section>
 
-        <Section bordered={false} className="bg-white">
+        <Section bordered={false} className="bg-[color:var(--surface)]">
           <Container>
-            <div className="flex flex-col gap-6 rounded-2xl border border-[#cbd5e1] bg-[#0f172a] p-6 text-white shadow-[0_24px_60px_rgba(24,24,20,0.10)] sm:flex-row sm:items-center sm:justify-between sm:p-8">
+            <div className="flex flex-col gap-6 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--foreground)] p-6 text-[color:var(--background)] shadow-[0_24px_60px_rgba(24,24,20,0.10)] sm:flex-row sm:items-center sm:justify-between sm:p-8">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/70">
+                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--background)]/70">
                   {article.category}
                 </p>
                 <h2 className="mt-3 text-2xl font-semibold">{content.ctaTitle}</h2>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-white/75">
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-[color:var(--background)]/75">
                   {content.ctaDescription}
                 </p>
               </div>
@@ -434,24 +434,24 @@ function GeoAnswerSection({
   const comparison = getComparisonRows(article, locale);
 
   return (
-    <Section className="border-b border-[#cbd5e1] bg-white">
+    <Section className="border-b border-[color:var(--line)] bg-[color:var(--surface)]">
       <Container>
         <div className="grid gap-4 lg:grid-cols-[1fr_1fr]">
-          <section className="rounded-2xl border border-[#cbd5e1] bg-[#f8fafc] p-5 shadow-sm sm:p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
+          <section className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-5 shadow-sm sm:p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
               {locale === "zh" ? "快速答案" : "Quick Answer"}
             </p>
             <h2 className="mt-4 text-2xl font-semibold leading-tight">
               {getQuickAnswerHeading(article, locale)}
             </h2>
-            <p className="mt-4 leading-7 text-[#334155]">{content.excerpt}</p>
-            <p className="mt-4 rounded-xl border border-[#cbd5e1] bg-white p-4 text-sm font-medium leading-6 text-[#0f172a]">
+            <p className="mt-4 leading-7 text-[color:var(--muted)]">{content.excerpt}</p>
+            <p className="mt-4 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 text-sm font-medium leading-6 text-[color:var(--foreground)]">
               {getQuickAnswer(article, locale)}
             </p>
           </section>
 
-          <section className="rounded-2xl border border-[#cbd5e1] bg-white p-5 shadow-sm sm:p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
+          <section className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-sm sm:p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
               {locale === "zh" ? "逐步流程" : "Step-by-step"}
             </p>
             <h2 className="mt-4 text-2xl font-semibold leading-tight">
@@ -461,9 +461,9 @@ function GeoAnswerSection({
               {steps.map((step, index) => (
                 <li
                   key={step}
-                  className="flex gap-3 rounded-lg border border-[#d9dee7] bg-[#f8fafc] p-3 text-sm leading-6 text-[#334155]"
+                  className="flex gap-3 rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-3 text-sm leading-6 text-[color:var(--muted)]"
                 >
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0f172a] text-xs font-semibold text-white">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[color:var(--foreground)] text-xs font-semibold text-[color:var(--background)]">
                     {index + 1}
                   </span>
                   <span>{step}</span>
@@ -474,21 +474,21 @@ function GeoAnswerSection({
         </div>
 
         <div className="mt-4 grid gap-4 lg:grid-cols-[0.72fr_0.28fr]">
-          <section className="rounded-2xl border border-[#cbd5e1] bg-white p-5 shadow-sm sm:p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
+          <section className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-sm sm:p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
               {locale === "zh" ? "最佳工作流" : "Best workflow"}
             </p>
             <h2 className="mt-4 text-2xl font-semibold leading-tight">
               {workflow.title}
             </h2>
-            <div className="mt-5 overflow-hidden rounded-xl border border-[#cbd5e1]">
+            <div className="mt-5 overflow-hidden rounded-[var(--radius)] border border-[color:var(--line)]">
               <table className="w-full border-collapse text-left text-sm">
-                <thead className="bg-[#f8fafc] text-[#0f172a]">
+                <thead className="bg-[color:var(--surface-subtle)] text-[color:var(--foreground)]">
                   <tr>
-                    <th className="border-b border-[#cbd5e1] px-4 py-3 font-semibold">
+                    <th className="border-b border-[color:var(--line)] px-4 py-3 font-semibold">
                       {locale === "zh" ? "情况" : "Situation"}
                     </th>
-                    <th className="border-b border-[#cbd5e1] px-4 py-3 font-semibold">
+                    <th className="border-b border-[color:var(--line)] px-4 py-3 font-semibold">
                       {locale === "zh" ? "建议" : "Recommendation"}
                     </th>
                   </tr>
@@ -496,10 +496,10 @@ function GeoAnswerSection({
                 <tbody>
                   {comparison.map((row) => (
                     <tr key={row.situation}>
-                      <td className="border-b border-[#e2e8f0] px-4 py-3 text-[#334155]">
+                      <td className="border-b border-[color:var(--line)] px-4 py-3 text-[color:var(--muted)]">
                         {row.situation}
                       </td>
-                      <td className="border-b border-[#e2e8f0] px-4 py-3 font-medium text-[#0f172a]">
+                      <td className="border-b border-[color:var(--line)] px-4 py-3 font-medium text-[color:var(--foreground)]">
                         {row.recommendation}
                       </td>
                     </tr>
@@ -509,15 +509,15 @@ function GeoAnswerSection({
             </div>
           </section>
 
-          <aside className="rounded-2xl border border-[#cbd5e1] bg-[#f8fafc] p-5 shadow-sm sm:p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
+          <aside className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-5 shadow-sm sm:p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
               {locale === "zh" ? "何时使用" : "When to use this tool"}
             </p>
             <ul className="mt-5 grid gap-3">
               {useCases.map((item) => (
                 <li
                   key={item}
-                  className="rounded-lg border border-[#cbd5e1] bg-white p-3 text-sm leading-6 text-[#334155]"
+                  className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] p-3 text-sm leading-6 text-[color:var(--muted)]"
                 >
                   {item}
                 </li>
@@ -538,11 +538,11 @@ function GeoAnswerSection({
 
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-[#cbd5e1] bg-white p-3">
-      <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-[#475569]">
+    <div className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] p-3">
+      <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)]">
         {label}
       </dt>
-      <dd className="mt-1 font-semibold text-[#0f172a]">{value}</dd>
+      <dd className="mt-1 font-semibold text-[color:var(--foreground)]">{value}</dd>
     </div>
   );
 }
@@ -559,7 +559,7 @@ function SidebarCard({
   useLocalePrefix: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-[#cbd5e1] bg-white p-5 shadow-sm">
+    <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-sm">
       <h3 className="font-semibold">{title}</h3>
       <div className="mt-4 grid gap-2">
         {links.map((link) => (
@@ -571,7 +571,7 @@ function SidebarCard({
                 ? link.href
                 : localizedHref(link.href, locale, useLocalePrefix)
             }
-            className="rounded-lg border border-[#d9dee7] px-4 py-3 text-sm font-semibold transition hover:border-[#0f172a] hover:bg-[#f8fafc]"
+            className="rounded-[var(--radius-sm)] border border-[color:var(--line)] px-4 py-3 text-sm font-semibold transition hover:border-[color:var(--foreground)] hover:bg-[color:var(--surface-subtle)]"
           >
             {link.label}
             <span aria-hidden="true" className="ml-2">

@@ -34,21 +34,21 @@ export function GeoHubPage({
   const schema = createGeoHubSchema(hub, locale, canonicalPath);
 
   return (
-    <main className="bg-white text-[#0f172a]">
+    <main className="bg-[color:var(--surface)] text-[color:var(--foreground)]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <Section className="border-b border-[#cbd5e1] bg-white py-0">
+      <Section className="border-b border-[color:var(--line)] bg-[color:var(--surface)] py-0">
         <Container className="grid gap-12 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:py-24">
           <div>
-            <p className="inline-flex rounded-full border border-[#cbd5e1] bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#334155] shadow-sm">
+            <p className="inline-flex rounded-full border border-[color:var(--line)] bg-[color:var(--surface)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)] shadow-sm">
               {hub.eyebrow}
             </p>
             <h1 className="mt-6 max-w-4xl break-words text-3xl font-semibold leading-[1.08] sm:text-6xl sm:leading-[1.04]">
               {hub.heroTitle}
             </h1>
-            <p className="mt-6 max-w-3xl text-base leading-8 text-[#334155] sm:text-lg">
+            <p className="mt-6 max-w-3xl text-base leading-8 text-[color:var(--muted)] sm:text-lg">
               {hub.heroDescription}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -60,20 +60,20 @@ export function GeoHubPage({
               <ButtonLink
                 href={localizedHref(hub.secondaryAction.href, locale, useLocalePrefix)}
                 variant="outline"
-                className="bg-white"
+                className="bg-[color:var(--surface)]"
               >
                 {hub.secondaryAction.label}
               </ButtonLink>
             </div>
           </div>
-          <aside className="rounded-2xl border border-[#cbd5e1] bg-[#f8fafc] p-5 shadow-sm">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
+          <aside className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-5 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
               {locale === "zh" ? "快速答案" : "Quick Answer"}
             </p>
-            <p className="mt-4 text-lg font-semibold leading-8 text-[#0f172a]">
+            <p className="mt-4 text-lg font-semibold leading-8 text-[color:var(--foreground)]">
               {hub.answer}
             </p>
-            <ol className="mt-6 grid gap-3 text-sm text-[#334155]">
+            <ol className="mt-6 grid gap-3 text-sm text-[color:var(--muted)]">
               {(locale === "zh"
                 ? ["选择文档目标", "打开对应工具", "阅读相关指南", "导出并继续工作流"]
                 : [
@@ -85,9 +85,9 @@ export function GeoHubPage({
               ).map((step, index) => (
                 <li
                   key={step}
-                  className="flex gap-3 rounded-lg border border-[#cbd5e1] bg-white p-3"
+                  className="flex gap-3 rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] p-3"
                 >
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#0f172a] text-xs font-semibold text-white">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[color:var(--foreground)] text-xs font-semibold text-[color:var(--background)]">
                     {index + 1}
                   </span>
                   <span>{step}</span>
@@ -98,15 +98,15 @@ export function GeoHubPage({
         </Container>
       </Section>
 
-      <Section className="bg-[#f8fafc]">
+      <Section className="bg-[color:var(--surface-subtle)]">
         <Container>
           <div className="grid gap-4 lg:grid-cols-3">
             {hub.groups.map((group) => (
               <section
                 key={group.title}
-                className="rounded-xl border border-[#cbd5e1] bg-white p-5 shadow-sm"
+                className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-sm"
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
                   {group.title}
                 </p>
                 <h2 className="mt-4 text-xl font-semibold leading-tight">
@@ -117,20 +117,20 @@ export function GeoHubPage({
                     <a
                       key={`${group.title}-${link.href}`}
                       href={localizedHref(link.href, locale, useLocalePrefix)}
-                      className="group rounded-lg border border-[#d9dee7] bg-white p-4 transition hover:border-[#0f172a] hover:shadow-sm"
+                      className="group rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 transition hover:border-[color:var(--foreground)] hover:shadow-sm"
                     >
                       <div className="flex items-start justify-between gap-4">
-                        <h3 className="font-semibold text-[#0f172a]">
+                        <h3 className="font-semibold text-[color:var(--foreground)]">
                           {link.label}
                         </h3>
                         <span
                           aria-hidden="true"
-                          className="text-[#334155] transition group-hover:translate-x-0.5"
+                          className="text-[color:var(--muted)] transition group-hover:translate-x-0.5"
                         >
                           -&gt;
                         </span>
                       </div>
-                      <p className="mt-2 text-sm leading-6 text-[#334155]">
+                      <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
                         {link.description}
                       </p>
                     </a>
@@ -142,11 +142,11 @@ export function GeoHubPage({
         </Container>
       </Section>
 
-      <Section className="bg-white">
+      <Section className="bg-[color:var(--surface)]">
         <Container>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
                 {locale === "zh" ? "GEO 页面集群" : "GEO semantic clusters"}
               </p>
               <h2 className="mt-4 text-3xl font-semibold leading-tight">
@@ -155,7 +155,7 @@ export function GeoHubPage({
                   : "Move from real questions into related tools and workflows."}
               </h2>
             </div>
-            <p className="max-w-xl leading-7 text-[#334155]">
+            <p className="max-w-xl leading-7 text-[color:var(--muted)]">
               {locale === "zh"
                 ? "这些页面围绕 PDF 压缩、OCR、转换和 AI PDF 工作流组织，帮助 Google 与 AI answer engines 更好理解 DockDocs。"
                 : "These pages are grouped around PDF compression, OCR, conversion, and AI PDF workflows so Google and AI answer engines can understand DockDocs more clearly."}
@@ -177,18 +177,18 @@ export function GeoHubPage({
                     locale,
                     useLocalePrefix,
                   )}
-                  className="group rounded-xl border border-[#cbd5e1] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#0f172a] hover:shadow-[0_18px_40px_rgba(24,24,20,0.08)]"
+                  className="group rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[color:var(--foreground)] hover:shadow-[0_18px_40px_rgba(24,24,20,0.08)]"
                 >
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
                     {seed.cluster}
                   </p>
                   <h3 className="mt-4 text-xl font-semibold leading-tight">
                     {page.title}
                   </h3>
-                  <p className="mt-4 text-sm leading-6 text-[#334155]">
+                  <p className="mt-4 text-sm leading-6 text-[color:var(--muted)]">
                     {page.description}
                   </p>
-                  <span className="mt-5 inline-block text-sm font-semibold text-[#0f172a] transition group-hover:translate-x-0.5">
+                  <span className="mt-5 inline-block text-sm font-semibold text-[color:var(--foreground)] transition group-hover:translate-x-0.5">
                     {locale === "zh" ? "打开工作流" : "Open workflow"} -&gt;
                   </span>
                 </a>
@@ -198,10 +198,10 @@ export function GeoHubPage({
         </Container>
       </Section>
 
-      <Section bordered={false} className="bg-white">
+      <Section bordered={false} className="bg-[color:var(--surface)]">
         <Container>
-          <div className="rounded-2xl border border-[#cbd5e1] bg-[#0f172a] p-6 text-white shadow-[0_24px_60px_rgba(24,24,20,0.10)] sm:p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/70">
+          <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--foreground)] p-6 text-[color:var(--background)] shadow-[0_24px_60px_rgba(24,24,20,0.10)] sm:p-8">
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--background)]/70">
               {locale === "zh" ? "GEO 内容中心" : "GEO Content Hub"}
             </p>
             <h2 className="mt-3 text-2xl font-semibold">

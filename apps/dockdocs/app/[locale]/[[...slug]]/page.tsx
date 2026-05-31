@@ -417,7 +417,7 @@ function LocalizedChatWithPdf({ locale }: { locale: Locale }) {
 
   return (
     <main>
-      <Section className="border-b border-[color:var(--line)] bg-white">
+      <Section className="border-b border-[color:var(--line)] bg-[color:var(--surface)]">
         <Container className="py-10">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div>
@@ -485,7 +485,7 @@ function LocalizedRuntimeTool({
 
   return (
     <main>
-      <Section className="border-b border-[color:var(--line)] bg-white">
+      <Section className="border-b border-[color:var(--line)] bg-[color:var(--surface)]">
         <Container className="grid min-h-[calc(100vh-92px)] items-center gap-8 py-10 lg:grid-cols-[0.78fr_1.22fr]">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--accent)]">
@@ -517,7 +517,7 @@ function LocalizedRuntimeTool({
           />
         </Container>
       </Section>
-      <Section id="upload" className="border-b border-[color:var(--line)] bg-white">
+      <Section id="upload" className="border-b border-[color:var(--line)] bg-[color:var(--surface)]">
         <Container>
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--accent)]">
@@ -645,17 +645,17 @@ function LocalizedHome({ locale }: { locale: Locale }) {
   const copy = homeCopy[locale];
 
   return (
-    <main className="bg-white text-[#0f172a]">
-      <Section className="border-b border-[#cbd5e1] bg-white">
+    <main className="bg-[color:var(--surface)] text-[color:var(--foreground)]">
+      <Section className="border-b border-[color:var(--line)] bg-[color:var(--surface)]">
         <Container className="grid gap-12 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
           <div>
-            <p className="inline-flex rounded-full border border-[#cbd5e1] bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#334155] shadow-sm">
+            <p className="inline-flex rounded-full border border-[color:var(--line)] bg-[color:var(--surface)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)] shadow-sm">
               {copy.eyebrow}
             </p>
             <h1 className="mt-6 max-w-4xl break-words text-2xl font-semibold leading-tight sm:text-6xl">
               {copy.heroTitle}
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#334155] sm:text-lg">
+            <p className="mt-6 max-w-2xl text-base leading-8 text-[color:var(--muted)] sm:text-lg">
               {copy.heroDescription}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -667,9 +667,9 @@ function LocalizedHome({ locale }: { locale: Locale }) {
               </ButtonLink>
             </div>
           </div>
-          <div className="rounded-2xl border border-[#cbd5e1] bg-white p-4 shadow-[0_32px_90px_rgba(24,24,20,0.10)]">
-            <div className="rounded-xl border border-[#cbd5e1] bg-[#f8fafc] p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
+          <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 shadow-[0_32px_90px_rgba(24,24,20,0.10)]">
+            <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
                 {copy.categories}
               </p>
               <h2 className="mt-4 text-2xl font-semibold">{copy.categoryTitle}</h2>
@@ -678,10 +678,10 @@ function LocalizedHome({ locale }: { locale: Locale }) {
                   <a
                     key={tool.slug}
                     href={localizedPath(locale, tool.slug)}
-                    className="flex items-center justify-between rounded-xl border border-[#cbd5e1] bg-white p-4 transition hover:border-[#0f172a]"
+                    className="flex items-center justify-between rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 transition hover:border-[color:var(--foreground)]"
                   >
                     <span className="flex items-center gap-3">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#cbd5e1] text-xs font-bold">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--line)] text-xs font-bold">
                         {tool.icon}
                       </span>
                       <span className="font-semibold">{tool[locale]}</span>
@@ -694,16 +694,16 @@ function LocalizedHome({ locale }: { locale: Locale }) {
           </div>
         </Container>
       </Section>
-      <Section id="tools" className="bg-[#f8fafc]">
+      <Section id="tools" className="bg-[color:var(--surface-subtle)]">
         <Container>
           <div className="grid gap-4 lg:grid-cols-3">
             {localizedTools.map((tool) => (
               <a
                 key={tool.slug}
                 href={localizedPath(locale, tool.slug)}
-                className="rounded-xl border border-[#cbd5e1] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#0f172a]"
+                className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[color:var(--foreground)]"
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#475569]">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
                   {tool.icon}
                 </p>
                 <h2 className="mt-4 text-xl font-semibold">{tool[locale]}</h2>
@@ -712,11 +712,11 @@ function LocalizedHome({ locale }: { locale: Locale }) {
           </div>
         </Container>
       </Section>
-      <Section className="bg-white">
+      <Section className="bg-[color:var(--surface)]">
         <Container>
-          <div className="rounded-2xl border border-[#cbd5e1] bg-[#0f172a] p-6 text-white shadow-[0_24px_60px_rgba(24,24,20,0.10)] sm:p-8">
+          <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--foreground)] p-6 text-[color:var(--background)] shadow-[0_24px_60px_rgba(24,24,20,0.10)] sm:p-8">
             <h2 className="text-2xl font-semibold">{copy.aiTitle}</h2>
-            <p className="mt-4 max-w-3xl leading-7 text-white/75">
+            <p className="mt-4 max-w-3xl leading-7 text-[color:var(--background)]/75">
               {copy.aiDescription}
             </p>
             <ButtonLink
@@ -759,16 +759,16 @@ function LocalizedAiWorkspace({ locale }: { locale: Locale }) {
   const copy = aiCopy[locale];
 
   return (
-    <main className="bg-white text-[#0f172a]">
-      <Section className="border-b border-[#cbd5e1] bg-white">
+    <main className="bg-[color:var(--surface)] text-[color:var(--foreground)]">
+      <Section className="border-b border-[color:var(--line)] bg-[color:var(--surface)]">
         <Container className="py-16">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
             {copy.eyebrow}
           </p>
           <h1 className="mt-5 max-w-4xl break-words text-2xl font-semibold leading-tight sm:text-6xl">
             {copy.heroTitle}
           </h1>
-          <p className="mt-6 max-w-3xl text-base leading-8 text-[#334155] sm:text-lg">
+          <p className="mt-6 max-w-3xl text-base leading-8 text-[color:var(--muted)] sm:text-lg">
             {copy.heroDescription}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -781,16 +781,16 @@ function LocalizedAiWorkspace({ locale }: { locale: Locale }) {
           </div>
         </Container>
       </Section>
-      <Section className="bg-[#f8fafc]">
+      <Section className="bg-[color:var(--surface-subtle)]">
         <Container>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {copy.cards.map((card) => (
               <article
                 key={card}
-                className="rounded-xl border border-[#cbd5e1] bg-white p-5 shadow-sm"
+                className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-sm"
               >
                 <h2 className="text-xl font-semibold">{card}</h2>
-                <p className="mt-3 text-sm leading-6 text-[#334155]">
+                <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
                   {locale === "zh"
                     ? "作为文档工作区的智能能力，帮助理解和复用真实文件。"
                     : "An enhancement layer after the PDF task is clear."}
@@ -903,10 +903,10 @@ function LocalizedSitemap({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <main className="bg-white text-[#0f172a]">
-      <Section className="border-b border-[#cbd5e1] bg-white">
+    <main className="bg-[color:var(--surface)] text-[color:var(--foreground)]">
+      <Section className="border-b border-[color:var(--line)] bg-[color:var(--surface)]">
         <Container className="py-16">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
             {locale === "zh" ? "站点地图" : "Sitemap"}
           </p>
           <h1 className="mt-5 max-w-4xl break-words text-2xl font-semibold leading-tight sm:text-6xl">
@@ -914,13 +914,13 @@ function LocalizedSitemap({ locale }: { locale: Locale }) {
           </h1>
         </Container>
       </Section>
-      <Section className="bg-[#f8fafc]">
+      <Section className="bg-[color:var(--surface-subtle)]">
         <Container>
           <div className="grid gap-4 lg:grid-cols-2">
             {groups.map((group) => (
               <section
                 key={group.title}
-                className="rounded-xl border border-[#cbd5e1] bg-white p-5 shadow-sm"
+                className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-sm"
               >
                 <h2 className="text-xl font-semibold">{group.title}</h2>
                 <ul className="mt-5 grid gap-2">
@@ -928,7 +928,7 @@ function LocalizedSitemap({ locale }: { locale: Locale }) {
                     <li key={link.href}>
                       <a
                         href={link.href}
-                        className="flex items-center justify-between rounded-lg border border-[#d9dee7] px-4 py-3 text-sm font-medium transition hover:border-[#0f172a]"
+                        className="flex items-center justify-between rounded-[var(--radius-sm)] border border-[color:var(--line)] px-4 py-3 text-sm font-medium transition hover:border-[color:var(--foreground)]"
                       >
                         {link.name}
                         <span aria-hidden="true">-&gt;</span>
