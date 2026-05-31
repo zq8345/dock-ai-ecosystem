@@ -9,9 +9,15 @@ declare const Netlify: {
 type AiChatPayload = {
   context?: string;
   question?: string;
+  history?: AiChatHistoryTurn[];
   locale?: "en" | "zh";
   sourceName?: string;
   truncated?: boolean;
+};
+
+type AiChatHistoryTurn = {
+  question?: string;
+  answer?: string;
 };
 
 type AiChatAnswer = {
@@ -47,6 +53,11 @@ type ProviderChatFailure = {
 };
 
 type ProviderChatResponse = ProviderChatResult | ProviderChatFailure;
+
+type NormalizedHistoryTurn = {
+  question: string;
+  answer: string;
+};
 
 const maxContextCharacters = 24_000;
 const minContextCharacters = 80;
@@ -104,6 +115,7 @@ export default async (req: Request, _context: Context) => {
   const locale = payload.locale === "zh" ? "zh" : "en";
   const context = normalizeText(payload.context ?? "");
   const question = normalizeText(payload.question ?? "");
+  const history = normalizeHistory(payload.history);
 
   if (context.length < minContextCharacters) {
     return json(
@@ -149,6 +161,7 @@ export default async (req: Request, _context: Context) => {
       provider: resolvedProvider,
       context: selectedContext.context,
       question,
+      history,
       locale,
       signal: controller.signal,
     });
@@ -236,6 +249,33 @@ function getProvider() {
   };
 }
 
+function normalizeHistory(history: AiChatHistoryTurn[] | undefined) {
+  if (!Array.isArray(history)) {
+    return [];
+  }
+
+  return history
+    .map((turn) => ({
+      question: normalizeText(turn?.question ?? "").slice(0, 800),
+      answer: normalizeText(turn?.answer ?? "").slice(0, 1600),
+    }))
+    .filter((turn) => turn.question.length >= 3 && turn.answer.length > 0)
+    .slice(-8);
+}
+
+function formatHistory(history: NormalizedHistoryTurn[]) {
+  if (history.length === 0) {
+    return "[none]";
+  }
+
+  return history
+    .map(
+      (turn, index) =>
+        `Turn ${index + 1}\nUser: ${turn.question}\nAssistant: ${turn.answer}`,
+    )
+    .join("\n\n");
+}
+
 function isProviderFailure(
   value: ProviderChatResponse,
 ): value is ProviderChatFailure {
@@ -246,18 +286,20 @@ async function generateProviderAnswer({
   provider,
   context,
   question,
+  history,
   locale,
   signal,
 }: {
   provider: ProviderConfig;
   context: string;
   question: string;
+  history: NormalizedHistoryTurn[];
   locale: "en" | "zh";
   signal: AbortSignal;
 }): Promise<ProviderChatResponse> {
   const first = await callProvider({
     provider,
-    body: createProviderRequest(provider.model, context, question, locale),
+    body: createProviderRequest(provider.model, context, question, history, locale),
     signal,
   });
 
@@ -270,6 +312,7 @@ async function generateProviderAnswer({
           provider.model,
           context,
           question,
+          history,
           locale,
           first.providerContent,
         ),
@@ -314,6 +357,7 @@ async function generateProviderAnswer({
       provider.model,
       context,
       question,
+      history,
       locale,
       first.providerContent,
     ),
@@ -346,6 +390,7 @@ function createProviderRequest(
   model: string,
   context: string,
   question: string,
+  history: NormalizedHistoryTurn[],
   locale: "en" | "zh",
 ) {
   const outputLanguage =
@@ -364,6 +409,8 @@ function createProviderRequest(
           "Return only valid json.",
           "Do not use markdown, code fences, prose, or comments before or after the json.",
           "Use only the provided document context. If the answer is not in the context, say that the document text does not contain enough evidence.",
+          "Conversation history is only for follow-up intent and wording. Do not treat history as document evidence.",
+          "Resolve follow-up phrases such as it, this amount, that date, 上一个问题, 它, 这个金额, or 该日期 using the recent conversation when possible.",
           "For OCR text, treat noisy mixed-language lines, labels, dates, amounts, invoice numbers, contract IDs, party names, and table-like key-value pairs as valid evidence when they appear in the context.",
           "If any relevant evidence appears in the context or in your references, answer from that evidence instead of refusing.",
           "Do not require the context language to match the question language; translate the evidence into the requested answer language when needed.",
@@ -397,6 +444,9 @@ function createProviderRequest(
           "Question:",
           question,
           "",
+          "Recent conversation history:",
+          formatHistory(history),
+          "",
           "Extracted PDF text context:",
           context,
         ].join("\n"),
@@ -409,6 +459,7 @@ function createRepairProviderRequest(
   model: string,
   context: string,
   question: string,
+  history: NormalizedHistoryTurn[],
   locale: "en" | "zh",
   previousContent: string,
 ) {
@@ -448,9 +499,13 @@ function createRepairProviderRequest(
           "Every reference must be an exact quote copied from the source text.",
           "Create a valid json answer from the source text below.",
           "Use only the source text.",
+          "Use recent conversation history only to understand follow-up wording, not as source evidence.",
           "",
           "Question:",
           question,
+          "",
+          "Recent conversation history:",
+          formatHistory(history),
           "",
           "Previous invalid output:",
           previousContent.slice(0, 2000) || "[empty]",

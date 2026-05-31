@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import {
   askAiAboutPdf,
+  type AiChatHistoryTurn,
   type AiChatLocale,
   type AiChatResult,
 } from "@/lib/ai-chat-runtime";
@@ -30,12 +31,16 @@ const copy = {
       "Ask about clauses, risks, dates, obligations, tables, or next steps.",
     ask: "Ask question",
     reset: "Reset",
+    newChat: "New Chat",
     cancel: "Cancel",
     source: "Source",
     context: "Context sent",
     provider: "Provider",
     usage: "Token usage",
     answer: "Answer",
+    conversation: "Conversation",
+    user: "User",
+    assistant: "Assistant",
     references: "References",
     privacyTitle: "Privacy behavior",
     privacy:
@@ -57,12 +62,16 @@ const copy = {
     questionPlaceholder: "询问条款、风险、日期、义务、表格或下一步。",
     ask: "提问",
     reset: "重置",
+    newChat: "新对话",
     cancel: "取消",
     source: "来源",
     context: "发送上下文",
     provider: "Provider",
     usage: "Token 用量",
     answer: "回答",
+    conversation: "对话记录",
+    user: "用户",
+    assistant: "助手",
     references: "引用依据",
     privacyTitle: "隐私处理方式",
     privacy:
@@ -90,6 +99,7 @@ export function AiChatWorkflow({
   const [progressStep, setProgressStep] = useState("");
   const [error, setError] = useState("");
   const [result, setResult] = useState<AiChatResult | null>(null);
+  const [history, setHistory] = useState<AiChatHistoryTurn[]>([]);
 
   const hasDocument = Boolean(file) || pastedText.trim().length > 0;
   const hasQuestion = question.trim().length > 0;
@@ -138,6 +148,7 @@ export function AiChatWorkflow({
         file,
         pastedText,
         question,
+        history,
         locale,
         signal: controller.signal,
         onProgress: ({ progress: nextProgress, step }) => {
@@ -152,6 +163,16 @@ export function AiChatWorkflow({
       }
 
       setResult(answer);
+      setHistory((currentHistory) =>
+        [
+          ...currentHistory,
+          {
+            question: question.trim(),
+            answer: answer.answer,
+          },
+        ].slice(-8),
+      );
+      setQuestion("");
       setProgress(100);
       setStatus("result");
     } catch (chatError) {
@@ -193,9 +214,21 @@ export function AiChatWorkflow({
     setProgressStep("");
     setError("");
     setResult(null);
+    setHistory([]);
     if (inputRef.current) {
       inputRef.current.value = "";
     }
+  }
+
+  function newChat() {
+    abortRef.current?.abort();
+    setQuestion("");
+    setHistory([]);
+    setResult(null);
+    setError("");
+    setProgress(0);
+    setProgressStep("");
+    setStatus("idle");
   }
 
   function updateReadyState(nextQuestion = question, nextText = pastedText) {
@@ -243,6 +276,14 @@ export function AiChatWorkflow({
                 className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white px-5 py-3 text-sm font-semibold text-[#0f172a] shadow-sm transition hover:border-[#0f172a] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {t.reset}
+              </button>
+              <button
+                type="button"
+                onClick={newChat}
+                disabled={isWorking || history.length === 0}
+                className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white px-5 py-3 text-sm font-semibold text-[#0f172a] shadow-sm transition hover:border-[#0f172a] disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {t.newChat}
               </button>
             </div>
             <input
@@ -336,6 +377,36 @@ export function AiChatWorkflow({
               <p className="mt-4 text-sm font-medium text-[#334155]">{t.ready}</p>
             ) : null}
           </div>
+
+          {history.length > 0 ? (
+            <section className="mt-4 rounded-xl border border-[#cbd5e1] bg-white p-5">
+              <h3 className="text-lg font-semibold text-[#0f172a]">
+                {t.conversation}
+              </h3>
+              <div className="mt-4 grid gap-3">
+                {history.map((turn, index) => (
+                  <div key={`${index}-${turn.question}`} className="grid gap-2">
+                    <div className="rounded-xl border border-[#cbd5e1] bg-[#f8fafc] p-3">
+                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#64748b]">
+                        {t.user}
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-[#0f172a]">
+                        {turn.question}
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-[#dbeafe] bg-[#eff6ff] p-3">
+                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#1d4ed8]">
+                        {t.assistant}
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-[#1e3a8a]">
+                        {turn.answer}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
 
           {result ? (
             <div className="mt-4 rounded-xl border border-[#cbd5e1] bg-white p-5">

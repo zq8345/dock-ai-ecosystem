@@ -21,10 +21,16 @@ export type AiChatResult = {
   };
 };
 
+export type AiChatHistoryTurn = {
+  question: string;
+  answer: string;
+};
+
 type GenerateAiChatInput = {
   file?: File | null;
   pastedText?: string;
   question: string;
+  history?: AiChatHistoryTurn[];
   locale: AiChatLocale;
   signal?: AbortSignal;
   onProgress?: (progress: AiChatProgress) => void;
@@ -53,6 +59,7 @@ export async function askAiAboutPdf({
   file,
   pastedText,
   question,
+  history,
   locale,
   signal,
   onProgress,
@@ -125,6 +132,7 @@ export async function askAiAboutPdf({
     body: JSON.stringify({
       context: selectedContext.context,
       question: normalizedQuestion,
+      history: normalizeHistory(history),
       locale,
       sourceName,
       truncated: selectedContext.truncated,
@@ -179,6 +187,16 @@ export async function askAiAboutPdf({
       payload.diagnostics?.contextCharacters ?? selectedContext.context.length,
     truncated: payload.diagnostics?.truncated ?? selectedContext.truncated,
   };
+}
+
+function normalizeHistory(history: AiChatHistoryTurn[] | undefined) {
+  return (history ?? [])
+    .map((turn) => ({
+      question: normalizeText(turn.question).slice(0, 800),
+      answer: normalizeText(turn.answer).slice(0, 1600),
+    }))
+    .filter((turn) => turn.question.length >= 3 && turn.answer.length > 0)
+    .slice(-8);
 }
 
 async function extractPdfText(
