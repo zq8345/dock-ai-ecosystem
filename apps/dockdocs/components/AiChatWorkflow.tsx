@@ -13,6 +13,8 @@ type WorkflowStatus =
   | "ready"
   | "extracting"
   | "asking"
+  | "streaming"
+  | "validating"
   | "result"
   | "error";
 
@@ -30,6 +32,7 @@ const copy = {
     questionPlaceholder:
       "Ask about clauses, risks, dates, obligations, tables, or next steps.",
     ask: "Ask question",
+    retry: "Retry",
     reset: "Reset",
     newChat: "New Chat",
     cancel: "Cancel",
@@ -48,6 +51,12 @@ const copy = {
     idle: "Upload a PDF or paste OCR text, then ask a question.",
     ready: "Ready to ask.",
     working: "Asking the document...",
+    extractingStatus: "Reading document text...",
+    sendingStatus: "Sending context to the AI provider...",
+    streamingStatus: "Streaming answer...",
+    validatingStatus: "Validating references and token usage...",
+    fallbackStatus: "Streaming paused. Finishing with the standard response...",
+    cancelled: "Cancelled. The partial answer was not saved.",
     truncated: "Context was trimmed to stay within the MVP limit.",
   },
   zh: {
@@ -61,6 +70,7 @@ const copy = {
     questionLabel: "问题",
     questionPlaceholder: "询问条款、风险、日期、义务、表格或下一步。",
     ask: "提问",
+    retry: "重试",
     reset: "重置",
     newChat: "新对话",
     cancel: "取消",
@@ -79,6 +89,12 @@ const copy = {
     idle: "上传 PDF 或粘贴 OCR 文本，然后提出问题。",
     ready: "已准备提问。",
     working: "正在询问文档...",
+    extractingStatus: "正在读取文档文本...",
+    sendingStatus: "正在发送上下文到 AI provider...",
+    streamingStatus: "正在流式生成回答...",
+    validatingStatus: "正在校验引用和 token 用量...",
+    fallbackStatus: "流式响应中断，正在使用标准响应完成...",
+    cancelled: "已取消。未完成回答不会保存到对话记录。",
     truncated: "上下文已按 MVP 限制裁剪。",
   },
 } as const;
@@ -104,7 +120,11 @@ export function AiChatWorkflow({
 
   const hasDocument = Boolean(file) || pastedText.trim().length > 0;
   const hasQuestion = question.trim().length > 0;
-  const isWorking = status === "extracting" || status === "asking";
+  const isWorking =
+    status === "extracting" ||
+    status === "asking" ||
+    status === "streaming" ||
+    status === "validating";
 
   function chooseFile(fileList: FileList | null) {
     const selected = fileList?.[0] ?? null;
@@ -142,7 +162,7 @@ export function AiChatWorkflow({
     setResult(null);
     setStreamingAnswer("");
     setProgress(0);
-    setProgressStep("");
+    setProgressStep(t.extractingStatus);
     setStatus("extracting");
 
     try {
@@ -155,7 +175,7 @@ export function AiChatWorkflow({
         signal: controller.signal,
         onProgress: ({ progress: nextProgress, step }) => {
           setProgress(nextProgress);
-          setProgressStep(step);
+          setProgressStep(nextProgress >= 70 ? t.sendingStatus : step);
           setStatus(nextProgress >= 70 ? "asking" : "extracting");
         },
         onAnswerDelta: (text) => {
@@ -165,7 +185,28 @@ export function AiChatWorkflow({
 
           setStreamingAnswer((current) => `${current}${text}`);
           setProgress((current) => Math.max(current, 85));
-          setStatus("asking");
+          setProgressStep(t.streamingStatus);
+          setStatus("streaming");
+        },
+        onStreamStatus: (streamStatus) => {
+          if (streamStatus === "streaming") {
+            setProgress((current) => Math.max(current, 85));
+            setProgressStep(t.streamingStatus);
+            setStatus("streaming");
+          }
+
+          if (streamStatus === "validating") {
+            setProgress((current) => Math.max(current, 95));
+            setProgressStep(t.validatingStatus);
+            setStatus("validating");
+          }
+
+          if (streamStatus === "fallback") {
+            setStreamingAnswer("");
+            setProgress((current) => Math.max(current, 75));
+            setProgressStep(t.fallbackStatus);
+            setStatus("asking");
+          }
         },
       });
 
@@ -205,12 +246,16 @@ export function AiChatWorkflow({
             : "Cancelled."
           : message,
       );
+      setProgress(0);
+      setProgressStep("");
       setStatus("error");
     }
   }
 
   function cancel() {
     abortRef.current?.abort();
+    setStreamingAnswer("");
+    setError(t.cancelled);
     setStatus(hasDocument && hasQuestion ? "ready" : "idle");
     setProgress(0);
     setProgressStep("");
@@ -386,6 +431,15 @@ export function AiChatWorkflow({
                 className="mt-4 rounded-xl border border-[#fecaca] bg-[#fef2f2] p-4 text-sm leading-6 text-[#991b1b]"
               >
                 {error}
+                {status === "error" && hasDocument && hasQuestion ? (
+                  <button
+                    type="button"
+                    onClick={startChat}
+                    className="mt-3 inline-flex min-h-10 items-center justify-center rounded-full bg-[#991b1b] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#7f1d1d]"
+                  >
+                    {t.retry}
+                  </button>
+                ) : null}
               </div>
             ) : null}
 

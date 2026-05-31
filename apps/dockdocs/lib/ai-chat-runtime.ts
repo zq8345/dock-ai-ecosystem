@@ -35,6 +35,7 @@ type GenerateAiChatInput = {
   signal?: AbortSignal;
   onProgress?: (progress: AiChatProgress) => void;
   onAnswerDelta?: (text: string) => void;
+  onStreamStatus?: (status: "streaming" | "validating" | "fallback") => void;
 };
 
 type PdfJsDocument = {
@@ -65,6 +66,7 @@ export async function askAiAboutPdf({
   signal,
   onProgress,
   onAnswerDelta,
+  onStreamStatus,
 }: GenerateAiChatInput): Promise<AiChatResult> {
   const normalizedQuestion = normalizeText(question);
   if (normalizedQuestion.length < 3) {
@@ -140,6 +142,7 @@ export async function askAiAboutPdf({
     locale,
     signal,
     onAnswerDelta,
+    onStreamStatus,
   });
 
   emitProgress(
@@ -183,11 +186,13 @@ async function requestAiChat({
   locale,
   signal,
   onAnswerDelta,
+  onStreamStatus,
 }: {
   body: Record<string, unknown>;
   locale: AiChatLocale;
   signal?: AbortSignal;
   onAnswerDelta?: (text: string) => void;
+  onStreamStatus?: (status: "streaming" | "validating" | "fallback") => void;
 }) {
   try {
     return await requestAiChatStream({
@@ -195,12 +200,15 @@ async function requestAiChat({
       locale,
       signal,
       onAnswerDelta,
+      onStreamStatus,
     });
   } catch (error) {
     throwIfAborted(signal);
-    if (onAnswerDelta) {
-      onAnswerDelta("");
+    if (isInterruptedStreamError(error)) {
+      throw error;
     }
+    onStreamStatus?.("fallback");
+    onAnswerDelta?.("");
     return requestAiChatJson({ body, locale, signal });
   }
 }
@@ -233,11 +241,13 @@ async function requestAiChatStream({
   locale,
   signal,
   onAnswerDelta,
+  onStreamStatus,
 }: {
   body: Record<string, unknown>;
   locale: AiChatLocale;
   signal?: AbortSignal;
   onAnswerDelta?: (text: string) => void;
+  onStreamStatus?: (status: "streaming" | "validating" | "fallback") => void;
 }) {
   const response = await fetch("/api/ai-chat", {
     method: "POST",
@@ -265,50 +275,86 @@ async function requestAiChatStream({
   const decoder = new TextDecoder();
   let buffer = "";
   let finalPayload: AiChatPayload | null = null;
+  let receivedDelta = false;
 
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) {
-      break;
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) {
+        break;
+      }
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split(/\r?\n/);
+      buffer = lines.pop() ?? "";
+
+      for (const line of lines) {
+        const event = parseStreamEvent(line);
+        if (!event) {
+          continue;
+        }
+
+        if (event.type === "delta" && typeof event.text === "string") {
+          receivedDelta = true;
+          onStreamStatus?.("streaming");
+          onAnswerDelta?.(event.text);
+        }
+
+        if (event.type === "result") {
+          onStreamStatus?.("validating");
+          finalPayload = event as AiChatPayload;
+        }
+
+        if (event.type === "error") {
+          throw new Error(
+            typeof event.message === "string"
+              ? event.message
+              : locale === "zh"
+                ? "Chat with PDF 接口当前不可用。"
+                : "The Chat with PDF provider is currently unavailable.",
+          );
+        }
+      }
+    }
+  } catch (error) {
+    if (receivedDelta) {
+      throw new StreamInterruptedError(
+        locale === "zh"
+          ? "流式回答已中断。请重试。"
+          : "The streaming answer was interrupted. Retry the question.",
+      );
     }
 
-    buffer += decoder.decode(value, { stream: true });
-    const lines = buffer.split(/\r?\n/);
-    buffer = lines.pop() ?? "";
-
-    for (const line of lines) {
-      const event = parseStreamEvent(line);
-      if (!event) {
-        continue;
-      }
-
-      if (event.type === "delta" && typeof event.text === "string") {
-        onAnswerDelta?.(event.text);
-      }
-
-      if (event.type === "result") {
-        finalPayload = event as AiChatPayload;
-      }
-
-      if (event.type === "error") {
-        throw new Error(
-          typeof event.message === "string"
-            ? event.message
-            : locale === "zh"
-              ? "Chat with PDF 接口当前不可用。"
-              : "The Chat with PDF provider is currently unavailable.",
-        );
-      }
-    }
+    throw error;
   }
 
   const remainder = decoder.decode();
   const event = parseStreamEvent(`${buffer}${remainder}`);
   if (event?.type === "result") {
+    onStreamStatus?.("validating");
     finalPayload = event as AiChatPayload;
   }
 
+  if (receivedDelta && !finalPayload) {
+    throw new StreamInterruptedError(
+      locale === "zh"
+        ? "流式回答已中断。请重试。"
+        : "The streaming answer was interrupted. Retry the question.",
+    );
+  }
+
   return assertAiChatPayload(response, finalPayload, locale);
+}
+
+class StreamInterruptedError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "StreamInterruptedError";
+  }
+}
+
+function isInterruptedStreamError(error: unknown) {
+  return error instanceof StreamInterruptedError;
 }
 
 function parseStreamEvent(line: string) {
