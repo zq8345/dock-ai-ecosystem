@@ -1,10 +1,16 @@
-import { tools } from "@/lib/tools";
+"use client";
+
+import { usePathname } from "next/navigation";
+import { getRuntimeCopy, localeFromPathname } from "@/lib/copy";
 
 export function BrandNav() {
+  const locale = localeFromPathname(usePathname());
+  const copy = getRuntimeCopy(locale).shell.brand;
+
   return (
-    <nav aria-label="Brand navigation">
+    <nav aria-label={copy.aria}>
       <ul className="flex flex-wrap items-center justify-end gap-1 text-xs sm:flex-nowrap sm:gap-2 sm:text-sm">
-        {tools.map((tool) => (
+        {copy.products.map((tool) => (
           <li key={tool.href} className="shrink-0">
             <a
               href={tool.href}

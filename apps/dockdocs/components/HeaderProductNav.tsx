@@ -2,27 +2,8 @@
 
 import { usePathname } from "next/navigation";
 
-import { defaultLocale, isLocale, localizedPath, type Locale } from "@/lib/i18n";
-
-const navCopy: Record<
-  Locale,
-  Array<{ name: string; href: string; localizedSlug?: "pdf-to-word" | "compress-pdf" }>
-> = {
-  en: [
-    { name: "AI", href: "/#ai" },
-    { name: "Convert", href: "/pdf-to-word", localizedSlug: "pdf-to-word" },
-    { name: "Optimize", href: "/compress-pdf", localizedSlug: "compress-pdf" },
-    { name: "Dashboard", href: "/dashboard" },
-    { name: "My Chats", href: "/my-chats" },
-  ],
-  zh: [
-    { name: "AI", href: "/zh/#tools" },
-    { name: "转换", href: "/pdf-to-word", localizedSlug: "pdf-to-word" },
-    { name: "优化", href: "/compress-pdf", localizedSlug: "compress-pdf" },
-    { name: "控制台", href: "/dashboard" },
-    { name: "我的对话", href: "/my-chats" },
-  ],
-};
+import { getRuntimeCopy } from "@/lib/copy";
+import { defaultLocale, isLocale, localizedPath, type RouteSlug } from "@/lib/i18n";
 
 function currentRoute(pathname: string | null) {
   const firstSegment = (pathname ?? "/").split("/").filter(Boolean)[0];
@@ -36,15 +17,17 @@ function currentRoute(pathname: string | null) {
 
 export function HeaderProductNav() {
   const { locale, hasLocalePrefix } = currentRoute(usePathname());
-  const links = navCopy[locale];
+  const copy = getRuntimeCopy(locale).shell;
+  const links = copy.nav;
 
   return (
-    <nav aria-label="DockDocs navigation" className="w-full lg:w-auto">
+    <nav aria-label={copy.header.aria} className="w-full lg:w-auto">
       <ul className="flex flex-wrap gap-1 text-xs font-semibold text-[color:var(--muted)] sm:text-sm">
         {links.map((link) => {
-          const href = link.localizedSlug
+          const slug = "slug" in link ? link.slug : undefined;
+          const href = slug
             ? hasLocalePrefix
-              ? localizedPath(locale, link.localizedSlug)
+              ? localizedPath(locale, slug as RouteSlug)
               : link.href
             : link.name === "AI" && hasLocalePrefix
               ? `${localizedPath(locale, "")}#tools`

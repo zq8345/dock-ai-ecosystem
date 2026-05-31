@@ -9,6 +9,89 @@ export function localeFromPathname(pathname: string | null | undefined): Runtime
 
 export const runtimeCopy = {
   en: {
+    shell: {
+      header: {
+        aria: "DockDocs navigation",
+        homeAria: "DockDocs home",
+        tagline: "AI Document Platform",
+      },
+      nav: [
+        { name: "AI", href: "/#ai" },
+        { name: "Convert", href: "/pdf-to-word", slug: "pdf-to-word" },
+        { name: "Optimize", href: "/compress-pdf", slug: "compress-pdf" },
+        { name: "Dashboard", href: "/dashboard", slug: "dashboard" },
+        { name: "My Chats", href: "/my-chats" },
+      ],
+      brand: {
+        aria: "Brand navigation",
+        products: [
+          {
+            name: "DockDocs",
+            href: "https://dockdocs.app",
+            description: "AI document workspace for files, summaries, conversion, and review.",
+          },
+          {
+            name: "DockIMG",
+            href: "https://dockimg.app",
+            description: "AI image workspace for visual editing, cleanup, and conversion.",
+          },
+          {
+            name: "DockSEO",
+            href: "https://dockseo.app",
+            description: "Search workspace for snippets, metadata, and content checks.",
+          },
+          {
+            name: "DockText",
+            href: "https://docktext.app",
+            description: "AI writing workspace for cleanup, summaries, and formatting.",
+          },
+        ],
+      },
+      footer: {
+        aria: "Footer navigation",
+        copyrightPrefix: "(c)",
+        links: [
+          { name: "Related Workspaces", href: "/#related-tools" },
+          { name: "DockDocs", href: "/" },
+          { name: "Privacy Policy", href: "/privacy-policy" },
+          { name: "Terms", href: "/terms" },
+          { name: "Sitemap", href: "/sitemap" },
+        ],
+      },
+      relatedTools: {
+        title: "Related Workspaces",
+        description:
+          "Move between the Dock products with one consistent workspace pattern across desktop and mobile.",
+      },
+      account: {
+        account: "Account",
+        myChats: "My Chats",
+        signedIn: "Signed in",
+        logout: "Logout",
+        continueGoogle: "Continue with Google",
+        email: "Email",
+        password: "Password",
+        login: "Login",
+        actionFailed: "Account action failed.",
+      },
+      toolTemplate: {
+        eyebrow: "AI Document Platform",
+        schemaSlogan: "AI document platform for real file workflows",
+      },
+      legal: {
+        privacy: "Privacy Policy",
+        terms: "Terms",
+        sitemap: "Sitemap",
+      },
+      trust: {
+        localFirst: "Local-first",
+        exportReady: "Export-ready",
+      },
+      metadata: {
+        title: "DockDocs AI Document Workspace",
+        description: "AI document tools for PDFs, office files, writing cleanup, and document workflows.",
+      },
+    },
     common: {
       upload: {
         label: "Upload",
@@ -345,6 +428,88 @@ export const runtimeCopy = {
     },
   },
   zh: {
+    shell: {
+      header: {
+        aria: "DockDocs 导航",
+        homeAria: "DockDocs 首页",
+        tagline: "AI 文档平台",
+      },
+      nav: [
+        { name: "AI", href: "/zh/#tools" },
+        { name: "转换", href: "/pdf-to-word", slug: "pdf-to-word" },
+        { name: "优化", href: "/compress-pdf", slug: "compress-pdf" },
+        { name: "控制台", href: "/dashboard", slug: "dashboard" },
+        { name: "我的对话", href: "/my-chats" },
+      ],
+      brand: {
+        aria: "品牌导航",
+        products: [
+          {
+            name: "DockDocs",
+            href: "https://dockdocs.app",
+            description: "面向文件、摘要、转换和审阅的 AI 文档工作区。",
+          },
+          {
+            name: "DockIMG",
+            href: "https://dockimg.app",
+            description: "面向视觉编辑、清理和转换的 AI 图像工作区。",
+          },
+          {
+            name: "DockSEO",
+            href: "https://dockseo.app",
+            description: "面向摘要片段、元信息和内容检查的搜索工作区。",
+          },
+          {
+            name: "DockText",
+            href: "https://docktext.app",
+            description: "面向文本清理、摘要和格式化的 AI 写作工作区。",
+          },
+        ],
+      },
+      footer: {
+        aria: "页脚导航",
+        copyrightPrefix: "(c)",
+        links: [
+          { name: "相关工作区", href: "/zh/#related-tools" },
+          { name: "DockDocs", href: "/zh/" },
+          { name: "隐私政策", href: "/zh/privacy-policy/" },
+          { name: "服务条款", href: "/zh/terms/" },
+          { name: "站点地图", href: "/zh/sitemap/" },
+        ],
+      },
+      relatedTools: {
+        title: "相关工作区",
+        description: "在 Dock 产品之间切换，并保持一致的桌面与移动端工作区体验。",
+      },
+      account: {
+        account: "账户",
+        myChats: "我的对话",
+        signedIn: "已登录",
+        logout: "退出",
+        continueGoogle: "使用 Google 继续",
+        email: "邮箱",
+        password: "密码",
+        login: "登录",
+        actionFailed: "账户操作失败。",
+      },
+      toolTemplate: {
+        eyebrow: "AI 文档平台",
+        schemaSlogan: "面向真实文件工作流的 AI 文档平台",
+      },
+      legal: {
+        privacy: "隐私政策",
+        terms: "服务条款",
+        sitemap: "站点地图",
+      },
+      trust: {
+        localFirst: "本地优先",
+        exportReady: "可导出",
+      },
+      metadata: {
+        title: "DockDocs AI 文档工作区",
+        description: "面向 PDF、办公文件、文字清理和文档工作流的 AI 文档工具。",
+      },
+    },
     common: {
       upload: {
         label: "上传",

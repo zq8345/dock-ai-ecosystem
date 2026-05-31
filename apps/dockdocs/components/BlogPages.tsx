@@ -774,13 +774,13 @@ function getGeoFaq(
         answer: getQuickAnswer(article, locale),
       },
       {
-        question: `我应该先用 ${article.toolLabel} 还是其它 PDF 工具？`,
+        question: `我应该先用 ${article.toolLabel} 还是其它文档工作流？`,
         answer: `如果当前目标正是 ${article.category}，先使用 ${article.toolLabel}。如果文件过大、需要文字识别或需要编辑，再继续使用压缩、OCR 或 PDF 转 Word。`,
       },
       {
         question: `${article.toolLabel} 和 AI Workspace 有什么关系？`,
         answer:
-          "DockDocs 以 PDF 工具为主，AI Workspace 是增强层，用于 OCR、摘要、PDF 问答和文档理解。",
+          "DockDocs 是面向真实文件的 AI Document Platform，用于 OCR、摘要、PDF 问答和文档理解。",
       },
     ];
   }

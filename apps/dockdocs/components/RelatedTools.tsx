@@ -1,10 +1,16 @@
-import { tools } from "@/lib/tools";
+"use client";
+
+import { usePathname } from "next/navigation";
+import { getRuntimeCopy, localeFromPathname } from "@/lib/copy";
 
 type RelatedToolsProps = {
   compact?: boolean;
 };
 
 export function RelatedTools({ compact = false }: RelatedToolsProps) {
+  const locale = localeFromPathname(usePathname());
+  const shell = getRuntimeCopy(locale).shell;
+
   return (
     <section
       id="related-tools"
@@ -18,12 +24,11 @@ export function RelatedTools({ compact = false }: RelatedToolsProps) {
               id={compact ? "footer-related-tools" : "related-tools-title"}
               className={compact ? "text-lg font-semibold" : "text-2xl font-semibold"}
             >
-              Related Tools
+              {shell.relatedTools.title}
             </h2>
             {!compact && (
               <p className="mt-3 max-w-2xl leading-7 text-[color:var(--muted)]">
-                Move between the four Dock products with one consistent
-                navigation pattern across desktop and mobile.
+                {shell.relatedTools.description}
               </p>
             )}
           </div>
@@ -35,7 +40,7 @@ export function RelatedTools({ compact = false }: RelatedToolsProps) {
               : "mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
           }
         >
-          {tools.map((tool) => (
+          {shell.brand.products.map((tool) => (
             <a
               key={tool.href}
               href={tool.href}

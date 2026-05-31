@@ -242,12 +242,12 @@ export const geoHubCopy: Record<Locale, Record<GeoPageSlug, GeoHubData>> = {
       slug: "resources",
       title: "PDF 工作流资源 | DockDocs",
       description:
-        "DockDocs 关于 PDF 工作流、AI 文档工作流、OCR、转换和隐私优先文档生产力的资源。",
+        "DockDocs 关于文档工作流、AI 文档工作流、OCR、转换和文档生产力的资源。",
       eyebrow: "资源",
-      heroTitle: "面向 AI 可读性的 PDF 与文档工作流资源。",
+      heroTitle: "面向 AI 可读性的文档工作流资源。",
       heroDescription:
-        "聚合 PDF 工具、OCR、转换指南、AI 文档生产力和支持内容。",
-      primaryAction: { label: "浏览 PDF 工具", href: "/" },
+        "聚合文档工具、OCR、转换指南、AI 文档生产力和支持内容。",
+      primaryAction: { label: "进入文档工作区", href: "/" },
       secondaryAction: { label: "阅读博客指南", href: "/blog" },
       answer:
         "DockDocs 资源把 PDF 压缩、合并、拆分、转换、OCR 和 AI 文档工作流组织成便于搜索和 AI 答案引擎抽取的指南。",
@@ -273,15 +273,15 @@ export const geoHubCopy: Record<Locale, Record<GeoPageSlug, GeoHubData>> = {
       slug: "guides",
       title: "PDF 指南与教程 | DockDocs",
       description:
-        "DockDocs 关于减小 PDF、合并文件、拆分页面、OCR、JPG 转 PDF 和 PDF 转 Word 的实用指南。",
+        "DockDocs 关于文档压缩、合并文件、拆分页面、OCR、JPG 转 PDF 和 PDF 转 Word 的实用指南。",
       eyebrow: "指南",
-      heroTitle: "面向日常文档工作的 PDF 步骤指南。",
+      heroTitle: "面向日常文档工作的步骤指南。",
       heroDescription:
         "查找常见 PDF 和转换任务的快速答案、步骤和推荐工作流。",
       primaryAction: { label: "打开压缩 PDF", href: "/compress-pdf" },
       secondaryAction: { label: "查看资源", href: "/resources" },
       answer:
-        "DockDocs 指南说明应该使用哪个 PDF 工具、什么时候使用，以及如何完成可靠文档交付。",
+        "DockDocs 指南说明应该使用哪个文档工作流、什么时候使用，以及如何完成可靠文档交付。",
       groups: [
         {
           title: "高意图 PDF 指南",
@@ -303,11 +303,11 @@ export const geoHubCopy: Record<Locale, Record<GeoPageSlug, GeoHubData>> = {
       eyebrow: "AI PDF 指南",
       heroTitle: "面向 OCR、文本提取和文档工作流的 AI PDF 指南。",
       heroDescription:
-        "了解何时使用 OCR、扫描 PDF 如何转成文本，以及 AI 如何增强 DockDocs PDF 工具平台。",
+        "了解何时使用 OCR、扫描 PDF 如何转成文本，以及 AI 如何增强 DockDocs 文档工作区。",
       primaryAction: { label: "打开 OCR PDF", href: "/ocr-pdf" },
       secondaryAction: { label: "探索 AI 工作区", href: "/ai-workspace" },
       answer:
-        "DockDocs AI PDF 指南解释 OCR、扫描 PDF 转文本、AI-ready 转换，以及 AI 如何作为 PDF 工具增强层。",
+        "DockDocs AI PDF 指南解释 OCR、扫描 PDF 转文本、AI-ready 转换，以及 AI 如何作为文档理解能力接入工作区。",
       groups: [
         {
           title: "OCR 与 AI 答案工作流",
@@ -332,15 +332,19 @@ export function createGeoHubMetadata(
   hub: GeoHubData,
   canonicalPath: string,
 ): Metadata {
+  const title = /[\u4e00-\u9fff]/u.test(hub.title)
+    ? hub.title.replace(/\s*\|\s*DockDocs\s*$/u, "")
+    : hub.title;
+
   return {
-    title: hub.title,
+    title,
     description: hub.description,
     alternates: {
       canonical: canonicalPath,
       languages: languageAlternates(hub.slug),
     },
     openGraph: {
-      title: hub.title,
+      title,
       description: hub.description,
       url: absoluteUrl(canonicalPath),
       siteName: "DockDocs",
@@ -348,7 +352,7 @@ export function createGeoHubMetadata(
     },
     twitter: {
       card: "summary_large_image",
-      title: hub.title,
+      title,
       description: hub.description,
     },
     robots: {

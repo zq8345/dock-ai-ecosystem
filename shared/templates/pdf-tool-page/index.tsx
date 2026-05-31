@@ -159,7 +159,7 @@ const pdfTools = {
 
 const templateCopy = {
   en: {
-    toolEyebrow: "DockDocs PDF Tools",
+    toolEyebrow: "AI Document Platform",
     previewWorkflow: "Preview workflow",
     workflowEyebrow: "Tool workflow",
     workflowTitle: "A realistic flow from upload to output.",
@@ -179,19 +179,19 @@ const templateCopy = {
       "Continue from the tool page into crawlable DockDocs guides, resources, help content, and AI-readable workflow hubs.",
   },
   zh: {
-    toolEyebrow: "DockDocs PDF 工具",
+    toolEyebrow: "AI 文档平台",
     previewWorkflow: "预览流程",
     workflowEyebrow: "工具流程",
     workflowTitle: "从上传到导出的真实流程。",
     workflowDescription:
-      "工具页展示用户期望看到的上传、处理、结果和下载状态。",
+      "工作区展示用户期望看到的上传、处理、结果和下载状态。",
     benefits: "优势",
     features: "功能",
     workflow: "工作流",
     faq: "常见问题",
     relatedTools: "相关工具",
     relatedTitle: "继续使用其它 PDF 工作流。",
-    relatedDescription: "在 DockDocs PDF 工具之间继续处理文档。",
+    relatedDescription: "在 DockDocs 文档工作区之间继续处理文件。",
     indexingEyebrow: "推荐阅读",
     indexingTitle: "与当前工作流相关的指南和支持内容。",
     indexingDescription:
@@ -202,9 +202,13 @@ const templateCopy = {
 export function createPdfToolMetadata(config: PdfToolPageConfig): Metadata {
   const canonicalPath = config.canonicalPath ?? `/${config.slug}/`;
   const pageUrl = `${siteUrl}${canonicalPath}`;
+  const title =
+    config.locale === "zh"
+      ? config.title.replace(/\s*\|\s*DockDocs\s*$/u, "")
+      : config.title;
 
   return {
-    title: config.title,
+    title,
     description: config.description,
     keywords: config.keywords,
     alternates: {
@@ -212,7 +216,7 @@ export function createPdfToolMetadata(config: PdfToolPageConfig): Metadata {
       languages: config.alternateLanguages,
     },
     openGraph: {
-      title: config.title,
+      title,
       description: config.description,
       url: pageUrl,
       siteName: "DockDocs",
@@ -220,7 +224,7 @@ export function createPdfToolMetadata(config: PdfToolPageConfig): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: config.title,
+      title,
       description: config.description,
     },
     robots: {
@@ -270,7 +274,10 @@ export function createPdfToolSchema(config: PdfToolPageConfig) {
         brand: {
           "@type": "Brand",
           name: "DockDocs",
-          slogan: "Privacy-first PDF tools with AI document workflows",
+          slogan:
+            config.locale === "zh"
+              ? "面向真实文件工作流的 AI 文档平台"
+              : "AI document platform for real file workflows",
         },
         offers: {
           "@type": "Offer",
@@ -281,7 +288,10 @@ export function createPdfToolSchema(config: PdfToolPageConfig) {
       {
         "@type": "HowTo",
         "@id": `${pageUrl}#howto`,
-        name: `How to use ${config.appName}`,
+        name:
+          config.locale === "zh"
+            ? `如何使用 ${config.appName}`
+            : `How to use ${config.appName}`,
         description: config.workflowDescription,
         step: config.steps.map((step, index) => ({
           "@type": "HowToStep",

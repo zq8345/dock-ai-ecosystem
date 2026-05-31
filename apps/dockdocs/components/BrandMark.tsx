@@ -1,9 +1,17 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import { getRuntimeCopy, localeFromPathname } from "@/lib/copy";
+
 type BrandMarkProps = {
   className?: string;
   showWordmark?: boolean;
 };
 
 export function BrandMark({ className = "", showWordmark = true }: BrandMarkProps) {
+  const locale = localeFromPathname(usePathname());
+  const copy = getRuntimeCopy(locale).shell.header;
+
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`.trim()}>
       <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[color:var(--foreground)] text-[color:var(--background)] shadow-[0_10px_30px_rgba(15,23,42,0.16)]">
@@ -34,7 +42,7 @@ export function BrandMark({ className = "", showWordmark = true }: BrandMarkProp
         <span className="flex flex-col leading-none">
           <span className="text-sm font-semibold tracking-tight">DockDocs</span>
           <span className="mt-1 hidden text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)] sm:block">
-            AI Document Platform
+            {copy.tagline}
           </span>
         </span>
       )}

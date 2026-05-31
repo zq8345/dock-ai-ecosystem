@@ -84,6 +84,42 @@ export function generateStaticParams() {
   return [...standardRoutes, ...blogRoutes, ...programmaticGeoRoutes];
 }
 
+function createLocalizedMetadata(
+  locale: Locale,
+  slug: RouteSlug,
+  title: string,
+  description: string,
+): Metadata {
+  const canonical = localizedPath(locale, slug);
+  const pageTitle =
+    locale === "zh" ? title.replace(/\s*\|\s*DockDocs\s*$/u, "") : title;
+
+  return {
+    title: pageTitle,
+    description,
+    alternates: {
+      canonical,
+      languages: languageAlternates(slug),
+    },
+    openGraph: {
+      title: pageTitle,
+      description,
+      url: `https://dockdocs.app${canonical}`,
+      siteName: "DockDocs",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: pageTitle,
+      description,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -153,6 +189,43 @@ export async function generateMetadata({
     return {};
   }
 
+  const runtimeCopy = getRuntimeCopy(rawLocale);
+  if (slug === "chat-with-pdf") {
+    return createLocalizedMetadata(
+      rawLocale,
+      slug,
+      runtimeCopy.chat.heroTitle,
+      runtimeCopy.chat.heroDescription,
+    );
+  }
+
+  if (slug === "ai-summary") {
+    return createLocalizedMetadata(
+      rawLocale,
+      slug,
+      runtimeCopy.summary.title,
+      runtimeCopy.summary.description,
+    );
+  }
+
+  if (slug === "ocr") {
+    return createLocalizedMetadata(
+      rawLocale,
+      slug,
+      runtimeCopy.ocr.title,
+      runtimeCopy.ocr.description,
+    );
+  }
+
+  if (slug === "dashboard") {
+    return createLocalizedMetadata(
+      rawLocale,
+      slug,
+      runtimeCopy.dashboard.title,
+      runtimeCopy.dashboard.description,
+    );
+  }
+
   if ((toolSlugs as readonly string[]).includes(slug)) {
     return createPdfToolMetadata(
       getLocalizedToolConfig(rawLocale, slug as ToolSlug),
@@ -167,60 +240,35 @@ export async function generateMetadata({
   if ((infoPageSlugs as readonly string[]).includes(slug)) {
     if (slug === "blog") {
       const page = blogIndexCopy[rawLocale];
-      return {
-        title: page.title,
-        description: page.description,
-        alternates: {
-          canonical: localizedPath(rawLocale, "blog"),
-          languages: languageAlternates("blog"),
-        },
-      };
+      return createLocalizedMetadata(rawLocale, "blog", page.title, page.description);
     }
 
     const page = getInfoPage(rawLocale, slug as InfoPageSlug);
-    return {
-      title: page.title,
-      description: page.description,
-      alternates: {
-        canonical: localizedPath(rawLocale, slug),
-        languages: languageAlternates(slug),
-      },
-    };
+    return createLocalizedMetadata(rawLocale, slug, page.title, page.description);
   }
 
   if (slug === "ai-workspace") {
     const copy = aiCopy[rawLocale];
-    return {
-      title: copy.title,
-      description: copy.description,
-      alternates: {
-        canonical: localizedPath(rawLocale, "ai-workspace"),
-        languages: languageAlternates("ai-workspace"),
-      },
-    };
+    return createLocalizedMetadata(
+      rawLocale,
+      "ai-workspace",
+      copy.title,
+      copy.description,
+    );
   }
 
   if (slug === "sitemap") {
     const copy = sitemapCopy[rawLocale];
-    return {
-      title: copy.title,
-      description: copy.description,
-      alternates: {
-        canonical: localizedPath(rawLocale, "sitemap"),
-        languages: languageAlternates("sitemap"),
-      },
-    };
+    return createLocalizedMetadata(
+      rawLocale,
+      "sitemap",
+      copy.title,
+      copy.description,
+    );
   }
 
   const copy = homeCopy[rawLocale];
-  return {
-    title: copy.title,
-    description: copy.description,
-    alternates: {
-      canonical: localizedPath(rawLocale, ""),
-      languages: languageAlternates(""),
-    },
-  };
+  return createLocalizedMetadata(rawLocale, "", copy.title, copy.description);
 }
 
 export default async function LocalizedRoute({
@@ -786,9 +834,9 @@ const aiCopy = {
     title: "AI 文档工作区 | DockDocs",
     description: "在 DockDocs AI 文档工作区中整理、转换、OCR 并处理 PDF 文档。",
     eyebrow: "AI 工作区层",
-    heroTitle: "AI PDF 工作区，支持 OCR、摘要与 Chat with PDF。",
+    heroTitle: "AI 文档工作区，支持 OCR、摘要与 Chat with PDF。",
     heroDescription:
-      "DockDocs 以 PDF 工具为主。AI 用于 OCR、摘要、PDF 问答和多步骤文档工作流。",
+      "DockDocs 是面向真实文件的 AI Document Platform，用于 OCR、摘要、PDF 问答和多步骤文档工作流。",
     cards: ["OCR", "AI 摘要", "PDF 问答", "工作流"],
   },
 } as const;
@@ -811,7 +859,7 @@ function LocalizedAiWorkspace({ locale }: { locale: Locale }) {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href={localizedPath(locale, "")}>
-              {locale === "zh" ? "浏览 PDF 工具" : "Browse PDF tools"}
+              {locale === "zh" ? "进入文档工作区" : "Browse PDF tools"}
             </ButtonLink>
             <ButtonLink href={localizedPath(locale, "ocr-pdf")} variant="outline">
               OCR PDF
@@ -830,7 +878,7 @@ function LocalizedAiWorkspace({ locale }: { locale: Locale }) {
                 <h2 className="text-xl font-semibold">{card}</h2>
                 <p className="mt-3 text-sm leading-6 text-[#334155]">
                   {locale === "zh"
-                    ? "作为 PDF 工具后的增强能力，帮助理解和复用文档。"
+                    ? "作为文档工作区的智能能力，帮助理解和复用真实文件。"
                     : "An enhancement layer after the PDF task is clear."}
                 </p>
               </article>
@@ -861,7 +909,7 @@ function LocalizedSitemap({ locale }: { locale: Locale }) {
   const copy = sitemapCopy[locale];
   const groups = [
     {
-      title: locale === "zh" ? "PDF 工具" : "PDF Tools",
+      title: locale === "zh" ? "文档工具" : "PDF Tools",
       links: localizedTools.map((tool) => ({
         name: tool[locale],
         href: localizedPath(locale, tool.slug),
@@ -945,7 +993,7 @@ function LocalizedSitemap({ locale }: { locale: Locale }) {
       <Section className="border-b border-[#cbd5e1] bg-white">
         <Container className="py-16">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#334155]">
-            Sitemap
+            {locale === "zh" ? "站点地图" : "Sitemap"}
           </p>
           <h1 className="mt-5 max-w-4xl break-words text-2xl font-semibold leading-tight sm:text-6xl">
             {copy.heading}

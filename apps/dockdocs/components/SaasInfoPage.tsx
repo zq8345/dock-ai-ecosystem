@@ -21,9 +21,9 @@ export function SaasInfoPage({
     locale === "zh"
       ? [
           {
-            label: "PDF 工具",
+            label: "文档工作区",
             href: "/",
-            description: "返回 DockDocs PDF 工具首页。",
+            description: "返回 DockDocs AI Document Platform 首页。",
           },
           {
             label: "资源中心",
@@ -31,9 +31,9 @@ export function SaasInfoPage({
             description: "按工作流浏览 PDF、OCR、转换和 AI 文档资源。",
           },
           {
-            label: "PDF 指南",
+            label: "文档指南",
             href: "/guides",
-            description: "阅读压缩、合并、拆分和转换的步骤指南。",
+            description: "阅读压缩、转换、OCR 和 AI 文档工作流指南。",
           },
           {
             label: "FAQ",

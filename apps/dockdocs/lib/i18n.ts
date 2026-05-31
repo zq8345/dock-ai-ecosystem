@@ -124,8 +124,8 @@ export function localizedHref(href: string, locale: Locale, usePrefix: boolean) 
 export const navCopy = {
   en: {
     brand: "DockDocs",
-    badge: "Privacy-first PDF tools",
-    pdfTools: "PDF Tools",
+    badge: "AI Document Platform",
+    pdfTools: "Document Tools",
     compress: "Compress",
     merge: "Merge",
     split: "Split",
@@ -136,8 +136,8 @@ export const navCopy = {
   },
   zh: {
     brand: "DockDocs",
-    badge: "隐私优先 PDF 工具",
-    pdfTools: "PDF 工具",
+    badge: "AI 文档平台",
+    pdfTools: "文档工具",
     compress: "压缩",
     merge: "合并",
     split: "拆分",
@@ -178,7 +178,7 @@ export const relatedToolsCopy = {
   },
   zh: {
     title: "相关工具",
-    description: "在 DockDocs 的 PDF 工具和 AI 文档工作流之间继续处理文件。",
+    description: "在 DockDocs 的文档工具和 AI 文档工作流之间继续处理文件。",
     tools: [
       {
         name: "JPG 转 PDF",
@@ -260,7 +260,7 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
       description:
         "Learn about DockDocs, a privacy-first PDF tools platform evolving into an AI document workflow workspace.",
       eyebrow: "About DockDocs",
-      heroTitle: "Privacy-first PDF tools with an AI document layer.",
+      heroTitle: "AI document workspace for real file workflows.",
       heroDescription:
         "DockDocs is built to make everyday document work simpler: compress, merge, split, convert, OCR, summarize, and review documents in one clean workspace.",
       primaryAction: { label: "Start with JPG to PDF", href: "/jpg-to-pdf" },
@@ -603,28 +603,28 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
     about: {
       slug: "about",
       title: "关于 DockDocs",
-      description: "了解 DockDocs：隐私优先的 PDF 工具平台，并逐步发展为 AI 文档工作区。",
+      description: "了解 DockDocs：面向真实文件工作流的 AI Document Platform。",
       eyebrow: "关于 DockDocs",
-      heroTitle: "以 PDF 工具为核心，用 AI 增强文档工作流。",
+      heroTitle: "面向真实文件工作流的 AI 文档平台。",
       heroDescription:
         "DockDocs 面向日常文档工作：压缩、合并、拆分、转换、OCR、摘要和文档问答，都在一个清晰的工作区中完成。",
-      primaryAction: { label: "开始 JPG 转 PDF", href: "/jpg-to-pdf" },
+      primaryAction: { label: "进入文档工作区", href: "/" },
       secondaryAction: { label: "查看 AI 工作区", href: "/ai-workspace" },
       sections: [
         {
           title: "使命",
           description:
-            "DockDocs 的使命是让 PDF 工作流更清晰、更可信、更适合全球用户，而不是堆满复杂按钮的工具站。",
+            "DockDocs 的使命是让文档工作流更清晰、更可信、更适合全球用户，而不是停留在单一工具集合。",
           items: [
             {
-              title: "PDF 工具优先",
+              title: "AI 文档平台",
               description:
-                "产品首先解决压缩、合并、拆分、转换、OCR、图片转 PDF 等高频任务。",
+                "产品围绕上传、理解、转换、压缩、OCR、摘要和文档问答组织真实文件工作流。",
             },
             {
-              title: "AI 作为增强层",
+              title: "AI 优先的工作区",
               description:
-                "AI 只在真正提升文档理解时出现，例如 OCR、摘要、PDF 问答和流程建议。",
+                "AI 用于提升文档理解，例如 OCR、摘要、PDF 问答、来源引用和流程建议。",
             },
             {
               title: "隐私优先理念",
@@ -636,7 +636,7 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
         {
           title: "产品方向",
           description:
-            "DockDocs 正从单个 PDF 工具集合，升级为面向全球生产力的 AI 文档工作区。",
+            "DockDocs 正建设为面向全球生产力的 AI 文档工作区。",
           items: [
             {
               title: "支持的工作流",
@@ -654,20 +654,20 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
     },
     blog: {
       slug: "blog",
-      title: "资源与博客 | DockDocs",
-      description: "DockDocs 关于 PDF 工具、OCR、JPG 转 PDF 和 AI 文档生产力的资源中心。",
+      title: "资源与博客",
+      description: "DockDocs 关于 AI 文档工作流、OCR、转换和文档生产力的资源中心。",
       eyebrow: "资源",
-      heroTitle: "PDF 工具与 AI 文档工作流资源。",
+      heroTitle: "AI 文档工作流资源。",
       heroDescription:
-        "这里将承载产品指南、工作流说明、更新日志和面向 SEO 的文档生产力内容。",
+        "这里承载产品指南、工作流说明、更新日志和文档生产力内容。",
       sections: [
         {
           title: "规划中的内容方向",
           description: "博客页用于承载真正有帮助的长期内容，而不是空泛公告。",
           items: [
             {
-              title: "PDF 工作流指南",
-              description: "压缩、合并、拆分、转换和整理文档包的实用指南。",
+              title: "文档工作流指南",
+              description: "压缩、合并、拆分、转换、OCR 和整理文档包的实用指南。",
             },
             {
               title: "转换资源",
@@ -683,8 +683,8 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
     },
     help: {
       slug: "help",
-      title: "帮助中心 | DockDocs",
-      description: "DockDocs 上传、隐私优先 PDF 工作流、本地处理、支持格式和 AI 限制说明。",
+      title: "帮助中心",
+      description: "DockDocs 上传、文档工作流、本地处理、支持格式和 AI 限制说明。",
       eyebrow: "帮助中心",
       heroTitle: "了解上传、隐私、格式和 AI 文档工作流。",
       heroDescription:
@@ -698,7 +698,7 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
             {
               title: "上传行为",
               description:
-                "从所选工具的上传卡片选择文件。PDF 工具主要面向 PDF 文件，JPG 转 PDF 接受图片文件并生成文档。",
+                "从所选工作区的上传卡片选择文件。PDF 工作流主要面向 PDF 文件，JPG 转 PDF 接受图片文件并生成文档。",
             },
             {
               title: "支持格式",
@@ -715,7 +715,7 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
         {
           title: "本地处理、隐私优先与 AI 限制",
           description:
-            "DockDocs 尽可能采用本地优先的文档准备方式，强调隐私优先处理，并清楚说明 AI 辅助功能的边界。",
+            "DockDocs 尽可能采用本地优先的文档准备方式，并清楚说明 AI 辅助功能的边界。",
           items: [
             {
               title: "本地处理",
@@ -738,12 +738,12 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
     },
     faq: {
       slug: "faq",
-      title: "常见问题 | DockDocs",
-      description: "关于 DockDocs PDF 工具、隐私、OCR、AI 摘要和 PDF 问答的常见问题。",
+      title: "常见问题",
+      description: "关于 DockDocs 文档工作流、隐私、OCR、AI 摘要和 PDF 问答的常见问题。",
       eyebrow: "常见问题",
       heroTitle: "DockDocs 常见问题。",
       heroDescription:
-        "了解 PDF 工具、文件隐私、浏览器优先工作流、OCR、JPG 转换、导出、移动端和 AI 文档功能。",
+        "了解文档工具、文件隐私、浏览器优先工作流、OCR、JPG 转换、导出、移动端和 AI 文档功能。",
       sections: [
         {
           title: "全站 FAQ",
@@ -753,7 +753,7 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
       faqs: [
         {
           question: "DockDocs 是什么？",
-          answer: "DockDocs 是隐私优先的 PDF 工具平台，AI 功能作为文档生产力增强层存在。",
+          answer: "DockDocs 是面向真实文件工作流的 AI Document Platform，覆盖转换、OCR、摘要和 PDF 问答。",
         },
         {
           question: "文件会在浏览器中处理吗？",
@@ -792,11 +792,11 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
     contact: {
       slug: "contact",
       title: "联系 DockDocs",
-      description: "联系 DockDocs，反馈 PDF 工作流、隐私问题、AI 文档工作区和企业需求。",
+      description: "联系 DockDocs，反馈文档工作流、隐私问题、AI 文档工作区和企业需求。",
       eyebrow: "联系",
       heroTitle: "联系 DockDocs 团队。",
       heroDescription:
-        "你可以在这里提交产品反馈、隐私问题、PDF 工作流需求、AI 工作区建议和企业合作咨询。",
+        "你可以在这里提交产品反馈、隐私问题、文档工作流需求、AI 工作区建议和企业合作咨询。",
       primaryAction: { label: "发送邮件", href: "mailto:hello@dockdocs.app" },
       secondaryAction: { label: "查看帮助中心", href: "/help" },
       sections: [
@@ -817,7 +817,7 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
             {
               title: "企业咨询",
               description:
-                "团队可咨询 PDF 工作流规模、AI 文档审阅、隐私要求和集成需求。",
+                "团队可咨询文档工作流规模、AI 文档审阅、隐私要求和集成需求。",
             },
           ],
         },
@@ -825,8 +825,8 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
     },
     "privacy-policy": {
       slug: "privacy-policy",
-      title: "隐私政策 | DockDocs",
-      description: "DockDocs 关于上传、本地优先 PDF 工作流、AI 处理、保留、Cookie 和分析的隐私政策。",
+      title: "隐私政策",
+      description: "DockDocs 关于上传、本地优先文档工作流、AI 处理、保留、Cookie 和分析的隐私政策。",
       eyebrow: "隐私政策",
       heroTitle: "隐私优先的文档工作流需要清楚规则。",
       heroDescription:
@@ -874,10 +874,10 @@ export const infoPages: Record<Locale, Record<InfoPageSlug, InfoPageData>> = {
     },
     terms: {
       slug: "terms",
-      title: "服务条款 | DockDocs",
-      description: "DockDocs PDF 工具、AI 文档工作流、限制、知识产权和责任说明。",
+      title: "服务条款",
+      description: "DockDocs 文档工具、AI 文档工作流、限制、知识产权和责任说明。",
       eyebrow: "服务条款",
-      heroTitle: "使用 DockDocs PDF 与 AI 工作流的条款。",
+      heroTitle: "使用 DockDocs 文档与 AI 工作流的条款。",
       heroDescription:
         "这些条款说明合理使用、用户责任、AI 限制、知识产权和责任边界。",
       sections: [

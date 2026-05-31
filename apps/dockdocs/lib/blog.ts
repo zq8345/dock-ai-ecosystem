@@ -85,21 +85,21 @@ export const blogIndexCopy = {
       "Each guide connects a user problem to the right PDF tool, related articles, help content, and FAQ answers.",
   },
   zh: {
-    title: "PDF 工作流博客 | DockDocs",
+    title: "文档工作流博客",
     description:
-      "DockDocs 关于 PDF 压缩、合并、转换、OCR、JPG 转 PDF 和 AI 文档工作流的实用指南。",
+      "DockDocs 关于文档压缩、转换、OCR、JPG 转 PDF 和 AI 文档工作流的实用指南。",
     eyebrow: "DockDocs 资源",
-    heroTitle: "面向搜索增长的 PDF 工作流指南。",
+    heroTitle: "面向真实文件工作的文档工作流指南。",
     heroDescription:
       "通过 DockDocs 资源了解压缩、转换、OCR、图片转 PDF 和 AI 文档生产力的实际步骤。",
-    primaryAction: "浏览 PDF 工具",
+    primaryAction: "进入文档工作区",
     secondaryAction: "打开帮助中心",
-    featuredTitle: "最新 PDF 工作流指南",
+    featuredTitle: "最新文档工作流指南",
     featuredDescription:
       "长期内容把用户搜索问题连接到对应工具、相关文章、帮助内容和 FAQ。",
     workflowTitle: "为内链和搜索发现而设计",
     workflowDescription:
-      "每篇指南都把一个真实文档问题连接到合适的 PDF 工具、相关文章、帮助页和 FAQ。",
+      "每篇指南都把一个真实文档问题连接到合适的工作流、相关文章、帮助页和 FAQ。",
   },
 } as const;
 

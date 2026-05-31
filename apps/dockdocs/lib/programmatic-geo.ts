@@ -170,7 +170,7 @@ const queryTemplates: Array<{
   {
     intent: "comparison",
     en: ({ action, object }) => `Should I ${action} ${object} before using another PDF tool?`,
-    zh: ({ zhAction, zhObject }) => `使用其它 PDF 工具前应该先${zhAction}${zhObject}吗？`,
+    zh: ({ zhAction, zhObject }) => `使用其它文档工作流前应该先${zhAction}${zhObject}吗？`,
   },
   {
     intent: "comparison",
@@ -1569,16 +1569,20 @@ export function createProgrammaticGeoMetadata(
     page.slug,
     useLocalePrefix ? locale : undefined,
   );
+  const title =
+    locale === "zh"
+      ? page.title.replace(/\s*\|\s*DockDocs\s*$/u, "")
+      : page.title;
 
   return {
-    title: page.title,
+    title,
     description: page.description,
     alternates: {
       canonical: canonicalPath,
       languages: programmaticGeoAlternates(page.surface, page.slug),
     },
     openGraph: {
-      title: page.title,
+      title,
       description: page.description,
       url: absoluteUrl(canonicalPath),
       siteName: "DockDocs",
@@ -1586,7 +1590,7 @@ export function createProgrammaticGeoMetadata(
     },
     twitter: {
       card: "summary_large_image",
-      title: page.title,
+      title,
       description: page.description,
     },
     robots: {

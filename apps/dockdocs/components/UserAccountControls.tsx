@@ -10,6 +10,8 @@ import {
   onAuthChange,
   type User,
 } from "@netlify/identity";
+import { usePathname } from "next/navigation";
+import { getRuntimeCopy, localeFromPathname } from "@/lib/copy";
 
 type AccountState = {
   user: User | null;
@@ -21,6 +23,8 @@ type AccountState = {
 };
 
 export function UserAccountControls() {
+  const locale = localeFromPathname(usePathname());
+  const copy = getRuntimeCopy(locale).shell.account;
   const [state, setState] = useState<AccountState>({
     user: null,
     loading: true,
@@ -86,7 +90,7 @@ export function UserAccountControls() {
   if (state.loading) {
     return (
       <div className="rounded-full border border-[color:var(--line)] px-3 py-2 text-xs font-semibold text-[color:var(--muted)]">
-        Account
+        {copy.account}
       </div>
     );
   }
@@ -98,17 +102,17 @@ export function UserAccountControls() {
           href="/my-chats"
           className="rounded-full border border-[color:var(--line)] px-3 py-2 font-semibold text-[color:var(--foreground)] transition hover:bg-black/5"
         >
-          My Chats
+          {copy.myChats}
         </a>
         <span className="max-w-[180px] truncate rounded-full bg-[color:var(--soft-accent)] px-3 py-2 font-semibold text-[color:var(--accent-strong)]">
-          {state.user.name || state.user.email || "Signed in"}
+          {state.user.name || state.user.email || copy.signedIn}
         </span>
         <button
           type="button"
           onClick={handleLogout}
           className="rounded-full border border-[color:var(--line)] px-3 py-2 font-semibold text-[color:var(--muted)] transition hover:bg-black/5 hover:text-[color:var(--foreground)]"
         >
-          Logout
+          {copy.logout}
         </button>
       </div>
     );
@@ -121,7 +125,7 @@ export function UserAccountControls() {
         onClick={() => oauthLogin("google")}
         className="rounded-full bg-[color:var(--accent)] px-3 py-2 font-semibold text-white transition hover:opacity-90"
       >
-        Continue with Google
+        {copy.continueGoogle}
       </button>
       <button
         type="button"
@@ -130,7 +134,7 @@ export function UserAccountControls() {
         }
         className="rounded-full border border-[color:var(--line)] px-3 py-2 font-semibold text-[color:var(--muted)] transition hover:bg-black/5 hover:text-[color:var(--foreground)]"
       >
-        Email
+        {copy.email}
       </button>
       {state.emailOpen ? (
         <div className="grid w-full gap-2 rounded-xl border border-[color:var(--line)] bg-[color:var(--surface)] p-3 shadow-sm sm:w-72">
@@ -139,7 +143,7 @@ export function UserAccountControls() {
             onChange={(event) =>
               setState((current) => ({ ...current, email: event.target.value }))
             }
-            placeholder="Email"
+            placeholder={copy.email}
             type="email"
             className="min-h-10 rounded-md border border-[color:var(--line)] bg-[color:var(--background)] px-3 text-sm outline-none focus:border-[color:var(--accent)]"
           />
@@ -151,7 +155,7 @@ export function UserAccountControls() {
                 password: event.target.value,
               }))
             }
-            placeholder="Password"
+            placeholder={copy.password}
             type="password"
             className="min-h-10 rounded-md border border-[color:var(--line)] bg-[color:var(--background)] px-3 text-sm outline-none focus:border-[color:var(--accent)]"
           />
@@ -161,7 +165,7 @@ export function UserAccountControls() {
             disabled={!state.email || !state.password}
             className="min-h-10 rounded-md bg-[color:var(--accent)] px-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Login
+            {copy.login}
           </button>
           {state.error ? (
             <p className="text-xs leading-5 text-red-700">{state.error}</p>
@@ -173,5 +177,5 @@ export function UserAccountControls() {
 }
 
 function getErrorMessage(error: unknown) {
-  return error instanceof Error ? error.message : "Account action failed.";
+  return error instanceof Error ? error.message : getRuntimeCopy().shell.account.actionFailed;
 }
