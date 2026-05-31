@@ -696,20 +696,48 @@ function getIndexingLinks(config: PdfToolPageConfig): IndexingLink[] {
   const articleLinks: Record<string, IndexingLink[]> = {
     "compress-pdf": [
       {
-        label: zh ? "如何减小 PDF 文件体积" : "How to reduce PDF file size",
-        href: "/blog/how-to-reduce-pdf-file-size",
+        label: zh ? "邮件压缩 PDF 指南" : "Compress PDF for email",
+        href: "/guides/compress-pdf-for-email",
         description: zh
-          ? "了解如何为邮件、门户和日常共享减小 PDF 体积。"
-          : "Learn how to make PDFs smaller for email, portals, and everyday sharing.",
+          ? "了解如何为普通邮件附件准备更小的 PDF。"
+          : "Prepare smaller PDFs for ordinary email attachments.",
+      },
+      {
+        label: zh ? "Gmail 压缩 PDF" : "Compress PDF for Gmail",
+        href: "/guides/compress-pdf-for-gmail",
+        description: zh
+          ? "面向 Gmail 附件限制和共享场景的压缩流程。"
+          : "Use a Gmail-focused compression workflow before sending attachments.",
+      },
+      {
+        label: zh ? "压缩扫描 PDF" : "Compress scanned PDF",
+        href: "/guides/compress-scanned-pdf",
+        description: zh
+          ? "在不牺牲可读性的情况下缩小扫描文档。"
+          : "Reduce scanned document size while keeping pages readable.",
       },
     ],
     "merge-pdf": [
       {
-        label: zh ? "如何在线合并 PDF" : "How to merge PDF files online",
+        label: zh ? "在线合并 PDF 文件" : "How to merge PDF files online",
         href: "/blog/how-to-merge-pdf-files-online",
         description: zh
           ? "了解多个 PDF 如何变成一个清晰的文档包。"
           : "Learn how multiple PDFs become one organized document packet.",
+      },
+      {
+        label: zh ? "合并图片为 PDF" : "Combine images into PDF",
+        href: "/guides/combine-images-into-pdf",
+        description: zh
+          ? "把多张图片按顺序整理成一个可提交 PDF。"
+          : "Turn multiple images into one ordered PDF packet.",
+      },
+      {
+        label: zh ? "在线 PDF 工具对比" : "Online PDF tools vs desktop",
+        href: "/guides/online-pdf-tools-vs-desktop",
+        description: zh
+          ? "判断何时使用浏览器工具，何时使用桌面软件。"
+          : "Choose between browser-based PDF tools and desktop software.",
       },
     ],
     "split-pdf": [
@@ -720,6 +748,20 @@ function getIndexingLinks(config: PdfToolPageConfig): IndexingLink[] {
           ? "了解如何提取页面范围并导出更小的文档。"
           : "Learn how to extract page ranges and export smaller documents.",
       },
+      {
+        label: zh ? "压缩与拆分 PDF 对比" : "Compress vs split PDF",
+        href: "/guides/compress-vs-split-pdf",
+        description: zh
+          ? "判断应该减小文件体积还是拆出更小的页面包。"
+          : "Decide whether to reduce size or extract a smaller page packet.",
+      },
+      {
+        label: zh ? "10MB 以下 PDF" : "Reduce PDF size under 10MB",
+        href: "/guides/reduce-pdf-size-under-10mb",
+        description: zh
+          ? "面向门户和上传限制准备更小的 PDF。"
+          : "Prepare PDFs for portals and upload limits around 10MB.",
+      },
     ],
     "pdf-to-word": [
       {
@@ -729,23 +771,65 @@ function getIndexingLinks(config: PdfToolPageConfig): IndexingLink[] {
           ? "了解如何把固定 PDF 准备为可编辑文档工作流。"
           : "Learn how to prepare fixed PDFs for editable document workflows.",
       },
+      {
+        label: zh ? "OCR 与 PDF 转 Word" : "OCR vs PDF to Word",
+        href: "/guides/ocr-vs-pdf-to-word",
+        description: zh
+          ? "判断扫描件应该 OCR，还是转换为可编辑 Word。"
+          : "Decide whether scanned files need OCR or editable Word conversion.",
+      },
+      {
+        label: zh ? "PDF 转 Word 与 AI 摘要" : "PDF to Word vs AI summary",
+        href: "/guides/pdf-to-word-vs-ai-summary",
+        description: zh
+          ? "区分编辑文档和理解文档的不同目标。"
+          : "Separate editing workflows from AI understanding workflows.",
+      },
     ],
     "ocr-pdf": [
       {
-        label: zh ? "OCR PDF 转文本" : "OCR PDF to text online",
-        href: "/blog/ocr-pdf-to-text-online",
+        label: zh ? "OCR PDF 转可复制文本" : "OCR PDF to copyable text",
+        href: "/guides/ocr-pdf-to-copyable-text",
         description: zh
-          ? "了解扫描 PDF 如何变成可搜索、可复用的文本。"
-          : "Learn how scanned PDFs become searchable and reusable text.",
+          ? "从扫描 PDF 中提取可复制、可搜索的文本。"
+          : "Extract copyable and searchable text from scanned PDFs.",
+      },
+      {
+        label: zh ? "OCR 准确率指南" : "OCR PDF accuracy guide",
+        href: "/guides/ocr-pdf-accuracy-guide",
+        description: zh
+          ? "了解清晰度、旋转、对比度和布局如何影响 OCR。"
+          : "Understand how clarity, rotation, contrast, and layout affect OCR.",
+      },
+      {
+        label: zh ? "扫描 PDF 与可搜索 PDF" : "Scanned PDF vs searchable PDF",
+        href: "/guides/scanned-pdf-vs-searchable-pdf",
+        description: zh
+          ? "理解图片型页面和文本层 PDF 的区别。"
+          : "Understand image-only pages versus PDFs with selectable text.",
       },
     ],
     "jpg-to-pdf": [
       {
-        label: zh ? "图片转 PDF 工作流" : "Best JPG to PDF workflow",
-        href: "/blog/best-jpg-to-pdf-workflow",
+        label: zh ? "iPhone 上 JPG 转 PDF" : "JPG to PDF on iPhone",
+        href: "/guides/jpg-to-pdf-on-iphone",
         description: zh
-          ? "了解照片、扫描图和图片文件如何整理为 PDF。"
-          : "Learn how photos, scans, and image files become organized PDFs.",
+          ? "将 iPhone 照片整理为可上传 PDF。"
+          : "Turn iPhone photos into upload-ready PDFs.",
+      },
+      {
+        label: zh ? "手机照片转 PDF" : "Convert phone photos to PDF",
+        href: "/guides/convert-phone-photos-to-pdf",
+        description: zh
+          ? "整理手机拍摄的照片、收据和页面。"
+          : "Organize phone photos, receipts, and document pages.",
+      },
+      {
+        label: zh ? "JPG 转 PDF 与 OCR" : "JPG to PDF vs OCR",
+        href: "/guides/jpg-to-pdf-vs-ocr",
+        description: zh
+          ? "判断图片应该封装为 PDF，还是先提取文字。"
+          : "Decide whether images should become a PDF or be OCR processed.",
       },
     ],
   };
