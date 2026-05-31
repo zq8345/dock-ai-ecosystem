@@ -336,35 +336,35 @@ function getLocalizedProgrammaticGeoRoute(rawSlug?: string[]) {
 
 const homeCopy = {
   en: {
-    title: "Free Online PDF Tools | DockDocs",
+    title: "DockDocs AI Document Platform",
     description:
-      "Privacy-first PDF tools to compress, merge, split, convert, and OCR PDF files online with DockDocs.",
-    eyebrow: "DockDocs PDF Tools",
-    heroTitle: "Privacy-first PDF tools for everyday documents.",
+      "DockDocs is an AI document platform for PDF chat, summaries, OCR, conversion, compression, and real document workflows.",
+    eyebrow: "AI Document Platform",
+    heroTitle: "ChatGPT for documents, built for real files.",
     heroDescription:
-      "Compress, merge, split, convert, OCR, summarize, and chat with PDF files from a clean product workspace.",
-    primary: "Upload a PDF",
-    secondary: "View all PDF tools",
-    categories: "Tool categories",
-    categoryTitle: "Browse by document outcome.",
-    aiTitle: "AI enhances the PDF platform.",
+      "Upload PDFs, scans, reports, and office documents. Ask questions, summarize, extract text, convert files, or compress output without leaving the workspace.",
+    primary: "Chat with a PDF",
+    secondary: "View workspace",
+    categories: "Workspace tools",
+    categoryTitle: "AI-first document workflows.",
+    aiTitle: "Document intelligence stays visible.",
     aiDescription:
-      "DockDocs stays PDF tools first. OCR, AI Summary, Chat with PDF, and workflow automation appear as a secondary productivity layer.",
+      "DockDocs keeps upload, processing, sources, summaries, and next actions in one workspace so documents feel reviewable instead of hidden behind a download-only result.",
   },
   zh: {
-    title: "免费在线 PDF 工具 | DockDocs",
-    description: "使用 DockDocs 在线压缩、合并、拆分、转换、OCR 和处理 PDF 文件。",
-    eyebrow: "DockDocs PDF 工具",
-    heroTitle: "面向日常文档的隐私优先 PDF 工具。",
+    title: "DockDocs AI 文档平台",
+    description: "DockDocs 是面向 PDF 问答、摘要、OCR、转换、压缩和真实文档工作流的 AI 文档平台。",
+    eyebrow: "AI 文档平台",
+    heroTitle: "面向真实文件的 ChatGPT for documents。",
     heroDescription:
-      "在一个清晰的产品工作区中压缩、合并、拆分、转换、OCR、摘要并与 PDF 对话。",
-    primary: "上传 PDF",
-    secondary: "查看全部 PDF 工具",
-    categories: "工具分类",
-    categoryTitle: "按文档目标浏览工具。",
-    aiTitle: "AI 是 PDF 平台的增强层。",
+      "上传 PDF、扫描件、报告和办公文档。你可以提问、摘要、提取文字、转换文件或压缩输出，并保持在同一个工作区中。",
+    primary: "与 PDF 对话",
+    secondary: "查看工作区",
+    categories: "工作区工具",
+    categoryTitle: "AI 优先的文档工作流。",
+    aiTitle: "文档智能结果保持可见。",
     aiDescription:
-      "DockDocs 以 PDF 工具为主。OCR、AI 摘要、PDF 问答和流程自动化作为次级生产力层出现。",
+      "DockDocs 将上传、处理、来源、摘要和下一步操作放在同一个工作区，让文档结果可以被检查，而不是只停留在下载成功状态。",
   },
 } as const;
 
@@ -395,7 +395,7 @@ function LocalizedHome({ locale }: { locale: Locale }) {
               {copy.heroDescription}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href={localizedPath(locale, "compress-pdf")}>
+              <ButtonLink href="/chat-with-pdf">
                 {copy.primary}
               </ButtonLink>
               <ButtonLink href="#tools" variant="outline">

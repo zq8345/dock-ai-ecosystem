@@ -1,14 +1,8 @@
 import { BrandNav } from "@/components/BrandNav";
 import { BrandMark } from "@/components/BrandMark";
+import { HeaderProductNav } from "@/components/HeaderProductNav";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { UserAccountControls } from "@/components/UserAccountControls";
-
-const platformLinks = [
-  { name: "AI", href: "/#ai" },
-  { name: "Convert", href: "/pdf-to-word" },
-  { name: "Optimize", href: "/compress-pdf" },
-  { name: "Dashboard", href: "/dashboard" },
-  { name: "My Chats", href: "/my-chats" },
-];
 
 export function Header() {
   return (
@@ -17,22 +11,10 @@ export function Header() {
         <a href="/" className="shrink-0" aria-label="DockDocs home">
           <BrandMark />
         </a>
-        <nav aria-label="DockDocs navigation" className="w-full lg:w-auto">
-          <ul className="flex flex-wrap gap-1 text-xs font-semibold text-[color:var(--muted)] sm:text-sm">
-            {platformLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="block rounded-md px-2.5 py-1.5 transition hover:bg-black/5 hover:text-[color:var(--foreground)] dark:hover:bg-white/10"
-                >
-                  {link.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <HeaderProductNav />
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
           <BrandNav />
+          <LanguageSwitcher />
           <UserAccountControls />
         </div>
       </div>
