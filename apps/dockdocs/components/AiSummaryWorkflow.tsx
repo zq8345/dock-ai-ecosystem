@@ -6,6 +6,10 @@ import {
   type AiSummaryLocale,
   type AiSummaryResult,
 } from "@/lib/ai-summary-runtime";
+import {
+  canUseCommercialFeature,
+  recordCommercialFeatureUsage,
+} from "@/lib/billing-runtime";
 
 type WorkflowStatus =
   | "idle"
@@ -42,6 +46,8 @@ const copy = {
     idle: "Upload a PDF or paste OCR text to begin.",
     ready: "Ready to summarize.",
     working: "Working on summary...",
+    quotaExceeded:
+      "AI Summary limit reached for your current plan. Upgrade to continue.",
   },
   zh: {
     eyebrow: "AI 摘要 MVP",
@@ -68,6 +74,7 @@ const copy = {
     idle: "上传 PDF 或粘贴 OCR 文本开始。",
     ready: "已准备生成摘要。",
     working: "正在生成摘要...",
+    quotaExceeded: "当前套餐的 AI 摘要额度已用完。升级后可继续使用。",
   },
 } as const;
 
@@ -119,6 +126,13 @@ export function AiSummaryWorkflow({
       return;
     }
 
+    const quota = await canUseCommercialFeature("summary");
+    if (!quota.allowed) {
+      setError(t.quotaExceeded);
+      setStatus("error");
+      return;
+    }
+
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
@@ -146,6 +160,7 @@ export function AiSummaryWorkflow({
       }
 
       setResult(summary);
+      await recordCommercialFeatureUsage("summary");
       setProgress(100);
       setStatus("result");
     } catch (summaryError) {

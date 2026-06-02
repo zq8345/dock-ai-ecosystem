@@ -21,6 +21,8 @@ export const runtimeCopy = {
         { name: "Optimize", href: "/compress-pdf", slug: "compress-pdf" },
         { name: "Dashboard", href: "/dashboard", slug: "dashboard" },
         { name: "My Chats", href: "/my-chats" },
+        { name: "Pricing", href: "/pricing" },
+        { name: "Account", href: "/account" },
       ],
       brand: {
         aria: "Brand navigation",
@@ -472,6 +474,8 @@ export const runtimeCopy = {
         { name: "优化", href: "/compress-pdf", slug: "compress-pdf" },
         { name: "控制台", href: "/dashboard", slug: "dashboard" },
         { name: "我的对话", href: "/my-chats" },
+        { name: "价格", href: "/pricing" },
+        { name: "账户", href: "/account" },
       ],
       brand: {
         aria: "品牌导航",

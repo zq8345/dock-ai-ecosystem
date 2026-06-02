@@ -1,4 +1,9 @@
 import { getCurrentAccountUser } from "@/lib/account-runtime";
+import {
+  canUseCommercialFeature,
+  isMeteredFeature,
+  recordCommercialFeatureUsage,
+} from "@/lib/billing-runtime";
 import type { AiChatHistoryTurn, AiChatResult } from "@/lib/ai-chat-runtime";
 
 export type WorkspaceIdentity = {
@@ -148,13 +153,12 @@ export async function getWorkspaceIdentity(): Promise<WorkspaceIdentity> {
 
 export async function getUsageQuota() {
   const identity = await getWorkspaceIdentity();
-  const usage = readTodayUsage(identity.id);
-  const limit = identity.signedIn ? 25 : 5;
+  const chatLimit = await canUseCommercialFeature("chat");
   return {
-    limit,
-    used: usage.chatCalls,
-    remaining: Math.max(0, limit - usage.chatCalls),
-    date: usage.date,
+    limit: chatLimit.limit,
+    used: chatLimit.used,
+    remaining: chatLimit.remaining,
+    date: readTodayUsage(identity.id).date,
     signedIn: identity.signedIn,
   } satisfies UsageQuota;
 }
@@ -323,6 +327,9 @@ function recordUsage(
 
   writeJson(usageKey(identityId, today), nextDaily);
   writeJson(analyticsKey(identityId), nextAnalytics);
+  if (isMeteredFeature(feature)) {
+    void recordCommercialFeatureUsage(feature);
+  }
 }
 
 function upsertDocument(identityId: string, result: AiChatResult) {
