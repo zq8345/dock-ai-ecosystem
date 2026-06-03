@@ -553,3 +553,103 @@ Current safe fixes implemented in the UI layer:
 - Account UX exposes login and upgrade entry points without changing auth or billing backend behavior.
 - Tool discovery is framed as document workflow discovery rather than a PDF tool directory.
 - Mobile surfaces avoid page-level horizontal overflow by stacking menus, pricing rows, and dashboard cards.
+
+## Design System v2 Release
+
+This release keeps the existing token names and component model, but treats the
+current DockDocs UI as the baseline for future DOCK products.
+
+### Header Menu Rules
+
+- The brand remains left aligned, feature navigation stays in the center on
+  desktop, and account/language/company links live in the utility menu.
+- Desktop feature menus group tools by phase-one capability category.
+- Mobile keeps two predictable controls: Tools and Menu.
+- Tools and utility menus must be mutually exclusive on mobile.
+- Every menu item needs hover, active, and visible keyboard focus states.
+- Unavailable tools use `Coming soon` and must not link to a 404 route.
+
+### Utility Menu Rules
+
+- Utility menus own account entry points, language switching, About, Blog, and
+  upgrade CTAs.
+- Account UI can show signed-out and signed-in placeholders, but UI tasks do not
+  attach billing or auth backend logic.
+- Language controls must preserve the current route where possible and keep
+  `/zh/*` pages inside the Chinese shell.
+
+### Tool Template Rules
+
+- Core tool pages use one workspace structure: hero, upload/input panel, runtime
+  result preview, suggested next actions, related workflows, and related
+  Dock products.
+- The hero must communicate `AI Document Platform`, the concrete tool name, and
+  the next action within the first viewport.
+- Upload and output surfaces stay close together; result previews are not pushed
+  below long marketing sections.
+- Tool pages use the shared `UploadPanel`, `ToolRuntimeClient`, and
+  `ResultPreview` surfaces instead of bespoke cards.
+
+### Dashboard Density Rules
+
+- Dashboard pages should feel like a control surface, not a marketing section.
+- Overview metrics, operation snapshots, recent files, conversations, actions,
+  health, onboarding, and activity should fit within a scannable vertical flow.
+- Desktop may use side navigation plus dense card grids.
+- Mobile stacks every dashboard section into one column with 44px minimum
+  interactive rows.
+
+### AI Workspace Visual Language
+
+- AI badges use restrained accent or neutral tokens, never decorative gradients.
+- Source/reference cards use `--surface-subtle`, `--line`, and compact labels.
+- Processing, empty, success, and error states share consistent status wording
+  and never change component dimensions abruptly.
+- Suggested actions are real buttons or links with focus states and clear labels.
+- Document status chips should be short, localized, and readable at 390px.
+
+### Pricing And Upgrade Rules
+
+- Pricing remains UI-only unless a billing task explicitly owns Stripe or
+  backend integration.
+- Upgrade CTAs may appear in Header utility menu, Dashboard, and Pricing, but
+  they must route to presentational pages or account placeholders only.
+- Pricing cards and comparison tables must stack on mobile.
+
+### Availability Badge Rules
+
+- `FREE`, `PLUS`, and `Coming soon` are the only availability labels.
+- `FREE` marks available UI routes and uses success tokens.
+- `PLUS` marks commercial or future capacity and uses subdued accent/neutral
+  tokens until entitlement logic exists.
+- `Coming soon` is disabled and cannot navigate to missing pages.
+
+### Mobile 390px Rules
+
+- No page-level horizontal overflow.
+- Header keeps brand, Tools, and Menu visible.
+- Tool pages place upload/input within the first viewport whenever possible.
+- Chat workspace order is document/upload status, chat input, conversation, then
+  sources/references.
+- Tables, pricing, dashboard cards, and related workflows stack into a single
+  readable column.
+
+### Localization UI Rules
+
+- `/` defaults to English, `/en/*` is English, and `/zh/*` is Chinese.
+- Shell, runtime, utility menu, tool templates, Dashboard, and Pricing must use
+  localized copy surfaces.
+- Product terms such as PDF, AI, OCR, Workspace, Dashboard, FREE, PLUS, and
+  DockDocs may remain in English where they are product vocabulary.
+
+### Do / Don't
+
+- Do present DockDocs as an AI document workspace with sources, actions, and
+  result review.
+- Do use shared primitives and semantic tokens before adding local classes.
+- Do keep unavailable features visible but disabled with `Coming soon`.
+- Don't turn the homepage or tool pages into a PDF tool directory.
+- Don't add decorative animation, unsupported links, or backend behavior from a
+  UI task.
+- Don't modify runtime, provider, API, Netlify, billing, quota, analytics,
+  session restore, sitemap, robots, or canonical behavior from DOCK-UI work.

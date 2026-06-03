@@ -70,6 +70,13 @@ const workflows = [
   "Review structured output, copy results, download files, or continue in chat.",
 ];
 
+const workspacePath = [
+  { label: "Home", href: "/" },
+  { label: "Tool Discovery", href: "#ai" },
+  { label: "Tool Workspace", href: "/chat-with-pdf" },
+  { label: "Dashboard", href: "/dashboard" },
+];
+
 const faqs = [
   {
     question: "What is DockDocs?",
@@ -199,6 +206,22 @@ export default function Home() {
               <Metric value="AI" label="Analyze" />
               <Metric value="Ready" label="Output" />
             </div>
+            <nav
+              aria-label="Workspace path"
+              className="mt-5 flex max-w-2xl flex-wrap items-center gap-2 text-xs font-semibold text-[color:var(--muted)]"
+            >
+              {workspacePath.map((item, index) => (
+                <span key={item.label} className="flex items-center gap-2">
+                  <a
+                    href={item.href}
+                    className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-2.5 py-1.5 transition hover:border-[color:var(--foreground)] hover:text-[color:var(--foreground)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]"
+                  >
+                    {item.label}
+                  </a>
+                  {index < workspacePath.length - 1 ? <span aria-hidden="true">/</span> : null}
+                </span>
+              ))}
+            </nav>
           </div>
           <UploadPanel
             title="Start a document workflow"

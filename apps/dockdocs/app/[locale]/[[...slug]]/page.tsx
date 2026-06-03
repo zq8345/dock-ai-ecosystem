@@ -15,8 +15,10 @@ import { ProgrammaticGeoPage } from "@/components/ProgrammaticGeoPage";
 import { PricingPlans } from "@/components/PricingPlans";
 import { SaasInfoPage } from "@/components/SaasInfoPage";
 import { RelatedTools } from "@/components/RelatedTools";
-import { ToolRuntimeClient } from "@/components/ToolRuntimeClient";
-import { UploadPanel } from "@/components/UploadPanel";
+import {
+  ToolWorkspacePage,
+  type RuntimeToolKey,
+} from "@/components/ToolWorkspacePage";
 import { ButtonLink, Container, Section } from "@dock/shared/ui";
 import {
   blogArticleAlternates,
@@ -473,8 +475,6 @@ function LocalizedChatWithPdf({ locale }: { locale: Locale }) {
   );
 }
 
-type RuntimeToolKey = "summary" | "ocr" | "compress" | "pdfToWord";
-
 function LocalizedRuntimeTool({
   locale,
   tool,
@@ -482,92 +482,7 @@ function LocalizedRuntimeTool({
   locale: Locale;
   tool: RuntimeToolKey;
 }) {
-  const copy = getRuntimeCopy(locale);
-  const page = copy[tool];
-  const accept =
-    tool === "summary"
-      ? "application/pdf,.pdf,.doc,.docx"
-      : tool === "ocr"
-        ? "application/pdf,.pdf,image/png,.png,image/jpeg,.jpg,.jpeg"
-        : "application/pdf,.pdf";
-  const allowedExtensions =
-    tool === "summary"
-      ? [".pdf", ".doc", ".docx"]
-      : tool === "ocr"
-        ? [".pdf", ".png", ".jpg", ".jpeg"]
-        : [".pdf"];
-
-  return (
-    <main>
-      <Section className="border-b border-[color:var(--line)] bg-[color:var(--surface)]">
-        <Container className="grid min-h-[calc(100vh-92px)] items-center gap-8 py-10 lg:grid-cols-[0.78fr_1.22fr]">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--accent)]">
-              {page.eyebrow}
-            </p>
-            <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl xl:text-6xl">
-              {page.title}
-            </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--muted)] sm:text-lg">
-              {page.description}
-            </p>
-            {"primaryCta" in page && (
-              <div className="mt-7 flex flex-wrap gap-3">
-                <ButtonLink href="#upload">{page.primaryCta}</ButtonLink>
-                <ButtonLink href={localizedPath(locale, "chat-with-pdf")} variant="outline">
-                  {page.secondaryCta}
-                </ButtonLink>
-              </div>
-            )}
-          </div>
-          <UploadPanel
-            title={page.uploadTitle}
-            description={page.uploadDescription}
-            formats={page.formats}
-            limit={page.limit}
-            cta={page.cta}
-            interactive={false}
-            labels={copy.common.upload}
-          />
-        </Container>
-      </Section>
-      <Section id="upload" className="border-b border-[color:var(--line)] bg-[color:var(--surface)]">
-        <Container>
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--accent)]">
-              {page.outputEyebrow}
-            </p>
-            <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">
-              {page.outputHeading}
-            </h2>
-            <p className="mt-5 max-w-2xl leading-7 text-[color:var(--muted)]">
-              {page.outputDescription}
-            </p>
-          </div>
-          <div className="mt-8">
-            <ToolRuntimeClient
-              uploadTitle={page.runtimeUploadTitle}
-              uploadDescription={page.runtimeUploadDescription}
-              formats={page.formats}
-              limit={page.limit}
-              cta={page.cta}
-              accept={accept}
-              allowedExtensions={allowedExtensions}
-              outputEyebrow={page.resultEyebrow}
-              outputTitle={page.resultTitle}
-              outputSummary={page.resultSummary}
-              keyPoints={[...page.keyPoints]}
-              actions={[...page.actions]}
-              emptyMessage={page.emptyMessage}
-              locale={locale}
-            />
-          </div>
-        </Container>
-      </Section>
-      {"faqs" in page && <LocalizedFaq title={page.faqTitle} faqs={[...page.faqs]} />}
-      <RelatedTools />
-    </main>
-  );
+  return <ToolWorkspacePage locale={locale} tool={tool} />;
 }
 
 function LocalizedDashboard({ locale }: { locale: Locale }) {
@@ -663,6 +578,7 @@ const homeCopy = {
     searchLabel: "Find a document workflow",
     searchPlaceholder: "Search by outcome: summarize, OCR, convert, compress...",
     filters: ["AI", "Convert", "Optimize", "OCR", "FREE", "PLUS"],
+    workspacePath: ["Home", "Tool Discovery", "Tool Workspace", "Dashboard"],
     popular: "Popular workflows",
     popularWorkflows: [
       "Upload a contract, ask for risks, then create action items.",
@@ -689,6 +605,7 @@ const homeCopy = {
     searchLabel: "查找文档工作流",
     searchPlaceholder: "按结果搜索：摘要、OCR、转换、压缩...",
     filters: ["AI", "转换", "优化", "OCR", "FREE", "PLUS"],
+    workspacePath: ["首页", "工具发现", "工具工作区", "控制台"],
     popular: "常用工作流",
     popularWorkflows: [
       "上传合同，提问风险，再生成行动项。",
@@ -794,13 +711,38 @@ function LocalizedHome({ locale }: { locale: Locale }) {
               {copy.heroDescription}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/chat-with-pdf">
+              <ButtonLink href={localizedPath(locale, "chat-with-pdf")}>
                 {copy.primary}
               </ButtonLink>
               <ButtonLink href="#tools" variant="outline">
                 {copy.secondary}
               </ButtonLink>
             </div>
+            <nav
+              aria-label="Workspace path"
+              className="mt-5 flex max-w-2xl flex-wrap items-center gap-2 text-xs font-semibold text-[color:var(--muted)]"
+            >
+              {copy.workspacePath.map((item, index) => {
+                const hrefs = [
+                  localizedPath(locale, ""),
+                  "#tools",
+                  localizedPath(locale, "chat-with-pdf"),
+                  localizedPath(locale, "dashboard"),
+                ];
+
+                return (
+                  <span key={item} className="flex items-center gap-2">
+                    <a
+                      href={hrefs[index]}
+                      className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-2.5 py-1.5 transition hover:border-[color:var(--foreground)] hover:text-[color:var(--foreground)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]"
+                    >
+                      {item}
+                    </a>
+                    {index < copy.workspacePath.length - 1 ? <span aria-hidden="true">/</span> : null}
+                  </span>
+                );
+              })}
+            </nav>
           </div>
           <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 shadow-[0_32px_90px_rgba(24,24,20,0.10)]">
             <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-5">

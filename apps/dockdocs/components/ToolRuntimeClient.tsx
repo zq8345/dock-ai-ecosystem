@@ -94,32 +94,70 @@ export function ToolRuntimeClient({
     }, 250);
   }
 
+  const runtimeSteps = [
+    {
+      label: copy.common.upload.label,
+      value: fileName || copy.common.upload.states.idle,
+    },
+    {
+      label: copy.common.upload.states.processing,
+      value:
+        state === "processing"
+          ? copy.common.result.states.processing
+          : state === "success"
+            ? copy.common.result.states.success
+            : copy.common.upload.states.empty,
+    },
+    {
+      label: copy.common.result.nextActions,
+      value:
+        state === "success"
+          ? copy.common.result.states.success
+          : state === "error"
+            ? copy.common.result.states.error
+            : copy.common.result.states.empty,
+    },
+  ];
+
   return (
-    <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-      <UploadPanel
-        title={uploadTitle}
-        description={uploadDescription}
-        formats={formats}
-        limit={limit}
-        cta={cta}
-        accept={accept}
-        fileName={fileName}
-        state={uploadState}
-        errorMessage={error}
-        onFileChange={handleFileChange}
-        labels={copy.common.upload}
-      />
-      <ResultPreview
-        eyebrow={outputEyebrow}
-        title={outputTitle}
-        summary={outputSummary}
-        keyPoints={keyPoints}
-        actions={actions}
-        state={state === "selected" ? "empty" : state}
-        emptyMessage={emptyMessage}
-        errorMessage={error}
-        labels={copy.common.result}
-      />
+    <div className="grid gap-4">
+      <div className="grid gap-2 text-xs sm:grid-cols-3" aria-label="Runtime status">
+        {runtimeSteps.map((step) => (
+          <div
+            key={step.label}
+            className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-2"
+          >
+            <p className="font-semibold text-[color:var(--muted)]">{step.label}</p>
+            <p className="mt-1 truncate font-semibold">{step.value}</p>
+          </div>
+        ))}
+      </div>
+      <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+        <UploadPanel
+          title={uploadTitle}
+          description={uploadDescription}
+          formats={formats}
+          limit={limit}
+          cta={cta}
+          accept={accept}
+          fileName={fileName}
+          state={uploadState}
+          errorMessage={error}
+          onFileChange={handleFileChange}
+          labels={copy.common.upload}
+        />
+        <ResultPreview
+          eyebrow={outputEyebrow}
+          title={outputTitle}
+          summary={outputSummary}
+          keyPoints={keyPoints}
+          actions={actions}
+          state={state === "selected" ? "empty" : state}
+          emptyMessage={emptyMessage}
+          errorMessage={error}
+          labels={copy.common.result}
+        />
+      </div>
     </div>
   );
 }
