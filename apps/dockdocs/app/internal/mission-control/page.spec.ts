@@ -13,6 +13,11 @@ test("internal Mission Control route loads required Phase 1 sections", async ({
   await expect(page.getByText("Task summary")).toBeVisible();
   await expect(page.getByText("Next recommended action")).toBeVisible();
   await expect(page.getByText("Agent status", { exact: true })).toBeVisible();
+  await expect(page.getByText("Project Inventory", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText("Static project snapshot", { exact: true })).toBeVisible();
+  await expect(page.getByText("Branch inventory", { exact: true })).toBeVisible();
+  await expect(page.getByText("PR inventory", { exact: true })).toBeVisible();
+  await expect(page.getByText("Queue summary", { exact: true })).toBeVisible();
 
   for (const label of ["DEV", "UI", "OPS", "SEO", "GEO"]) {
     await expect(page.getByRole("heading", { name: label, exact: true })).toBeVisible();
@@ -28,6 +33,20 @@ test("internal Mission Control route loads required Phase 1 sections", async ({
   }
 
   for (const agent of ["GPT", "Hermes PMO", "Hermes DEV", "Hermes UI", "Codex"]) {
-    await expect(page.getByRole("heading", { name: agent, exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: agent, exact: true }).first()).toBeVisible();
+  }
+
+  for (const inventoryItem of [
+    "DEV-100",
+    "DEV-200",
+    "DEV-300",
+    "OPS-100",
+    "OPS-102",
+    "OPS-103",
+    "OPS-104",
+    "Codex OPS",
+    "Codex DEV",
+  ]) {
+    await expect(page.getByRole("heading", { name: inventoryItem, exact: true }).first()).toBeVisible();
   }
 });
