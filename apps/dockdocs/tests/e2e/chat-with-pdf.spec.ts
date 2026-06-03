@@ -154,7 +154,7 @@ test("dashboard IA is visible in English and Chinese", async ({ page }) => {
   await page.goto("/zh/dashboard");
   await expect(page.getByRole("heading", { name: "文档工作区概览。" })).toBeVisible();
   await expect(page.getByRole("link", { name: "查看价格" }).first()).toBeVisible();
-  await expect(page.getByText("最近对话", { exact: true })).toBeVisible();
+  await expect(page.getByText("最近对话", { exact: true }).first()).toBeVisible();
   await expect(page.getByText("工作区健康", { exact: true }).first()).toBeVisible();
   await expect(page.getByText("建议下一步", { exact: true })).toBeVisible();
 });
@@ -182,6 +182,43 @@ test("pricing page is localized and responsive", async ({ page }) => {
 
   expect(metrics.scrollWidth).toBe(metrics.clientWidth);
   expect(metrics.lang).toBe("zh");
+});
+
+test("core tool pages use the AI workspace template", async ({ page }) => {
+  const routes = [
+    { route: "/ai-summary", title: "Summarize documents into decisions and next actions." },
+    { route: "/ocr", title: "Make scanned documents searchable and AI-ready." },
+    { route: "/compress-pdf", title: "Compress PDFs without leaving the document workspace." },
+    { route: "/pdf-to-word", title: "Convert PDFs into editable Word-ready documents." },
+    { route: "/zh/ai-summary", title: "将文档总结为决策和下一步行动。" },
+    { route: "/zh/ocr", title: "让扫描文档可搜索，并可进入 AI 工作流。" },
+    { route: "/zh/compress-pdf", title: "在文档工作区中完成 PDF 压缩。" },
+    { route: "/zh/pdf-to-word", title: "将 PDF 转为可编辑的 Word 文档。" },
+  ];
+
+  for (const { route, title } of routes) {
+    await page.setViewportSize({ width: 390, height: 844 });
+    const response = await page.goto(route);
+    expect(response?.status()).toBe(200);
+
+    await expect(page.getByTestId("tool-workspace-page")).toBeVisible();
+    await expect(page.getByRole("heading", { name: title })).toBeVisible();
+    await expect(page.getByTestId("tool-runtime-workspace")).toBeVisible();
+    await expect(page.getByTestId("tool-next-actions")).toBeVisible();
+    await expect(page.getByTestId("tool-related-workflows")).toBeVisible();
+
+    const metrics = await page.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+      lang: document.documentElement.lang,
+    }));
+
+    expect(metrics.scrollWidth).toBe(metrics.clientWidth);
+
+    if (route.startsWith("/zh")) {
+      expect(metrics.lang).toBe("zh");
+    }
+  }
 });
 
 test("header tools and utility menus are keyboard and mobile friendly", async ({ page }) => {

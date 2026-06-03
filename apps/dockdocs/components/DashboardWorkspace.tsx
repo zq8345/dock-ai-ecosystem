@@ -51,6 +51,7 @@ export function DashboardWorkspace({
           <div className="grid min-w-0 gap-6">
             <WorkspaceDashboardClient />
             <OverviewCards page={page} />
+            <OperationsSnapshot page={page} />
             <OnboardingState page={page} locale={locale} />
             <AnalyticsOverview page={page} />
             <EmptyState page={page} locale={locale} />
@@ -110,13 +111,48 @@ function OverviewCards({ page }: { page: DashboardCopy }) {
         </h2>
       </div>
       <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {page.stats.map((stat) => (
+        {page.stats.map((stat, index) => (
           <article
             key={stat.label}
             className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 transition hover:border-[color:var(--foreground)]"
           >
-            <p className="text-3xl font-semibold">{stat.value}</p>
-            <p className="mt-2 text-sm text-[color:var(--muted)]">{stat.label}</p>
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-3xl font-semibold">{stat.value}</p>
+              <span className="rounded-[var(--radius-sm)] bg-[color:var(--soft-accent)] px-2 py-1 text-[10px] font-semibold text-[color:var(--accent-strong)]">
+                {index === 0 ? "AI" : page.workspace}
+              </span>
+            </div>
+            <p className="mt-2 text-sm font-semibold">{stat.label}</p>
+            <p className="mt-1 text-xs leading-5 text-[color:var(--muted)]">
+              {page.activity[index % page.activity.length]}
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function OperationsSnapshot({ page }: { page: DashboardCopy }) {
+  const items = [
+    { label: page.recentLabel, value: page.documents[0]?.status ?? page.emptyTitle },
+    { label: page.conversationsLabel, value: page.conversations[0]?.status ?? page.emptyTitle },
+    { label: page.actionsLabel, value: page.actions[0]?.tier ?? "FREE" },
+    { label: page.healthLabel, value: page.health[0]?.tone ?? "Ready" },
+  ];
+
+  return (
+    <section className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-3 sm:p-4">
+      <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+        {items.map((item) => (
+          <article
+            key={item.label}
+            className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-2"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--muted)]">
+              {item.label}
+            </p>
+            <p className="mt-1 text-sm font-semibold">{item.value}</p>
           </article>
         ))}
       </div>
