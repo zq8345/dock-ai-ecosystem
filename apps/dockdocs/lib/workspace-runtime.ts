@@ -1,9 +1,9 @@
-import { getCurrentAccountUser } from "@/lib/account-runtime";
+import { getDockAccountState } from "@/lib/account-runtime";
 import {
-  canUseCommercialFeature,
-  isMeteredFeature,
-  recordCommercialFeatureUsage,
-} from "@/lib/billing-runtime";
+  canUseFeature,
+  isUsageMeteredFeature,
+  recordUsage as recordMeteredUsage,
+} from "@/lib/usage-runtime";
 import type { AiChatHistoryTurn, AiChatResult } from "@/lib/ai-chat-runtime";
 
 export type WorkspaceIdentity = {
@@ -87,7 +87,6 @@ export type AnalysisPersistenceInput = {
 };
 
 const prefix = "dockdocs:workspace";
-const anonymousId = "anonymous";
 const maxDocuments = 50;
 const maxSessions = 50;
 const maxStoredContextCharacters = 24_000;
@@ -135,30 +134,22 @@ export const promptTemplates = [
 ] as const;
 
 export async function getWorkspaceIdentity(): Promise<WorkspaceIdentity> {
-  const user = await getCurrentAccountUser().catch(() => null);
-  if (user?.id) {
-    return {
-      id: user.id,
-      label: user.name || user.email || "Signed-in user",
-      signedIn: true,
-    };
-  }
-
+  const account = await getDockAccountState();
   return {
-    id: anonymousId,
-    label: "Anonymous browser",
-    signedIn: false,
+    id: account.storageId,
+    label: account.label,
+    signedIn: account.signedIn,
   };
 }
 
 export async function getUsageQuota() {
   const identity = await getWorkspaceIdentity();
-  const chatLimit = await canUseCommercialFeature("chat");
+  const chatLimit = await canUseFeature(identity.id, "chat");
   return {
     limit: chatLimit.limit,
     used: chatLimit.used,
     remaining: chatLimit.remaining,
-    date: readTodayUsage(identity.id).date,
+    date: chatLimit.periodKey,
     signedIn: identity.signedIn,
   } satisfies UsageQuota;
 }
@@ -183,7 +174,7 @@ export async function recordChatCompletion(input: ChatPersistenceInput) {
   const identity = await getWorkspaceIdentity();
   const flags = readFeatureFlags();
 
-  recordUsage(identity.id, "chat", input.result.usage);
+  recordWorkspaceUsage(identity.id, "chat", input.result.usage);
   if (flags.savedChats) {
     upsertDocument(identity.id, input.result);
     upsertSession(identity.id, input);
@@ -194,7 +185,7 @@ export async function recordDocumentAnalysisCompletion(
   input: AnalysisPersistenceInput,
 ) {
   const identity = await getWorkspaceIdentity();
-  recordUsage(identity.id, "analyzer", input.usage);
+  recordWorkspaceUsage(identity.id, "analyzer", input.usage);
   upsertAnalyzedDocument(identity.id, input);
 }
 
@@ -290,7 +281,7 @@ export function readAnalytics(identityId: string): WorkspaceAnalytics {
   });
 }
 
-function recordUsage(
+function recordWorkspaceUsage(
   identityId: string,
   feature: string,
   usage: AiChatResult["usage"],
@@ -327,8 +318,13 @@ function recordUsage(
 
   writeJson(usageKey(identityId, today), nextDaily);
   writeJson(analyticsKey(identityId), nextAnalytics);
-  if (isMeteredFeature(feature)) {
-    void recordCommercialFeatureUsage(feature);
+  if (isUsageMeteredFeature(feature)) {
+    void recordMeteredUsage(identityId, feature, {
+      source: "workspace",
+      promptTokens,
+      completionTokens,
+      totalTokens,
+    });
   }
 }
 

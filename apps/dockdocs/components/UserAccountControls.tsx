@@ -12,10 +12,14 @@ import {
 } from "@netlify/identity";
 import { usePathname } from "next/navigation";
 import { getRuntimeCopy, localeFromPathname } from "@/lib/copy";
-import { defaultLocale, localizedPath } from "@/lib/i18n";
+import {
+  getSubscriptionSnapshot,
+  type SubscriptionSnapshot,
+} from "@/lib/subscription-runtime";
 
 type AccountState = {
   user: User | null;
+  subscription: SubscriptionSnapshot | null;
   loading: boolean;
   error: string;
   email: string;
@@ -27,10 +31,10 @@ export function UserAccountControls() {
   const pathname = usePathname();
   const locale = localeFromPathname(pathname);
   const copy = getRuntimeCopy(locale).shell.account;
-  const pricingHref =
-    locale === defaultLocale ? "/pricing/" : localizedPath(locale, "pricing");
+  const isZh = locale === "zh";
   const [state, setState] = useState<AccountState>({
     user: null,
+    subscription: null,
     loading: true,
     error: "",
     email: "",
@@ -45,8 +49,14 @@ export function UserAccountControls() {
       try {
         await handleAuthCallback();
         const user = await getUser();
+        const subscription = await getSubscriptionSnapshot();
         if (mounted) {
-          setState((current) => ({ ...current, user, loading: false }));
+          setState((current) => ({
+            ...current,
+            user,
+            subscription,
+            loading: false,
+          }));
         }
       } catch (error) {
         if (mounted) {
@@ -60,8 +70,15 @@ export function UserAccountControls() {
     }
 
     loadUser();
-    const unsubscribe = onAuthChange((_event, user) => {
-      setState((current) => ({ ...current, user, loading: false, error: "" }));
+    const unsubscribe = onAuthChange(async (_event, user) => {
+      const subscription = await getSubscriptionSnapshot();
+      setState((current) => ({
+        ...current,
+        user,
+        subscription,
+        loading: false,
+        error: "",
+      }));
     });
 
     return () => {
@@ -75,9 +92,11 @@ export function UserAccountControls() {
 
     try {
       const user = await login(state.email, state.password);
+      const subscription = await getSubscriptionSnapshot();
       setState((current) => ({
         ...current,
         user,
+        subscription,
         password: "",
         emailOpen: false,
       }));
@@ -86,9 +105,29 @@ export function UserAccountControls() {
     }
   }
 
+  async function handleGoogleLogin() {
+    setState((current) => ({ ...current, error: "" }));
+
+    try {
+      await oauthLogin("google");
+    } catch (error) {
+      setState((current) => ({ ...current, error: getErrorMessage(error) }));
+    }
+  }
+
   async function handleLogout() {
-    await logout();
-    setState((current) => ({ ...current, user: null, password: "" }));
+    try {
+      await logout();
+      const subscription = await getSubscriptionSnapshot();
+      setState((current) => ({
+        ...current,
+        user: null,
+        subscription,
+        password: "",
+      }));
+    } catch (error) {
+      setState((current) => ({ ...current, error: getErrorMessage(error) }));
+    }
   }
 
   if (state.loading) {
@@ -109,6 +148,9 @@ export function UserAccountControls() {
           <p className="mt-1 max-w-[240px] truncate text-sm font-semibold">
             {state.user.name || state.user.email || copy.signedIn}
           </p>
+          <p className="mt-2 text-xs font-semibold text-[color:var(--muted)]">
+            Plan: {state.subscription?.displayName ?? "Free"}
+          </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
         <a
@@ -116,12 +158,6 @@ export function UserAccountControls() {
           className="inline-flex min-h-11 items-center rounded-[var(--radius-sm)] border border-[color:var(--line)] px-3 py-2 font-semibold text-[color:var(--foreground)] transition hover:bg-black/5 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]"
         >
           {copy.myChats}
-        </a>
-        <a
-          href={pricingHref}
-          className="inline-flex min-h-11 items-center rounded-[var(--radius-sm)] bg-[color:var(--accent)] px-3 py-2 font-semibold text-white transition hover:opacity-90 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]"
-        >
-          {copy.upgrade}
         </a>
         <button
           type="button"
@@ -142,24 +178,20 @@ export function UserAccountControls() {
           <div>
             <p className="font-semibold">{copy.signedOutTitle}</p>
             <p className="mt-1 text-xs leading-5 text-[color:var(--muted)]">
-              {copy.signedOutDescription}
+              {isZh
+                ? "登录后可按账户隔离我的对话和工作区记录。"
+                : "Sign in to isolate My Chats and workspace records by account."}
             </p>
           </div>
           <span className="shrink-0 rounded-[var(--radius-sm)] border border-[color:var(--line)] px-2 py-1 text-[10px] font-semibold text-[color:var(--muted)]">
-            {copy.currentPlan}
+            {state.subscription?.displayName ?? copy.currentPlan}
           </span>
         </div>
-        <a
-          href={pricingHref}
-          className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-[var(--radius-sm)] bg-[color:var(--accent)] px-3 py-2 font-semibold text-white transition hover:opacity-90 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]"
-        >
-          {copy.upgrade}
-        </a>
       </div>
       <div className="flex max-w-full flex-wrap items-center gap-2">
       <button
         type="button"
-        onClick={() => oauthLogin("google")}
+        onClick={handleGoogleLogin}
         className="inline-flex min-h-11 items-center rounded-[var(--radius-sm)] bg-[color:var(--foreground)] px-3 py-2 font-semibold text-[color:var(--background)] transition hover:opacity-90 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]"
       >
         {copy.continueGoogle}

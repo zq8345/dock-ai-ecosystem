@@ -13,9 +13,14 @@ import {
   type WorkspaceFeatureFlags,
   type WorkspaceIdentity,
 } from "@/lib/workspace-runtime";
+import {
+  getSubscriptionSnapshot,
+  type SubscriptionSnapshot,
+} from "@/lib/subscription-runtime";
 
 type DashboardState = {
   identity: WorkspaceIdentity;
+  subscription: SubscriptionSnapshot;
   quota: UsageQuota;
   analytics: WorkspaceAnalytics;
   documents: SavedDocumentMetadata[];
@@ -30,9 +35,15 @@ export function WorkspaceDashboardClient() {
     let mounted = true;
 
     async function load() {
-      const snapshot = await readWorkspaceSnapshot();
+      const [snapshot, subscription] = await Promise.all([
+        readWorkspaceSnapshot(),
+        getSubscriptionSnapshot(),
+      ]);
       if (mounted) {
-        setState(snapshot);
+        setState({
+          ...snapshot,
+          subscription,
+        });
       }
     }
 
@@ -85,8 +96,16 @@ export function WorkspaceDashboardClient() {
               <p className="mt-2 text-sm text-[color:var(--muted)]">
                 {state.identity.signedIn
                   ? "Data is scoped to this account ID."
-                  : "Anonymous data is kept separate in this browser."}
+                  : "Sign in to save workspace records under your account. Anonymous data is kept separate in this browser."}
               </p>
+              <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold">
+                <span className="rounded-[var(--radius-sm)] border border-[color:var(--line)] px-2 py-1 text-[color:var(--muted)]">
+                  Plan: {state.subscription.displayName}
+                </span>
+                <span className="rounded-[var(--radius-sm)] border border-[color:var(--line)] px-2 py-1 text-[color:var(--muted)]">
+                  Storage: {state.identity.signedIn ? "Account" : "Anonymous"}
+                </span>
+              </div>
             </div>
             <UserAccountControls />
           </div>
@@ -181,21 +200,28 @@ export function WorkspaceDashboardClient() {
           </div>
         </Panel>
 
-        <Panel title="Plan placeholder" eyebrow="No billing">
-          <div className="grid gap-3 sm:grid-cols-3">
-            {["Free", "Pro", "Business"].map((plan) => (
-              <article
-                key={plan}
-                className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-4"
-              >
-                <h3 className="font-semibold">{plan}</h3>
-                <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
-                  Placeholder only. No payment, subscription check, or feature
-                  lock is active.
-                </p>
-              </article>
-            ))}
-          </div>
+        <Panel title="Account plan" eyebrow="Subscription placeholder">
+          <article className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-4">
+            <h3 className="font-semibold">{state.subscription.displayName}</h3>
+            <p className="mt-2 text-sm font-semibold text-[color:var(--muted)]">
+              {state.subscription.statusLabel}
+            </p>
+            <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
+              DEV-100 reads the current SubscriptionRecord and displays Free,
+              Plus, or Pro as a workspace placeholder. No payment or feature
+              lock is active.
+            </p>
+            <dl className="mt-4 grid gap-2 text-xs font-semibold text-[color:var(--muted)]">
+              <div className="flex justify-between gap-3 rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] p-3">
+                <dt>Source</dt>
+                <dd>{state.subscription.record.source}</dd>
+              </div>
+              <div className="flex justify-between gap-3 rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] p-3">
+                <dt>User scope</dt>
+                <dd className="break-all text-right">{state.subscription.userId}</dd>
+              </div>
+            </dl>
+          </article>
         </Panel>
       </div>
     </section>
