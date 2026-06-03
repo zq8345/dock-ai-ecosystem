@@ -13,6 +13,10 @@ test("internal Mission Control route loads required Phase 1 sections", async ({
   await expect(page.getByText("Task summary")).toBeVisible();
   await expect(page.getByText("Next recommended action")).toBeVisible();
   await expect(page.getByText("Agent status", { exact: true })).toBeVisible();
+  await expect(page.getByText("OPS-105 / DEV-301 integration")).toBeVisible();
+  await expect(page.getByText("DEV-300 premium and task queue visibility")).toBeVisible();
+  await expect(page.getByText("Premium workspace readiness")).toBeVisible();
+  await expect(page.getByText("Task queue readiness")).toBeVisible();
 
   for (const label of ["DEV", "UI", "OPS", "SEO", "GEO"]) {
     await expect(page.getByRole("heading", { name: label, exact: true })).toBeVisible();

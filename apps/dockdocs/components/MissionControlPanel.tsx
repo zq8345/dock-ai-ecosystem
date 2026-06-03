@@ -7,6 +7,11 @@ import type {
   MissionTask,
   MissionTone,
 } from "@/lib/mission-control";
+import {
+  getMissionControlIntegrationSnapshot,
+  type MissionControlIntegrationSnapshot,
+  type MissionIntegrationSignal,
+} from "@/lib/mission-control-integration";
 
 type MissionControlPanelProps = {
   snapshot: MissionControlSnapshot;
@@ -49,6 +54,8 @@ const toneStyles: Record<
 };
 
 export function MissionControlPanel({ snapshot }: MissionControlPanelProps) {
+  const integration = getMissionControlIntegrationSnapshot();
+
   return (
     <main className="min-h-screen bg-[color:var(--background)]">
       <section className="border-b border-[color:var(--line)] bg-[color:var(--surface)] px-5 py-6 sm:px-6 lg:px-8">
@@ -86,6 +93,7 @@ export function MissionControlPanel({ snapshot }: MissionControlPanelProps) {
       <section className="px-5 py-6 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-6">
           <MetricGrid metrics={snapshot.metrics} />
+          <IntegrationReadiness integration={integration} />
 
           <div className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)]">
             <OperationalLanes lanes={snapshot.lanes} />
@@ -101,6 +109,89 @@ export function MissionControlPanel({ snapshot }: MissionControlPanelProps) {
         </div>
       </section>
     </main>
+  );
+}
+
+function IntegrationReadiness({
+  integration,
+}: {
+  integration: MissionControlIntegrationSnapshot;
+}) {
+  return (
+    <section className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 sm:p-5">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)]">
+            OPS-105 / DEV-301 integration
+          </p>
+          <h2 className="mt-1 text-xl font-semibold">
+            DEV-300 premium and task queue visibility
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-[color:var(--muted)]">
+            Mission Control now checks whether the premium AI workspace surface
+            and local task queue signals are present in the current branch.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <StatusChip
+            tone={integration.premium.tone}
+            label={integration.premium.status}
+          />
+          <StatusChip
+            tone={integration.taskQueue.tone}
+            label={integration.taskQueue.status}
+          />
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-2">
+        <IntegrationGroup
+          title="Premium workspace readiness"
+          detail={integration.premium.detail}
+          signals={integration.premium.signals}
+        />
+        <IntegrationGroup
+          title="Task queue readiness"
+          detail={`${integration.taskQueue.detail} Pending ${integration.taskQueue.counts.pending}, running ${integration.taskQueue.counts.running}, completed ${integration.taskQueue.counts.completed}, failed ${integration.taskQueue.counts.failed}, skipped ${integration.taskQueue.counts.skipped}.`}
+          signals={integration.taskQueue.signals}
+        />
+      </div>
+    </section>
+  );
+}
+
+function IntegrationGroup({
+  title,
+  detail,
+  signals,
+}: {
+  title: string;
+  detail: string;
+  signals: MissionIntegrationSignal[];
+}) {
+  return (
+    <article className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-4">
+      <h3 className="font-semibold">{title}</h3>
+      <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
+        {detail}
+      </p>
+      <div className="mt-4 grid gap-2">
+        {signals.map((signal) => (
+          <div
+            key={signal.label}
+            className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] p-3"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <h4 className="text-sm font-semibold">{signal.label}</h4>
+              <StatusChip tone={signal.tone} label={signal.status} />
+            </div>
+            <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">
+              {signal.detail}
+            </p>
+          </div>
+        ))}
+      </div>
+    </article>
   );
 }
 
