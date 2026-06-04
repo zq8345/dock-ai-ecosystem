@@ -2,7 +2,7 @@
 // Do not add secrets, local paths, or raw command logs to this file.
 
 export const missionControlGeneratedData = {
-  "generatedAt": "2026-06-04T12:21:12.703Z",
+  "generatedAt": "2026-06-04T12:45:13.685Z",
   "source": "build-time",
   "projectBoard": {
     "syncStatus": "PMO同步正常",
@@ -37,8 +37,8 @@ export const missionControlGeneratedData = {
     ]
   },
   "git": {
-    "currentBranch": "hermes-002c-dispatcher-queue-summary",
-    "latestCommit": "0f8de09 HERMES-002B: merge dispatcher queue writer into master",
+    "currentBranch": "unknown",
+    "latestCommit": "4a0b78e HERMES-002C: merge dispatcher queue summary into master",
     "latestMasterCommits": [
       "0f8de09 HERMES-002B: merge dispatcher queue writer into master",
       "9d11604 HERMES-002B: add dispatcher queue writer",
@@ -47,7 +47,7 @@ export const missionControlGeneratedData = {
       "873fef9 UI-DS-03: merge unified status badge system into master"
     ],
     "workingTreeStatus": "dirty",
-    "changedFileCount": 7
+    "changedFileCount": 8
   },
   "queue": {
     "source": "PMO generated",
@@ -75,10 +75,10 @@ export const missionControlGeneratedData = {
   "dispatcherQueue": {
     "source": "HERMES-002B Dispatcher Queue Writer",
     "mode": "verification-only",
-    "generatedAt": "2026-06-04T12:21:12.241Z",
+    "generatedAt": "2026-06-04T12:44:57.006Z",
     "summary": {
       "taskCount": 11,
-      "pending": 7,
+      "pending": 0,
       "blocked": 0,
       "skipped": 4
     },
@@ -112,37 +112,54 @@ export const missionControlGeneratedData = {
         "title": "npm install reports 2 moderate audit issues; no audit fix was run.",
         "owner": "Hermes PMO",
         "priority": "P2",
-        "status": "pending"
+        "status": "completed"
       },
       {
         "id": "DISPATCH-RISK-2",
         "title": "The original Dock directory should not be used for deploy if dirty.",
         "owner": "Hermes PMO",
         "priority": "P1",
-        "status": "pending"
+        "status": "completed"
       },
       {
         "id": "DISPATCH-RISK-3",
         "title": "ai-chat is configured at /api/ai-chat, not at /.netlify/functions/ai-chat.",
         "owner": "Hermes PMO",
         "priority": "P2",
-        "status": "pending"
+        "status": "completed"
       },
       {
         "id": "DISPATCH-RISK-4",
         "title": "ai-chat returns provider as configured-ai-provider; model confirms deepseek-chat.",
         "owner": "Hermes PMO",
         "priority": "P1",
-        "status": "pending"
+        "status": "completed"
       },
       {
         "id": "DISPATCH-RISK-5",
         "title": "UI-301A is missing from the PMO board; using current release fallback.",
         "owner": "Hermes UI / Codex UI",
         "priority": "P2",
-        "status": "pending"
+        "status": "completed"
       }
     ]
+  },
+  "runnerSummary": {
+    "source": "HERMES-004 Runner Integration",
+    "mode": "verification-only",
+    "safetyMode": "Enabled",
+    "taskCount": 11,
+    "completed": 7,
+    "failed": 0,
+    "skipped": 4,
+    "lastRun": "2026-06-04T12:45:13.297Z",
+    "executionDurationMs": 16242,
+    "safety": {
+      "merge": false,
+      "push": false,
+      "deploy": false,
+      "destructive": false
+    }
   },
   "inventory": {
     "tasks": [
