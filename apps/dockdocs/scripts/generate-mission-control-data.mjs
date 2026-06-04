@@ -9,6 +9,7 @@ const repoRoot = path.resolve(appRoot, "../..");
 const boardPath = path.join(appRoot, "docs", "dockdocs-project-board.md");
 const queuePath = path.join(repoRoot, "scripts", "codex-task-queue.sample.json");
 const generatedQueuePath = path.join(repoRoot, "scripts", "codex-task-queue.generated.json");
+const dispatcherQueuePath = path.join(repoRoot, "scripts", "codex-task-dispatch.generated.json");
 const pmoGeneratedPath = path.join(appRoot, "lib", "project-board-generated.ts");
 const outputPath = path.join(appRoot, "lib", "mission-control-generated-data.ts");
 
@@ -206,6 +207,95 @@ function parseQueue() {
   }
 }
 
+function safeText(value, fallback = "") {
+  return String(value || fallback)
+    .replace(/[A-Za-z]:\\[^\s"]+/g, "[local-path]")
+    .replace(/(api[_-]?key|secret|token|password|authorization|bearer)\s*[:=]\s*[^\s",]+/gi, "$1=[redacted]");
+}
+
+function parseDispatcherQueue() {
+  if (!existsSync(dispatcherQueuePath)) {
+    warnings.push("Dispatcher queue file is missing.");
+    return {
+      source: "missing",
+      mode: "missing",
+      generatedAt: null,
+      summary: {
+        taskCount: 0,
+        pending: 0,
+        blocked: 0,
+        skipped: 0,
+      },
+      owners: [],
+      safety: {
+        merge: false,
+        push: false,
+        deploy: false,
+        destructive: false,
+      },
+      tasksPreview: [],
+    };
+  }
+
+  try {
+    const parsed = JSON.parse(readFileSync(dispatcherQueuePath, "utf8"));
+    const tasks = Array.isArray(parsed.tasks) ? parsed.tasks : [];
+    const ownerCounts = new Map();
+
+    for (const task of tasks) {
+      const owner = safeText(task.owner, "Unassigned");
+      ownerCounts.set(owner, (ownerCounts.get(owner) || 0) + 1);
+    }
+
+    return {
+      source: safeText(parsed.source, "unknown"),
+      mode: safeText(parsed.mode, "unknown"),
+      generatedAt: parsed.generatedAt || null,
+      summary: {
+        taskCount: Number(parsed.summary?.taskCount ?? tasks.length),
+        pending: Number(parsed.summary?.pending ?? tasks.filter((task) => task.status === "pending").length),
+        blocked: Number(parsed.summary?.blocked ?? tasks.filter((task) => task.status === "blocked").length),
+        skipped: Number(parsed.summary?.skipped ?? tasks.filter((task) => task.status === "skipped").length),
+      },
+      owners: [...ownerCounts.entries()].map(([owner, count]) => ({ owner, count })),
+      safety: {
+        merge: parsed.safety?.merge === true,
+        push: parsed.safety?.push === true,
+        deploy: parsed.safety?.deploy === true,
+        destructive: parsed.safety?.destructive === true,
+      },
+      tasksPreview: tasks.slice(0, 5).map((task) => ({
+        id: safeText(task.id, "UNKNOWN"),
+        title: safeText(task.title, "Untitled task"),
+        owner: safeText(task.owner, "Unassigned"),
+        priority: safeText(task.priority, "P3"),
+        status: safeText(task.status, "unknown"),
+      })),
+    };
+  } catch {
+    warnings.push("Dispatcher queue JSON could not be parsed.");
+    return {
+      source: "parse-error",
+      mode: "unknown",
+      generatedAt: null,
+      summary: {
+        taskCount: 0,
+        pending: 0,
+        blocked: 0,
+        skipped: 0,
+      },
+      owners: [],
+      safety: {
+        merge: false,
+        push: false,
+        deploy: false,
+        destructive: false,
+      },
+      tasksPreview: [],
+    };
+  }
+}
+
 function getGitSummary() {
   const currentBranch = safeGit(["branch", "--show-current"], "unknown") || "unknown";
   const latestCommit = safeGit(["log", "-1", "--pretty=format:%h %s"], "unknown");
@@ -265,6 +355,7 @@ const board = readText(boardPath, "Project board");
 const pmoBoard = readGeneratedProjectBoard();
 const boardTasks = pmoBoard?.tasks?.length > 0 ? pmoBoard.tasks : parseBoardTasks(board);
 const queue = parseQueue();
+const dispatcherQueue = parseDispatcherQueue();
 const nextRecommended = readBoardList(board, "### Recommended next task");
 const data = {
   generatedAt: new Date().toISOString(),
@@ -279,6 +370,7 @@ const data = {
   },
   git: getGitSummary(),
   queue,
+  dispatcherQueue,
   inventory: getInventory(boardTasks, pmoBoard),
   warnings: [...warnings, ...(pmoBoard?.warnings || [])],
 };
