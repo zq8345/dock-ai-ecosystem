@@ -14,7 +14,7 @@ node scripts/codex-task-queue-runner.mjs --queue scripts/codex-task-queue.sample
 ## Continuous Polling
 
 ```powershell
-node scripts/codex-task-queue-runner.mjs --queue scripts/codex-task-queue.sample.json --interval 30
+node scripts/codex-task-queue-runner.mjs --queue scripts/codex-task-queue.sample.json --watch --interval 30
 ```
 
 ## Dry Run

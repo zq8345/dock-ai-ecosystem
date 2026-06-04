@@ -27,6 +27,7 @@ function parseArgs(argv) {
   const args = {
     queue: DEFAULT_QUEUE,
     once: false,
+    watch: false,
     interval: DEFAULT_INTERVAL_SECONDS,
     dryRun: false,
   };
@@ -42,6 +43,11 @@ function parseArgs(argv) {
 
     if (arg === "--once") {
       args.once = true;
+      continue;
+    }
+
+    if (arg === "--watch") {
+      args.watch = true;
       continue;
     }
 
@@ -116,6 +122,10 @@ async function appendTaskLog(task, message) {
   const stamped = `[${now()}] ${message}`;
   await appendLog(MAIN_LOG, `${task.id}: ${message}`);
   await appendLog(path.join(TASK_LOG_DIR, `${task.id}.log`), stamped);
+}
+
+async function appendMainLog(message) {
+  await appendLog(MAIN_LOG, `watch: ${message}`);
 }
 
 async function readQueue(queuePath) {
@@ -310,17 +320,28 @@ async function runQueueOnce(options) {
 async function main() {
   const options = parseArgs(process.argv.slice(2));
 
+  if (options.once && options.watch) {
+    throw new Error("--once and --watch cannot be used together.");
+  }
+
   if (options.once) {
     await runQueueOnce(options);
     return;
   }
 
+  if (!options.watch) {
+    throw new Error("Use --once for a single run or --watch for polling mode.");
+  }
+
   console.log(
     `Polling ${options.queue} every ${options.interval} seconds. Press Ctrl+C to stop.`,
   );
+  await appendMainLog(`started queue=${options.queue} interval=${options.interval}s`);
 
   while (true) {
+    await appendMainLog("runner tick started");
     await runQueueOnce(options);
+    await appendMainLog("runner tick finished");
     await new Promise((resolve) => setTimeout(resolve, options.interval * 1000));
   }
 }
