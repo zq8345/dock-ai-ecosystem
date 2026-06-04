@@ -2,7 +2,7 @@
 // Do not add secrets, local paths, or raw command logs to this file.
 
 export const missionControlGeneratedData = {
-  "generatedAt": "2026-06-04T07:29:11.438Z",
+  "generatedAt": "2026-06-04T12:21:12.703Z",
   "source": "build-time",
   "projectBoard": {
     "syncStatus": "PMO同步正常",
@@ -37,17 +37,17 @@ export const missionControlGeneratedData = {
     ]
   },
   "git": {
-    "currentBranch": "ops-111-watch-mode-fresh",
-    "latestCommit": "30c981d OPS-110: merge Codex auto pickup stability into master",
+    "currentBranch": "hermes-002c-dispatcher-queue-summary",
+    "latestCommit": "0f8de09 HERMES-002B: merge dispatcher queue writer into master",
     "latestMasterCommits": [
-      "30c981d OPS-110: merge Codex auto pickup stability into master",
-      "eb99763 OPS-110: stabilize Codex auto pickup",
-      "7d4f320 OPS-108: merge Codex task queue writer into master",
-      "764627b OPS-108: generate Codex task queue from PMO board",
-      "7dfc4aa OPS-107: merge PMO Sync into master"
+      "0f8de09 HERMES-002B: merge dispatcher queue writer into master",
+      "9d11604 HERMES-002B: add dispatcher queue writer",
+      "7d3fbc5 OPS-117: merge production monitoring snapshot into master",
+      "408b712 OPS-117: add production monitoring snapshot",
+      "873fef9 UI-DS-03: merge unified status badge system into master"
     ],
     "workingTreeStatus": "dirty",
-    "changedFileCount": 9
+    "changedFileCount": 7
   },
   "queue": {
     "source": "PMO generated",
@@ -69,6 +69,78 @@ export const missionControlGeneratedData = {
         "id": "PMO-VERIFY-002",
         "title": "Verify Start the next PMO-approved production task.",
         "status": "completed"
+      }
+    ]
+  },
+  "dispatcherQueue": {
+    "source": "HERMES-002B Dispatcher Queue Writer",
+    "mode": "verification-only",
+    "generatedAt": "2026-06-04T12:21:12.241Z",
+    "summary": {
+      "taskCount": 11,
+      "pending": 7,
+      "blocked": 0,
+      "skipped": 4
+    },
+    "owners": [
+      {
+        "owner": "Hermes PMO",
+        "count": 8
+      },
+      {
+        "owner": "Hermes UI / Codex UI",
+        "count": 1
+      },
+      {
+        "owner": "Codex OPS",
+        "count": 1
+      },
+      {
+        "owner": "Hermes PMO / Codex OPS",
+        "count": 1
+      }
+    ],
+    "safety": {
+      "merge": false,
+      "push": false,
+      "deploy": false,
+      "destructive": false
+    },
+    "tasksPreview": [
+      {
+        "id": "DISPATCH-RISK-1",
+        "title": "npm install reports 2 moderate audit issues; no audit fix was run.",
+        "owner": "Hermes PMO",
+        "priority": "P2",
+        "status": "pending"
+      },
+      {
+        "id": "DISPATCH-RISK-2",
+        "title": "The original Dock directory should not be used for deploy if dirty.",
+        "owner": "Hermes PMO",
+        "priority": "P1",
+        "status": "pending"
+      },
+      {
+        "id": "DISPATCH-RISK-3",
+        "title": "ai-chat is configured at /api/ai-chat, not at /.netlify/functions/ai-chat.",
+        "owner": "Hermes PMO",
+        "priority": "P2",
+        "status": "pending"
+      },
+      {
+        "id": "DISPATCH-RISK-4",
+        "title": "ai-chat returns provider as configured-ai-provider; model confirms deepseek-chat.",
+        "owner": "Hermes PMO",
+        "priority": "P1",
+        "status": "pending"
+      },
+      {
+        "id": "DISPATCH-RISK-5",
+        "title": "UI-301A is missing from the PMO board; using current release fallback.",
+        "owner": "Hermes UI / Codex UI",
+        "priority": "P2",
+        "status": "pending"
       }
     ]
   },

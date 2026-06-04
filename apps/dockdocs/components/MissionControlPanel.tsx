@@ -148,6 +148,7 @@ export function MissionControlPanel({ snapshot }: MissionControlPanelProps) {
             <OwnerBriefing snapshot={snapshot} />
             <ObserverReportSummary />
             <DispatcherSummary />
+            <DispatcherQueueSummary />
 
             <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(340px,0.95fr)]">
               <div className="grid gap-6">
@@ -252,6 +253,144 @@ function ObserverReportSummary() {
           <QueueCount key={item.label} label={item.label} value={item.value} />
         ))}
       </div>
+    </Card>
+  );
+}
+
+function DispatcherQueueSummary() {
+  const dispatcherQueue = missionControlGeneratedData.dispatcherQueue;
+  const summary = dispatcherQueue?.summary;
+  const owners = dispatcherQueue?.owners || [];
+  const tasksPreview = dispatcherQueue?.tasksPreview || [];
+  const safety = dispatcherQueue?.safety || {
+    merge: false,
+    push: false,
+    deploy: false,
+    destructive: false,
+  };
+
+  if (!summary || String(dispatcherQueue.source) === "missing") {
+    return (
+      <Card
+        as="section"
+        aria-labelledby="dispatcher-queue-summary"
+        data-testid="dock-card"
+        className="p-4 sm:p-5"
+      >
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--accent)]">
+          Hermes Dispatch Queue
+        </p>
+        <h2 id="dispatcher-queue-summary" className="mt-1 text-xl font-semibold">
+          Dispatcher Queue Summary
+        </h2>
+        <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
+          No dispatcher queue generated yet.
+        </p>
+      </Card>
+    );
+  }
+
+  return (
+    <Card
+      as="section"
+      aria-labelledby="dispatcher-queue-summary"
+      data-testid="dock-card"
+      className="p-4 sm:p-5"
+    >
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--accent)]">
+            Hermes Dispatch Queue
+          </p>
+          <h2 id="dispatcher-queue-summary" className="mt-1 text-xl font-semibold">
+            Dispatcher Queue Summary
+          </h2>
+        </div>
+        <StatusChip tone="ready" label="Verification-only" />
+      </div>
+
+      <div className="mt-4 grid gap-2 text-sm leading-6 text-[color:var(--muted)] sm:grid-cols-2">
+        <p>
+          <span className="font-semibold text-[color:var(--foreground)]">Source:</span>{" "}
+          {dispatcherQueue.source}
+        </p>
+        <p>
+          <span className="font-semibold text-[color:var(--foreground)]">Mode:</span>{" "}
+          {dispatcherQueue.mode}
+        </p>
+      </div>
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-4">
+        <QueueCount label="Task Count" value={summary.taskCount} />
+        <QueueCount label="Pending" value={summary.pending} />
+        <QueueCount label="Blocked" value={summary.blocked} />
+        <QueueCount label="Skipped" value={summary.skipped} />
+      </div>
+
+      <div className="mt-4 grid gap-3 lg:grid-cols-2">
+        <section className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-3">
+          <h3 className="font-semibold">Owner Summary</h3>
+          <div className="mt-3 grid gap-2">
+            {owners.length > 0 ? (
+              owners.map((item) => (
+                <p key={item.owner} className="text-sm leading-6 text-[color:var(--muted)]">
+                  <span className="font-semibold text-[color:var(--foreground)]">
+                    {item.owner}:
+                  </span>{" "}
+                  {item.count}
+                </p>
+              ))
+            ) : (
+              <p className="text-sm leading-6 text-[color:var(--muted)]">
+                No dispatcher owners found.
+              </p>
+            )}
+          </div>
+        </section>
+
+        <section className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-3">
+          <h3 className="font-semibold">Safety Summary</h3>
+          <div className="mt-3 grid gap-2 text-sm leading-6 text-[color:var(--muted)]">
+            <p>merge disabled: {String(!safety.merge)}</p>
+            <p>push disabled: {String(!safety.push)}</p>
+            <p>deploy disabled: {String(!safety.deploy)}</p>
+            <p>destructive disabled: {String(!safety.destructive)}</p>
+          </div>
+        </section>
+      </div>
+
+      <section className="mt-4 rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-3">
+        <h3 className="font-semibold">Task Preview</h3>
+        <div className="mt-3 grid gap-2">
+          {tasksPreview.length > 0 ? (
+            tasksPreview.map((task) => (
+              <article
+                key={task.id}
+                className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] p-3"
+              >
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="min-w-0">
+                    <h4 className="break-words font-semibold">{task.id}</h4>
+                    <p className="mt-1 text-sm leading-6 text-[color:var(--muted)]">
+                      {task.title}
+                    </p>
+                    <p className="mt-1 text-xs font-semibold text-[color:var(--muted)]">
+                      {task.owner} · {task.priority}
+                    </p>
+                  </div>
+                  <span className="shrink-0 text-xs font-semibold text-[color:var(--muted)]">
+                    {task.status}
+                  </span>
+                </div>
+              </article>
+            ))
+          ) : (
+            <p className="text-sm leading-6 text-[color:var(--muted)]">
+              No dispatcher task preview available.
+            </p>
+          )}
+        </div>
+      </section>
     </Card>
   );
 }
