@@ -2,7 +2,7 @@
 // Do not add secrets, local paths, or raw command logs to this file.
 
 export const missionControlGeneratedData = {
-  "generatedAt": "2026-06-04T02:57:28.231Z",
+  "generatedAt": "2026-06-04T03:17:17.569Z",
   "source": "build-time",
   "projectBoard": {
     "activeTasks": [
@@ -36,17 +36,17 @@ export const missionControlGeneratedData = {
     ]
   },
   "git": {
-    "currentBranch": "ops-106-mission-control-auto-sync",
-    "latestCommit": "9da49ef PMO: update DEV-301 QA completed, DEV-300 marked Production",
+    "currentBranch": "ui-301a-mission-control-cn-layout",
+    "latestCommit": "8bfd32c OPS-106: merge Mission Control auto sync into master",
     "latestMasterCommits": [
+      "8bfd32c OPS-106: merge Mission Control auto sync into master",
+      "bcaac11 OPS-106: add build-time Mission Control auto sync",
       "9da49ef PMO: update DEV-301 QA completed, DEV-300 marked Production",
       "9e1c1d5 DEV-300: merge AI Workspace Premium into master",
-      "ce5495b OPS-104A: merge Mission Control project inventory into master",
-      "a7864f0 OPS-104A: add Mission Control project inventory",
-      "d9caf0d OPS-103: merge Mission Control × Task Queue into master"
+      "ce5495b OPS-104A: merge Mission Control project inventory into master"
     ],
     "workingTreeStatus": "dirty",
-    "changedFileCount": 7
+    "changedFileCount": 6
   },
   "queue": {
     "pending": 3,
