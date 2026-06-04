@@ -2,7 +2,7 @@
 // Do not add secrets, local paths, or raw command logs to this file.
 
 export const missionControlGeneratedData = {
-  "generatedAt": "2026-06-04T07:02:44.379Z",
+  "generatedAt": "2026-06-04T07:29:11.438Z",
   "source": "build-time",
   "projectBoard": {
     "syncStatus": "PMO同步正常",
@@ -37,21 +37,21 @@ export const missionControlGeneratedData = {
     ]
   },
   "git": {
-    "currentBranch": "ops-110-auto-pickup-stability",
-    "latestCommit": "7d4f320 OPS-108: merge Codex task queue writer into master",
+    "currentBranch": "ops-111-watch-mode-fresh",
+    "latestCommit": "30c981d OPS-110: merge Codex auto pickup stability into master",
     "latestMasterCommits": [
+      "30c981d OPS-110: merge Codex auto pickup stability into master",
+      "eb99763 OPS-110: stabilize Codex auto pickup",
       "7d4f320 OPS-108: merge Codex task queue writer into master",
       "764627b OPS-108: generate Codex task queue from PMO board",
-      "7dfc4aa OPS-107: merge PMO Sync into master",
-      "7c184a9 OPS-107: sync Mission Control from PMO board",
-      "21460aa UI-301A: merge Chinese Mission Control into master"
+      "7dfc4aa OPS-107: merge PMO Sync into master"
     ],
     "workingTreeStatus": "dirty",
-    "changedFileCount": 11
+    "changedFileCount": 9
   },
   "queue": {
     "source": "PMO generated",
-    "generatedAt": "2026-06-04T07:01:14.301Z",
+    "generatedAt": "2026-06-04T07:27:22.406Z",
     "pending": 0,
     "running": 0,
     "completed": 2,
