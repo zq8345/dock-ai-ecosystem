@@ -53,14 +53,14 @@ export function Header() {
             <span className={nl + " flex items-center gap-1"}>
               All Tools <svg className="h-3 w-3 transition group-hover:rotate-180" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
             </span>
-            <div className="absolute left-1/2 top-full z-50 mt-1 hidden w-[520px] -translate-x-1/2 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-[0_16px_48px_rgba(0,0,0,0.4)] group-hover:block">
-              <div className="grid gap-5" style={{ gridTemplateColumns: `repeat(${allToolGroups.length}, 1fr)` }}>
+            <div className="absolute left-1/2 top-full z-50 mt-1 hidden w-max min-w-[480px] -translate-x-1/2 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-[0_16px_48px_rgba(0,0,0,0.4)] group-hover:block">
+              <div className="grid gap-x-8 gap-y-4" style={{ gridTemplateColumns: `repeat(${allToolGroups.length}, auto)` }}>
                 {allToolGroups.map((g) => (
-                  <div key={g.label}>
+                  <div key={g.label} className="min-w-[100px]">
                     <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--faint)]">{g.label}</p>
                     <div className="space-y-0.5">
                       {g.items.map((item, i) => (
-                        <button key={g.slugs[i]} type="button" onClick={() => navTo(g.slugs[i])} className="block w-full rounded-[var(--radius-sm)] px-2 py-1.5 text-left text-[13px] font-medium text-[color:var(--muted)] transition hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)] whitespace-nowrap">{item}
+                        <button key={g.slugs[i]} type="button" onClick={() => navTo(g.slugs[i])} className="block w-full text-left rounded-[var(--radius-sm)] px-2 py-1 text-[13px] font-medium text-[color:var(--muted)] transition hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)] whitespace-nowrap">{item}
                         </button>
                       ))}
                     </div>
