@@ -2,6 +2,23 @@
 
 import { usePathname } from "next/navigation";
 
+const LOCALES = ["en", "zh"] as const;
+
+function stripLocale(pathname: string): { locale: string; barePath: string } {
+  const segments = pathname.split("/").filter(Boolean);
+  const first = segments[0];
+  if (first && (LOCALES as readonly string[]).includes(first)) {
+    const bare = "/" + segments.slice(1).join("/") || "/";
+    return { locale: first, barePath: bare };
+  }
+  return { locale: "en", barePath: pathname || "/" };
+}
+
+function localizeHref(href: string, locale: string): string {
+  if (locale === "en" || !locale) return href;
+  return `/${locale}${href}`;
+}
+
 type ToolGroup = {
   label: string;
   items: { name: string; href: string }[];
@@ -55,15 +72,16 @@ const toolGroups: ToolGroup[] = [
 
 export function SidebarNav() {
   const pathname = usePathname();
+  const { locale, barePath } = stripLocale(pathname ?? "/");
 
-  // Hide sidebar on non-tool pages (blog, guides, resources, etc.)
+  // Show sidebar on home, tool pages, dashboard, pricing — in any locale
+  const alwaysShowPaths = ["/dashboard", "/pricing"];
   const isToolPage =
-    pathname === "/" ||
+    barePath === "/" ||
     toolGroups.some((g) =>
-      g.items.some((item) => pathname.startsWith(item.href)),
+      g.items.some((item) => barePath.startsWith(item.href)),
     ) ||
-    pathname === "/dashboard" ||
-    pathname === "/pricing";
+    alwaysShowPaths.some((p) => barePath.startsWith(p));
 
   if (!isToolPage) return null;
 
@@ -77,11 +95,12 @@ export function SidebarNav() {
             </p>
             <ul className="space-y-0.5">
               {group.items.map((item) => {
-                const isActive = pathname === item.href;
+                const isActive = barePath === item.href;
+                const href = localizeHref(item.href, locale);
                 return (
                   <li key={item.href}>
                     <a
-                      href={item.href}
+                      href={href}
                       className={`block rounded-[var(--radius-sm)] px-2 py-1.5 text-[13px] font-medium transition ${
                         isActive
                           ? "bg-[color:var(--soft-accent)] text-[color:var(--accent-strong)]"
