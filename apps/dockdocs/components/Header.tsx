@@ -187,7 +187,9 @@ export function Header() {
                 <path d="M3 5l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </span>
-            <div className="absolute left-1/2 top-full z-50 mt-1 hidden w-max min-w-[520px] -translate-x-1/2 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-[0_16px_48px_rgba(0,0,0,0.4)] group-hover:block">
+            {/* Invisible bridge keeps dropdown open */}
+            <div className="absolute left-1/2 top-full z-50 hidden w-max min-w-[520px] -translate-x-1/2 pt-2 group-hover:block">
+              <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-[0_16px_48px_rgba(0,0,0,0.4)]">
               <div
                 className="grid gap-x-8 gap-y-4"
                 style={{ gridTemplateColumns: `repeat(${groups.length}, auto)` }}
@@ -212,6 +214,7 @@ export function Header() {
                   </div>
                 ))}
               </div>
+            </div>
             </div>
           </div>
 
