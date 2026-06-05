@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { CommercialAccountClient } from "@/components/CommercialAccountClient";
+import { AccountClient } from "@/components/AccountClient";
 
 export const metadata: Metadata = {
   title: "Account",
   description:
-    "Create a DockDocs account, sign in with Netlify Identity, and view the current Free, Plus, or Pro plan placeholder.",
+    "Sign in to DockDocs with Google. Access your workspace, manage billing, and track document usage.",
   alternates: {
     canonical: "/account/",
   },
@@ -12,29 +12,23 @@ export const metadata: Metadata = {
 
 export default function AccountPage() {
   return (
-    <main>
-      <section className="border-b border-[color:var(--line)] bg-[color:var(--surface)] px-5 py-10 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--accent)]">
+    <div className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
+      <div className="mx-auto max-w-md">
+        <div className="text-center">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--accent-strong)]">
             Account
           </p>
-          <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
-            Register, sign in, and view your current workspace plan.
+          <h1 className="mt-4 text-[28px] font-semibold tracking-[-0.014em]">
+            Sign in to DockDocs
           </h1>
-          <p className="mt-4 max-w-3xl text-sm leading-7 text-[color:var(--muted)] sm:text-base">
-            DockDocs uses Netlify Identity for Google and Email login. Signed-in
-            workspace data is stored by account ID, anonymous data stays local to
-            this browser, and the account page reads the local Free, Plus, or Pro
-            subscription placeholder without saving original PDF files.
+          <p className="mt-3 text-[14px] leading-relaxed text-[color:var(--muted)]">
+            Access your workspace, manage billing, and keep your document history
+            across devices.
           </p>
         </div>
-      </section>
 
-      <section className="px-5 py-10 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <CommercialAccountClient />
-        </div>
-      </section>
-    </main>
+        <AccountClient />
+      </div>
+    </div>
   );
 }

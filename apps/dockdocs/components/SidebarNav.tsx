@@ -1,21 +1,20 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-
-const LOCALES = ["en", "zh"] as const;
+import { defaultLocale, isLocale } from "@/lib/i18n";
 
 function stripLocale(pathname: string): { locale: string; barePath: string } {
   const segments = pathname.split("/").filter(Boolean);
   const first = segments[0];
-  if (first && (LOCALES as readonly string[]).includes(first)) {
+  if (isLocale(first)) {
     const bare = "/" + segments.slice(1).join("/") || "/";
     return { locale: first, barePath: bare };
   }
-  return { locale: "en", barePath: pathname || "/" };
+  return { locale: defaultLocale, barePath: pathname || "/" };
 }
 
 function localizeHref(href: string, locale: string): string {
-  if (locale === "en" || !locale) return href;
+  if (locale === defaultLocale) return href;
   return `/${locale}${href}`;
 }
 

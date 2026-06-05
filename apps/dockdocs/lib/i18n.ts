@@ -3,7 +3,25 @@ export const siteUrl = "https://dockdocs.app";
 export const locales = ["en", "zh"] as const;
 export type Locale = (typeof locales)[number];
 
+export const allLocales = ["en", "zh", "ja", "ko", "es", "fr", "de", "pt", "it", "ru", "ar", "hi"] as const;
+export type AllLocale = (typeof allLocales)[number];
+
 export const defaultLocale: Locale = "en";
+
+export const localeLabels: Record<AllLocale, string> = {
+  en: "English",
+  zh: "中文",
+  ja: "日本語",
+  ko: "한국어",
+  es: "Español",
+  fr: "Français",
+  de: "Deutsch",
+  pt: "Português",
+  it: "Italiano",
+  ru: "Русский",
+  ar: "العربية",
+  hi: "हिन्दी",
+};
 
 export const routeSlugs = [
   "",
@@ -90,7 +108,11 @@ export const infoPageSlugs = [
 export type InfoPageSlug = (typeof infoPageSlugs)[number];
 
 export function isLocale(value: string | undefined): value is Locale {
-  return value === "en" || value === "zh";
+  return (locales as readonly string[]).includes(value ?? "");
+}
+
+export function isAllLocale(value: string | undefined): value is AllLocale {
+  return (allLocales as readonly string[]).includes(value ?? "");
 }
 
 export function normalizeSlug(slug?: string[] | string): RouteSlug | null {

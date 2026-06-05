@@ -3,23 +3,26 @@
 import { usePathname } from "next/navigation";
 
 import {
+  allLocales,
   defaultLocale,
-  isLocale,
+  isAllLocale,
+  localeLabels,
   localizedPath,
   normalizeSlug,
-  type Locale,
+  type AllLocale,
 } from "@/lib/i18n";
 
-const languageOptions: Array<{ locale: Locale; label: string }> = [
-  { locale: "en", label: "EN" },
-  { locale: "zh", label: "中文" },
-];
+const languageOptions: Array<{ locale: AllLocale; label: string; native: string }> = allLocales.map((locale) => ({
+  locale,
+  label: locale.toUpperCase(),
+  native: localeLabels[locale],
+}));
 
 function currentRoute(pathname: string | null) {
   const segments = (pathname ?? "/").split("/").filter(Boolean);
   const first = segments[0];
-  const locale = isLocale(first) ? first : defaultLocale;
-  const slugSegments = isLocale(first) ? segments.slice(1) : segments;
+  const locale = isAllLocale(first) ? first : defaultLocale;
+  const slugSegments = isAllLocale(first) ? segments.slice(1) : segments;
   const slug = normalizeSlug(slugSegments.join("/")) ?? "";
 
   return { locale, slug };
@@ -28,30 +31,40 @@ function currentRoute(pathname: string | null) {
 export function LanguageSwitcher() {
   const pathname = usePathname();
   const { locale: activeLocale, slug } = currentRoute(pathname);
-  const ariaLabel = activeLocale === "zh" ? "语言" : "Language";
 
   return (
-    <nav aria-label={ariaLabel} className="flex items-center">
-      <div className="inline-flex items-center rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] p-1 text-xs font-semibold text-[color:var(--muted)] shadow-sm">
-        {languageOptions.map((option) => {
-          const isActive = option.locale === activeLocale;
+    <div className="relative group">
+      <button
+        type="button"
+        className="inline-flex h-8 items-center gap-1 rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-2 text-[12px] font-semibold text-[color:var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[color:var(--foreground)]"
+      >
+        {localeLabels[activeLocale] ?? activeLocale.toUpperCase()}
+        <svg className="h-3 w-3 opacity-50" viewBox="0 0 12 12" fill="none">
+          <path d="M3 5l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      </button>
 
-          return (
-            <a
-              key={option.locale}
-              href={localizedPath(option.locale, slug)}
-              aria-current={isActive ? "page" : undefined}
-              className={`inline-flex min-h-9 items-center rounded-[var(--radius-sm)] px-2.5 py-1 transition active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)] ${
-                isActive
-                  ? "bg-[color:var(--foreground)] text-[color:var(--background)]"
-                  : "hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)]"
-              }`}
-            >
-              {option.label}
-            </a>
-          );
-        })}
+      <div className="absolute right-0 top-full z-50 mt-1 hidden w-44 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-1.5 shadow-[0_16px_48px_rgba(0,0,0,0.4)] group-hover:block">
+        <div className="max-h-[320px] overflow-y-auto">
+          {languageOptions.map((option) => {
+            const isActive = option.locale === activeLocale;
+            return (
+              <a
+                key={option.locale}
+                href={localizedPath(option.locale === "en" ? "en" : "zh", slug)}
+                className={`flex items-center justify-between rounded-[var(--radius-sm)] px-2.5 py-2 text-[13px] transition ${
+                  isActive
+                    ? "bg-[color:var(--soft-accent)] text-[color:var(--accent-strong)] font-semibold"
+                    : "font-medium text-[color:var(--muted)] hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)]"
+                }`}
+              >
+                <span>{option.native}</span>
+                <span className="text-[11px] text-[color:var(--faint)]">{option.label}</span>
+              </a>
+            );
+          })}
+        </div>
       </div>
-    </nav>
+    </div>
   );
 }

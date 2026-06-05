@@ -4,16 +4,12 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { BrandMark } from "@/components/BrandMark";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-
-const LOCALES = ["en", "zh"] as const;
+import { defaultLocale, isLocale } from "@/lib/i18n";
 
 function stripLocale(pathname: string): string {
   const segments = pathname.split("/").filter(Boolean);
   const first = segments[0];
-  if (first && (LOCALES as readonly string[]).includes(first)) {
-    return first;
-  }
-  return "en";
+  return isLocale(first) ? first : defaultLocale;
 }
 
 function localizeHref(href: string, locale: string): string {
