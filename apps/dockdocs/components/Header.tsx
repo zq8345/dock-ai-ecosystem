@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { BrandMark } from "@/components/BrandMark";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -46,9 +46,7 @@ const toolGroups = {
     },
     {
       label: "Security",
-      items: [
-        { name: "Protect PDF", slug: "/protect-pdf" },
-      ],
+      items: [{ name: "Protect PDF", slug: "/protect-pdf" }],
     },
   ],
   zh: [
@@ -90,9 +88,7 @@ const toolGroups = {
     },
     {
       label: "安全",
-      items: [
-        { name: "加密 PDF", slug: "/protect-pdf" },
-      ],
+      items: [{ name: "加密 PDF", slug: "/protect-pdf" }],
     },
   ],
 } as const;
@@ -116,7 +112,6 @@ type Locale = "en" | "zh";
 
 function stripLocale(p: string): Locale {
   const s = p.split("/").filter(Boolean);
-  // Detect any known locale prefix (including ja/ko/es etc), but only serve en/zh content
   const detected = isAllLocale(s[0]) ? s[0] : defaultLocale;
   return (isLocale(detected) ? detected : defaultLocale) as Locale;
 }
@@ -124,17 +119,20 @@ function lh(h: string, l: string) {
   return l === defaultLocale ? h : `/${l}${h}`;
 }
 
+const HEADER_H = 52; // px — must match h-[52px] below
+
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [light, setLight] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
   const locale = stripLocale(pathname ?? "/");
 
   const groups = toolGroups[locale] ?? toolGroups.en;
   const pages = pageLinks[locale] ?? pageLinks.en;
 
-  // Build top tool name map from current locale
+  // Build top tool name map
   const topNameMap: Record<string, string> = {};
   for (const g of groups) {
     for (const item of g.items) {
@@ -147,6 +145,7 @@ export function Header() {
   }, []);
   useEffect(() => { setMobileOpen(false); }, [pathname]);
   useEffect(() => {
+    // Lock body scroll when mobile menu is open
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
@@ -166,48 +165,180 @@ export function Header() {
     "rounded-[var(--radius-sm)] px-2.5 py-1.5 text-[13px] font-medium text-[color:var(--muted)] transition hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)] cursor-pointer";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[color:var(--line)] bg-[color:var(--surface)]/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-[52px] max-w-6xl items-center px-4 lg:px-6">
-        {/* Logo */}
-        <a href={lh("/", locale)} className="mr-4 shrink-0">
-          <BrandMark />
-        </a>
+    <>
+      {/* ── Fixed header bar ── */}
+      <header
+        ref={headerRef}
+        className="fixed top-0 left-0 right-0 z-50 border-b border-[color:var(--line)] bg-[color:var(--surface)]/90 backdrop-blur-xl"
+      >
+        <div className="mx-auto flex h-[52px] max-w-6xl items-center px-4 lg:px-6">
+          {/* Logo */}
+          <a href={lh("/", locale)} className="mr-4 shrink-0">
+            <BrandMark />
+          </a>
 
-        {/* Desktop nav */}
-        <nav className="hidden flex-1 items-center justify-center gap-0.5 md:flex">
-          {topSlugs.map((t) => (
-            <button key={t} type="button" onClick={() => navTo(t)} className={nl}>
-              {topNameMap[t] ?? t.replace("/", "")}
+          {/* Desktop nav */}
+          <nav className="hidden flex-1 items-center justify-center gap-0.5 md:flex">
+            {topSlugs.map((t) => (
+              <button key={t} type="button" onClick={() => navTo(t)} className={nl}>
+                {topNameMap[t] ?? t.replace("/", "")}
+              </button>
+            ))}
+
+            {/* All Tools dropdown — desktop only, hover */}
+            <div className="relative group">
+              <span className={nl + " flex items-center gap-1"}>
+                {locale === "zh" ? "全部工具" : "All Tools"}
+                <svg className="h-3 w-3 transition group-hover:rotate-180" viewBox="0 0 12 12" fill="none">
+                  <path d="M3 5l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </span>
+              <div className="absolute left-1/2 top-full z-50 hidden w-max min-w-[520px] -translate-x-1/2 pt-2 group-hover:block">
+                <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-[0_16px_48px_rgba(0,0,0,0.4)]">
+                  <div
+                    className="grid gap-x-8 gap-y-4"
+                    style={{ gridTemplateColumns: `repeat(${groups.length}, auto)` }}
+                  >
+                    {groups.map((g) => (
+                      <div key={g.label} className="min-w-[110px]">
+                        <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--faint)]">
+                          {g.label}
+                        </p>
+                        <div className="space-y-0.5">
+                          {g.items.map((item) => (
+                            <button
+                              key={item.slug}
+                              type="button"
+                              onClick={() => navTo(item.slug)}
+                              className="block w-full whitespace-nowrap rounded-[var(--radius-sm)] px-2 py-1 text-left text-[13px] font-medium text-[color:var(--muted)] transition hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)]"
+                            >
+                              {item.name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {pages.map((p) => (
+              <button key={p.href} type="button" onClick={() => navTo(p.href)} className={nl}>
+                {p.name}
+              </button>
+            ))}
+          </nav>
+
+          {/* Right actions */}
+          <div className="ml-auto flex items-center gap-1.5">
+            <LanguageSwitcher />
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] text-sm transition hover:border-[color:var(--line-strong)]"
+            >
+              {light ? "☾" : "☀"}
             </button>
-          ))}
+            <button
+              type="button"
+              onClick={() => navTo("/account")}
+              className="hidden rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-1.5 text-[13px] font-medium text-[color:var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[color:var(--foreground)] md:inline-flex"
+            >
+              {locale === "zh" ? "登录" : "Sign in"}
+            </button>
+            {/* Hamburger — mobile only */}
+            <button
+              type="button"
+              onClick={() => setMobileOpen((v) => !v)}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] text-[color:var(--foreground)] md:hidden"
+            >
+              {mobileOpen ? (
+                <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4">
+                  <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4">
+                  <path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
+      </header>
 
-          {/* All Tools dropdown */}
-          <div className="relative group">
-            <span className={nl + " flex items-center gap-1"}>
-              {locale === "zh" ? "全部工具" : "All Tools"}
-              <svg className="h-3 w-3 transition group-hover:rotate-180" viewBox="0 0 12 12" fill="none">
-                <path d="M3 5l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </span>
-            {/* Invisible bridge keeps dropdown open */}
-            <div className="absolute left-1/2 top-full z-50 hidden w-max min-w-[520px] -translate-x-1/2 pt-2 group-hover:block">
-              <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5 shadow-[0_16px_48px_rgba(0,0,0,0.4)]">
-              <div
-                className="grid gap-x-8 gap-y-4"
-                style={{ gridTemplateColumns: `repeat(${groups.length}, auto)` }}
-              >
+      {/* Spacer so content doesn't hide under fixed header */}
+      <div className="h-[52px]" aria-hidden="true" />
+
+      {/* ── Mobile full-screen menu ── */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-40 flex flex-col md:hidden"
+          style={{ top: `${HEADER_H}px` }}
+        >
+          {/* Scrollable content area */}
+          <div className="flex-1 overflow-y-auto bg-[color:var(--background)]">
+            <div className="px-4 pb-8 pt-4">
+
+              {/* Language / theme / sign-in row */}
+              <div className="mb-5 flex items-center gap-2 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-2.5">
+                <LanguageSwitcher />
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  aria-label="Toggle theme"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] text-sm transition hover:border-[color:var(--line-strong)]"
+                >
+                  {light ? "☾" : "☀"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { navTo("/account"); setMobileOpen(false); }}
+                  className="ml-auto rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface)] px-3 py-1.5 text-[13px] font-semibold text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)]"
+                >
+                  {locale === "zh" ? "登录" : "Sign in"}
+                </button>
+              </div>
+
+              {/* Quick links */}
+              <div className="mb-5">
+                <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--faint)]">
+                  {locale === "zh" ? "快速导航" : "Quick links"}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    ...topSlugs.map((t) => ({ name: topNameMap[t] ?? t, href: t })),
+                    ...pages,
+                  ].map((item) => (
+                    <button
+                      key={item.href}
+                      type="button"
+                      onClick={() => { navTo(item.href); setMobileOpen(false); }}
+                      className="rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-2 text-[14px] font-medium text-[color:var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[color:var(--foreground)]"
+                    >
+                      {item.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* All tool groups */}
+              <div className="space-y-5">
                 {groups.map((g) => (
-                  <div key={g.label} className="min-w-[110px]">
-                    <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--faint)]">
+                  <div key={g.label}>
+                    <p className="mb-2.5 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--faint)]">
                       {g.label}
                     </p>
-                    <div className="space-y-0.5">
+                    <div className="grid grid-cols-2 gap-1.5">
                       {g.items.map((item) => (
                         <button
                           key={item.slug}
                           type="button"
-                          onClick={() => navTo(item.slug)}
-                          className="block w-full whitespace-nowrap rounded-[var(--radius-sm)] px-2 py-1 text-left text-[13px] font-medium text-[color:var(--muted)] transition hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)]"
+                          onClick={() => { navTo(item.slug); setMobileOpen(false); }}
+                          className="block w-full rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-2.5 text-left text-[14px] font-medium text-[color:var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[color:var(--foreground)]"
                         >
                           {item.name}
                         </button>
@@ -216,112 +347,11 @@ export function Header() {
                   </div>
                 ))}
               </div>
+
             </div>
-            </div>
-          </div>
-
-          {pages.map((p) => (
-            <button key={p.href} type="button" onClick={() => navTo(p.href)} className={nl}>
-              {p.name}
-            </button>
-          ))}
-        </nav>
-
-        {/* Right actions */}
-        <div className="ml-auto flex items-center gap-1.5">
-          <LanguageSwitcher />
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] text-sm transition hover:border-[color:var(--line-strong)]"
-          >
-            {light ? "☾" : "☀"}
-          </button>
-          <button
-            type="button"
-            onClick={() => navTo("/account")}
-            className="hidden rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-1.5 text-[13px] font-medium text-[color:var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[color:var(--foreground)] md:inline-flex"
-          >
-            {locale === "zh" ? "登录" : "Sign in"}
-          </button>
-          <button
-            type="button"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Menu"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] md:hidden"
-          >
-            <span className="text-sm">{mobileOpen ? "✕" : "☰"}</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="fixed inset-0 top-[52px] z-40 overflow-y-auto bg-[color:var(--background)] md:hidden">
-          <div className="px-4 py-4">
-
-            {/* Mobile: language + theme + sign in row */}
-            <div className="mb-4 flex items-center gap-2 border-b border-[color:var(--line)] pb-4">
-              <LanguageSwitcher />
-              <button
-                type="button"
-                onClick={toggleTheme}
-                aria-label="Toggle theme"
-                className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] text-sm transition hover:border-[color:var(--line-strong)]"
-              >
-                {light ? "☾" : "☀"}
-              </button>
-              <button
-                type="button"
-                onClick={() => { navTo("/account"); setMobileOpen(false); }}
-                className="ml-auto rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-1.5 text-[13px] font-medium text-[color:var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[color:var(--foreground)]"
-              >
-                {locale === "zh" ? "登录" : "Sign in"}
-              </button>
-            </div>
-
-            {/* Quick links */}
-            <div className="mb-4 flex flex-wrap gap-1">
-              {[
-                ...topSlugs.map((t) => ({ name: topNameMap[t] ?? t, href: t })),
-                ...pages,
-              ].map((item) => (
-                <button
-                  key={item.href}
-                  type="button"
-                  onClick={() => { navTo(item.href); setMobileOpen(false); }}
-                  className="rounded-[var(--radius-sm)] px-3 py-2 text-[15px] font-medium text-[color:var(--muted)] transition hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)]"
-                >
-                  {item.name}
-                </button>
-              ))}
-            </div>
-            <div className="mb-4 border-t border-[color:var(--line)]" />
-
-            {/* Tool groups */}
-            {groups.map((g) => (
-              <div key={g.label} className="mb-5">
-                <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--faint)]">
-                  {g.label}
-                </p>
-                <div className="grid grid-cols-2 gap-1">
-                  {g.items.map((item) => (
-                    <button
-                      key={item.slug}
-                      type="button"
-                      onClick={() => { navTo(item.slug); setMobileOpen(false); }}
-                      className="block w-full rounded-[var(--radius-sm)] px-2 py-2.5 text-left text-[14px] font-medium text-[color:var(--muted)] transition hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)]"
-                    >
-                      {item.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
