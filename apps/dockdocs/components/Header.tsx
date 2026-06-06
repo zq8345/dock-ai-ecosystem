@@ -260,6 +260,28 @@ export function Header() {
       {mobileOpen && (
         <div className="fixed inset-0 top-[52px] z-40 overflow-y-auto bg-[color:var(--background)] md:hidden">
           <div className="px-4 py-4">
+
+            {/* Mobile: language + theme + sign in row */}
+            <div className="mb-4 flex items-center gap-2 border-b border-[color:var(--line)] pb-4">
+              <LanguageSwitcher />
+              <button
+                type="button"
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] text-sm transition hover:border-[color:var(--line-strong)]"
+              >
+                {light ? "☾" : "☀"}
+              </button>
+              <button
+                type="button"
+                onClick={() => { navTo("/account"); setMobileOpen(false); }}
+                className="ml-auto rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-1.5 text-[13px] font-medium text-[color:var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[color:var(--foreground)]"
+              >
+                {locale === "zh" ? "登录" : "Sign in"}
+              </button>
+            </div>
+
+            {/* Quick links */}
             <div className="mb-4 flex flex-wrap gap-1">
               {[
                 ...topSlugs.map((t) => ({ name: topNameMap[t] ?? t, href: t })),
@@ -276,6 +298,8 @@ export function Header() {
               ))}
             </div>
             <div className="mb-4 border-t border-[color:var(--line)]" />
+
+            {/* Tool groups */}
             {groups.map((g) => (
               <div key={g.label} className="mb-5">
                 <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--faint)]">
@@ -287,7 +311,7 @@ export function Header() {
                       key={item.slug}
                       type="button"
                       onClick={() => { navTo(item.slug); setMobileOpen(false); }}
-                      className="block w-full whitespace-nowrap rounded-[var(--radius-sm)] px-2 py-2 text-left text-[14px] font-medium text-[color:var(--muted)] transition hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)]"
+                      className="block w-full rounded-[var(--radius-sm)] px-2 py-2.5 text-left text-[14px] font-medium text-[color:var(--muted)] transition hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)]"
                     >
                       {item.name}
                     </button>
