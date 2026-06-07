@@ -336,8 +336,7 @@ export function PdfWorkflowEngine({
 
         {/* Accepted types — subtle */}
         <p className="mt-1.5 text-xs text-[color:var(--faint)]">
-          {spec.acceptedLabel}
-          {config.upload.note ? ` · ${config.upload.note}` : ""}
+          {zh ? "支持格式" : "Supported"}: {spec.acceptedLabel}
         </p>
 
         {/* Hidden file input */}
@@ -854,19 +853,23 @@ function getWorkflowResult(
         preview: "ranges",
         previewText: outputName,
       };
-    case "compress-pdf":
+    case "compress-pdf": {
+      const orig = artifact?.originalSize ?? totalSize;
+      const comp = artifact?.compressedSize;
+      const saved = artifact?.savedPercent;
       return {
         title: zh ? "PDF 已压缩" : "PDF compressed",
         description: zh
           ? "文档已压缩，可下载以备分享或上传。"
           : "Document compressed, ready to download for sharing or uploading.",
         rows: [
-          [zh ? "原始大小" : "Original size", formatBytes(totalSize)],
+          [zh ? "原始大小" : "Original size", formatBytes(orig)],
+          [zh ? "压缩后" : "Compressed size", comp != null ? formatBytes(comp) : "—"],
+          [zh ? "已节省" : "Saved", saved != null ? `${saved}%` : "—"],
           [zh ? "输出" : "Output", outputName],
         ],
-        preview: "ranges",
-        previewText: outputName,
       };
+    }
     case "ocr-pdf":
       return {
         title: zh ? "文本已提取" : "Text extracted",
