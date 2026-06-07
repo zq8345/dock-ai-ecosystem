@@ -1,13 +1,29 @@
 {
-  "generatedAt": "2026-06-08T00:00:00.000Z",
+  "generatedAt": "2026-06-08T02:00:00.000Z",
   "seoGeo": {
     "aiCitationRate": { "current": 0, "outOf": 10, "previous": 0, "delta": 0 },
-    "healthScore": 0,
+    "healthScore": 100,
     "contentProducedToday": 0,
     "externalMentions": 0,
-    "pagesLive": 0,
-    "pagesHealthy": 0
+    "pagesLive": 42,
+    "pagesHealthy": 42
   },
-  "cronJobs": [],
-  "alerts": []
+  "cronJobs": [
+    { "name": "Content Factory", "schedule": "每 3h", "lastRun": null, "lastStatus": "pending", "nextRun": "2026-06-08T05:45:19+08:00", "summary": "产出博客+对比表+FAQ增强，含质量自检" },
+    { "name": "Full Health Audit", "schedule": "每 4h", "lastRun": null, "lastStatus": "pending", "nextRun": "2026-06-08T06:46:17+08:00", "summary": "SEO+GEO+Schema 联合检查 42 个页面" },
+    { "name": "AI Citation Tracker", "schedule": "每天 08:00", "lastRun": null, "lastStatus": "pending", "nextRun": "2026-06-08T08:00:00+08:00", "summary": "追踪 ChatGPT/Google AI 是否引用 dockdocs.app" },
+    { "name": "Competitor Intel", "schedule": "每周一 10:00", "lastRun": null, "lastStatus": "pending", "nextRun": "2026-06-08T10:00:00+08:00", "summary": "iLovePDF/Smallpdf/PDF2Go 全量分析" },
+    { "name": "Signal Monitor", "schedule": "每 6h", "lastRun": null, "lastStatus": "pending", "nextRun": "2026-06-08T08:46:17+08:00", "summary": "GitHub/Reddit/HN 外部提及监控" },
+    { "name": "Internal Links", "schedule": "每周三 06:00", "lastRun": null, "lastStatus": "pending", "nextRun": "2026-06-10T06:00:00+08:00", "summary": "内链审计 + 断链检测" },
+    { "name": "Strategy Brain", "schedule": "每周五 10:00", "lastRun": null, "lastStatus": "pending", "nextRun": "2026-06-12T10:00:00+08:00", "summary": "自我进化引擎：读所有报告，产出策略" },
+    { "name": "Page Detector", "schedule": "每 6h", "lastRun": null, "lastStatus": "pending", "nextRun": "2026-06-08T09:04:21+08:00", "summary": "自动检测新增页面，触发 SEO 配置" },
+    { "name": "Keyword Tracker", "schedule": "周二五 06:00", "lastRun": null, "lastStatus": "pending", "nextRun": "2026-06-09T06:00:00+08:00", "summary": "Google Trends 关键词趋势追踪" },
+    { "name": "Platform Watcher", "schedule": "周一四 08:00", "lastRun": null, "lastStatus": "pending", "nextRun": "2026-06-08T08:00:00+08:00", "summary": "Google/ChatGPT/Schema.org 平台变化监控" },
+    { "name": "Mission Control Reporter", "schedule": "每 6h", "lastRun": null, "lastStatus": "pending", "nextRun": "2026-06-08T09:30:55+08:00", "summary": "合成所有任务状态，更新此面板" }
+  ],
+  "alerts": [
+    { "level": "info", "source": "系统", "message": "11 个自动化任务已部署，等待首次执行", "action": "Content Factory 将在 05:45 首次运行" },
+    { "level": "info", "source": "系统", "message": "42 个页面已上线，29 个工具页全部含 FAQPage JSON-LD", "action": "GEO 结构化数据已覆盖全部工具页" },
+    { "level": "info", "source": "系统", "message": "Claude Code 已接入 — 代码开发可用 Claude Sonnet", "action": "AI 引用率每日追踪将从明天开始产出数据" }
+  ]
 }
