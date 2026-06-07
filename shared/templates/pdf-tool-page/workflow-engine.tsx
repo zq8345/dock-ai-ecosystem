@@ -846,12 +846,11 @@ function getWorkflowResult(
           ? "所选范围已导出为 ZIP 文件，可下载以备后续使用。"
           : "Selected ranges exported as a ZIP file, ready to download for review.",
         rows: [
-          [zh ? "输入文件" : "Input files", String(fileCount)],
-          [zh ? "页面范围" : "Page ranges", pageRanges],
+          [zh ? "输入文件" : "Input file", files[0]?.file.name ?? "—"],
+          [zh ? "页面范围" : "Page ranges", pageRanges || (zh ? "全部" : "All")],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
           [zh ? "输出" : "Output", outputName],
         ],
-        preview: "ranges",
-        previewText: outputName,
       };
     case "compress-pdf": {
       const orig = artifact?.originalSize ?? totalSize;
@@ -881,7 +880,8 @@ function getWorkflowResult(
           : "OCR text extraction complete, ready to copy or download for downstream workflows.",
         rows: [
           [zh ? "输入文件" : "Input files", String(fileCount)],
-          [zh ? "页面范围" : "Page ranges", pageRanges],
+          [zh ? "页面范围" : "Page ranges", pageRanges || (zh ? "全部" : "All")],
+          [zh ? "识别页数" : "Pages processed", artifact?.processedPages != null ? String(artifact.processedPages) : "—"],
         ],
         preview: "text",
       };
@@ -893,9 +893,10 @@ function getWorkflowResult(
           : "PDF content exported as a DOCX file, ready for editing.",
         rows: [
           [zh ? "输入" : "Input", files[0]?.file.name ?? "—"],
+          [zh ? "页数" : "Pages", artifact?.pageCount != null ? String(artifact.pageCount) : "—"],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
           [zh ? "输出" : "Output", outputName],
         ],
-        preview: "document",
       };
     case "jpg-to-pdf":
     case "png-to-pdf":
@@ -906,9 +907,10 @@ function getWorkflowResult(
           : "Images converted into a PDF document.",
         rows: [
           [zh ? "图片数量" : "Images", String(fileCount)],
+          [zh ? "页数" : "Pages", artifact?.pageCount != null ? String(artifact.pageCount) : String(fileCount)],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
           [zh ? "输出" : "Output", outputName],
         ],
-        preview: "image-order",
       };
     case "text-to-pdf":
       return {
@@ -918,9 +920,102 @@ function getWorkflowResult(
           : "Text content typeset into a PDF document.",
         rows: [
           [zh ? "输入" : "Input", files[0]?.file.name ?? "—"],
+          [zh ? "页数" : "Pages", artifact?.pageCount != null ? String(artifact.pageCount) : "—"],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
           [zh ? "输出" : "Output", outputName],
         ],
-        preview: "document",
+      };
+    case "delete-page":
+      return {
+        title: zh ? "页面已删除" : "Pages deleted",
+        description: zh ? "指定页面已从 PDF 中移除。" : "Selected pages removed from the PDF.",
+        rows: [
+          [zh ? "删除页面" : "Deleted", pageRanges || "—"],
+          [zh ? "剩余页数" : "Pages left", artifact?.pageCount != null ? String(artifact.pageCount) : "—"],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
+          [zh ? "输出" : "Output", outputName],
+        ],
+      };
+    case "rotate-page":
+      return {
+        title: zh ? "页面已旋转" : "Pages rotated",
+        description: zh ? "页面方向已调整。" : "Page orientation adjusted.",
+        rows: [
+          [zh ? "页数" : "Pages", artifact?.pageCount != null ? String(artifact.pageCount) : "—"],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
+          [zh ? "输出" : "Output", outputName],
+        ],
+      };
+    case "reorder-pages":
+      return {
+        title: zh ? "页面已重排" : "Pages reordered",
+        description: zh ? "页面已按新顺序排列。" : "Pages arranged in the new order.",
+        rows: [
+          [zh ? "新顺序" : "New order", pageRanges || "—"],
+          [zh ? "页数" : "Pages", artifact?.pageCount != null ? String(artifact.pageCount) : "—"],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
+          [zh ? "输出" : "Output", outputName],
+        ],
+      };
+    case "add-page":
+      return {
+        title: zh ? "页面已添加" : "Page added",
+        description: zh ? "已插入空白页。" : "Blank page inserted.",
+        rows: [
+          [zh ? "总页数" : "Total pages", artifact?.pageCount != null ? String(artifact.pageCount) : "—"],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
+          [zh ? "输出" : "Output", outputName],
+        ],
+      };
+    case "protect-pdf":
+      return {
+        title: zh ? "PDF 已处理" : "PDF processed",
+        description: artifact?._warning
+          ? artifact._warning
+          : zh ? "文档已添加保护标记。" : "Protection marking applied.",
+        rows: [
+          [zh ? "页数" : "Pages", artifact?.pageCount != null ? String(artifact.pageCount) : "—"],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
+          [zh ? "输出" : "Output", outputName],
+        ],
+      };
+    case "pdf-to-jpg":
+    case "pdf-to-png":
+      return {
+        title: zh ? "图片已生成" : "Images generated",
+        description: zh ? "PDF 页面已导出为图片（ZIP 打包）。" : "PDF pages exported as images (zipped).",
+        rows: [
+          [zh ? "输入" : "Input", files[0]?.file.name ?? "—"],
+          [zh ? "图片数量" : "Images", artifact?.imageCount != null ? String(artifact.imageCount) : (artifact?.pageCount != null ? String(artifact.pageCount) : "—")],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
+          [zh ? "输出" : "Output", outputName],
+        ],
+      };
+    case "pdf-to-markdown":
+      return {
+        title: zh ? "Markdown 已生成" : "Markdown generated",
+        description: zh ? "PDF 文字已提取为 Markdown。" : "PDF text extracted as Markdown.",
+        rows: [
+          [zh ? "输入" : "Input", files[0]?.file.name ?? "—"],
+          [zh ? "页数" : "Pages", artifact?.pageCount != null ? String(artifact.pageCount) : "—"],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
+          [zh ? "输出" : "Output", outputName],
+        ],
+        preview: "text",
+      };
+    case "word-to-pdf":
+    case "ppt-to-pdf":
+    case "excel-to-pdf":
+    case "pdf-to-excel":
+      return {
+        title: zh ? "转换完成" : "Conversion complete",
+        description: zh ? "文件已转换，可下载。" : "File converted, ready to download.",
+        rows: [
+          [zh ? "输入" : "Input", files[0]?.file.name ?? "—"],
+          [zh ? "输出格式" : "Output format", outputName.split(".").pop()?.toUpperCase() ?? "—"],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
+          [zh ? "输出" : "Output", outputName],
+        ],
       };
     default:
       return {
@@ -930,8 +1025,8 @@ function getWorkflowResult(
           : "Workflow processing complete, ready to download.",
         rows: [
           [zh ? "输入" : "Input", files[0]?.file.name ?? "—"],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
           [zh ? "输出" : "Output", outputName],
-          [zh ? "大小" : "Size", formatBytes(outputSize)],
         ],
       };
   }
