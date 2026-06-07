@@ -2,7 +2,6 @@ import { PDFDocument, rgb } from "pdf-lib";
 import { runOcrPdfFirstPage } from "./ocr-runtime";
 import { runCloudConvert } from "./cloudconvert-runtime";
 import type { CloudConvertRoute } from "./cloudconvert-runtime";
-import { runPdfToWordBackend } from "./pdf-to-word-runtime";
 
 export type PdfRuntimeSlug =
   | "compress-pdf"
@@ -131,21 +130,11 @@ export async function runPdfRuntime({
     });
   }
 
-  const cloudConvertRoutes: PdfRuntimeSlug[] = ["word-to-pdf", "ppt-to-pdf", "excel-to-pdf", "pdf-to-excel"];
+  const cloudConvertRoutes: PdfRuntimeSlug[] = ["word-to-pdf", "ppt-to-pdf", "excel-to-pdf", "pdf-to-excel", "pdf-to-word"];
   if (cloudConvertRoutes.includes(slug)) {
     return runCloudConvert({
       file: files[0],
       route: slug as CloudConvertRoute,
-      outputFileName,
-      locale,
-      signal,
-      onProgress,
-    });
-  }
-
-  if (slug === "pdf-to-word") {
-    return runPdfToWordBackend({
-      file: files[0],
       outputFileName,
       locale,
       signal,

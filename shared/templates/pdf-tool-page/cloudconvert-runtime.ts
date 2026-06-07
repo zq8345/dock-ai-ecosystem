@@ -5,6 +5,7 @@ export type CloudConvertRoute =
   | "ppt-to-pdf"
   | "excel-to-pdf"
   | "pdf-to-excel"
+  | "pdf-to-word"
   | "protect-pdf";
 
 const MAX_UPLOAD_BYTES = 6 * 1024 * 1024; // 6 MB — Netlify buffered function body limit
@@ -20,6 +21,11 @@ const ROUTE_META: Record<
     outputMime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     outputExt: "xlsx",
     outputType: "xlsx",
+  },
+  "pdf-to-word": {
+    outputMime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    outputExt: "docx",
+    outputType: "docx",
   },
   "protect-pdf": { outputMime: "application/pdf", outputExt: "pdf", outputType: "pdf" },
 };

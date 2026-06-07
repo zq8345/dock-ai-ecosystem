@@ -14,6 +14,7 @@ const SUPPORTED_CONVERSIONS = {
   "ppt-to-pdf": { inputFormat: "pptx", outputFormat: "pdf", outputMime: "application/pdf", outputExt: "pdf" },
   "excel-to-pdf": { inputFormat: "xlsx", outputFormat: "pdf", outputMime: "application/pdf", outputExt: "pdf" },
   "pdf-to-excel": { inputFormat: "pdf", outputFormat: "xlsx", outputMime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", outputExt: "xlsx" },
+  "pdf-to-word": { inputFormat: "pdf", outputFormat: "docx", outputMime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", outputExt: "docx" },
 } as const;
 
 type ConversionRoute = keyof typeof SUPPORTED_CONVERSIONS;
