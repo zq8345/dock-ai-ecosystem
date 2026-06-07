@@ -429,9 +429,34 @@ function getLocalizedProgrammaticGeoRoute(rawSlug?: string[]) {
 function LocalizedChatWithPdf({ locale }: { locale: Locale }) {
   const copy = getRuntimeCopy(locale).chat;
   const zh = locale === "zh";
+  const url = `https://dockdocs.app${localizedPath(locale, "chat-with-pdf")}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": `${url}#app`,
+        name: "DockDocs Chat with PDF",
+        url,
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Web",
+        description: copy.heroDescription,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "DockDocs", item: `https://dockdocs.app${localizedPath(locale, "")}` },
+          { "@type": "ListItem", position: 2, name: zh ? "PDF 问答" : "Chat with PDF", item: url },
+        ],
+      },
+    ],
+  };
 
   return (
     <main className="bg-[color:var(--surface)]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <div className="mx-auto max-w-3xl px-5 pb-12 pt-12 sm:px-6 sm:pt-16">
         <div className="mb-6 flex items-center gap-2 text-xs text-[color:var(--muted)]">
           <a href={localizedPath(locale, "")} className="transition hover:text-[color:var(--foreground)]">DockDocs</a>

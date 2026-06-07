@@ -1,117 +1,81 @@
-// Mission Control v2 — live SEO/GEO dashboard data model
-// Auto-updated by Mission Control Reporter cron job (every 6h)
+// Mission Control — 控制台数据模型
+// 数据由 dock-automation-tools/mission-control-report.mjs 生成(全真实数据,无硬编码)
+// 写入 public/mission-control-data.json,前端每隔几分钟拉取一次。
 
-export interface CronJobStatus {
+export type TaskStatus = "ok" | "stale" | "missing" | "pending";
+export type AlertLevel = "error" | "warn" | "info";
+export type SystemStatus = "ok" | "warn" | "error";
+
+export interface TaskState {
   name: string;
-  schedule: string;
   lastRun: string | null;
-  lastStatus: "success" | "error" | "running" | "pending";
-  nextRun: string;
-  summary: string;
+  ageHours: number | null;
+  status: TaskStatus;
 }
 
-export interface SeoGeoMetrics {
-  aiCitationRate: { current: number; outOf: number; previous: number; delta: number };
-  healthScore: number; // 0-100
-  contentProducedToday: number;
-  externalMentions: number;
-  pagesLive: number;
-  pagesHealthy: number;
+export interface Metrics {
+  healthScore: number | null;
+  pagesLive: number | null;
+  pagesHealthy: number | null;
+  pagesError: number | null;
+  gscClicks: number | null;
+  gscImpressions: number | null;
+  externalMentions: number | null;
 }
 
-export interface AnalyticsData {
-  todayPageViews: number;
-  todayVisitors: number;
-  weekPageViews: number;
-  weekVisitors: number;
-  topPages: Array<{ path: string; views: number }>;
-  registeredUsers: number;
-  payingUsers: number;
-  conversionRate: string;
+export interface Opportunity {
+  query: string;
+  impressions: number;
+  clicks: number;
+  ctr: number;       // 百分比,如 1.8 表示 1.8%
+  position: number;
 }
 
-export interface Alert {
-  level: "critical" | "warning" | "info";
+export interface AlertItem {
+  level: AlertLevel;
   source: string;
   message: string;
-  action: string;
 }
 
 export interface MissionControlData {
   generatedAt: string;
-  seoGeo: SeoGeoMetrics;
-  analytics: AnalyticsData;
-  cronJobs: CronJobStatus[];
-  alerts: Alert[];
+  systemStatus: SystemStatus;
+  tasks: TaskState[];
+  metrics: Metrics;
+  opportunities: Opportunity[];
+  recentPages: string[];
+  alerts: AlertItem[];
 }
 
-// Default empty state — shown when no data yet.
-// generatedAt is intentionally blank so freshness resolves to "unknown"
-// (a real fetch always carries a timestamp).
-export const emptyMissionControlData: MissionControlData = {
-  generatedAt: "",
-  seoGeo: {
-    aiCitationRate: { current: 0, outOf: 10, previous: 0, delta: 0 },
-    healthScore: 0,
-    contentProducedToday: 0,
-    externalMentions: 0,
-    pagesLive: 0,
-    pagesHealthy: 0,
-  },
-  analytics: {
-    todayPageViews: 0,
-    todayVisitors: 0,
-    weekPageViews: 0,
-    weekVisitors: 0,
-    topPages: [],
-    registeredUsers: 0,
-    payingUsers: 0,
-    conversionRate: "0%",
-  },
-  cronJobs: [],
-  alerts: [],
-};
-
-// ── Derived data-flow helpers (pure, UI-agnostic) ──
-
-export type FreshnessLevel = "fresh" | "stale" | "critical" | "unknown";
-
-// Classify how old the snapshot is. The Reporter cron runs every 6h, so a
-// healthy snapshot is < 8h old; 8–24h is stale; > 24h means the pipeline stalled.
-export function getFreshness(
-  generatedAt: string,
-  nowMs: number,
-): { level: FreshnessLevel; ageMs: number | null } {
-  const t = Date.parse(generatedAt);
-  if (!generatedAt || Number.isNaN(t)) return { level: "unknown", ageMs: null };
-  const ageMs = Math.max(0, nowMs - t);
-  const ageHours = ageMs / 3_600_000;
-  if (ageHours <= 8) return { level: "fresh", ageMs };
-  if (ageHours <= 24) return { level: "stale", ageMs };
-  return { level: "critical", ageMs };
+// 北京时间(Asia/Shanghai),精确到秒
+export function fmtBeijing(iso: string): string {
+  const t = Date.parse(iso);
+  if (!iso || Number.isNaN(t)) return "时间未知";
+  return new Date(t).toLocaleString("zh-CN", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
 }
 
-export type JobCategory = "failed" | "overdue" | "upcoming";
-
-export function classifyJob(job: CronJobStatus, nowMs: number): JobCategory {
-  if (job.lastStatus === "error") return "failed";
-  const next = Date.parse(job.nextRun);
-  if (!Number.isNaN(next) && next < nowMs) return "overdue";
-  return "upcoming";
+// 相对时间(中文)
+export function relativeCN(iso: string, nowMs: number): string {
+  const t = Date.parse(iso);
+  if (!iso || Number.isNaN(t)) return "时间未知";
+  const min = Math.floor(Math.max(0, nowMs - t) / 60_000);
+  if (min < 1) return "刚刚";
+  if (min < 60) return `${min} 分钟前`;
+  const h = Math.floor(min / 60);
+  if (h < 24) return `${h} 小时前`;
+  return `${Math.floor(h / 24)} 天前`;
 }
 
-const CATEGORY_ORDER: Record<JobCategory, number> = { failed: 0, overdue: 1, upcoming: 2 };
-
-// Sort jobs failed → overdue → upcoming, then by soonest next run within a group.
-export function sortJobs(
-  jobs: CronJobStatus[],
-  nowMs: number,
-): Array<{ job: CronJobStatus; category: JobCategory }> {
-  return jobs
-    .map((job) => ({ job, category: classifyJob(job, nowMs) }))
-    .sort((a, b) => {
-      const byCategory = CATEGORY_ORDER[a.category] - CATEGORY_ORDER[b.category];
-      if (byCategory !== 0) return byCategory;
-      return (Date.parse(a.job.nextRun) || 0) - (Date.parse(b.job.nextRun) || 0);
-    });
+// 数字展示:null → 占位符
+export function num(n: number | null | undefined, fallback = "—"): string {
+  return n == null ? fallback : n.toLocaleString("zh-CN");
 }
