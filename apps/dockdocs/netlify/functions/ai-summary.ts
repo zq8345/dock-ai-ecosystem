@@ -63,7 +63,7 @@ export default async (req: Request, _context: Context) => {
         ok: false,
         code: "AI_SUMMARY_PROVIDER_NOT_CONFIGURED",
         message:
-          "AI Summary provider is not configured yet. Set DOCKDOCS_AI_SUMMARY_API_URL, DOCKDOCS_AI_SUMMARY_API_KEY, and DOCKDOCS_AI_SUMMARY_MODEL to enable real summaries.",
+          "AI Summary provider is not configured. Set DEEPSEEK_API_KEY (or OPENAI_API_KEY) in Netlify environment variables to enable AI features.",
         httpStatus: 503,
       },
       200,
@@ -193,12 +193,53 @@ export const config: Config = {
   method: ["POST"],
 };
 
+function normalizeChatEndpoint(base: string | undefined, fallback: string): string {
+  const raw = (base || fallback).trim().replace(/\/+$/, "");
+  // If it already points at a completions endpoint, use as-is
+  if (/\/(chat\/)?completions$/.test(raw)) return raw;
+  // If it ends with /v1, append /chat/completions
+  if (/\/v\d+$/.test(raw)) return `${raw}/chat/completions`;
+  // Otherwise assume host root → append /v1/chat/completions
+  return `${raw}/v1/chat/completions`;
+}
+
 function getProvider() {
-  return {
-    apiUrl: Netlify.env.get("DOCKDOCS_AI_SUMMARY_API_URL")?.trim(),
-    apiKey: Netlify.env.get("DOCKDOCS_AI_SUMMARY_API_KEY")?.trim(),
-    model: Netlify.env.get("DOCKDOCS_AI_SUMMARY_MODEL")?.trim(),
-  };
+  // Accept DeepSeek, OpenAI, or the generic DOCKDOCS_AI_SUMMARY_* vars.
+  // This keeps configuration consistent with the chat-with-pdf function:
+  // setting ONE provider key enables both AI Summary and Chat with PDF.
+  const deepSeekKey =
+    Netlify.env.get("DEEPSEEK_API_KEY")?.trim() ||
+    Netlify.env.get("DOCKDOCS_AI_SUMMARY_API_KEY")?.trim();
+  const openAiKey = Netlify.env.get("OPENAI_API_KEY")?.trim();
+
+  if (deepSeekKey) {
+    return {
+      apiKey: deepSeekKey,
+      apiUrl: normalizeChatEndpoint(
+        Netlify.env.get("DEEPSEEK_BASE_URL") ||
+          Netlify.env.get("DEEPSEEK_API_URL") ||
+          Netlify.env.get("DOCKDOCS_AI_SUMMARY_API_URL"),
+        "https://api.deepseek.com",
+      ),
+      model:
+        Netlify.env.get("DEEPSEEK_MODEL")?.trim() ||
+        Netlify.env.get("DOCKDOCS_AI_SUMMARY_MODEL")?.trim() ||
+        "deepseek-chat",
+    };
+  }
+
+  if (openAiKey) {
+    return {
+      apiKey: openAiKey,
+      apiUrl: normalizeChatEndpoint(
+        Netlify.env.get("OPENAI_BASE_URL"),
+        "https://api.openai.com/v1",
+      ),
+      model: Netlify.env.get("OPENAI_MODEL")?.trim() || "gpt-4o-mini",
+    };
+  }
+
+  return { apiUrl: undefined, apiKey: undefined, model: undefined };
 }
 
 function createProviderRequest(model: string, text: string, locale: "en" | "zh") {
