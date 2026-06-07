@@ -1,33 +1,40 @@
 import type { MetadataRoute } from "next";
 import { absoluteUrl, indexableRoutes } from "@/shared/seo/routes";
-import {
-  getProgrammaticGeoPageSeeds,
-  programmaticGeoPath,
-} from "@/lib/programmatic-geo";
+import { allLocales, localeLabels } from "@/lib/i18n";
+import { getProgrammaticGeoPageSeeds, programmaticGeoPath } from "@/lib/programmatic-geo";
 
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  const geoLocales = [undefined, "en", "zh"] as const;
+  const locales = ["en", "zh"] as const;
 
-  const staticRoutes = indexableRoutes.map((route) => ({
-    url: absoluteUrl(route.path),
-    lastModified: now,
-    changeFrequency: route.changeFrequency,
-    priority: route.priority,
-  }));
+  // Generate routes for all locales
+  const routes: MetadataRoute.Sitemap = [];
 
-  // Add zh alternates for all static routes
-  const zhRoutes = indexableRoutes
-    .filter((r) => r.path !== "/" && !r.path.startsWith("/zh"))
-    .map((route) => ({
-      url: absoluteUrl(`/zh${route.path}`),
+  for (const route of indexableRoutes) {
+    // Default (en) route
+    routes.push({
+      url: absoluteUrl(route.path),
       lastModified: now,
-      changeFrequency: route.changeFrequency,
-      priority: Math.max((route.priority ?? 0.5) - 0.05, 0.3),
-    }));
+      changeFrequency: route.changeFrequency as MetadataRoute.Sitemap[number]["changeFrequency"],
+      priority: route.priority,
+    });
 
+    // Localized routes
+    for (const locale of locales) {
+      if (locale === "en") continue;
+      routes.push({
+        url: absoluteUrl(`/${locale}${route.path}`),
+        lastModified: now,
+        changeFrequency: route.changeFrequency as MetadataRoute.Sitemap[number]["changeFrequency"],
+        priority: route.priority * 0.85, // Slightly lower priority for translated pages
+      });
+    }
+  }
+
+  // GEO pages
+  const geoLocales = [undefined, "en", "zh"] as const;
   const geoRoutes = getProgrammaticGeoPageSeeds().flatMap((page) =>
     geoLocales.map((locale) => ({
       url: absoluteUrl(programmaticGeoPath(page.surface, page.slug, locale)),
@@ -38,7 +45,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
 
   return Array.from(
-    new Map([...staticRoutes, ...zhRoutes, ...geoRoutes].map((route) => [route.url, route]))
-      .values(),
+    new Map([...routes, ...geoRoutes].map((r) => [r.url, r])).values(),
   );
 }

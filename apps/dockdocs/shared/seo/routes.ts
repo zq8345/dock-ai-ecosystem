@@ -1,16 +1,7 @@
-import { tools } from "@/lib/tools";
-
 export type SeoRoute = {
   path: string;
   name: string;
-  changeFrequency:
-    | "always"
-    | "hourly"
-    | "daily"
-    | "weekly"
-    | "monthly"
-    | "yearly"
-    | "never";
+  changeFrequency: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
   priority: number;
 };
 
@@ -20,187 +11,55 @@ export const siteUrl =
 export const googleSiteVerification =
   process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
 
-export const indexableRoutes: SeoRoute[] = [
-  {
-    path: "/",
-    name: "Home",
-    changeFrequency: "weekly",
-    priority: 1,
-  },
-  {
-    path: "/compress-pdf/",
-    name: "Compress PDF",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/merge-pdf/",
-    name: "Merge PDF",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/split-pdf/",
-    name: "Split PDF",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/pdf-to-word/",
-    name: "PDF to Word",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/ocr-pdf/",
-    name: "OCR PDF",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/jpg-to-pdf/",
-    name: "JPG to PDF",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/png-to-pdf/",
-    name: "PNG to PDF",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/pdf-to-jpg/",
-    name: "PDF to JPG",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/pdf-to-png/",
-    name: "PDF to PNG",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/text-to-pdf/",
-    name: "Text to PDF",
-    changeFrequency: "weekly",
-    priority: 0.75,
-  },
-  {
-    path: "/pdf-to-markdown/",
-    name: "PDF to Markdown",
-    changeFrequency: "weekly",
-    priority: 0.75,
-  },
-  {
-    path: "/delete-page/",
-    name: "Delete PDF Page",
-    changeFrequency: "weekly",
-    priority: 0.75,
-  },
-  {
-    path: "/rotate-page/",
-    name: "Rotate PDF Page",
-    changeFrequency: "weekly",
-    priority: 0.75,
-  },
-  {
-    path: "/reorder-pages/",
-    name: "Reorder PDF Pages",
-    changeFrequency: "weekly",
-    priority: 0.75,
-  },
-  {
-    path: "/add-page/",
-    name: "Add Blank Page",
-    changeFrequency: "weekly",
-    priority: 0.75,
-  },
-  {
-    path: "/protect-pdf/",
-    name: "Protect PDF",
-    changeFrequency: "weekly",
-    priority: 0.75,
-  },
-  {
-    path: "/word-to-pdf/",
-    name: "Word to PDF",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/ppt-to-pdf/",
-    name: "PPT to PDF",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/excel-to-pdf/",
-    name: "Excel to PDF",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/pdf-to-excel/",
-    name: "PDF to Excel",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/ai-workspace/",
-    name: "AI Workspace",
-    changeFrequency: "weekly",
-    priority: 0.75,
-  },
-  {
-    path: "/guides/",
-    name: "Guides",
-    changeFrequency: "weekly",
-    priority: 0.7,
-  },
-  {
-    path: "/resources/",
-    name: "Resources",
-    changeFrequency: "weekly",
-    priority: 0.7,
-  },
-  {
-    path: "/blog/",
-    name: "Blog",
-    changeFrequency: "weekly",
-    priority: 0.7,
-  },
-  {
-    path: "/chat-with-pdf",
-    name: "Chat with PDF",
-    changeFrequency: "weekly",
-    priority: 0.8,
-  },
-  {
-    path: "/privacy-policy",
-    name: "Privacy Policy",
-    changeFrequency: "yearly",
-    priority: 0.3,
-  },
-  {
-    path: "/terms",
-    name: "Terms",
-    changeFrequency: "yearly",
-    priority: 0.3,
-  },
-  {
-    path: "/sitemap",
-    name: "Sitemap",
-    changeFrequency: "monthly",
-    priority: 0.5,
-  },
-];
+const w = "weekly" as const;
+const m = "monthly" as const;
+const y = "yearly" as const;
 
-export const relatedBrandRoutes = tools.map((tool) => ({
-  name: tool.name,
-  href: tool.href,
-}));
+export const indexableRoutes: SeoRoute[] = [
+  // Core pages
+  { path: "/", name: "Home — Free Online PDF Tools", changeFrequency: w, priority: 1 },
+  { path: "/about/", name: "About DockDocs", changeFrequency: m, priority: 0.6 },
+  { path: "/pricing/", name: "Pricing", changeFrequency: m, priority: 0.7 },
+  { path: "/blog/", name: "Blog", changeFrequency: w, priority: 0.7 },
+  { path: "/guides/", name: "Guides", changeFrequency: w, priority: 0.7 },
+  { path: "/resources/", name: "Resources", changeFrequency: w, priority: 0.7 },
+  { path: "/sitemap/", name: "Sitemap", changeFrequency: m, priority: 0.5 },
+  // Legal
+  { path: "/privacy-policy/", name: "Privacy Policy", changeFrequency: y, priority: 0.3 },
+  { path: "/terms/", name: "Terms of Service", changeFrequency: y, priority: 0.3 },
+  // AI tools
+  { path: "/chat-with-pdf/", name: "Chat with PDF — AI Document Q&A", changeFrequency: w, priority: 0.85 },
+  { path: "/ai-summary/", name: "AI Summary — Document Summarizer", changeFrequency: w, priority: 0.8 },
+  { path: "/ocr/", name: "OCR Workspace — Extract Text from PDF", changeFrequency: w, priority: 0.8 },
+  { path: "/ocr-pdf/", name: "OCR PDF — Scanned PDF to Text", changeFrequency: w, priority: 0.8 },
+  { path: "/translate-pdf/", name: "Translate PDF — AI Document Translation", changeFrequency: w, priority: 0.8 },
+  // Convert — PDF to X
+  { path: "/pdf-to-word/", name: "PDF to Word — Free Online Converter", changeFrequency: w, priority: 0.85 },
+  { path: "/pdf-to-excel/", name: "PDF to Excel — Extract Data", changeFrequency: w, priority: 0.85 },
+  { path: "/pdf-to-jpg/", name: "PDF to JPG — Convert Pages to Images", changeFrequency: w, priority: 0.8 },
+  { path: "/pdf-to-png/", name: "PDF to PNG — Render Pages as Images", changeFrequency: w, priority: 0.8 },
+  { path: "/pdf-to-markdown/", name: "PDF to Markdown — Extract Text", changeFrequency: w, priority: 0.75 },
+  // Convert — X to PDF
+  { path: "/word-to-pdf/", name: "Word to PDF — Free DOCX Converter", changeFrequency: w, priority: 0.85 },
+  { path: "/excel-to-pdf/", name: "Excel to PDF — Spreadsheet to PDF", changeFrequency: w, priority: 0.85 },
+  { path: "/ppt-to-pdf/", name: "PPT to PDF — Presentation Converter", changeFrequency: w, priority: 0.8 },
+  { path: "/jpg-to-pdf/", name: "JPG to PDF — Image to PDF", changeFrequency: w, priority: 0.85 },
+  { path: "/png-to-pdf/", name: "PNG to PDF — Image Converter", changeFrequency: w, priority: 0.8 },
+  { path: "/text-to-pdf/", name: "Text to PDF — Plain Text Converter", changeFrequency: w, priority: 0.75 },
+  // Organize
+  { path: "/merge-pdf/", name: "Merge PDF — Combine Files Online", changeFrequency: w, priority: 0.9 },
+  { path: "/split-pdf/", name: "Split PDF — Extract Pages", changeFrequency: w, priority: 0.85 },
+  { path: "/compress-pdf/", name: "Compress PDF — Reduce File Size", changeFrequency: w, priority: 0.9 },
+  { path: "/delete-page/", name: "Delete PDF Pages — Remove Pages", changeFrequency: w, priority: 0.75 },
+  { path: "/rotate-page/", name: "Rotate PDF — Change Page Orientation", changeFrequency: w, priority: 0.75 },
+  { path: "/reorder-pages/", name: "Reorder PDF Pages — Rearrange", changeFrequency: w, priority: 0.75 },
+  { path: "/add-page/", name: "Add Pages to PDF — Insert Blank Pages", changeFrequency: w, priority: 0.75 },
+  // Edit & Security
+  { path: "/edit-pdf/", name: "Edit PDF — Annotate Documents", changeFrequency: w, priority: 0.8 },
+  { path: "/sign-pdf/", name: "Sign PDF — Electronic Signature", changeFrequency: w, priority: 0.8 },
+  { path: "/protect-pdf/", name: "Protect PDF — Password Encryption", changeFrequency: w, priority: 0.8 },
+  { path: "/unlock-pdf/", name: "Unlock PDF — Remove Password", changeFrequency: w, priority: 0.8 },
+];
 
 export function absoluteUrl(path: string) {
   return new URL(path, siteUrl).toString();
