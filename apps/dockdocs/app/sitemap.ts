@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { absoluteUrl, indexableRoutes } from "@/shared/seo/routes";
 import { allLocales, localeLabels } from "@/lib/i18n";
-import { getProgrammaticGeoPageSeeds, programmaticGeoPath } from "@/lib/programmatic-geo";
+import { getProgrammaticGeoPageSeeds, programmaticGeoPath, isIndexableGeoSlug } from "@/lib/programmatic-geo";
 
 export const dynamic = "force-static";
 
@@ -35,7 +35,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // GEO pages —— en 规范地址是无前缀的(undefined),不再提交 /en/ 重复副本(会被 Google 当重复内容)
   const geoLocales = [undefined, "zh"] as const;
-  const geoRoutes = getProgrammaticGeoPageSeeds().flatMap((page) =>
+  const geoRoutes = getProgrammaticGeoPageSeeds()
+    .filter((page) => isIndexableGeoSlug(page.slug))
+    .flatMap((page) =>
     geoLocales.map((locale) => ({
       url: absoluteUrl(programmaticGeoPath(page.surface, page.slug, locale)),
       lastModified: now,

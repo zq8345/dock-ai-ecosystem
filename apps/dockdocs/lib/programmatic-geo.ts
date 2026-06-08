@@ -915,6 +915,17 @@ export const priorityGeoPageSlugs = [
   "pdf-tools-for-students",
 ] as const;
 
+// 只索引"优先页 + 手写 base 页"这套精选;其余批量生成的薄页一律 noindex,
+// 避免触发 2026 Google scaled-content-abuse 处罚(它们内容薄、且中文版实为英文)。
+const indexableGeoSlugSet = new Set<string>([
+  ...priorityGeoPageSlugs,
+  ...baseProgrammaticGeoPageSeeds.map((seed) => seed.slug),
+]);
+
+export function isIndexableGeoSlug(slug: string): boolean {
+  return indexableGeoSlugSet.has(slug);
+}
+
 const priorityGeoEnhancements = priorityGeoPageSlugs.reduce<
   Record<string, ProgrammaticGeoPriorityEnhancement>
 >((items, slug) => {
@@ -2604,7 +2615,7 @@ export function createProgrammaticGeoMetadata(
       description: page.description,
     },
     robots: {
-      index: true,
+      index: isIndexableGeoSlug(page.slug),
       follow: true,
     },
   };
