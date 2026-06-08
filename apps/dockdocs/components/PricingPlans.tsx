@@ -127,7 +127,8 @@ export function PricingPlans({ locale = "en" }: { locale?: Locale }) {
   const [yearly, setYearly] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const c = copy[locale] ?? copy.en;
-  const toolHref = (href: RouteSlug) => (href ? localizedPath(locale, href) : locale === "zh" ? "/zh/account" : "/account");
+  // 账户页全站统一为 /account(无语言版本),不要按 locale 加 /zh 前缀,否则 /zh/account 会 404
+  const toolHref = (href: RouteSlug) => (href ? localizedPath(locale, href) : "/account");
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
