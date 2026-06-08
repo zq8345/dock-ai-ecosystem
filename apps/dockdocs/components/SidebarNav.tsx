@@ -25,7 +25,6 @@ const toolGroups: ToolGroup[] = [
     { name: "Chat with PDF", href: "/chat-with-pdf" },
     { name: "AI Summary", href: "/ai-summary" },
     { name: "OCR PDF", href: "/ocr-pdf" },
-    { name: "Translate PDF", href: "/translate-pdf" },
   ]},
   { label: "Convert", items: [
     { name: "Word to PDF", href: "/word-to-pdf" }, { name: "PDF to Word", href: "/pdf-to-word" },
@@ -41,9 +40,8 @@ const toolGroups: ToolGroup[] = [
     { name: "Delete Pages", href: "/delete-page" }, { name: "Rotate Pages", href: "/rotate-page" },
     { name: "Reorder Pages", href: "/reorder-pages" }, { name: "Add Pages", href: "/add-page" },
   ]},
-  { label: "Edit & Security", items: [
-    { name: "Edit PDF", href: "/edit-pdf" }, { name: "Sign PDF", href: "/sign-pdf" },
-    { name: "Protect PDF", href: "/protect-pdf" }, { name: "Unlock PDF", href: "/unlock-pdf" },
+  { label: "Security", items: [
+    { name: "Protect PDF", href: "/protect-pdf" },
   ]},
 ];
 

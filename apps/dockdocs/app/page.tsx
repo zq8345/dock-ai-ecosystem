@@ -7,7 +7,14 @@ export const metadata: Metadata = {
   title: "DockDocs — AI Document Platform",
   description:
     "20+ PDF tools for compress, convert, merge, split, OCR, AI chat, and more. Process documents in your browser, privately and fast.",
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    languages: {
+      en: "https://dockdocs.app/",
+      zh: "https://dockdocs.app/zh/",
+      "x-default": "https://dockdocs.app/",
+    },
+  },
   openGraph: {
     title: "DockDocs — AI Document Platform",
     description:
@@ -56,8 +63,8 @@ const features = [
     description: "Turn long documents into concise summaries, key points, and action items.",
   },
   {
-    title: "OCR Workspace",
-    href: "/ocr",
+    title: "OCR PDF",
+    href: "/ocr-pdf",
     eyebrow: "AI",
     description: "Make scanned PDFs and images searchable and usable with AI-powered text extraction.",
   },

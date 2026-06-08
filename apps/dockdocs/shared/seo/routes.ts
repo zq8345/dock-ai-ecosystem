@@ -30,9 +30,7 @@ export const indexableRoutes: SeoRoute[] = [
   // AI tools
   { path: "/chat-with-pdf/", name: "Chat with PDF — AI Document Q&A", changeFrequency: w, priority: 0.85 },
   { path: "/ai-summary/", name: "AI Summary — Document Summarizer", changeFrequency: w, priority: 0.8 },
-  { path: "/ocr/", name: "OCR Workspace — Extract Text from PDF", changeFrequency: w, priority: 0.8 },
   { path: "/ocr-pdf/", name: "OCR PDF — Scanned PDF to Text", changeFrequency: w, priority: 0.8 },
-  { path: "/translate-pdf/", name: "Translate PDF — AI Document Translation", changeFrequency: w, priority: 0.8 },
   // Convert — PDF to X
   { path: "/pdf-to-word/", name: "PDF to Word — Free Online Converter", changeFrequency: w, priority: 0.85 },
   { path: "/pdf-to-excel/", name: "PDF to Excel — Extract Data", changeFrequency: w, priority: 0.85 },
@@ -54,11 +52,8 @@ export const indexableRoutes: SeoRoute[] = [
   { path: "/rotate-page/", name: "Rotate PDF — Change Page Orientation", changeFrequency: w, priority: 0.75 },
   { path: "/reorder-pages/", name: "Reorder PDF Pages — Rearrange", changeFrequency: w, priority: 0.75 },
   { path: "/add-page/", name: "Add Pages to PDF — Insert Blank Pages", changeFrequency: w, priority: 0.75 },
-  // Edit & Security
-  { path: "/edit-pdf/", name: "Edit PDF — Annotate Documents", changeFrequency: w, priority: 0.8 },
-  { path: "/sign-pdf/", name: "Sign PDF — Electronic Signature", changeFrequency: w, priority: 0.8 },
+  // Security
   { path: "/protect-pdf/", name: "Protect PDF — Password Encryption", changeFrequency: w, priority: 0.8 },
-  { path: "/unlock-pdf/", name: "Unlock PDF — Remove Password", changeFrequency: w, priority: 0.8 },
 ];
 
 export function absoluteUrl(path: string) {

@@ -148,13 +148,12 @@ export function Footer() {
           <p className="text-[12px] text-[color:var(--faint)]">
             &copy; {new Date().getFullYear()} DockDocs. All rights reserved.
           </p>
-          {views !== null && (
-            <p className="text-[12px] text-[color:var(--faint)]">今日 {views.toLocaleString()} 次浏览</p>
-          )}
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[12px] text-[color:var(--faint)]">
-            <span className="text-[color:var(--muted)]">📊 今日浏览: {views === null ? "..." : views.toLocaleString()}</span>
-            <a href={href("/privacy-policy", locale)} className="transition hover:text-[color:var(--muted)]">Privacy</a>
-            <a href={href("/terms", locale)} className="transition hover:text-[color:var(--muted)]">Terms</a>
+            {views !== null && (
+              <span className="text-[color:var(--muted)]">📊 {locale === "zh" ? `今日浏览 ${views.toLocaleString()}` : `${views.toLocaleString()} views today`}</span>
+            )}
+            <a href={href("/privacy-policy", locale)} className="transition hover:text-[color:var(--muted)]">{locale === "zh" ? "隐私" : "Privacy"}</a>
+            <a href={href("/terms", locale)} className="transition hover:text-[color:var(--muted)]">{locale === "zh" ? "条款" : "Terms"}</a>
           </div>
         </div>
       </div>

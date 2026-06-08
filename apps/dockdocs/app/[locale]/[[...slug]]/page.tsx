@@ -20,6 +20,7 @@ import { HomeExtras } from "@/components/HomeExtras";
 import { SaasInfoPage } from "@/components/SaasInfoPage";
 import { AboutPage } from "@/components/AboutPage";
 import { AccountClient } from "@/components/AccountClient";
+import { ComingSoonTool } from "@/components/ComingSoonTool";
 import { ToolRuntimeClient } from "@/components/ToolRuntimeClient";
 import { UploadPanel } from "@/components/UploadPanel";
 import { ButtonLink, Container, Section } from "@dock/shared/ui";
@@ -62,6 +63,14 @@ import {
 } from "@/lib/programmatic-geo";
 
 export const dynamicParams = false;
+
+// 这些工具尚未实现(原本会下载空文件),改为"即将推出"占位,en 主路径见各自 app/<slug>/page.tsx。
+const COMING_SOON_TOOLS: Record<string, { en: string; zh: string }> = {
+  "edit-pdf": { en: "Edit PDF", zh: "编辑 PDF" },
+  "sign-pdf": { en: "Sign PDF", zh: "签署 PDF" },
+  "translate-pdf": { en: "Translate PDF", zh: "翻译 PDF" },
+  "unlock-pdf": { en: "Unlock PDF", zh: "解锁 PDF" },
+};
 
 type PageParams = {
   locale: string;
@@ -258,6 +267,15 @@ export async function generateMetadata({
     };
   }
 
+  if (COMING_SOON_TOOLS[slug]) {
+    const t = COMING_SOON_TOOLS[slug];
+    return {
+      title: `${rawLocale === "zh" ? t.zh : t.en} — ${rawLocale === "zh" ? "即将推出" : "Coming Soon"} | DockDocs`,
+      alternates: { canonical: localizedPath(rawLocale, slug as RouteSlug) },
+      robots: { index: false, follow: true },
+    };
+  }
+
   if ((toolSlugs as readonly string[]).includes(slug)) {
     return createPdfToolMetadata(
       getLocalizedToolConfig(rawLocale, slug as ToolSlug),
@@ -378,6 +396,11 @@ export default async function LocalizedRoute({
 
   if (slug === "account") {
     return <LocalizedAccount locale={rawLocale} />;
+  }
+
+  if (COMING_SOON_TOOLS[slug]) {
+    const t = COMING_SOON_TOOLS[slug];
+    return <ComingSoonTool locale={rawLocale} name={t.en} nameZh={t.zh} />;
   }
 
   if ((toolSlugs as readonly string[]).includes(slug)) {
