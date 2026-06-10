@@ -1,8 +1,59 @@
 "use client";
 
-import type { ButtonHTMLAttributes } from "react";
+import { useEffect, useState, type ButtonHTMLAttributes } from "react";
 import type { PdfToolPageConfig } from "./index";
 import type { PdfRuntimeArtifact } from "./pdf-runtime";
+
+// Visual preview of an uploaded file: first-page thumbnail for PDFs, the image
+// itself for images. Falls back to a small type badge while rendering / on error.
+function FileThumb({ file }: { file: File }) {
+  const [url, setUrl] = useState<string | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    let objUrl: string | null = null;
+    (async () => {
+      const isImg = /^image\//.test(file.type) || /\.(png|jpe?g|webp|gif|bmp)$/i.test(file.name);
+      const isPdf = file.type === "application/pdf" || /\.pdf$/i.test(file.name);
+      if (isImg) {
+        objUrl = URL.createObjectURL(file);
+        if (!cancelled) setUrl(objUrl);
+        return;
+      }
+      if (!isPdf) return;
+      try {
+        const pdfjs = await import("pdfjs-dist");
+        pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
+        const doc = await pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
+        const page = await doc.getPage(1);
+        const viewport = page.getViewport({ scale: 0.45 });
+        const canvas = document.createElement("canvas");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) await page.render({ canvas, canvasContext: ctx, viewport }).promise;
+        if (!cancelled) setUrl(canvas.toDataURL("image/jpeg", 0.7));
+      } catch {
+        /* keep the badge fallback */
+      }
+    })();
+    return () => {
+      cancelled = true;
+      if (objUrl) URL.revokeObjectURL(objUrl);
+    };
+  }, [file]);
+
+  if (!url) {
+    return (
+      <div className="flex h-12 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-[color:var(--soft-accent)] text-[10px] font-bold text-[color:var(--accent-strong)]">
+        {file.name.split(".").pop()?.toUpperCase().slice(0, 3) ?? "PDF"}
+      </div>
+    );
+  }
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={url} alt={file.name} className="h-12 w-10 shrink-0 rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-white object-contain" />
+  );
+}
 
 // ---------------------------------------------------------------------------
 // Shared types
@@ -102,10 +153,8 @@ export function ReadyWorkflowState({
             key={item.id}
             className="flex items-center gap-3 rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-4 py-3"
           >
-            {/* File icon */}
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-[color:var(--soft-accent)] text-[10px] font-bold text-[color:var(--accent-strong)]">
-              {item.file.name.split(".").pop()?.toUpperCase().slice(0, 3) ?? "PDF"}
-            </div>
+            {/* File preview */}
+            <FileThumb file={item.file} />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-[color:var(--foreground)]">
                 {item.file.name}
