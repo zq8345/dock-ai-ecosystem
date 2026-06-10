@@ -11,6 +11,7 @@ const toolGroups = {
     {
       label: "AI",
       items: [
+        { name: "Compare documents", slug: "/compare" },
         { name: "Chat with PDF", slug: "/chat-with-pdf" },
         { name: "AI Summary", slug: "/ai-summary" },
         { name: "OCR PDF", slug: "/ocr-pdf" },
@@ -53,6 +54,7 @@ const toolGroups = {
     {
       label: "AI",
       items: [
+        { name: "多文档对比", slug: "/compare" },
         { name: "PDF 问答", slug: "/chat-with-pdf" },
         { name: "AI 摘要", slug: "/ai-summary" },
         { name: "OCR PDF", slug: "/ocr-pdf" },
@@ -158,8 +160,8 @@ export function Header() {
   }
 
   function navTo(href: string) {
-    // /account 是全站统一登录页(仅 /account/,无语言版本),不能加语言前缀,否则 /zh/account 会 404
-    router.push(href === "/account" ? href : lh(href, locale));
+    // /account(统一登录页)和 /compare(单一英文 beta 页)无语言版本,不能加语言前缀,否则 /zh/... 会 404
+    router.push(href === "/account" || href === "/compare" ? href : lh(href, locale));
   }
 
   const nl =
