@@ -428,43 +428,16 @@ export function PdfToolPage({ config }: { config: PdfToolPageConfig }) {
             <h2 className="text-lg font-semibold text-[color:var(--foreground)]">{config.faqTitle}</h2>
             <div className="mt-5 divide-y divide-[color:var(--line)]">
               {config.faq.map((item) => (
-                <details key={item.question} className="group py-4">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-[color:var(--foreground)]">
-                    {item.question}
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[color:var(--line)] text-[color:var(--muted)] transition group-open:rotate-45">
-                      +
-                    </span>
-                  </summary>
-                  <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">{item.answer}</p>
-                </details>
+                <div key={item.question} className="py-4">
+                  <h3 className="text-sm font-semibold text-[color:var(--foreground)]">{item.question}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">{item.answer}</p>
+                </div>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* ── CTA ── */}
-      <section className="bg-[color:var(--surface-subtle)]">
-        <div className="mx-auto max-w-2xl px-5 py-10 sm:px-6">
-          <div className="overflow-hidden rounded-[var(--radius-xl)] border border-[color:var(--line)] bg-[color:var(--surface)] px-7 py-8 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--accent)]">
-              {config.cta.eyebrow}
-            </p>
-            <h2 className="mt-2 text-xl font-semibold text-[color:var(--foreground)]">
-              {config.cta.title}
-            </h2>
-            <p className="mx-auto mt-2 max-w-md text-sm text-[color:var(--muted)]">
-              {config.cta.description}
-            </p>
-            <a
-              href="#upload"
-              className="mt-5 inline-flex h-10 items-center rounded-[var(--radius)] bg-[color:var(--accent)] px-6 text-sm font-semibold text-white transition hover:opacity-90"
-            >
-              {config.cta.buttonLabel}
-            </a>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }
