@@ -25,6 +25,7 @@ import { ComingSoonTool } from "@/components/ComingSoonTool";
 import { TranslatePdfClient } from "@/components/TranslatePdfClient";
 import { PageReorderClient } from "@/components/PageReorderClient";
 import { InsertPdfClient } from "@/components/InsertPdfClient";
+import { WatermarkEditorClient } from "@/components/WatermarkEditorClient";
 import { ToolRuntimeClient } from "@/components/ToolRuntimeClient";
 import { UploadPanel } from "@/components/UploadPanel";
 import { ButtonLink, Container, Section } from "@dock/shared/ui";
@@ -434,6 +435,10 @@ export default async function LocalizedRoute({
 
   if (slug === "add-page") {
     return <InsertPdfClient locale={rawLocale} />;
+  }
+
+  if (slug === "watermark-pdf") {
+    return <WatermarkEditorClient locale={rawLocale} />;
   }
 
   if ((toolSlugs as readonly string[]).includes(slug)) {
