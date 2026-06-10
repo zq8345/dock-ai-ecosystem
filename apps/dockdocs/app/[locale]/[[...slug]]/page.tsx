@@ -27,6 +27,7 @@ import { PageReorderClient } from "@/components/PageReorderClient";
 import { InsertPdfClient } from "@/components/InsertPdfClient";
 import { WatermarkEditorClient } from "@/components/WatermarkEditorClient";
 import { DeletePagesClient } from "@/components/DeletePagesClient";
+import { RotatePagesClient } from "@/components/RotatePagesClient";
 import { ToolRuntimeClient } from "@/components/ToolRuntimeClient";
 import { UploadPanel } from "@/components/UploadPanel";
 import { ButtonLink, Container, Section } from "@dock/shared/ui";
@@ -444,6 +445,10 @@ export default async function LocalizedRoute({
 
   if (slug === "delete-page") {
     return <DeletePagesClient locale={rawLocale} />;
+  }
+
+  if (slug === "rotate-page") {
+    return <RotatePagesClient locale={rawLocale} />;
   }
 
   if ((toolSlugs as readonly string[]).includes(slug)) {

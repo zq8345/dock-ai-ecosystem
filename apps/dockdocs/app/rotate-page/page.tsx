@@ -1,9 +1,9 @@
 import {
   createPdfToolMetadata,
-  PdfToolPage,
   type PdfToolPageConfig,
 } from "../../../../shared/templates/pdf-tool-page";
 import { languageAlternates } from "@/lib/i18n";
+import { RotatePagesClient } from "@/components/RotatePagesClient";
 
 const config = {
   slug: "rotate-page",
@@ -91,5 +91,5 @@ const config = {
 export const metadata = createPdfToolMetadata(config);
 
 export default function RotatePagePage() {
-  return <PdfToolPage config={config} />;
+  return <RotatePagesClient locale="en" />;
 }
