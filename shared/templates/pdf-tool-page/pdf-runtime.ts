@@ -33,7 +33,8 @@ export type PdfRuntimeSlug =
   | "webp-to-jpg"
   | "jpg-to-webp"
   | "jpg-to-png"
-  | "png-to-jpg";
+  | "png-to-jpg"
+  | "pdf-to-html";
 
 export type PdfRuntimeProgress = {
   progress: number;
@@ -108,7 +109,8 @@ export function isRealPdfRuntimeSlug(slug: string): slug is PdfRuntimeSlug {
     slug === "webp-to-jpg" ||
     slug === "jpg-to-webp" ||
     slug === "jpg-to-png" ||
-    slug === "png-to-jpg"
+    slug === "png-to-jpg" ||
+    slug === "pdf-to-html"
   );
 }
 
@@ -216,6 +218,10 @@ export async function runPdfRuntime({
 
   if (slug === "pdf-to-text") {
     return pdfToText(files[0], pageRanges, outputFileName, locale, signal, onProgress);
+  }
+
+  if (slug === "pdf-to-html") {
+    return pdfToHtmlDoc(files[0], pageRanges, outputFileName, locale, signal, onProgress);
   }
 
   if (slug === "webp-to-png") {
@@ -962,6 +968,94 @@ async function convertImage(
     outputType: "image",
     pageCount: 1,
     fileCount: 1,
+  };
+}
+
+async function pdfToHtmlDoc(
+  file: File,
+  pageRanges: string,
+  outputFileName: string,
+  locale: "en" | "zh",
+  signal?: AbortSignal,
+  onProgress?: (progress: PdfRuntimeProgress) => void,
+): Promise<PdfRuntimeArtifact> {
+  throwIfAborted(signal);
+  emitProgress(onProgress, 5, 0);
+
+  const pdfjs = await import("pdfjs-dist");
+  pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
+
+  const sourceBytes = new Uint8Array(await file.arrayBuffer());
+  const pdfDoc = await pdfjs.getDocument({ data: sourceBytes }).promise;
+  const totalPages = pdfDoc.numPages;
+
+  let pageIndices: number[] = [];
+  if (pageRanges.trim()) {
+    try {
+      const ranges = parsePageRanges(pageRanges, totalPages, locale);
+      pageIndices = [...new Set(ranges.flatMap((r) => r.indices))].sort((a, b) => a - b);
+    } catch {
+      pageIndices = Array.from({ length: totalPages }, (_, i) => i);
+    }
+  } else {
+    pageIndices = Array.from({ length: totalPages }, (_, i) => i);
+  }
+
+  const escapeHtml = (s: string) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  emitProgress(onProgress, 15, 1);
+
+  const baseName = file.name.replace(/\.pdf$/i, "");
+  const sections: string[] = [];
+  for (let i = 0; i < pageIndices.length; i++) {
+    throwIfAborted(signal);
+    const pageNum = pageIndices[i] + 1;
+    const page = await pdfDoc.getPage(pageNum);
+    const textContent = await page.getTextContent();
+
+    const lineMap = new Map<number, string[]>();
+    for (const item of textContent.items) {
+      if (!("str" in item) || !("transform" in item)) continue;
+      const y = Math.round((item as any).transform[5]);
+      if (!lineMap.has(y)) lineMap.set(y, []);
+      lineMap.get(y)!.push((item as any).str as string);
+    }
+    const sortedYs = [...lineMap.keys()].sort((a, b) => b - a);
+    const pageLines = sortedYs.map((y) => lineMap.get(y)!.join(" ").trim()).filter(Boolean);
+    if (pageLines.length > 0) {
+      const paras = pageLines.map((l) => `    <p>${escapeHtml(l)}</p>`).join("\n");
+      sections.push(`  <section data-page="${pageNum}">\n${paras}\n  </section>`);
+    }
+
+    emitProgress(onProgress, 18 + ((i + 1) / pageIndices.length) * 68, 2);
+    await yieldToBrowser();
+  }
+
+  throwIfAborted(signal);
+  emitProgress(onProgress, 95, 3);
+
+  const html = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>${escapeHtml(baseName)}</title>
+</head>
+<body>
+${sections.join("\n")}
+</body>
+</html>
+`;
+  const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+  emitProgress(onProgress, 100, 3);
+
+  return {
+    fileName: outputFileName,
+    blob,
+    outputType: "text",
+    pageCount: pageIndices.length,
+    fileCount: 1,
+    text: html.slice(0, 500),
   };
 }
 

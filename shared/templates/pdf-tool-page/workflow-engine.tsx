@@ -746,6 +746,18 @@ function getWorkflowSpec(config: PdfToolPageConfig): WorkflowSpec {
           ? ["加载 PDF...", "提取文字...", "整理文本...", "准备下载..."]
           : ["Loading PDF...", "Extracting text...", "Assembling text...", "Preparing download..."],
       };
+    case "pdf-to-html":
+      return {
+        ...base,
+        maxFileSize: 30 * mb,
+        maxTotalSize: 30 * mb,
+        processLabel: zh ? "正在把 PDF 转换为 HTML。" : "Converting the PDF to HTML.",
+        resultLabel: zh ? "下载 HTML" : "Download HTML",
+        outputFileName: "dockdocs-document.html",
+        steps: zh
+          ? ["加载 PDF...", "提取文字...", "生成 HTML...", "准备下载..."]
+          : ["Loading PDF...", "Extracting text...", "Building HTML...", "Preparing download..."],
+      };
     case "webp-to-png":
       return {
         acceptedLabel: "WebP",
@@ -1195,6 +1207,17 @@ function getWorkflowResult(
         description: zh ? "PNG 已转换为 JPG，可下载。" : "PNG converted to JPG, ready to download.",
         rows: [
           [zh ? "输入" : "Input", files[0]?.file.name ?? "—"],
+          [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
+          [zh ? "输出" : "Output", outputName],
+        ],
+      };
+    case "pdf-to-html":
+      return {
+        title: zh ? "HTML 已生成" : "HTML generated",
+        description: zh ? "已把 PDF 文字转为结构化 HTML，可下载。" : "The PDF text was converted to structured HTML, ready to download.",
+        rows: [
+          [zh ? "输入" : "Input", files[0]?.file.name ?? "—"],
+          [zh ? "页数" : "Pages", artifact?.pageCount != null ? String(artifact.pageCount) : "—"],
           [zh ? "输出大小" : "Output size", formatBytes(outputSize)],
           [zh ? "输出" : "Output", outputName],
         ],

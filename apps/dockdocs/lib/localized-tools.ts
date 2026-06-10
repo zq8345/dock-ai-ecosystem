@@ -34,6 +34,38 @@ type ToolCopy = {
 };
 
 const enTools: Record<ToolSlug, ToolCopy> = {
+  "pdf-to-html": {
+    title: "PDF to HTML Converter Online Free | DockDocs",
+    description: "Convert a PDF's text into a clean HTML file online for free. Browser-side; your file never leaves your device.",
+    keywords: ["pdf to html", "convert pdf to html", "pdf to html converter", "extract pdf to html"],
+    appName: "DockDocs PDF to HTML", schemaName: "DockDocs PDF to HTML Converter", breadcrumbName: "PDF to HTML",
+    heroTitle: "Convert PDF to HTML.", heroDescription: "Extract a PDF's text into a clean, structured HTML file. All processing happens locally — your file never leaves your device.",
+    primaryActionLabel: "Convert to HTML",
+    stats: [["Price", "Free"], ["Input", "PDF file"], ["Output", "HTML file"]],
+    upload: { title: "Upload a PDF to convert", description: "Drag and drop a PDF here, or choose a file.", buttonLabel: "Choose PDF", note: "PDF only. Download the text as a structured .html file." },
+    benefitsTitle: "Convert PDF to HTML without uploading to a server", benefitsDescription: "Upload locally and download an HTML file instantly.",
+    benefits: [
+      { title: "Clean structure", description: "Each page becomes a section and each line a paragraph." },
+      { title: "Privacy-first", description: "All extraction happens in your browser. Your file never leaves your device." },
+      { title: "Page selection", description: "Optionally convert only the pages you need." },
+    ],
+    featuresTitle: "Built for PDF to HTML conversion", featuresDescription: "A minimal DockDocs interface for turning PDFs into HTML.",
+    features: [
+      { title: "Per-page sections", description: "Pages are wrapped in section elements with text paragraphs." },
+      { title: "Optional page range", description: "Convert everything or just selected pages." },
+      { title: "Browser-side", description: "Uses pdf.js for fast, local extraction." },
+      { title: "Responsive UI", description: "Works across desktop, tablet, and mobile." },
+    ],
+    workflowTitle: "How PDF-to-HTML fits into document work", workflowDescription: "Common uses: publishing content to the web, reuse, and accessibility.",
+    steps: ["Upload a PDF.", "Optionally enter a page range.", "Download the .html file."],
+    faqTitle: "PDF to HTML questions",
+    faq: [
+      { question: "How do I convert a PDF to HTML?", answer: "Upload a PDF and download the generated HTML file." },
+      { question: "Does it keep images and exact layout?", answer: "No — this extracts text into clean HTML. For images and exact layout, keep the original PDF." },
+      { question: "Is my PDF sent to a server?", answer: "No. All extraction happens in your browser. Your file never leaves your device." },
+    ],
+    cta: { eyebrow: "PDF to HTML", title: "Convert your PDF to HTML.", description: "Get clean, structured HTML — entirely in your browser.", buttonLabel: "Convert to HTML now" },
+  },
   "jpg-to-webp": {
     title: "JPG to WebP Converter Online Free | DockDocs",
     description: "Convert JPG images to WebP online for free — smaller files, same quality. Browser-side; your file never leaves your device.",
@@ -1139,6 +1171,18 @@ const enTools: Record<ToolSlug, ToolCopy> = {
 };
 
 const zhTools: Record<ToolSlug, ToolCopy> = {
+  "pdf-to-html": {
+    ...enTools["pdf-to-html"],
+    title: "在线免费 PDF 转 HTML | DockDocs",
+    description: "在线免费把 PDF 的文字转成干净的 HTML 文件。浏览器本地处理，文件不会离开你的设备。",
+    appName: "DockDocs PDF 转 HTML",
+    breadcrumbName: "PDF 转 HTML",
+    heroTitle: "把 PDF 转成 HTML。",
+    heroDescription: "把 PDF 的文字提取成干净、结构化的 HTML 文件。完全在浏览器中处理——文件不会离开你的设备。",
+    primaryActionLabel: "转换为 HTML",
+    upload: { ...enTools["pdf-to-html"].upload, title: "上传要转换的 PDF", description: "拖放 PDF 文件，或从设备中选择。", buttonLabel: "选择 PDF" },
+    cta: { eyebrow: "PDF 转 HTML", title: "把 PDF 转成 HTML。", description: "完全在浏览器中得到干净的结构化 HTML。", buttonLabel: "立即转换" },
+  },
   "jpg-to-webp": {
     ...enTools["jpg-to-webp"],
     title: "在线免费 JPG 转 WebP | DockDocs",
@@ -1538,6 +1582,14 @@ const localizedTools = {
 // the enTools spread; for Chinese pages we substitute these translated sets
 // so the FAQ section reads in Chinese.
 const zhFaq: Partial<Record<ToolSlug, { faqTitle: string; faq: Array<{ question: string; answer: string }> }>> = {
+  "pdf-to-html": {
+    faqTitle: "PDF 转 HTML 常见问题",
+    faq: [
+      { question: "如何把 PDF 转成 HTML？", answer: "上传 PDF，然后下载生成的 HTML 文件。" },
+      { question: "会保留图片和精确版式吗？", answer: "不会——本工具把文字提取成干净的 HTML。需要图片和精确版式请保留原始 PDF。" },
+      { question: "我的 PDF 会上传到服务器吗？", answer: "不会。全部在你的浏览器中完成，文件不会离开你的设备。" },
+    ],
+  },
   "jpg-to-webp": {
     faqTitle: "JPG 转 WebP 常见问题",
     faq: [
