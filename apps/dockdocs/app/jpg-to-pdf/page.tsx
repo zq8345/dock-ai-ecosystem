@@ -1,9 +1,9 @@
 import {
   createPdfToolMetadata,
-  PdfToolPage,
   type PdfToolPageConfig,
 } from "../../../../shared/templates/pdf-tool-page";
 import { languageAlternates } from "@/lib/i18n";
+import { ImagesToPdfClient } from "@/components/ImagesToPdfClient";
 
 const jpgToPdfConfig = {
   slug: "jpg-to-pdf",
@@ -133,5 +133,5 @@ const jpgToPdfConfig = {
 export const metadata = createPdfToolMetadata(jpgToPdfConfig);
 
 export default function JpgToPdfPage() {
-  return <PdfToolPage config={jpgToPdfConfig} />;
+  return <ImagesToPdfClient locale="en" />;
 }

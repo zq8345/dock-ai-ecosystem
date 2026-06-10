@@ -3,6 +3,23 @@ type QA = { q: string; a: string };
 
 // FAQ content for the custom-client tools (which don't use the PdfToolPage template).
 const FAQS: Record<string, { title: { en: string; zh: string }; items: { en: QA[]; zh: QA[] } }> = {
+  "images-to-pdf": {
+    title: { en: "Images to PDF — FAQ", zh: "图片转 PDF 常见问题" },
+    items: {
+      en: [
+        { q: "How do I convert images to a PDF?", a: "Add your images, drag them into the order you want, and click Convert to PDF. Each image becomes one page." },
+        { q: "Which image formats are supported?", a: "JPG, PNG, WebP, GIF and BMP. (HEIC isn't supported yet.)" },
+        { q: "Can I combine many images into one PDF?", a: "Yes — add as many as you like, reorder by dragging, and they're merged into a single PDF in that order." },
+        { q: "Is my file uploaded?", a: "No. The PDF is built in your browser — your images never leave your device." },
+      ],
+      zh: [
+        { q: "如何把图片转成 PDF？", a: "添加图片，拖成想要的顺序，点「转换为 PDF」。每张图片占一页。" },
+        { q: "支持哪些图片格式？", a: "JPG、PNG、WebP、GIF、BMP。（HEIC 暂不支持。）" },
+        { q: "可以把多张图片合成一个 PDF 吗？", a: "可以——想加多少加多少，拖动排序，按该顺序合并成一个 PDF。" },
+        { q: "文件会被上传吗？", a: "不会。PDF 在你的浏览器中生成，图片不会离开你的设备。" },
+      ],
+    },
+  },
   "pdf-to-image": {
     title: { en: "PDF to image — FAQ", zh: "PDF 转图片常见问题" },
     items: {
