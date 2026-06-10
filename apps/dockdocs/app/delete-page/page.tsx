@@ -1,9 +1,9 @@
 import {
   createPdfToolMetadata,
-  PdfToolPage,
   type PdfToolPageConfig,
 } from "../../../../shared/templates/pdf-tool-page";
 import { languageAlternates } from "@/lib/i18n";
+import { DeletePagesClient } from "@/components/DeletePagesClient";
 
 const config = {
   slug: "delete-page",
@@ -91,5 +91,5 @@ const config = {
 export const metadata = createPdfToolMetadata(config);
 
 export default function DeletePagePage() {
-  return <PdfToolPage config={config} />;
+  return <DeletePagesClient locale="en" />;
 }

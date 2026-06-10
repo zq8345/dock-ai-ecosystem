@@ -26,6 +26,7 @@ import { TranslatePdfClient } from "@/components/TranslatePdfClient";
 import { PageReorderClient } from "@/components/PageReorderClient";
 import { InsertPdfClient } from "@/components/InsertPdfClient";
 import { WatermarkEditorClient } from "@/components/WatermarkEditorClient";
+import { DeletePagesClient } from "@/components/DeletePagesClient";
 import { ToolRuntimeClient } from "@/components/ToolRuntimeClient";
 import { UploadPanel } from "@/components/UploadPanel";
 import { ButtonLink, Container, Section } from "@dock/shared/ui";
@@ -439,6 +440,10 @@ export default async function LocalizedRoute({
 
   if (slug === "watermark-pdf") {
     return <WatermarkEditorClient locale={rawLocale} />;
+  }
+
+  if (slug === "delete-page") {
+    return <DeletePagesClient locale={rawLocale} />;
   }
 
   if ((toolSlugs as readonly string[]).includes(slug)) {
