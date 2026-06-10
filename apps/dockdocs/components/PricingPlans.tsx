@@ -77,8 +77,8 @@ const copy = {
     plans: [
       {
         name: "免费",
-        monthlyPrice: "¥0",
-        yearlyPrice: "¥0",
+        monthlyPrice: "$0",
+        yearlyPrice: "$0",
         tagline: "日常 PDF 工作所需的一切。",
         highlights: ["全部 20+ PDF 工具", "无限使用，无需注册", "浏览器本地处理——文件保持私密", "压缩、合并、拆分、转换等"],
         cta: "立即免费开始",
@@ -87,9 +87,9 @@ const copy = {
       },
       {
         name: "Plus",
-        monthlyPrice: "¥35",
-        yearlyPrice: "¥21",
-        yearlyTotal: "¥252/年",
+        monthlyPrice: "$5",
+        yearlyPrice: "$3",
+        yearlyTotal: "$36/年",
         tagline: "为每天处理文档的专业人士打造。",
         valueLine: "每月不到一杯咖啡的钱。",
         highlights: ["包含「免费」全部功能", "AI：PDF 问答与摘要", "大文件最高 100 MB", "批量与优先处理", "Google Drive 集成"],
@@ -99,9 +99,9 @@ const copy = {
       },
       {
         name: "Pro",
-        monthlyPrice: "¥138",
-        yearlyPrice: "¥83",
-        yearlyTotal: "¥996/年",
+        monthlyPrice: "$20",
+        yearlyPrice: "$12",
+        yearlyTotal: "$144/年",
         tagline: "为团队和高强度工作流提供最强能力。",
         highlights: ["包含「Plus」全部功能", "无限文件大小", "API 接入，支持自动化", "批量工作流", "团队管理", "优先支持"],
         cta: "升级到 Pro",
@@ -155,7 +155,7 @@ export function PricingPlans({ locale = "en" }: { locale?: Locale }) {
       {/* Plans */}
       <div className="mt-12 grid gap-5 lg:grid-cols-3">
         {c.plans.map((plan) => {
-          const isFree = plan.monthlyPrice === "$0" || plan.monthlyPrice === "¥0";
+          const isFree = plan.monthlyPrice === "$0";
           const price = yearly && !isFree ? plan.yearlyPrice : plan.monthlyPrice;
           const featured = plan.featured;
           return (
