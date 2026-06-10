@@ -2,10 +2,11 @@
 
 import { useCallback, useRef, useState, type DragEvent } from "react";
 
-// D5 scaffold for the multi-document comparison engine:
-// multi-file upload -> browser-side text extraction (pdf.js).
-// Structured field extraction + comparison table + traceability come next
-// (D6+, server-side). This page is the input layer.
+// Comparison engine UI.
+//  D5: multi-file upload -> browser-side text extraction (pdf.js).
+//  D6: send extracted text to /api/compare-extract -> aligned structured fields
+//      with sources -> side-by-side comparison table.
+// Recommendation + clickable-to-page traceability come next.
 
 type DocStatus = "ok" | "empty" | "error";
 
@@ -14,17 +15,34 @@ type DocResult = {
   name: string;
   pages: number;
   chars: number;
-  preview: string;
+  text: string;
   status: DocStatus;
   error?: string;
 };
 
-const MAX_FILES = 10;
+type CmpField = { value: string | null; source: string | null };
+type CmpDoc = { id: string; name: string; fields: Record<string, CmpField> };
+type Comparison = {
+  docType: string;
+  dimensions: Array<{ key: string; label: string }>;
+  documents: CmpDoc[];
+};
+
+const MAX_FILES = 8;
+const DOC_TYPES = [
+  { value: "quote", label: "Quotes" },
+  { value: "invoice", label: "Invoices" },
+  { value: "contract", label: "Contracts" },
+];
 
 export function DocumentCompareClient() {
   const [results, setResults] = useState<DocResult[]>([]);
   const [busy, setBusy] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+  const [docType, setDocType] = useState("quote");
+  const [comparing, setComparing] = useState(false);
+  const [comparison, setComparison] = useState<Comparison | null>(null);
+  const [compareError, setCompareError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const extractOne = useCallback(async (file: File): Promise<DocResult> => {
@@ -46,33 +64,22 @@ export function DocumentCompareClient() {
         name: file.name,
         pages: doc.numPages,
         chars: trimmed.length,
-        preview: trimmed.slice(0, 600),
+        text: trimmed,
         status: trimmed.length > 0 ? "ok" : "empty",
       };
     } catch (e) {
-      return {
-        id,
-        name: file.name,
-        pages: 0,
-        chars: 0,
-        preview: "",
-        status: "error",
-        error: e instanceof Error ? e.message : String(e),
-      };
+      return { id, name: file.name, pages: 0, chars: 0, text: "", status: "error", error: e instanceof Error ? e.message : String(e) };
     }
   }, []);
 
   const addFiles = useCallback(
     async (files: File[]) => {
-      const pdfs = files.filter(
-        (f) => f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf"),
-      );
+      const pdfs = files.filter((f) => f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf"));
       if (pdfs.length === 0) return;
       setBusy(true);
+      setComparison(null);
       const extracted: DocResult[] = [];
-      for (const f of pdfs) {
-        extracted.push(await extractOne(f));
-      }
+      for (const f of pdfs) extracted.push(await extractOne(f));
       setResults((prev) => [...prev, ...extracted].slice(0, MAX_FILES));
       setBusy(false);
     },
@@ -95,33 +102,15 @@ export function DocumentCompareClient() {
         y -= 22;
       }
       const bytes = await doc.save();
-      const name = `quote-${vendor.toLowerCase().replace(/\s+/g, "-")}.pdf`;
-      return new File([bytes], name, { type: "application/pdf" });
+      return new File([bytes], `quote-${vendor.toLowerCase().replace(/\s+/g, "-")}.pdf`, { type: "application/pdf" });
     };
     const samples = await Promise.all([
-      make("Acme Supplies", [
-        "Total price: USD 12,400",
-        "Delivery: 30 days",
-        "Payment terms: 50% upfront, 50% on delivery",
-        "Warranty: 12 months",
-        "Valid until: 2026-07-15",
-      ]),
-      make("Globex Trading", [
-        "Total price: USD 11,900",
-        "Delivery: 45 days",
-        "Payment terms: Net 30",
-        "Warranty: 24 months",
-        "Valid until: 2026-07-31",
-      ]),
-      make("Initech Ltd", [
-        "Total price: USD 13,200",
-        "Delivery: 21 days",
-        "Payment terms: 100% on delivery",
-        "Warranty: 18 months",
-        "Valid until: 2026-07-10",
-      ]),
+      make("Acme Supplies", ["Total price: USD 12,400", "Delivery: 30 days", "Payment terms: 50% upfront, 50% on delivery", "Warranty: 12 months", "Valid until: 2026-07-15"]),
+      make("Globex Trading", ["Total price: USD 11,900", "Delivery: 45 days", "Payment terms: Net 30", "Warranty: 24 months", "Valid until: 2026-07-31"]),
+      make("Initech Ltd", ["Total price: USD 13,200", "Delivery: 21 days", "Payment terms: 100% on delivery", "Warranty: 18 months", "Valid until: 2026-07-10"]),
     ]);
     setBusy(false);
+    setDocType("quote");
     await addFiles(samples);
   }, [addFiles]);
 
@@ -134,6 +123,35 @@ export function DocumentCompareClient() {
     [addFiles],
   );
 
+  const okDocs = results.filter((r) => r.status === "ok");
+
+  const compare = useCallback(async () => {
+    if (okDocs.length < 2) {
+      setCompareError("Add at least 2 readable documents to compare.");
+      return;
+    }
+    setComparing(true);
+    setCompareError(null);
+    setComparison(null);
+    try {
+      const res = await fetch("/api/compare-extract", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ docType, locale: "en", documents: okDocs.map((r) => ({ id: r.id, name: r.name, text: r.text })) }),
+      });
+      const data = await res.json();
+      if (!data?.ok) {
+        setCompareError(data?.message || "Comparison failed.");
+        return;
+      }
+      setComparison({ docType: data.docType, dimensions: data.dimensions, documents: data.documents });
+    } catch (e) {
+      setCompareError(e instanceof Error ? e.message : "Comparison failed.");
+    } finally {
+      setComparing(false);
+    }
+  }, [okDocs, docType]);
+
   const badge = (status: DocStatus) =>
     status === "ok"
       ? { label: "Text extracted", cls: "text-[color:var(--accent)] border-[color:var(--accent)]" }
@@ -145,14 +163,12 @@ export function DocumentCompareClient() {
     <main className="mx-auto max-w-5xl px-5 py-14 sm:px-6 lg:px-8">
       <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-1 text-xs font-semibold text-[color:var(--muted)]">
         <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--accent)]" />
-        Comparison engine · beta · input layer
+        Comparison engine · beta
       </div>
-      <h1 className="text-3xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-4xl">
-        Compare documents
-      </h1>
+      <h1 className="text-3xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-4xl">Compare documents</h1>
       <p className="mt-3 max-w-2xl text-[color:var(--muted)]">
-        Upload 2–{MAX_FILES} PDFs (quotes, invoices, contracts). DockDocs extracts the text from each in your
-        browser — the first step toward a side-by-side comparison with sourced recommendations.
+        Upload 2–{MAX_FILES} PDFs of the same kind. DockDocs reads them in your browser, then lines up the key terms
+        side by side — with the source line behind every value.
       </p>
 
       {/* Dropzone */}
@@ -164,59 +180,44 @@ export function DocumentCompareClient() {
         onDragLeave={() => setDragOver(false)}
         onDrop={onDrop}
         className={`mt-8 flex flex-col items-center justify-center rounded-[var(--radius-lg)] border border-dashed px-6 py-12 text-center transition ${
-          dragOver
-            ? "border-[color:var(--accent)] bg-[color:var(--soft-accent)]"
-            : "border-[color:var(--line)] bg-[color:var(--surface-subtle)]"
+          dragOver ? "border-[color:var(--accent)] bg-[color:var(--soft-accent)]" : "border-[color:var(--line)] bg-[color:var(--surface-subtle)]"
         }`}
       >
         <p className="text-sm font-medium text-[color:var(--foreground)]">Drag & drop PDFs here</p>
-        <p className="mt-1 text-xs text-[color:var(--muted)]">Processed locally — your files never leave your device.</p>
+        <p className="mt-1 text-xs text-[color:var(--muted)]">Read locally — your files never leave your device. Field extraction runs on our server.</p>
         <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={() => inputRef.current?.click()}
-            disabled={busy}
-            className="inline-flex h-10 items-center rounded-[var(--radius)] bg-[color:var(--accent)] px-5 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
-          >
+          <button type="button" onClick={() => inputRef.current?.click()} disabled={busy} className="inline-flex h-10 items-center rounded-[var(--radius)] bg-[color:var(--accent)] px-5 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50">
             Choose PDFs
           </button>
-          <button
-            type="button"
-            onClick={loadSamples}
-            disabled={busy}
-            className="inline-flex h-10 items-center rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] px-5 text-sm font-semibold text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)] disabled:opacity-50"
-          >
+          <button type="button" onClick={loadSamples} disabled={busy} className="inline-flex h-10 items-center rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] px-5 text-sm font-semibold text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)] disabled:opacity-50">
             Try 3 sample quotes
           </button>
         </div>
-        <input
-          ref={inputRef}
-          type="file"
-          accept="application/pdf,.pdf"
-          multiple
-          hidden
-          onChange={(e) => {
-            void addFiles(Array.from(e.target.files ?? []));
-            e.target.value = "";
-          }}
-        />
+        <input ref={inputRef} type="file" accept="application/pdf,.pdf" multiple hidden onChange={(e) => { void addFiles(Array.from(e.target.files ?? [])); e.target.value = ""; }} />
       </div>
 
       {busy && <p className="mt-4 text-sm text-[color:var(--muted)]">Extracting text…</p>}
 
       {results.length > 0 && (
         <div className="mt-8 space-y-3">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-lg font-semibold text-[color:var(--foreground)]">
               {results.length} document{results.length > 1 ? "s" : ""}
             </h2>
-            <button
-              type="button"
-              onClick={() => setResults([])}
-              className="text-xs font-medium text-[color:var(--muted)] transition hover:text-[color:var(--foreground)]"
-            >
-              Clear all
-            </button>
+            <div className="flex items-center gap-2">
+              <label className="text-xs text-[color:var(--muted)]">Type</label>
+              <select value={docType} onChange={(e) => setDocType(e.target.value)} className="h-9 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] px-2 text-sm text-[color:var(--foreground)]">
+                {DOC_TYPES.map((t) => (
+                  <option key={t.value} value={t.value}>{t.label}</option>
+                ))}
+              </select>
+              <button type="button" onClick={compare} disabled={comparing || okDocs.length < 2} className="inline-flex h-9 items-center rounded-[var(--radius)] bg-[color:var(--accent)] px-4 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50">
+                {comparing ? "Comparing…" : "Compare fields"}
+              </button>
+              <button type="button" onClick={() => { setResults([]); setComparison(null); setCompareError(null); }} className="text-xs font-medium text-[color:var(--muted)] transition hover:text-[color:var(--foreground)]">
+                Clear
+              </button>
+            </div>
           </div>
           {results.map((r) => {
             const b = badge(r.status);
@@ -229,27 +230,71 @@ export function DocumentCompareClient() {
                 <p className="mt-1 text-xs text-[color:var(--muted)]">
                   {r.pages} page{r.pages === 1 ? "" : "s"} · {r.chars.toLocaleString()} characters
                 </p>
-                {r.status === "ok" && (
-                  <p className="mt-3 max-h-32 overflow-hidden text-xs leading-5 text-[color:var(--muted)]">{r.preview}…</p>
-                )}
-                {r.status === "error" && r.error && (
-                  <p className="mt-2 text-xs text-red-400">{r.error}</p>
-                )}
               </div>
             );
           })}
         </div>
       )}
 
-      {/* What's next */}
-      <div className="mt-10 rounded-[var(--radius-lg)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--accent)]">Coming next</p>
-        <ul className="mt-2 space-y-1 text-sm text-[color:var(--muted)]">
-          <li>· Structured field extraction (price, delivery, payment, warranty…) with source positions</li>
-          <li>· Side-by-side comparison table — every value clickable back to the original line</li>
-          <li>· A sourced recommendation with reasons; unreadable fields marked “not recognized”, never guessed</li>
-        </ul>
-      </div>
+      {compareError && <p className="mt-4 rounded-[var(--radius)] border border-red-400/40 bg-red-400/10 px-4 py-3 text-sm text-red-300">{compareError}</p>}
+
+      {comparison && (
+        <section className="mt-10">
+          <h2 className="text-lg font-semibold text-[color:var(--foreground)]">Comparison</h2>
+          <div className="mt-3 overflow-x-auto rounded-[var(--radius-lg)] border border-[color:var(--line)]">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-[color:var(--surface-subtle)]">
+                  <th className="border-b border-[color:var(--line)] px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-[color:var(--muted)]">Dimension</th>
+                  {comparison.documents.map((d) => (
+                    <th key={d.id} className="border-b border-l border-[color:var(--line)] px-3 py-2 text-left text-xs font-semibold text-[color:var(--foreground)]">{d.name}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {comparison.dimensions.map((dim) => (
+                  <tr key={dim.key} className="align-top">
+                    <td className="border-b border-[color:var(--line)] px-3 py-2 font-medium text-[color:var(--muted)]">{dim.label}</td>
+                    {comparison.documents.map((d) => {
+                      const f = d.fields[dim.key];
+                      return (
+                        <td key={d.id} className="border-b border-l border-[color:var(--line)] px-3 py-2">
+                          {f?.value ? (
+                            <>
+                              <div className="text-[color:var(--foreground)]">{f.value}</div>
+                              {f.source && (
+                                <div className="mt-0.5 text-[11px] italic text-[color:var(--faint)]" title={f.source}>
+                                  “{f.source.length > 52 ? `${f.source.slice(0, 52)}…` : f.source}”
+                                </div>
+                              )}
+                            </>
+                          ) : (
+                            <span className="text-[11px] text-amber-400/80">Not recognized</span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-3 text-xs text-[color:var(--muted)]">
+            Extracted by AI. Each value shows the exact source line it came from (verified to appear in that document). “Not recognized” means the document didn’t state it — nothing is guessed.
+          </p>
+        </section>
+      )}
+
+      {!comparison && (
+        <div className="mt-10 rounded-[var(--radius-lg)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--accent)]">Coming next</p>
+          <ul className="mt-2 space-y-1 text-sm text-[color:var(--muted)]">
+            <li>· A sourced recommendation (which option wins, and why)</li>
+            <li>· Click any value to jump to the exact spot in the original PDF</li>
+            <li>· Add your own dimensions to compare</li>
+          </ul>
+        </div>
+      )}
     </main>
   );
 }
