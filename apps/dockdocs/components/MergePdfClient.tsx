@@ -63,7 +63,8 @@ export function MergePdfClient({ locale = "en" }: { locale?: Locale }) {
           canvas.width = viewport.width; canvas.height = viewport.height;
           const ctx = canvas.getContext("2d");
           if (ctx) await page.render({ canvas, canvasContext: ctx, viewport }).promise;
-          added.push({ id: `${f.name}-${f.size}-${f.lastModified}-${Math.round(viewport.width)}`, name: f.name, pages: doc.numPages, thumb: canvas.toDataURL("image/jpeg", 0.7), file: f });
+          added.push({ id: `${f.name}-${f.size}-${f.lastModified}-${Math.random().toString(36).slice(2, 7)}`, name: f.name, pages: doc.numPages, thumb: canvas.toDataURL("image/jpeg", 0.7), file: f });
+          try { doc.destroy(); } catch { /* ignore */ }
         } catch (e) {
           if (isEncryptedPdfError(e)) encryptedSkipped = true;
           /* skip unreadable file */
@@ -151,6 +152,7 @@ export function MergePdfClient({ locale = "en" }: { locale?: Locale }) {
                 key={it.id}
                 draggable
                 onDragStart={() => (dragFrom.current = pos)}
+                onDragEnd={() => (dragFrom.current = null)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => { e.preventDefault(); if (dragFrom.current != null) move(dragFrom.current, pos); dragFrom.current = null; }}
                 className="group relative cursor-grab rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-2 transition hover:border-[color:var(--accent)] active:cursor-grabbing"

@@ -64,6 +64,7 @@ export function DeletePagesClient({ locale = "en" }: { locale?: Locale }) {
         if (ctx) await page.render({ canvas, canvasContext: ctx, viewport }).promise;
         out.push({ idx: i - 1, thumb: canvas.toDataURL("image/jpeg", 0.7) });
       }
+      try { doc.destroy(); } catch { /* ignore */ }
       setPages(out); setPhase("ready");
     } catch (e) {
       setError(encryptedPdfMessage(e, locale) ?? (t.err + (e instanceof Error ? e.message : String(e)))); setPhase("idle");

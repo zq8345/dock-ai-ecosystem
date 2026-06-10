@@ -85,6 +85,7 @@ export function PageReorderClient({ locale = "en" }: { locale?: Locale }) {
         if (ctx) await page.render({ canvas, canvasContext: ctx, viewport }).promise;
         out.push({ idx: i - 1, thumb: canvas.toDataURL("image/jpeg", 0.7) });
       }
+      try { doc.destroy(); } catch { /* ignore */ }
       setPages(out);
       setPhase("ready");
     } catch (e) {
@@ -190,6 +191,7 @@ export function PageReorderClient({ locale = "en" }: { locale?: Locale }) {
                 key={p.idx}
                 draggable
                 onDragStart={() => (dragFrom.current = pos)}
+                onDragEnd={() => (dragFrom.current = null)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => {
                   e.preventDefault();

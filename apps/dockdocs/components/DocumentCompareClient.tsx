@@ -194,7 +194,9 @@ export function DocumentCompareClient({ locale = "en" }: { locale?: Locale }) {
         text += content.items.map((it) => ("str" in it ? it.str : "")).join(" ") + "\n";
       }
       const trimmed = text.replace(/\s+/g, " ").trim();
-      return { id, name: file.name, pages: doc.numPages, chars: trimmed.length, text: trimmed, status: trimmed.length > 0 ? "ok" : "empty" };
+      const numPages = doc.numPages;
+      try { doc.destroy(); } catch { /* ignore */ }
+      return { id, name: file.name, pages: numPages, chars: trimmed.length, text: trimmed, status: trimmed.length > 0 ? "ok" : "empty" };
     } catch (e) {
       const msg = isEncryptedPdfError(e) ? encryptedPdfNotice(locale) : e instanceof Error ? e.message : String(e);
       return { id, name: file.name, pages: 0, chars: 0, text: "", status: "error", error: msg };

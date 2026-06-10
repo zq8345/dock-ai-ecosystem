@@ -95,6 +95,7 @@ export function WatermarkEditorClient({ locale = "en" }: { locale?: Locale }) {
       setPreview(canvas.toDataURL("image/jpeg", 0.8));
       setNumPages(doc.numPages);
       setFrom(1); setTo(doc.numPages);
+      try { doc.destroy(); } catch { /* ignore */ }
       setPhase("ready");
     } catch (e) {
       setError(encryptedPdfMessage(e, locale) ?? (t.err + (e instanceof Error ? e.message : String(e)))); setPhase("idle");

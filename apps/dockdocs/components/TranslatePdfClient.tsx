@@ -129,6 +129,7 @@ export function TranslatePdfClient({ locale = "en" }: { locale?: Locale }) {
         }
         setText(trimmed);
         setPages(doc.numPages);
+        try { doc.destroy(); } catch { /* ignore */ }
         setPhase("ready");
       } catch (e) {
         setError(encryptedPdfMessage(e, locale) ?? ((e instanceof Error ? e.message : String(e)) || "Could not read PDF."));
