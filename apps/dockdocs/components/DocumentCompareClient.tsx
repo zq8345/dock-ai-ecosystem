@@ -312,6 +312,21 @@ export function DocumentCompareClient({ locale = "en" }: { locale?: Locale }) {
   const askQa = async () => {
     const q = qaQ.trim();
     if (!q || okDocs.length === 0) return;
+    // Pre-checks mirroring /api/compare-qa so the user gets instant feedback
+    // instead of a round-trip rejection.
+    if (okDocs.length > 8) {
+      setQaErr(locale === "zh" ? "一次最多对 8 份文档提问。" : "Ask across up to 8 documents at a time.");
+      return;
+    }
+    const totalChars = okDocs.reduce((s, d) => s + d.text.length, 0);
+    if (totalChars > 60_000) {
+      setQaErr(locale === "zh" ? "文档合计文字过长（上限 60,000 字符），请用更少或更短的文档。" : "Combined text is too long (60,000-character limit). Use fewer or shorter documents.");
+      return;
+    }
+    if (q.length > 500) {
+      setQaErr(locale === "zh" ? "问题过长（上限 500 字符）。" : "Question is too long (500-character limit).");
+      return;
+    }
     setQaBusy(true);
     setQaErr(null);
     setQaAns(null);
@@ -322,8 +337,10 @@ export function DocumentCompareClient({ locale = "en" }: { locale?: Locale }) {
         body: JSON.stringify({ question: q, locale, documents: okDocs.map((d) => ({ id: d.id, name: d.name, text: d.text })) }),
       });
       const data = await res.json();
-      if (data?.ok && typeof data.answer === "string") {
+      if (data?.ok && typeof data.answer === "string" && data.answer.trim()) {
         setQaAns({ answer: data.answer, sources: Array.isArray(data.sources) ? data.sources : [] });
+      } else if (data?.ok) {
+        setQaErr(locale === "zh" ? "未能从这些文档中找到答案。" : "Couldn't find an answer in these documents.");
       } else {
         setQaErr(data?.message || "Failed.");
       }
