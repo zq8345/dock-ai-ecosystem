@@ -183,24 +183,14 @@ export function ReadyWorkflowState({
     <div className={bigPreview ? "flex w-full flex-1 flex-col gap-4" : bare ? "space-y-3" : "mt-4 space-y-3"}>
       {/* File list */}
       {bigPreview && previewFile ? (
-        hasOptions ? (
-          <div className="flex shrink-0 items-center justify-center gap-3">
-            <FileThumb file={previewFile.file} className="h-16 w-12" />
-            <div className="min-w-0">
-              <p className="max-w-[20rem] truncate text-sm font-semibold text-[color:var(--foreground)]">{previewFile.file.name}</p>
-              <p className="text-xs text-[color:var(--muted)]">{formatBytes(previewFile.file.size)} · <button type="button" onClick={() => onRemoveFile(previewFile.id)} className="underline transition hover:text-[color:var(--foreground)]">{zh ? "移除" : "Remove"}</button></p>
-            </div>
+        <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
+          <FileThumb file={previewFile.file} className={hasOptions ? "h-36 w-28 sm:h-52 sm:w-40" : "h-48 w-36 sm:h-72 sm:w-56"} />
+          <div>
+            <p className="max-w-[20rem] truncate text-sm font-semibold text-[color:var(--foreground)]">{previewFile.file.name}</p>
+            <p className="mt-0.5 text-xs text-[color:var(--muted)]">{formatBytes(previewFile.file.size)}</p>
           </div>
-        ) : (
-          <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
-            <FileThumb file={previewFile.file} className="h-48 w-36 sm:h-72 sm:w-56" />
-            <div>
-              <p className="max-w-[16rem] truncate text-sm font-semibold text-[color:var(--foreground)]">{previewFile.file.name}</p>
-              <p className="mt-0.5 text-xs text-[color:var(--muted)]">{formatBytes(previewFile.file.size)}</p>
-            </div>
-            <button type="button" onClick={() => onRemoveFile(previewFile.id)} className="text-xs text-[color:var(--muted)] underline transition hover:text-[color:var(--foreground)]">{zh ? "移除" : "Remove"}</button>
-          </div>
-        )
+          <button type="button" onClick={() => onRemoveFile(previewFile.id)} className="text-xs text-[color:var(--muted)] underline transition hover:text-[color:var(--foreground)]">{zh ? "移除" : "Remove"}</button>
+        </div>
       ) : (
       <ul className="space-y-2">
         {files.map((item, index) => (
@@ -256,7 +246,7 @@ export function ReadyWorkflowState({
       </ul>
       )}
 
-      <div className={bigPreview && hasOptions ? "flex flex-1 flex-col justify-center gap-3" : bigPreview ? "contents" : "space-y-3"}>
+      <div className={bigPreview && hasOptions ? "w-full space-y-3 self-center sm:w-1/2" : bigPreview ? "contents" : "space-y-3"}>
       {/* Tool-specific options */}
       {(config.slug === "split-pdf" || config.slug === "ocr-pdf") && (
         <label className="block">
@@ -410,7 +400,7 @@ export function ReadyWorkflowState({
       </div>
 
       {/* Start button */}
-      <PrimaryButton onClick={onStart} className={bigPreview ? "mt-auto w-1/2 self-center" : "w-full"}>
+      <PrimaryButton onClick={onStart} className={bigPreview ? "mt-auto w-full self-center sm:w-1/2" : "w-full"}>
         {config.primaryActionLabel}
       </PrimaryButton>
     </div>
