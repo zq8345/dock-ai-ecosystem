@@ -41,6 +41,7 @@ import { RedlineClient } from "@/components/RedlineClient";
 import { QuizClient } from "@/components/QuizClient";
 import { BatchSummaryClient } from "@/components/BatchSummaryClient";
 import { ClassifyClient } from "@/components/ClassifyClient";
+import { BatchCompressClient } from "@/components/BatchCompressClient";
 import { SignPdfClient } from "@/components/SignPdfClient";
 import { ToolRuntimeClient } from "@/components/ToolRuntimeClient";
 import { UploadPanel } from "@/components/UploadPanel";
@@ -280,6 +281,20 @@ export async function generateMetadata({
       alternates: {
         canonical: localizedPath(rawLocale, "sign-pdf"),
         languages: languageAlternates("sign-pdf"),
+      },
+    };
+  }
+
+  if (slug === "batch-compress") {
+    return {
+      title: rawLocale === "zh" ? "批量压缩 PDF — 一次压缩整个文件夹 | DockDocs" : "Batch Compress PDFs — Shrink a Whole Folder | DockDocs",
+      description:
+        rawLocale === "zh"
+          ? "拖入整个 PDF 文件夹一次性全部压缩，每个在浏览器中压缩并打包成 ZIP，不上传。"
+          : "Drop a whole folder of PDFs and compress them all in one go — each shrunk in your browser and packaged into a single ZIP.",
+      alternates: {
+        canonical: localizedPath(rawLocale, "batch-compress"),
+        languages: languageAlternates("batch-compress"),
       },
     };
   }
@@ -570,6 +585,10 @@ export default async function LocalizedRoute({
 
   if (slug === "dashboard") {
     return <LocalizedDashboard locale={rawLocale} />;
+  }
+
+  if (slug === "batch-compress") {
+    return <BatchCompressClient locale={rawLocale} />;
   }
 
   if (slug === "classify") {

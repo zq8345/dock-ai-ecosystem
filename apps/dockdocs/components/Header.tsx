@@ -49,6 +49,7 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
             { name: "Page Numbers", slug: "/page-numbers" },
             { name: "Crop PDF", slug: "/crop-pdf" },
             { name: "Sign PDF", slug: "/sign-pdf" },
+            { name: "Batch compress", slug: "/batch-compress" },
           ],
         },
         {
@@ -156,6 +157,7 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
             { name: "PDF 页码", slug: "/page-numbers" },
             { name: "裁剪 PDF", slug: "/crop-pdf" },
             { name: "PDF 签名", slug: "/sign-pdf" },
+            { name: "批量压缩", slug: "/batch-compress" },
           ],
         },
         {

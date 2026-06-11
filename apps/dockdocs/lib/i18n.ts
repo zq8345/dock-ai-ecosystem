@@ -70,6 +70,7 @@ export const routeSlugs = [
   "flashcards",
   "batch-summary",
   "classify",
+  "batch-compress",
   "dashboard",
   "pricing",
   "account",
