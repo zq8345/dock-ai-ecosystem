@@ -40,6 +40,7 @@ import { RedactPdfClient } from "@/components/RedactPdfClient";
 import { BatchPdfToImageClient } from "@/components/BatchPdfToImageClient";
 import { BatchProtectClient } from "@/components/BatchProtectClient";
 import { BatchRenameClient } from "@/components/BatchRenameClient";
+import { BatchStampClient } from "@/components/BatchStampClient";
 import { ExtractExcelClient } from "@/components/ExtractExcelClient";
 import { RedlineClient } from "@/components/RedlineClient";
 import { QuizClient } from "@/components/QuizClient";
@@ -443,6 +444,20 @@ export async function generateMetadata({
     };
   }
 
+  if (slug === "batch-watermark-pdf") {
+    return {
+      title: rawLocale === "zh" ? "批量加水印 / 页码 — 整批 PDF 一次加水印或页码 | DockDocs" : "Batch Watermark & Page Numbers — Stamp Many PDFs Free | DockDocs",
+      description:
+        rawLocale === "zh"
+          ? "给整个文件夹的 PDF 一次性加水印或加页码,打包成一个 ZIP,全部在浏览器中完成,文件不外泄。"
+          : "Add a watermark or page numbers to a whole folder of PDFs at once, packaged into one ZIP. Entirely in your browser; your files never leave your device.",
+      alternates: {
+        canonical: localizedPath(rawLocale, "batch-watermark-pdf"),
+        languages: languageAlternates("batch-watermark-pdf"),
+      },
+    };
+  }
+
   if (slug === "my-chats") {
     return {
       title: rawLocale === "zh" ? "我的对话 — DockDocs" : "My Chats — DockDocs",
@@ -692,6 +707,10 @@ export default async function LocalizedRoute({
 
   if (slug === "batch-rename-pdf") {
     return <BatchRenameClient locale={rawLocale} />;
+  }
+
+  if (slug === "batch-watermark-pdf") {
+    return <BatchStampClient locale={rawLocale} />;
   }
 
   if (slug === "my-chats") {
