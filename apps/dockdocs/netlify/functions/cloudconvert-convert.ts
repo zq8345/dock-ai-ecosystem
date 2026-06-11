@@ -48,7 +48,7 @@ export default async (req: Request, _context: Context) => {
     }, 503);
   }
 
-  let body: { action?: string; route?: string; password?: string; jobId?: string };
+  let body: { action?: string; route?: string; password?: string; jobId?: string; url?: string };
   try {
     body = await req.json();
   } catch {
@@ -98,6 +98,34 @@ export default async (req: Request, _context: Context) => {
 
   // ── CREATE: build a job and return the direct-upload form ──
   const route = body.route?.trim();
+  if (route === "url-to-pdf") {
+    const url = body.url?.trim() ?? "";
+    if (!/^https?:\/\/.+/i.test(url)) {
+      return json({ ok: false, code: "INVALID_URL", message: "Enter a full http(s) URL." }, 400);
+    }
+    try {
+      const jobRes = await fetch(`${CLOUDCONVERT_API}/jobs`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tasks: {
+            "import-url": { operation: "import/url", url },
+            "convert-file": { operation: "convert", input: "import-url", input_format: "html", output_format: "pdf", pdf_a: false, optimize_print: false },
+            "export-file": { operation: "export/url", input: "convert-file", inline: false, archive_multiple_files: false },
+          },
+        }),
+      });
+      if (!jobRes.ok) {
+        return json({ ok: false, code: "JOB_CREATE_FAILED", message: "The conversion service could not start the job. Try again in a moment." }, 502);
+      }
+      const job = await jobRes.json() as CloudConvertJob;
+      return json({ ok: true, jobId: job.data.id, outputExt: "pdf" });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      return json({ ok: false, code: "INTERNAL_ERROR", message }, 500);
+    }
+  }
+
   const isEncrypt = route === ENCRYPT_ROUTE;
   if (!route || (!isEncrypt && !(route in SUPPORTED_CONVERSIONS))) {
     return json({

@@ -33,6 +33,7 @@ import { SplitPdfClient } from "@/components/SplitPdfClient";
 import { PdfToImageClient } from "@/components/PdfToImageClient";
 import { PageNumbersClient } from "@/components/PageNumbersClient";
 import { ImagesToPdfClient } from "@/components/ImagesToPdfClient";
+import { UrlToPdfClient } from "@/components/UrlToPdfClient";
 import { ToolRuntimeClient } from "@/components/ToolRuntimeClient";
 import { UploadPanel } from "@/components/UploadPanel";
 import { ButtonLink, Container, Section } from "@dock/shared/ui";
@@ -262,6 +263,20 @@ export async function generateMetadata({
     );
   }
 
+  if (slug === "url-to-pdf") {
+    return {
+      title: rawLocale === "zh" ? "网页转 PDF — 免费在线把网页转成 PDF | DockDocs" : "URL to PDF — Convert a Web Page to PDF Free | DockDocs",
+      description:
+        rawLocale === "zh"
+          ? "免费把任意公开网页转换为 PDF：粘贴网址，下载用真实浏览器引擎渲染的干净 PDF——无需上传、无需安装。"
+          : "Convert any public web page to PDF online for free. Paste a URL and download a clean, browser-rendered PDF — no upload, no install.",
+      alternates: {
+        canonical: localizedPath(rawLocale, "url-to-pdf"),
+        languages: languageAlternates("url-to-pdf"),
+      },
+    };
+  }
+
   if (slug === "compare") {
     return {
       title: rawLocale === "zh" ? "多文档对比(测试版)" : "Compare documents (beta)",
@@ -435,6 +450,10 @@ export default async function LocalizedRoute({
 
   if (slug === "dashboard") {
     return <LocalizedDashboard locale={rawLocale} />;
+  }
+
+  if (slug === "url-to-pdf") {
+    return <UrlToPdfClient locale={rawLocale} />;
   }
 
   if (slug === "compare") {

@@ -60,6 +60,7 @@ export const routeSlugs = [
   "pdf-to-html",
   "ai-workspace",
   "compare",
+  "url-to-pdf",
   "dashboard",
   "pricing",
   "account",
