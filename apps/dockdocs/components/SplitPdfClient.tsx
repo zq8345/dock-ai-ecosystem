@@ -21,6 +21,7 @@ const STR = {
     splitAfter: "Split here", files: (n: number) => `${n} file${n === 1 ? "" : "s"} will be created`,
     fileN: (n: number) => `File ${n}`, apply: "Split & download", working: "Splitting…",
     reset: "Start over", needSplit: "Add at least one split point.", err: "Something went wrong: ",
+    every: "Split every", everyUnit: "pages", everySet: "Set",
   },
   zh: {
     title: "拆分 PDF",
@@ -31,6 +32,7 @@ const STR = {
     splitAfter: "在此切分", files: (n: number) => `将生成 ${n} 个文件`,
     fileN: (n: number) => `文件 ${n}`, apply: "拆分并下载", working: "正在拆分…",
     reset: "重新开始", needSplit: "至少添加一个切分点。", err: "出错了：",
+    every: "每", everyUnit: "页拆一份", everySet: "设置",
   },
 };
 
@@ -40,6 +42,7 @@ export function SplitPdfClient({ locale = "en" }: { locale?: Locale }) {
   const [fileName, setFileName] = useState("");
   const [pages, setPages] = useState<Pg[]>([]);
   const [splits, setSplits] = useState<Set<number>>(new Set()); // split AFTER this page index
+  const [everyN, setEveryN] = useState(2);
   const [error, setError] = useState<string | null>(null);
   const fileRef = useRef<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -73,6 +76,15 @@ export function SplitPdfClient({ locale = "en" }: { locale?: Locale }) {
   const toggleSplit = (afterIdx: number) => {
     setError(null);
     setSplits((prev) => { const n = new Set(prev); if (n.has(afterIdx)) n.delete(afterIdx); else n.add(afterIdx); return n; });
+  };
+
+  // Auto-place a split after every N pages (reuses the same segment logic).
+  const splitEvery = (n: number) => {
+    setError(null);
+    if (n < 1 || pages.length < 2) return;
+    const next = new Set<number>();
+    for (let after = n - 1; after < pages.length - 1; after += n) next.add(after);
+    setSplits(next);
   };
 
   // segment index for a given page position
@@ -151,6 +163,13 @@ export function SplitPdfClient({ locale = "en" }: { locale?: Locale }) {
               <button type="button" onClick={reset} className="rounded-[var(--radius)] border border-[color:var(--line)] px-4 py-2 text-[13px] font-medium text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)]">{t.reset}</button>
               <button type="button" onClick={apply} disabled={phase === "working" || splits.size === 0} className="rounded-[var(--radius)] bg-[color:var(--accent)] px-5 py-2 text-[13px] font-semibold text-white transition hover:opacity-90 disabled:opacity-50">{phase === "working" ? t.working : t.apply}</button>
             </div>
+          </div>
+
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-[12.5px] text-[color:var(--muted)]">
+            <span>{t.every}</span>
+            <input type="number" min={1} max={Math.max(1, pages.length - 1)} value={everyN} onChange={(e) => setEveryN(Math.max(1, +e.target.value || 1))} className="h-8 w-16 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-2 text-[13px] text-[color:var(--foreground)]" />
+            <span>{t.everyUnit}</span>
+            <button type="button" onClick={() => splitEvery(everyN)} className="rounded-[var(--radius)] border border-[color:var(--line)] px-3 py-1.5 text-[12.5px] font-medium text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)]">{t.everySet}</button>
           </div>
 
           <div className="mt-5 flex flex-wrap items-stretch gap-y-3">
