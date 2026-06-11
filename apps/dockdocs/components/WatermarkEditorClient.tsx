@@ -4,7 +4,7 @@ import { ToolFaq } from "@/components/ToolFaq";
 import { Spinner } from "@/components/Spinner";
 import { encryptedPdfMessage } from "@/lib/pdf-errors";
 
-import { useCallback, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
 type Locale = "en" | "zh";
 type PosKey = "tl" | "tc" | "tr" | "ml" | "c" | "mr" | "bl" | "bc" | "br";
@@ -67,11 +67,14 @@ export function WatermarkEditorClient({ locale = "en" }: { locale?: Locale }) {
   const [from, setFrom] = useState(1);
   const [to, setTo] = useState(1);
   const [error, setError] = useState<string | null>(null);
+  const [pageWpt, setPageWpt] = useState(0);
+  const [dispW, setDispW] = useState(0);
 
   const mainRef = useRef<File | null>(null);
   const imgRef = useRef<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const imgInputRef = useRef<HTMLInputElement>(null);
+  const previewImgRef = useRef<HTMLImageElement | null>(null);
 
   const reset = () => {
     setPhase("idle"); setFileName(""); setPreview(""); setNumPages(0);
@@ -88,6 +91,7 @@ export function WatermarkEditorClient({ locale = "en" }: { locale?: Locale }) {
       const doc = await pdfjs.getDocument({ data }).promise;
       const page = await doc.getPage(1);
       const viewport = page.getViewport({ scale: 1.1 });
+      setPageWpt(viewport.width / 1.1);
       const canvas = document.createElement("canvas");
       canvas.width = viewport.width; canvas.height = viewport.height;
       const ctx = canvas.getContext("2d");
@@ -101,6 +105,15 @@ export function WatermarkEditorClient({ locale = "en" }: { locale?: Locale }) {
       setError(encryptedPdfMessage(e, locale) ?? (t.err + (e instanceof Error ? e.message : String(e)))); setPhase("idle");
     }
   }, [t, locale]);
+
+  // Track the on-screen width of the preview image so the overlay font can be
+  // scaled to match the real stamp (size pt) instead of guessing.
+  useEffect(() => {
+    const update = () => { const el = previewImgRef.current; if (el) setDispW(el.clientWidth); };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [preview]);
 
   // CSS overlay style approximating the watermark on the preview.
   const overlayStyle = useMemo(() => {
@@ -287,10 +300,10 @@ export function WatermarkEditorClient({ locale = "en" }: { locale?: Locale }) {
             <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)]">{t.preview}</span>
             <div className="relative inline-block max-w-full rounded-[var(--radius)] border border-[color:var(--line)] bg-white">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              {preview && <img src={preview} alt="page 1" className="block h-auto w-full rounded-[var(--radius)]" />}
+              {preview && <img ref={previewImgRef} onLoad={(e) => setDispW(e.currentTarget.clientWidth)} src={preview} alt="page 1" className="block h-auto w-full rounded-[var(--radius)]" />}
               {mode === "text" ? (
                 <span style={overlayStyle} className="font-bold" >
-                  <span style={{ color, fontSize: Math.max(10, size * 0.5) }}>{text || "CONFIDENTIAL"}</span>
+                  <span style={{ color, fontSize: Math.max(8, pageWpt > 0 && dispW > 0 ? size * (dispW / pageWpt) : size * 0.5) }}>{text || "CONFIDENTIAL"}</span>
                 </span>
               ) : imgPreview ? (
                 // eslint-disable-next-line @next/next/no-img-element
