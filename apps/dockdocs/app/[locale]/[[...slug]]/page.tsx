@@ -1216,7 +1216,7 @@ const homeCopy = {
     categoryTitle: "PDF 工作所需的一切",
     aiTitle: "让每一份文档都能被读懂、核对、对比。",
     aiDescription: "这就是 DockDocs —— 可溯源的 AI，加 20+ 本地 PDF 工具，隐私优先、无需注册。把理解力和可核对的依据放在一起，你只管做决定。",
-    stats: [["可溯源", "答案可点回原文"], ["隐私", "文件留在你的设备"], ["免费", "无需注册即可开始"]] as [string, string][],
+    stats: [["可溯源", "答案可点回原文"], ["隐私", "文件留在你的设备"], ["安全", "无需注册，无追踪"]] as [string, string][],
   },
 } as const;
 
@@ -1252,13 +1252,15 @@ function LocalizedHome({ locale }: { locale: Locale }) {
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-[color:var(--line)]">
         <HeroBackground />
-        <div className="relative mx-auto max-w-6xl px-5 pb-20 pt-12 sm:px-6 sm:pt-16 lg:px-8">
+        <div className="relative mx-auto flex min-h-[86vh] max-w-6xl flex-col px-5 pb-6 pt-10 sm:px-6 lg:px-8">
           {/* Keyword H1 for SEO — the visible hero is the interactive graph below */}
           <h1 className="sr-only">{copy.heroTitle} {copy.heroDescription}</h1>
-          {/* Dynamic feature graph — the solution map */}
-          <HeroFeatureGraph locale={zh ? "zh" : "en"} />
-          {/* Trust chips */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5">
+          {/* Dynamic feature graph — the solution map (fills the centre) */}
+          <div className="flex flex-1 items-center justify-center">
+            <HeroFeatureGraph locale={zh ? "zh" : "en"} />
+          </div>
+          {/* Trust chips — pinned near the bottom edge */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5">
             {copy.stats.map(([val, lbl]: [string, string]) => (
               <span key={lbl} className="inline-flex items-center gap-1.5 text-[13px] text-[color:var(--muted)]">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="text-[color:var(--accent)]"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>

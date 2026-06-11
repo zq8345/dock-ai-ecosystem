@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 const stats = [
   { value: "Grounded", label: "Answers cite the source" },
   { value: "Private", label: "Files stay on your device" },
-  { value: "Free", label: "No account to start" },
+  { value: "Secure", label: "No account, no tracking" },
 ] as const;
 
 const siteUrl = "https://dockdocs.app";
@@ -166,14 +166,16 @@ export default function Home() {
       <section className="relative overflow-hidden border-b border-[color:var(--line)]">
         <HeroBackground />
 
-        <div className="relative mx-auto max-w-6xl px-5 pb-20 pt-12 sm:px-6 sm:pt-16 lg:px-8">
+        <div className="relative mx-auto flex min-h-[86vh] max-w-6xl flex-col px-5 pb-6 pt-10 sm:px-6 lg:px-8">
           {/* Keyword H1 for SEO — the visible hero is the interactive graph below */}
           <h1 className="sr-only">Everything you need to do with a PDF — free tools, batch automation, and AI that actually reads your documents.</h1>
-          {/* Dynamic feature graph — the solution map */}
-          <HeroFeatureGraph locale="en" />
+          {/* Dynamic feature graph — the solution map (fills the centre) */}
+          <div className="flex flex-1 items-center justify-center">
+            <HeroFeatureGraph locale="en" />
+          </div>
 
-          {/* Trust chips */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5">
+          {/* Trust chips — pinned near the bottom edge */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5">
             {stats.map(({ value, label }) => (
               <span key={label} className="inline-flex items-center gap-1.5 text-[13px] text-[color:var(--muted)]">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="text-[color:var(--accent)]"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
