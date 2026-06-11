@@ -28,6 +28,7 @@ export type PdfRuntimeSlug =
   | "unlock-pdf"
   | "pdf-to-text"
   | "html-to-pdf"
+  | "pdf-to-ppt"
   | "pdf-to-html";
 
 export type PdfRuntimeProgress = {
@@ -39,7 +40,7 @@ export type PdfRuntimeProgress = {
 export type PdfRuntimeArtifact = {
   fileName: string;
   blob: Blob;
-  outputType: "pdf" | "zip" | "text" | "docx" | "xlsx" | "image";
+  outputType: "pdf" | "zip" | "text" | "docx" | "xlsx" | "image" | "pptx";
   pageCount?: number;
   fileCount?: number;
   rangeCount?: number;
@@ -98,6 +99,7 @@ export function isRealPdfRuntimeSlug(slug: string): slug is PdfRuntimeSlug {
     slug === "unlock-pdf" ||
     slug === "pdf-to-text" ||
     slug === "html-to-pdf" ||
+    slug === "pdf-to-ppt" ||
     slug === "pdf-to-html"
   );
 }
@@ -140,7 +142,7 @@ export async function runPdfRuntime({
     });
   }
 
-  const cloudConvertRoutes: PdfRuntimeSlug[] = ["word-to-pdf", "ppt-to-pdf", "excel-to-pdf", "pdf-to-excel", "pdf-to-word", "html-to-pdf"];
+  const cloudConvertRoutes: PdfRuntimeSlug[] = ["word-to-pdf", "ppt-to-pdf", "excel-to-pdf", "pdf-to-excel", "pdf-to-word", "html-to-pdf", "pdf-to-ppt"];
   if (cloudConvertRoutes.includes(slug)) {
     return runCloudConvert({
       file: files[0],

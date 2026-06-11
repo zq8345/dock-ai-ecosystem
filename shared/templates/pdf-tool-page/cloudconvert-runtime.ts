@@ -7,6 +7,7 @@ export type CloudConvertRoute =
   | "pdf-to-excel"
   | "pdf-to-word"
   | "html-to-pdf"
+  | "pdf-to-ppt"
   | "protect-pdf";
 
 // No 6 MB limit anymore — the file is uploaded directly to CloudConvert,
@@ -29,6 +30,7 @@ const ROUTE_META: Record<
     outputType: "docx",
   },
   "html-to-pdf": { outputMime: "application/pdf", outputType: "pdf" },
+  "pdf-to-ppt": { outputMime: "application/vnd.openxmlformats-officedocument.presentationml.presentation", outputType: "pptx" },
   "protect-pdf": { outputMime: "application/pdf", outputType: "pdf" },
 };
 

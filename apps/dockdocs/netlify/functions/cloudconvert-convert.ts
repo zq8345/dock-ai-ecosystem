@@ -16,6 +16,7 @@ const SUPPORTED_CONVERSIONS = {
   "pdf-to-excel": { inputFormat: "pdf", outputFormat: "xlsx", outputExt: "xlsx" },
   "pdf-to-word": { inputFormat: "pdf", outputFormat: "docx", outputExt: "docx" },
   "html-to-pdf": { inputFormat: "html", outputFormat: "pdf", outputExt: "pdf" },
+  "pdf-to-ppt": { inputFormat: "pdf", outputFormat: "pptx", outputExt: "pptx" },
 } as const;
 
 type ConversionRoute = keyof typeof SUPPORTED_CONVERSIONS;

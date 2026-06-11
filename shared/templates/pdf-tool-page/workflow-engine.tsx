@@ -543,6 +543,18 @@ function getWorkflowSpec(config: PdfToolPageConfig): WorkflowSpec {
               "Preparing result...",
             ],
       };
+    case "pdf-to-ppt":
+      return {
+        acceptedLabel: "PDF",
+        minFiles: 1, maxFiles: 1,
+        maxFileSize: 100 * mb, maxTotalSize: 100 * mb,
+        processLabel: zh ? "正在将 PDF 转换为 PowerPoint。" : "Converting PDF to PowerPoint.",
+        resultLabel: zh ? "下载 PPTX" : "Download PPTX",
+        outputFileName: "dockdocs-converted.pptx",
+        steps: zh
+          ? ["上传文件...", "发送到转换服务...", "转换中...", "准备下载..."]
+          : ["Uploading file...", "Sending to conversion service...", "Converting...", "Preparing download..."],
+      };
     case "html-to-pdf":
       return {
         acceptedLabel: "HTML",
@@ -1098,6 +1110,7 @@ function getWorkflowResult(
         ],
         preview: "text",
       };
+    case "pdf-to-ppt":
     case "html-to-pdf":
     case "word-to-pdf":
     case "ppt-to-pdf":
