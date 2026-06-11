@@ -36,7 +36,6 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
         {
           heading: "Organize",
           items: [
-            { name: "Merge PDF", slug: "/merge-pdf" },
             { name: "Split PDF", slug: "/split-pdf" },
             { name: "Compress PDF", slug: "/compress-pdf" },
             { name: "Delete Pages", slug: "/delete-page" },
@@ -66,9 +65,7 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
       cols: [
         {
           items: [
-            { name: "Compare documents", slug: "/compare" },
-            { name: "Cross-doc Q&A", slug: "/compare" },
-            { name: "Extract to Excel", slug: "/extract-to-excel" },
+            { name: "Merge PDF", slug: "/merge-pdf" },
             { name: "Compare versions", slug: "/redline" },
             { name: "Batch compress", slug: "/batch-compress" },
             { name: "Batch PDF to image", slug: "/batch-pdf-to-image" },
@@ -77,21 +74,6 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
             { name: "Batch watermark / numbers", slug: "/batch-watermark-pdf" },
             { name: "Batch split / merge", slug: "/batch-split-merge" },
             { name: "Batch rotate", slug: "/batch-rotate-pdf" },
-            { name: "Batch extract to sheet", slug: "/batch-extract-sheet" },
-          ],
-        },
-      ],
-    },
-    {
-      label: "AI tools",
-      tier: "Plus",
-      cols: [
-        {
-          items: [
-            { name: "Chat with PDF", slug: "/chat-with-pdf" },
-            { name: "AI Summary", slug: "/ai-summary" },
-            { name: "Translate PDF", slug: "/translate-pdf" },
-            { name: "Flashcards", slug: "/flashcards" },
           ],
         },
       ],
@@ -101,7 +83,20 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
       tier: "Plus",
       cols: [
         {
+          heading: "Single-doc AI",
           items: [
+            { name: "Chat with PDF", slug: "/chat-with-pdf" },
+            { name: "AI Summary", slug: "/ai-summary" },
+            { name: "Translate PDF", slug: "/translate-pdf" },
+            { name: "Flashcards", slug: "/flashcards" },
+          ],
+        },
+        {
+          heading: "Multi-doc AI",
+          items: [
+            { name: "Compare documents", slug: "/compare" },
+            { name: "Cross-doc Q&A", slug: "/compare" },
+            { name: "Extract to Excel", slug: "/extract-to-excel" },
             { name: "Batch summary", slug: "/batch-summary" },
             { name: "Auto-classify", slug: "/classify" },
           ],
@@ -117,6 +112,9 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
             { name: "Legal & contracts", slug: "/pricing" },
             { name: "Finance & tax", slug: "/pricing" },
             { name: "Research & academia", slug: "/pricing" },
+            { name: "Banking & finance", slug: "/pricing" },
+            { name: "Architecture & engineering", slug: "/pricing" },
+            { name: "Healthcare & medical", slug: "/pricing" },
           ],
         },
       ],
@@ -147,7 +145,6 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
         {
           heading: "整理",
           items: [
-            { name: "PDF 合并", slug: "/merge-pdf" },
             { name: "PDF 拆分", slug: "/split-pdf" },
             { name: "PDF 压缩", slug: "/compress-pdf" },
             { name: "PDF 页面删除", slug: "/delete-page" },
@@ -177,9 +174,7 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
       cols: [
         {
           items: [
-            { name: "多文档对比", slug: "/compare" },
-            { name: "跨文档问答", slug: "/compare" },
-            { name: "抽取到表格", slug: "/extract-to-excel" },
+            { name: "PDF 合并", slug: "/merge-pdf" },
             { name: "版本对比", slug: "/redline" },
             { name: "批量压缩", slug: "/batch-compress" },
             { name: "批量 PDF 转图片", slug: "/batch-pdf-to-image" },
@@ -188,21 +183,6 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
             { name: "批量水印/页码", slug: "/batch-watermark-pdf" },
             { name: "批量拆分/合并", slug: "/batch-split-merge" },
             { name: "批量旋转", slug: "/batch-rotate-pdf" },
-            { name: "批量抽取到表", slug: "/batch-extract-sheet" },
-          ],
-        },
-      ],
-    },
-    {
-      label: "AI 工具",
-      tier: "Plus",
-      cols: [
-        {
-          items: [
-            { name: "PDF 问答", slug: "/chat-with-pdf" },
-            { name: "AI 摘要", slug: "/ai-summary" },
-            { name: "翻译 PDF", slug: "/translate-pdf" },
-            { name: "抽认卡", slug: "/flashcards" },
           ],
         },
       ],
@@ -212,7 +192,20 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
       tier: "Plus",
       cols: [
         {
+          heading: "单文档 AI",
           items: [
+            { name: "PDF 问答", slug: "/chat-with-pdf" },
+            { name: "AI 摘要", slug: "/ai-summary" },
+            { name: "翻译 PDF", slug: "/translate-pdf" },
+            { name: "抽认卡", slug: "/flashcards" },
+          ],
+        },
+        {
+          heading: "多文档 AI",
+          items: [
+            { name: "多文档对比", slug: "/compare" },
+            { name: "跨文档问答", slug: "/compare" },
+            { name: "抽取到表格", slug: "/extract-to-excel" },
             { name: "批量摘要", slug: "/batch-summary" },
             { name: "自动分类", slug: "/classify" },
           ],
@@ -228,6 +221,9 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
             { name: "法律 / 合同", slug: "/pricing" },
             { name: "财务 / 税务", slug: "/pricing" },
             { name: "科研 / 学术", slug: "/pricing" },
+            { name: "金融 / 投行", slug: "/pricing" },
+            { name: "建筑 / 工程", slug: "/pricing" },
+            { name: "医疗 / 健康", slug: "/pricing" },
           ],
         },
       ],
@@ -361,7 +357,7 @@ export function Header() {
             <BrandMark />
           </a>
 
-          {/* Desktop nav — 5 category dropdowns */}
+          {/* Desktop nav — 4 category dropdowns */}
           <nav className="hidden flex-1 items-center justify-center gap-0.5 md:flex">
             {cats.map((cat) => (
               <div key={cat.label} className="relative group">
