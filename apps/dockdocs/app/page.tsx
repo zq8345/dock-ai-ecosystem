@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 const stats = [
   { value: "Grounded", label: "Answers cite the source" },
   { value: "Private", label: "Files stay on your device" },
-  { value: "Secure", label: "No account, no tracking" },
+  { value: "Secure", label: "Files auto-delete after use" },
 ] as const;
 
 const siteUrl = "https://dockdocs.app";

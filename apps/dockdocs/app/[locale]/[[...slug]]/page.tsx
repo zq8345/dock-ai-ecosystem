@@ -1216,7 +1216,7 @@ const homeCopy = {
     categoryTitle: "PDF 工作所需的一切",
     aiTitle: "让每一份文档都能被读懂、核对、对比。",
     aiDescription: "这就是 DockDocs —— 可溯源的 AI，加 20+ 本地 PDF 工具，隐私优先、无需注册。把理解力和可核对的依据放在一起，你只管做决定。",
-    stats: [["可溯源", "答案可点回原文"], ["隐私", "文件留在你的设备"], ["安全", "无需注册，无追踪"]] as [string, string][],
+    stats: [["可溯源", "答案可点回原文"], ["隐私", "文件留在你的设备"], ["安全", "文件用后自动删除"]] as [string, string][],
   },
 } as const;
 

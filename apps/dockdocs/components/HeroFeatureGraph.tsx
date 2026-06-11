@@ -9,6 +9,8 @@ type Vec = [number, number, number];
 
 const CENTER = { zh: "DockDocs", subZh: "懂你的 PDF", en: "DockDocs", subEn: "understands your PDF" };
 const COLORS = ["#818cf8", "#c084fc", "#22d3ee", "#fbbf24"];
+// category base angles (math angle, y up): up-left / down-left / up-right / down-right
+const ANG = [Math.PI * 0.75, Math.PI * 1.25, Math.PI * 0.25, Math.PI * 1.75];
 const CAT_BLURB = [
   { zh: "转换 · 整理 · 加密 · 签名", en: "Convert · organize · encrypt · sign" },
   { zh: "整批 / 整文件夹一次处理", en: "Whole folders in one pass" },
@@ -30,35 +32,39 @@ const DESC: Record<string, { zh: string; en: string }> = {
   "/batch-sort": { zh: "AI 自动归类杂乱文件", en: "AI sorts a messy pile" },
 };
 
-// Four spread directions (box corners → even all-round distribution under yaw)
-const RAW_DIRS: Vec[] = [
-  [1, 0.7, 0.85],
-  [-1, -0.7, 0.85],
-  [-1, 0.7, -0.85],
-  [1, -0.7, -0.85],
-];
-const R = 1;      // feature shell radius
-const RC = 0.55;  // category-hub radius
-const CAM = 2.7;  // camera distance
-const TILT = -0.15;
+const THETA = 1.02; // dome angular radius (~58°)
+const CAM = 2.7;
+const BASE_TILT = -0.12;
 
-const len = (v: Vec) => Math.hypot(v[0], v[1], v[2]) || 1;
-const norm = (v: Vec): Vec => { const l = len(v); return [v[0] / l, v[1] / l, v[2] / l]; };
-const sc = (v: Vec, k: number): Vec => [v[0] * k, v[1] * k, v[2] * k];
-const add = (a: Vec, b: Vec): Vec => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
-const cross = (a: Vec, b: Vec): Vec => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
-function frame(w: Vec): [Vec, Vec] {
-  const up: Vec = Math.abs(w[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0];
-  const u = norm(cross(up, w));
-  return [u, cross(w, u)];
-}
 function flatItems(cat: { cols: { items: Item[] }[] }): Item[] {
   const seen = new Set<string>(); const out: Item[] = [];
   for (const col of cat.cols) for (const it of col.items ?? []) { const k = it.name + it.slug; if (!seen.has(k)) { seen.add(k); out.push(it); } }
   return out;
 }
+// place n features in a clean fan (rows of arcs) around base angle A → polar (r, phi)
+function fan(n: number, A: number): { r: number; phi: number }[] {
+  const out: { r: number; phi: number }[] = [];
+  const perArc = 5;
+  const arcs = Math.ceil(n / perArc);
+  const wedge = 0.72;
+  for (let a = 0; a < arcs; a++) {
+    const inArc = Math.min(perArc, n - a * perArc);
+    const r = 0.58 + (arcs === 1 ? 0.12 : a * (0.42 / (arcs - 1)));
+    const spread = wedge * (0.5 + 0.5 * (arcs === 1 ? 1 : a / (arcs - 1)));
+    for (let c = 0; c < inArc; c++) {
+      const frac = inArc === 1 ? 0.5 : c / (inArc - 1);
+      out.push({ r: Math.min(r, 1), phi: A + (frac - 0.5) * 2 * spread });
+    }
+  }
+  return out;
+}
+// polar on dome → unit 3D position on the cap
+function dome(r: number, phi: number): Vec {
+  const al = r * THETA;
+  return [Math.sin(al) * Math.cos(phi), Math.sin(al) * Math.sin(phi), Math.cos(al)];
+}
 
-type Node = { kind: "center" | "hub" | "feat"; base: Vec; color: string; cat: number; label: string; slug?: string; desc?: { zh: string; en: string } | null; blurb?: { zh: string; en: string } };
+type Node = { kind: "center" | "hub" | "feat"; base: Vec; color: string; cat: number; label: string; slug?: string; desc?: { zh: string; en: string } | null; blurb?: { zh: string; en: string }; headline?: boolean };
 
 export function HeroFeatureGraph({ locale = "en" }: { locale?: Locale }) {
   const zh = locale === "zh";
@@ -66,23 +72,17 @@ export function HeroFeatureGraph({ locale = "en" }: { locale?: Locale }) {
 
   const { nodes, lines } = useMemo(() => {
     const cats = (navCategories[zh ? "zh" : "en"] ?? navCategories.en).slice(0, 4);
-    const nodes: Node[] = [{ kind: "center", base: [0, 0, 0], color: "#a5b4fc", cat: -1, label: "" }];
+    const nodes: Node[] = [{ kind: "center", base: dome(0, 0), color: "#a5b4fc", cat: -1, label: "" }];
     const lines: { a: number; b: number; color: string; cat: number }[] = [];
     cats.forEach((cat, ci) => {
-      const w = norm(RAW_DIRS[ci]);
       const hubIdx = nodes.length;
-      nodes.push({ kind: "hub", base: sc(w, RC), color: COLORS[ci], cat: ci, label: cat.label, blurb: CAT_BLURB[ci] });
+      nodes.push({ kind: "hub", base: dome(0.32, ANG[ci]), color: COLORS[ci], cat: ci, label: cat.label, blurb: CAT_BLURB[ci] });
       lines.push({ a: 0, b: hubIdx, color: COLORS[ci], cat: ci });
       const feats = flatItems(cat);
-      const [u, v] = frame(w);
-      const n = Math.max(feats.length, 1);
-      const phiMax = 0.34 + Math.min(0.46, n * 0.02);
+      const pts = fan(feats.length, ANG[ci]);
       feats.forEach((it, k) => {
-        const theta = k * 2.39996323;
-        const phi = 0.13 + (phiMax - 0.13) * Math.sqrt((k + 0.5) / n);
-        const dir = add(sc(w, Math.cos(phi)), sc(add(sc(u, Math.cos(theta)), sc(v, Math.sin(theta))), Math.sin(phi)));
         const fi = nodes.length;
-        nodes.push({ kind: "feat", base: sc(norm(dir), R), color: COLORS[ci], cat: ci, label: it.name, slug: it.slug, desc: DESC[it.slug] ?? null });
+        nodes.push({ kind: "feat", base: dome(pts[k].r, pts[k].phi), color: COLORS[ci], cat: ci, label: it.name, slug: it.slug, desc: DESC[it.slug] ?? null, headline: k === 0 });
         lines.push({ a: hubIdx, b: fi, color: COLORS[ci], cat: ci });
       });
     });
@@ -91,64 +91,79 @@ export function HeroFeatureGraph({ locale = "en" }: { locale?: Locale }) {
 
   const viewport = useRef<HTMLDivElement>(null);
   const svg = useRef<SVGSVGElement>(null);
+  const ringEls = useRef<(SVGPathElement | null)[]>([]);
   const nodeEls = useRef<(HTMLElement | null)[]>([]);
   const labelEls = useRef<(HTMLElement | null)[]>([]);
   const lineEls = useRef<(SVGPathElement | null)[]>([]);
   const tip = useRef<HTMLDivElement>(null);
-  const proj = useRef<{ x: number; y: number; t: number; s: number }[]>([]);
-  const rot = useRef({ x: TILT, y: 0.55 });
-  const vel = useRef({ x: 0, y: 0 });
-  const drag = useRef<{ on: boolean; px: number; py: number; moved: boolean }>({ on: false, px: 0, py: 0, moved: false });
+  const proj = useRef<{ x: number; y: number; t: number }[]>([]);
+  const rot = useRef({ x: BASE_TILT, y: 0 });
+  const mouse = useRef<{ over: boolean; x: number; y: number }>({ over: false, x: 0.5, y: 0.5 });
   const hoverRef = useRef<number | null>(null);
-  const interacted = useRef(false);
 
   useEffect(() => {
     const vp = viewport.current; if (!vp) return;
-    let raf = 0;
-    const AUTO = 0.0017;
+    let raf = 0; let f = 0;
+    const RINGS = [0.32, 0.66, 1];
+
+    const project = (b: Vec, cy: number, sy: number, cx: number, sx: number, SS: number, ox: number, oy: number) => {
+      let X = b[0] * cy + b[2] * sy;
+      let Z = -b[0] * sy + b[2] * cy;
+      let Y = b[1] * cx - Z * sx;
+      Z = b[1] * sx + Z * cx;
+      const p = CAM / (CAM - Z);
+      return { x: ox + X * SS * p, y: oy - Y * SS * p, t: (Z + 1) / 2, p };
+    };
 
     const tick = () => {
+      f++;
       const w = vp.clientWidth, h = vp.clientHeight;
       if (w && h) {
-        const paused = drag.current.on || hoverRef.current !== null;
-        if (!drag.current.on) {
-          vel.current.y = vel.current.y * 0.94 + (paused ? 0 : AUTO) * 0.06;
-          vel.current.x *= 0.9;
-          rot.current.y += vel.current.y;
-          rot.current.x += vel.current.x + (TILT - rot.current.x) * 0.03;
+        // ease tilt toward target (cursor parallax, or gentle idle sway)
+        let ty: number, tx: number;
+        if (mouse.current.over && hoverRef.current === null) {
+          ty = (mouse.current.x - 0.5) * 0.5;
+          tx = BASE_TILT + (mouse.current.y - 0.5) * 0.34;
+        } else {
+          ty = Math.sin(f * 0.006) * 0.16;
+          tx = BASE_TILT + Math.sin(f * 0.0045) * 0.05;
         }
+        rot.current.y += (ty - rot.current.y) * 0.06;
+        rot.current.x += (tx - rot.current.x) * 0.06;
+
         const ry = rot.current.y, rx = rot.current.x;
         const cy = Math.cos(ry), sy = Math.sin(ry), cx = Math.cos(rx), sx = Math.sin(rx);
-        const SS = Math.min(w * 0.46, h * 0.5) * 0.62;
+        const SS = Math.min(w * 0.5, h * 0.5) * 0.8;
         const ox = w / 2, oy = h / 2;
         const aCat = hoverRef.current !== null ? nodes[hoverRef.current]?.cat ?? null : null;
 
-        for (let i = 0; i < nodes.length; i++) {
-          const [bx, by, bz] = nodes[i].base;
-          // yaw then pitch
-          let X = bx * cy + bz * sy;
-          let Z = -bx * sy + bz * cy;
-          let Y = by * cx - Z * sx;
-          Z = by * sx + Z * cx;
-          const persp = CAM / (CAM - Z);
-          const px = ox + X * SS * persp;
-          const py = oy - Y * SS * persp;
-          const t = (Z + 1) / 2;
-          proj.current[i] = { x: px, y: py, t, s: persp };
+        // dome rings
+        for (let ri = 0; ri < RINGS.length; ri++) {
+          const el = ringEls.current[ri]; if (!el) continue;
+          let d = "";
+          for (let s = 0; s <= 40; s++) {
+            const pr = project(dome(RINGS[ri], (s / 40) * Math.PI * 2), cy, sy, cx, sx, SS, ox, oy);
+            d += (s === 0 ? "M" : "L") + pr.x.toFixed(1) + " " + pr.y.toFixed(1);
+          }
+          el.setAttribute("d", d + "Z");
+        }
 
+        for (let i = 0; i < nodes.length; i++) {
+          const pr = project(nodes[i].base, cy, sy, cx, sx, SS, ox, oy);
+          proj.current[i] = { x: pr.x, y: pr.y, t: pr.t };
           const el = nodeEls.current[i]; if (!el) continue;
           const k = nodes[i].kind;
-          const nodeScale = k === "feat" ? 0.7 + 0.55 * persp : 0.72 + 0.28 * persp;
-          el.style.transform = `translate3d(${px}px,${py}px,0) translate(-50%,-50%) scale(${nodeScale})`;
-          el.style.zIndex = String(200 + Math.round(t * 600) + (i === hoverRef.current ? 400 : 0));
-          let op = k === "center" ? 1 : 0.28 + 0.72 * t;
-          if (aCat !== null && nodes[i].cat !== aCat && k !== "center") op *= 0.22;
+          const nodeScale = k === "feat" ? 0.62 + 0.5 * pr.p : 0.74 + 0.26 * pr.p;
+          el.style.transform = `translate3d(${pr.x}px,${pr.y}px,0) translate(-50%,-50%) scale(${nodeScale})`;
+          el.style.zIndex = String(200 + Math.round(pr.t * 600) + (i === hoverRef.current ? 400 : 0));
+          let op = k === "center" ? 1 : 0.45 + 0.55 * pr.t;
+          if (aCat !== null && nodes[i].cat !== aCat && k !== "center") op *= 0.2;
           el.style.opacity = String(op);
           const lab = labelEls.current[i];
           if (lab) {
-            let lo = Math.max(0, Math.min(1, (t - 0.5) / 0.28));
+            let lo = nodes[i].headline ? 0.85 : 0;
             if (i === hoverRef.current) lo = 1;
-            if (aCat !== null && nodes[i].cat !== aCat) lo *= 0.25;
+            if (aCat !== null && nodes[i].cat !== aCat) lo = 0;
             lab.style.opacity = String(lo);
           }
         }
@@ -159,10 +174,10 @@ export function HeroFeatureGraph({ locale = "en" }: { locale?: Locale }) {
           if (!a || !b) continue;
           const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
           const dx = b.x - a.x, dy = b.y - a.y; const l = Math.hypot(dx, dy) || 1;
-          const c = l * 0.16;
+          const c = l * 0.17;
           p.setAttribute("d", `M${a.x.toFixed(1)} ${a.y.toFixed(1)}Q${(mx - dy / l * c).toFixed(1)} ${(my + dx / l * c).toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`);
-          let op = 0.07 + 0.3 * ((a.t + b.t) / 2);
-          if (aCat !== null && lines[i].cat !== aCat) op *= 0.18;
+          let op = 0.08 + 0.26 * ((a.t + b.t) / 2);
+          if (aCat !== null && lines[i].cat !== aCat) op *= 0.15;
           p.setAttribute("stroke-opacity", op.toFixed(3));
         }
 
@@ -172,7 +187,7 @@ export function HeroFeatureGraph({ locale = "en" }: { locale?: Locale }) {
           const hi = hoverRef.current;
           if (hi !== null && proj.current[hi] && nodes[hi].kind !== "center") {
             ti.style.opacity = "1";
-            ti.style.transform = `translate3d(${proj.current[hi].x}px,${proj.current[hi].y}px,0) translate(-50%,calc(-100% - 14px))`;
+            ti.style.transform = `translate3d(${proj.current[hi].x}px,${proj.current[hi].y}px,0) translate(-50%,calc(-100% - 16px))`;
           } else ti.style.opacity = "0";
         }
       }
@@ -180,25 +195,14 @@ export function HeroFeatureGraph({ locale = "en" }: { locale?: Locale }) {
     };
     raf = requestAnimationFrame(tick);
 
-    const onDown = (e: PointerEvent) => {
-      drag.current = { on: true, px: e.clientX, py: e.clientY, moved: false };
-      interacted.current = true; vp.setPointerCapture?.(e.pointerId);
-      vp.classList.add("hfg-grabbing");
-    };
     const onMove = (e: PointerEvent) => {
-      if (!drag.current.on) return;
-      const dx = e.clientX - drag.current.px, dy = e.clientY - drag.current.py;
-      if (Math.abs(dx) + Math.abs(dy) > 3) drag.current.moved = true;
-      rot.current.y += dx * 0.0065;
-      rot.current.x = Math.max(-0.5, Math.min(0.5, rot.current.x + dy * 0.0055));
-      vel.current = { x: dy * 0.0055, y: dx * 0.0065 };
-      drag.current.px = e.clientX; drag.current.py = e.clientY;
+      const r = vp.getBoundingClientRect();
+      mouse.current = { over: true, x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
     };
-    const onUp = () => { drag.current.on = false; vp.classList.remove("hfg-grabbing"); };
-    vp.addEventListener("pointerdown", onDown);
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
-    return () => { cancelAnimationFrame(raf); vp.removeEventListener("pointerdown", onDown); window.removeEventListener("pointermove", onMove); window.removeEventListener("pointerup", onUp); };
+    const onLeave = () => { mouse.current.over = false; };
+    vp.addEventListener("pointermove", onMove);
+    vp.addEventListener("pointerleave", onLeave);
+    return () => { cancelAnimationFrame(raf); vp.removeEventListener("pointermove", onMove); vp.removeEventListener("pointerleave", onLeave); };
   }, [nodes, lines]);
 
   const setH = (i: number | null) => { hoverRef.current = i; setHover(i); };
@@ -208,20 +212,22 @@ export function HeroFeatureGraph({ locale = "en" }: { locale?: Locale }) {
     <div className="hfg-wrap">
       <style>{`
         .hfg-wrap{position:relative;width:100%;}
-        .hfg-vp{cursor:grab;}
-        .hfg-vp.hfg-grabbing{cursor:grabbing;}
         .hfg-node{position:absolute;left:0;top:0;will-change:transform,opacity;}
         .hfg-dot{display:block;border-radius:50%;}
         .hfg-tipbox{position:absolute;left:0;top:0;opacity:0;pointer-events:none;transition:opacity .18s;z-index:1200;white-space:nowrap;will-change:transform,opacity;}
         @keyframes hfg-pulse{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:.85;transform:translate(-50%,-50%) scale(1.16)}}
         @keyframes hfg-fade{from{opacity:0}to{opacity:1}}
+        .hfg-lab{transition:opacity .25s;}
       `}</style>
 
-      {/* Desktop: interactive 3D constellation */}
-      <div ref={viewport} className="hfg-vp relative mx-auto hidden w-full max-w-[1000px] touch-none select-none sm:block" style={{ aspectRatio: "16 / 11", animation: "hfg-fade .8s ease both" }}>
-        <span aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 h-[150px] w-[150px] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(99,102,241,.42), transparent 70%)", animation: "hfg-pulse 4.5s ease-in-out infinite", zIndex: 1 }} />
+      {/* Desktop: convex dome of feature nodes */}
+      <div ref={viewport} className="relative mx-auto hidden w-full max-w-[1040px] touch-none select-none sm:block" style={{ aspectRatio: "16 / 11", animation: "hfg-fade .8s ease both" }}>
+        <span aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 h-[160px] w-[160px] -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "radial-gradient(circle, rgba(99,102,241,.4), transparent 70%)", animation: "hfg-pulse 4.5s ease-in-out infinite", zIndex: 1 }} />
 
         <svg ref={svg} className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
+          {[0, 1, 2].map((ri) => (
+            <path key={`r${ri}`} ref={(el) => { ringEls.current[ri] = el; }} stroke="var(--line)" strokeWidth="1" fill="none" strokeOpacity={0.14 - ri * 0.03} />
+          ))}
           {lines.map((ln, i) => (
             <path key={i} ref={(el) => { lineEls.current[i] = el; }} stroke={ln.color} strokeWidth="1.1" fill="none" strokeLinecap="round" />
           ))}
@@ -250,10 +256,9 @@ export function HeroFeatureGraph({ locale = "en" }: { locale?: Locale }) {
           }
           return (
             <a key={i} ref={(el) => { nodeEls.current[i] = el; }} href={nd.slug} className="hfg-node flex flex-col items-center" style={{ textDecoration: "none" }}
-              onPointerEnter={() => setH(i)} onPointerLeave={() => setH(null)}
-              onClick={(e) => { if (drag.current.moved) e.preventDefault(); }}>
+              onPointerEnter={() => setH(i)} onPointerLeave={() => setH(null)}>
               <span className="hfg-dot" style={{ width: 9, height: 9, background: nd.color, boxShadow: `0 0 10px ${nd.color}, 0 0 3px ${nd.color}` }} />
-              <span ref={(el) => { labelEls.current[i] = el; }} className="mt-1.5 whitespace-nowrap rounded-md border border-[color:var(--line)] bg-[rgba(18,20,30,.82)] px-2 py-0.5 text-[11.5px] font-medium text-[color:var(--foreground)]" style={{ opacity: 0 }}>{nd.label}</span>
+              <span ref={(el) => { labelEls.current[i] = el; }} className="hfg-lab mt-1.5 whitespace-nowrap rounded-md border border-[color:var(--line)] bg-[rgba(18,20,30,.85)] px-2 py-0.5 text-[11.5px] font-medium text-[color:var(--foreground)]" style={{ opacity: 0 }}>{nd.label}</span>
             </a>
           );
         })}
@@ -268,9 +273,9 @@ export function HeroFeatureGraph({ locale = "en" }: { locale?: Locale }) {
           </div>
         </div>
 
-        {/* Drag hint */}
-        <div className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 text-[11px] tracking-wide text-[color:var(--faint)]" style={{ opacity: interacted.current ? 0 : 0.7, transition: "opacity .4s" }}>
-          {zh ? "拖动旋转 · 悬停查看" : "drag to rotate · hover to preview"}
+        {/* Hint */}
+        <div className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 text-[11px] tracking-wide text-[color:var(--faint)]" style={{ opacity: 0.6 }}>
+          {zh ? "移动鼠标转动 · 悬停查看功能" : "move to tilt · hover to explore"}
         </div>
       </div>
 
@@ -290,7 +295,7 @@ export function HeroFeatureGraph({ locale = "en" }: { locale?: Locale }) {
                 </div>
                 <p className="mt-1 text-[11px] leading-snug text-[color:var(--faint)]">{zh ? CAT_BLURB[i].zh : CAT_BLURB[i].en}</p>
                 <ul className="mt-1.5 grid grid-cols-2 gap-x-2 text-[11.5px] text-[color:var(--muted)]">
-                  {feats.slice(0, 8).map((f, j) => <li key={j} className="truncate">{f.name}</li>)}
+                  {feats.slice(0, 8).map((ff, j) => <li key={j} className="truncate">{ff.name}</li>)}
                 </ul>
               </div>
             );
