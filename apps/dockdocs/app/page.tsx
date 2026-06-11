@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { FeatureShowcase } from "@/components/FeatureShowcase";
 import { HeroBackground } from "@/components/HeroBackground";
-import { HeroChatDemo } from "@/components/HeroChatDemo";
+import { HeroFeatureGraph } from "@/components/HeroFeatureGraph";
 
 export const metadata: Metadata = {
   title: "DockDocs — AI Document Platform",
@@ -174,14 +174,12 @@ export default function Home() {
               AI Document Intelligence
             </div>
 
-            <h1 className="text-[40px] font-semibold leading-[1.05] tracking-[-0.03em] text-[color:var(--foreground)] sm:text-[56px] lg:text-[68px]">
-              Ask your documents. Compare them. Decide.
+            <h1 className="text-[34px] font-semibold leading-[1.08] tracking-[-0.03em] text-[color:var(--foreground)] sm:text-[46px] lg:text-[54px]">
+              Everything you need to do with a PDF.
             </h1>
 
-            <p className="mx-auto mt-6 max-w-2xl text-[16px] leading-8 text-[color:var(--muted)] sm:text-[18px]">
-              Upload a PDF and just ask — the AI answers from the actual text and shows a source you can check, not a guess.
-              Compare several contracts or quotes side by side and pick the best in seconds (Beta).
-              Plus 20+ free PDF tools, most running right in your browser.
+            <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-7 text-[color:var(--muted)] sm:text-[17px]">
+              Free tools, batch automation, and AI that actually reads your documents — most run right in your browser, so your files never leave your device.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -211,9 +209,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Animated grounded-chat demo */}
-          <div className="mt-14">
-            <HeroChatDemo locale="en" />
+          {/* Dynamic feature graph — the solution map */}
+          <div className="mt-12 sm:mt-16">
+            <HeroFeatureGraph locale="en" />
           </div>
         </div>
       </section>

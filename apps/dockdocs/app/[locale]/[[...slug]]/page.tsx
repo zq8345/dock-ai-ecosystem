@@ -16,7 +16,7 @@ import { ProgrammaticGeoPage } from "@/components/ProgrammaticGeoPage";
 import { PricingPlans } from "@/components/PricingPlans";
 import { DocumentCompareClient } from "@/components/DocumentCompareClient";
 import { FeatureShowcase } from "@/components/FeatureShowcase";
-import { HeroChatDemo } from "@/components/HeroChatDemo";
+import { HeroFeatureGraph } from "@/components/HeroFeatureGraph";
 import { HeroBackground } from "@/components/HeroBackground";
 import { SaasInfoPage } from "@/components/SaasInfoPage";
 import { AboutPage } from "@/components/AboutPage";
@@ -1196,8 +1196,8 @@ const homeCopy = {
     title: "DockDocs — AI Document Platform",
     description: "PDF tools, AI chat, OCR, compression, conversion and more. Process documents in your browser, privately and fast.",
     eyebrow: "AI Document Intelligence",
-    heroTitle: "Ask your documents. Compare them. Decide.",
-    heroDescription: "Upload a PDF and just ask — the AI answers from the actual text and shows a source you can check, not a guess. Compare several contracts or quotes side by side and pick the best in seconds (Beta). Plus 20+ free PDF tools, most running right in your browser.",
+    heroTitle: "Everything you need to do with a PDF.",
+    heroDescription: "Free tools, batch automation, and AI that actually reads your documents — most run right in your browser, so your files never leave your device.",
     primary: "Chat with a PDF",
     secondary: "Compare documents (Beta)",
     categoryTitle: "Everything you need for PDF work",
@@ -1209,8 +1209,8 @@ const homeCopy = {
     title: "DockDocs — AI 文档平台",
     description: "PDF 工具、AI 问答、OCR、压缩和转换，一站完成。在浏览器中处理文档，快速且私密。",
     eyebrow: "AI 文档智能",
-    heroTitle: "和你的文档对话，多份一起对比。",
-    heroDescription: "上传 PDF 直接提问——AI 用文档里的原文回答、给出可核对的出处，不是瞎猜。多份合同、报价还能一起对比，秒选最优（Beta）。另有 20+ 免费 PDF 工具，大多在浏览器内完成，文件不外泄。",
+    heroTitle: "围绕 PDF 的全方位解决方案。",
+    heroDescription: "免费工具、批量自动化，加上真正读懂文档的 AI——大多在浏览器内完成，文件不外泄。",
     primary: "与 PDF 对话",
     secondary: "多文档对比（Beta）",
     categoryTitle: "PDF 工作所需的一切",
@@ -1283,9 +1283,9 @@ function LocalizedHome({ locale }: { locale: Locale }) {
               ))}
             </div>
           </div>
-          {/* Animated grounded-chat demo */}
-          <div className="mt-14">
-            <HeroChatDemo locale={zh ? "zh" : "en"} />
+          {/* Dynamic feature graph — the solution map */}
+          <div className="mt-12 sm:mt-16">
+            <HeroFeatureGraph locale={zh ? "zh" : "en"} />
           </div>
         </div>
       </section>
