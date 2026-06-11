@@ -38,6 +38,7 @@ import { MyChatsClient } from "@/components/MyChatsClient";
 import { CropPdfClient } from "@/components/CropPdfClient";
 import { RedactPdfClient } from "@/components/RedactPdfClient";
 import { BatchPdfToImageClient } from "@/components/BatchPdfToImageClient";
+import { BatchProtectClient } from "@/components/BatchProtectClient";
 import { ExtractExcelClient } from "@/components/ExtractExcelClient";
 import { RedlineClient } from "@/components/RedlineClient";
 import { QuizClient } from "@/components/QuizClient";
@@ -413,6 +414,20 @@ export async function generateMetadata({
     };
   }
 
+  if (slug === "batch-protect-pdf") {
+    return {
+      title: rawLocale === "zh" ? "批量加密 PDF — 整批 PDF 一次设密码 | DockDocs" : "Batch Encrypt PDF — Password-Protect Many PDFs Free | DockDocs",
+      description:
+        rawLocale === "zh"
+          ? "设一个密码，给整个文件夹的 PDF 一次性加密,打包成一个 ZIP,全部在浏览器中完成,文件不外泄。"
+          : "Set one password and encrypt a whole folder of PDFs at once, packaged into one ZIP. Entirely in your browser; your files never leave your device.",
+      alternates: {
+        canonical: localizedPath(rawLocale, "batch-protect-pdf"),
+        languages: languageAlternates("batch-protect-pdf"),
+      },
+    };
+  }
+
   if (slug === "my-chats") {
     return {
       title: rawLocale === "zh" ? "我的对话 — DockDocs" : "My Chats — DockDocs",
@@ -654,6 +669,10 @@ export default async function LocalizedRoute({
 
   if (slug === "batch-pdf-to-image") {
     return <BatchPdfToImageClient locale={rawLocale} />;
+  }
+
+  if (slug === "batch-protect-pdf") {
+    return <BatchProtectClient locale={rawLocale} />;
   }
 
   if (slug === "my-chats") {

@@ -1,0 +1,167 @@
+"use client";
+
+import { useCallback, useRef, useState } from "react";
+import { Spinner } from "@/components/Spinner";
+import { runPdfRuntime, createZipArchive } from "../../../shared/templates/pdf-tool-page/pdf-runtime";
+
+type Locale = "en" | "zh";
+type Item = { id: string; name: string; file: File; status: "queued" | "done" | "error"; blob?: Blob; msg?: string };
+
+const MAX_FILES = 30;
+const PW_OK = /^[A-Za-z0-9_]{4,32}$/;
+
+const STR = {
+  en: {
+    title: "Encrypt multiple PDFs at once",
+    subtitle: "Set one password and lock a whole folder of PDFs — each is encrypted in your browser and packaged into a single ZIP. Nothing is uploaded.",
+    drop: "Drag & drop PDFs (or a folder) here, or click to choose", choose: "Choose PDFs", folder: "Choose folder",
+    pw: "Password", pwPlaceholder: "Password to open the files", show: "Show", hide: "Hide",
+    pwRule: "4–32 characters: letters, digits, underscore (_).",
+    run: "Encrypt all", running: "Encrypting", download: "Download ZIP", reset: "Start over",
+    files: (n: number) => `${n} / ${MAX_FILES} files`, done: "encrypted", failed: "failed",
+    needFile: "Add at least one PDF.", needPw: "Enter a valid password (4–32: letters, digits, underscore).",
+    note: "Each PDF will require this password to open. Already-encrypted PDFs are skipped. Everything stays on your device.",
+    err: "Something went wrong: ",
+  },
+  zh: {
+    title: "批量加密多个 PDF",
+    subtitle: "设一个密码，给整个文件夹的 PDF 加密——每个都在浏览器中加密并打包成一个 ZIP。不上传任何文件。",
+    drop: "把 PDF(或整个文件夹)拖到这里，或点击选择", choose: "选择 PDF", folder: "选择文件夹",
+    pw: "密码", pwPlaceholder: "打开文件所需的密码", show: "显示", hide: "隐藏",
+    pwRule: "4–32 位：字母、数字、下划线(_)。",
+    run: "全部加密", running: "加密中", download: "下载 ZIP", reset: "重新开始",
+    files: (n: number) => `${n} / ${MAX_FILES} 份`, done: "已加密", failed: "失败",
+    needFile: "至少添加一份 PDF。", needPw: "请输入有效密码(4–32 位：字母、数字、下划线)。",
+    note: "每份 PDF 都将需要此密码才能打开。已加密的 PDF 会被跳过。全部在你的设备上完成。",
+    err: "出错了：",
+  },
+};
+
+export function BatchProtectClient({ locale = "en" }: { locale?: Locale }) {
+  const t = STR[locale] ?? STR.en;
+  const [items, setItems] = useState<Item[]>([]);
+  const [password, setPassword] = useState("");
+  const [showPw, setShowPw] = useState(false);
+  const [phase, setPhase] = useState<"idle" | "running" | "done">("idle");
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const folderRef = useRef<HTMLInputElement>(null);
+
+  const addFiles = useCallback((files: File[]) => {
+    const pdfs = files.filter((f) => f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf"));
+    if (!pdfs.length) return;
+    setError(null); setPhase("idle");
+    setItems((prev) => [...prev, ...pdfs.map((f) => ({ id: `${f.name}-${f.size}-${f.lastModified}-${Math.random().toString(36).slice(2, 6)}`, name: f.name, file: f, status: "queued" as const }))].slice(0, MAX_FILES));
+  }, []);
+
+  const reset = () => { setItems([]); setPhase("idle"); setProgress(0); setError(null); };
+
+  const run = useCallback(async () => {
+    if (items.length === 0) { setError(t.needFile); return; }
+    if (!PW_OK.test(password)) { setError(t.needPw); return; }
+    setPhase("running"); setError(null); setProgress(0);
+    const updated = [...items];
+    for (let i = 0; i < updated.length; i++) {
+      setProgress(i + 1);
+      const it = updated[i];
+      try {
+        const artifact = await runPdfRuntime({
+          slug: "protect-pdf",
+          files: [it.file],
+          pageRanges: password, // protect-pdf reads the password from pageRanges
+          outputFileName: it.name.replace(/\.pdf$/i, "") + "-protected.pdf",
+          locale,
+        });
+        updated[i] = { ...it, status: "done", blob: artifact.blob };
+      } catch (e) {
+        updated[i] = { ...it, status: "error", msg: e instanceof Error ? e.message : String(e) };
+      }
+      setItems([...updated]);
+    }
+    setPhase("done");
+  }, [items, password, locale, t]);
+
+  const download = () => {
+    const done = items.filter((it) => it.status === "done" && it.blob);
+    if (!done.length) return;
+    Promise.all(done.map(async (it) => ({ name: it.name.replace(/\.pdf$/i, "") + "-protected.pdf", data: new Uint8Array(await it.blob!.arrayBuffer()) }))).then((entries) => {
+      const zip = createZipArchive(entries);
+      const blob = new Blob([zip as BlobPart], { type: "application/zip" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "dockdocs-protected.zip"; a.click();
+      URL.revokeObjectURL(url);
+    });
+  };
+
+  const doneCount = items.filter((it) => it.status === "done").length;
+
+  return (
+    <div className="mx-auto max-w-5xl px-5 py-16 sm:py-20">
+      <h1 className="text-[28px] font-semibold tracking-[-0.018em] text-[color:var(--foreground)] sm:text-[34px]">{t.title}</h1>
+      <p className="mt-3 max-w-4xl text-[15px] leading-relaxed text-[color:var(--muted)]">{t.subtitle}</p>
+
+      <input ref={inputRef} type="file" accept="application/pdf,.pdf" multiple className="hidden" onChange={(e) => { const fs = Array.from(e.target.files || []); if (fs.length) addFiles(fs); e.currentTarget.value = ""; }} />
+      <input ref={folderRef} type="file" multiple className="hidden" {...({ webkitdirectory: "", directory: "" } as Record<string, string>)} onChange={(e) => { const fs = Array.from(e.target.files || []); if (fs.length) addFiles(fs); e.currentTarget.value = ""; }} />
+
+      {items.length === 0 ? (
+        <div
+          className="mt-8 cursor-pointer rounded-[var(--radius-lg)] border border-dashed border-[color:var(--line)] bg-[color:var(--surface)] p-10 text-center transition hover:border-[color:var(--line-strong)]"
+          onClick={() => inputRef.current?.click()}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => { e.preventDefault(); const fs = Array.from(e.dataTransfer.files || []); if (fs.length) addFiles(fs); }}
+        >
+          <p className="text-[15px] font-medium text-[color:var(--foreground)]">{t.drop}</p>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <button type="button" onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }} className="inline-flex h-10 items-center rounded-[var(--radius)] bg-[color:var(--accent)] px-5 text-[14px] font-semibold text-white transition hover:opacity-90">{t.choose}</button>
+            <button type="button" onClick={(e) => { e.stopPropagation(); folderRef.current?.click(); }} className="inline-flex h-10 items-center rounded-[var(--radius)] border border-[color:var(--line)] px-5 text-[14px] font-semibold text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)]">{t.folder}</button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="mt-6 flex flex-wrap items-end justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              <label className="block text-[12.5px] font-medium text-[color:var(--muted)]">{t.pw}</label>
+              <div className="mt-1 flex items-center gap-2">
+                <input
+                  type={showPw ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
+                  placeholder={t.pwPlaceholder} maxLength={32}
+                  className="h-10 w-full max-w-xs rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 text-[14px] text-[color:var(--foreground)]"
+                />
+                <button type="button" onClick={() => setShowPw((v) => !v)} className="h-10 rounded-[var(--radius)] border border-[color:var(--line)] px-3 text-[12.5px] font-medium text-[color:var(--muted)] hover:text-[color:var(--foreground)]">{showPw ? t.hide : t.show}</button>
+              </div>
+              <p className="mt-1 text-[11.5px] text-[color:var(--faint)]">{t.pwRule}</p>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <p className="text-[14px] font-semibold text-[color:var(--foreground)]">{t.files(items.length)}</p>
+              {items.length < MAX_FILES && phase !== "running" && <button type="button" onClick={() => inputRef.current?.click()} className="rounded-[var(--radius)] border border-[color:var(--line)] px-4 py-2 text-[13px] font-medium text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)]">+</button>}
+              <button type="button" onClick={reset} className="rounded-[var(--radius)] border border-[color:var(--line)] px-4 py-2 text-[13px] font-medium text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)]">{t.reset}</button>
+              {phase === "done" && doneCount > 0 ? (
+                <button type="button" onClick={download} className="rounded-[var(--radius)] bg-[color:var(--accent)] px-5 py-2 text-[13px] font-semibold text-white transition hover:opacity-90">{t.download}</button>
+              ) : (
+                <button type="button" onClick={run} disabled={phase === "running"} className="inline-flex items-center gap-2 rounded-[var(--radius)] bg-[color:var(--accent)] px-5 py-2 text-[13px] font-semibold text-white transition hover:opacity-90 disabled:opacity-50">{phase === "running" ? (<><Spinner /> {t.running} {progress}/{items.length}</>) : t.run}</button>
+              )}
+            </div>
+          </div>
+
+          <ul className="mt-4 grid gap-2">
+            {items.map((it) => (
+              <li key={it.id} className="flex items-center justify-between gap-3 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] px-4 py-2.5 text-[13.5px]">
+                <span className="truncate font-medium text-[color:var(--foreground)]" title={it.name}>{it.name}</span>
+                <span className="shrink-0 text-[12.5px]">
+                  {it.status === "done" ? <span className="text-[#34d399]">🔒 {t.done}</span>
+                    : it.status === "error" ? <span className="text-[#f87171]" title={it.msg}>{t.failed}</span>
+                      : <span className="text-[color:var(--faint)]">·</span>}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-[12px] text-[color:var(--faint)]">{t.note}</p>
+        </>
+      )}
+
+      {error && <div className="mt-4 rounded-[var(--radius)] border border-[rgba(248,113,113,0.3)] bg-[rgba(248,113,113,0.08)] px-4 py-3 text-[13.5px] text-[#f87171]">{error}</div>}
+    </div>
+  );
+}

@@ -58,7 +58,7 @@ export const routeSlugs = [
   "unlock-pdf",
   "watermark-pdf",
   "page-numbers",
-  "pdf-to-text",
+  "pdf-to-text",
   "pdf-to-html",
   "ai-workspace",
   "compare",
@@ -73,6 +73,7 @@ export const routeSlugs = [
   "classify",
   "batch-compress",
   "batch-pdf-to-image",
+  "batch-protect-pdf",
   "dashboard",
   "pricing",
   "account",
@@ -120,7 +121,7 @@ export const toolSlugs = [
   "unlock-pdf",
   "watermark-pdf",
   "page-numbers",
-  "pdf-to-text",
+  "pdf-to-text",
   "pdf-to-html",
 ] as const;
 
