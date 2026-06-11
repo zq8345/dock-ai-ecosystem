@@ -13,6 +13,8 @@ const MAX_FILES = 50;
 const STR = {
   en: {
     title: "Batch split or merge PDFs",
+    titleSplit: "Batch split PDFs",
+    subSplit: "Split each PDF in a whole folder into smaller N-page files — all in your browser, packaged for download. Nothing is uploaded.",
     subtitle: "Merge a whole folder of PDFs into one, or split each PDF into smaller files — all in your browser, packaged for download. Nothing is uploaded.",
     drop: "Drag & drop PDFs (or a folder) here, or click to choose", choose: "Choose PDFs", folder: "Choose folder",
     merge: "Merge into one", split: "Split each",
@@ -25,6 +27,8 @@ const STR = {
   },
   zh: {
     title: "批量拆分 / 合并 PDF",
+    titleSplit: "批量 PDF 拆分",
+    subSplit: "把整个文件夹里的每份 PDF 按 N 页拆成更小的文件——全部在浏览器中完成、打包下载。不上传任何文件。",
     subtitle: "把整个文件夹的 PDF 合并成一个,或把每份 PDF 拆成更小的文件——全部在浏览器中完成、打包下载。不上传任何文件。",
     drop: "把 PDF(或整个文件夹)拖到这里，或点击选择", choose: "选择 PDF", folder: "选择文件夹",
     merge: "合并成一个", split: "逐个拆分",
@@ -37,10 +41,10 @@ const STR = {
   },
 };
 
-export function BatchSplitMergeClient({ locale = "en" }: { locale?: Locale }) {
+export function BatchSplitMergeClient({ locale = "en", lockMode }: { locale?: Locale; lockMode?: Mode }) {
   const t = STR[locale] ?? STR.en;
   const [items, setItems] = useState<Item[]>([]);
-  const [mode, setMode] = useState<Mode>("merge");
+  const [mode, setMode] = useState<Mode>(lockMode ?? "merge");
   const [n, setN] = useState(1);
   const [phase, setPhase] = useState<"idle" | "running" | "done">("idle");
   const [progress, setProgress] = useState(0);
@@ -120,8 +124,8 @@ export function BatchSplitMergeClient({ locale = "en" }: { locale?: Locale }) {
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-16 sm:py-20">
-      <h1 className="text-[28px] font-semibold tracking-[-0.018em] text-[color:var(--foreground)] sm:text-[34px]">{t.title}</h1>
-      <p className="mt-3 max-w-4xl text-[15px] leading-relaxed text-[color:var(--muted)]">{t.subtitle}</p>
+      <h1 className="text-[28px] font-semibold tracking-[-0.018em] text-[color:var(--foreground)] sm:text-[34px]">{lockMode === "split" ? t.titleSplit : t.title}</h1>
+      <p className="mt-3 max-w-4xl text-[15px] leading-relaxed text-[color:var(--muted)]">{lockMode === "split" ? t.subSplit : t.subtitle}</p>
 
       <input ref={inputRef} type="file" accept="application/pdf,.pdf" multiple className="hidden" onChange={(e) => { const fs = Array.from(e.target.files || []); if (fs.length) addFiles(fs); e.currentTarget.value = ""; }} />
       <input ref={folderRef} type="file" multiple className="hidden" {...({ webkitdirectory: "", directory: "" } as Record<string, string>)} onChange={(e) => { const fs = Array.from(e.target.files || []); if (fs.length) addFiles(fs); e.currentTarget.value = ""; }} />
@@ -143,11 +147,13 @@ export function BatchSplitMergeClient({ locale = "en" }: { locale?: Locale }) {
         <>
           <div className="mt-6 flex flex-wrap items-end justify-between gap-3">
             <div className="flex flex-wrap items-end gap-3">
+              {!lockMode && (
               <div className="inline-flex rounded-[var(--radius)] border border-[color:var(--line)] p-0.5">
                 {(["merge", "split"] as const).map((m) => (
                   <button key={m} type="button" onClick={() => { setMode(m); setPhase("idle"); result.current = null; }} className={`rounded-[var(--radius-sm)] px-3 py-1.5 text-[12.5px] font-medium transition ${mode === m ? "bg-[color:var(--accent)] text-white" : "text-[color:var(--muted)]"}`}>{m === "merge" ? t.merge : t.split}</button>
                 ))}
               </div>
+              )}
               {mode === "split" ? (
                 <label className="flex flex-col gap-1 text-[11.5px] text-[color:var(--muted)]">{t.every}
                   <input type="number" min={1} value={n} onChange={(e) => setN(Math.max(1, parseInt(e.target.value || "1", 10)))} className="h-9 w-24 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 text-[13.5px] text-[color:var(--foreground)]" />

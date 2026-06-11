@@ -76,6 +76,7 @@ export const routeSlugs = [
   "batch-protect-pdf",
   "batch-rename-pdf",
   "batch-watermark-pdf",
+  "batch-page-numbers",
   "batch-split-merge",
   "batch-rotate-pdf",
   "batch-extract-sheet",

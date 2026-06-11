@@ -13,6 +13,9 @@ const MAX_FILES = 30;
 const STR = {
   en: {
     title: "Batch watermark or number PDFs",
+    titleWm: "Batch watermark PDFs", titlePn: "Batch add page numbers to PDFs",
+    subWm: "Stamp a watermark across a whole folder of PDFs at once — each processed in your browser and packaged into one ZIP. Nothing is uploaded.",
+    subPn: "Add page numbers across a whole folder of PDFs at once — each processed in your browser and packaged into one ZIP. Nothing is uploaded.",
     subtitle: "Stamp a watermark or add page numbers across a whole folder of PDFs at once — each processed in your browser and packaged into one ZIP. Nothing is uploaded.",
     drop: "Drag & drop PDFs (or a folder) here, or click to choose", choose: "Choose PDFs", folder: "Choose folder",
     wm: "Watermark", pn: "Page numbers",
@@ -25,6 +28,9 @@ const STR = {
   },
   zh: {
     title: "批量加水印 / 页码",
+    titleWm: "批量 PDF 添加水印", titlePn: "批量 PDF 添加页码",
+    subWm: "给整个文件夹的 PDF 一次性加水印——每个都在浏览器中处理并打包成一个 ZIP。不上传任何文件。",
+    subPn: "给整个文件夹的 PDF 一次性加页码——每个都在浏览器中处理并打包成一个 ZIP。不上传任何文件。",
     subtitle: "给整个文件夹的 PDF 一次性加水印或加页码——每个都在浏览器中处理并打包成一个 ZIP。不上传任何文件。",
     drop: "把 PDF(或整个文件夹)拖到这里，或点击选择", choose: "选择 PDF", folder: "选择文件夹",
     wm: "水印", pn: "页码",
@@ -37,10 +43,10 @@ const STR = {
   },
 };
 
-export function BatchStampClient({ locale = "en" }: { locale?: Locale }) {
+export function BatchStampClient({ locale = "en", lockMode }: { locale?: Locale; lockMode?: Mode }) {
   const t = STR[locale] ?? STR.en;
   const [items, setItems] = useState<Item[]>([]);
-  const [mode, setMode] = useState<Mode>("watermark");
+  const [mode, setMode] = useState<Mode>(lockMode ?? "watermark");
   const [wmText, setWmText] = useState("");
   const [phase, setPhase] = useState<"idle" | "running" | "done">("idle");
   const [progress, setProgress] = useState(0);
@@ -102,8 +108,8 @@ export function BatchStampClient({ locale = "en" }: { locale?: Locale }) {
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-16 sm:py-20">
-      <h1 className="text-[28px] font-semibold tracking-[-0.018em] text-[color:var(--foreground)] sm:text-[34px]">{t.title}</h1>
-      <p className="mt-3 max-w-4xl text-[15px] leading-relaxed text-[color:var(--muted)]">{t.subtitle}</p>
+      <h1 className="text-[28px] font-semibold tracking-[-0.018em] text-[color:var(--foreground)] sm:text-[34px]">{lockMode === "watermark" ? t.titleWm : lockMode === "pagenum" ? t.titlePn : t.title}</h1>
+      <p className="mt-3 max-w-4xl text-[15px] leading-relaxed text-[color:var(--muted)]">{lockMode === "watermark" ? t.subWm : lockMode === "pagenum" ? t.subPn : t.subtitle}</p>
 
       <input ref={inputRef} type="file" accept="application/pdf,.pdf" multiple className="hidden" onChange={(e) => { const fs = Array.from(e.target.files || []); if (fs.length) addFiles(fs); e.currentTarget.value = ""; }} />
       <input ref={folderRef} type="file" multiple className="hidden" {...({ webkitdirectory: "", directory: "" } as Record<string, string>)} onChange={(e) => { const fs = Array.from(e.target.files || []); if (fs.length) addFiles(fs); e.currentTarget.value = ""; }} />
@@ -125,11 +131,13 @@ export function BatchStampClient({ locale = "en" }: { locale?: Locale }) {
         <>
           <div className="mt-6 flex flex-wrap items-end justify-between gap-3">
             <div className="flex flex-wrap items-end gap-3">
+              {!lockMode && (
               <div className="inline-flex rounded-[var(--radius)] border border-[color:var(--line)] p-0.5">
                 {(["watermark", "pagenum"] as const).map((m) => (
                   <button key={m} type="button" onClick={() => setMode(m)} className={`rounded-[var(--radius-sm)] px-3 py-1.5 text-[12.5px] font-medium transition ${mode === m ? "bg-[color:var(--accent)] text-white" : "text-[color:var(--muted)]"}`}>{m === "watermark" ? t.wm : t.pn}</button>
                 ))}
               </div>
+              )}
               {mode === "watermark" && (
                 <label className="flex flex-col gap-1 text-[11.5px] text-[color:var(--muted)]">{t.wmText}
                   <input value={wmText} onChange={(e) => setWmText(e.target.value)} placeholder={t.wmPlaceholder} maxLength={60} className="h-9 w-56 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 text-[13.5px] text-[color:var(--foreground)]" />

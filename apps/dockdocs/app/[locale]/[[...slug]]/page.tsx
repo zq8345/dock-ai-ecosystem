@@ -462,6 +462,20 @@ export async function generateMetadata({
     };
   }
 
+  if (slug === "batch-page-numbers") {
+    return {
+      title: rawLocale === "zh" ? "批量 PDF 添加页码 — 整批 PDF 一次加页码 | DockDocs" : "Batch Add Page Numbers to PDFs — Free | DockDocs",
+      description:
+        rawLocale === "zh"
+          ? "给整个文件夹的 PDF 一次性加页码,打包成一个 ZIP,全部在浏览器中完成,文件不外泄。"
+          : "Add page numbers to a whole folder of PDFs at once, packaged into one ZIP. Entirely in your browser; your files never leave your device.",
+      alternates: {
+        canonical: localizedPath(rawLocale, "batch-page-numbers"),
+        languages: languageAlternates("batch-page-numbers"),
+      },
+    };
+  }
+
   if (slug === "batch-split-merge") {
     return {
       title: rawLocale === "zh" ? "批量拆分 / 合并 PDF — 整批合并或按页拆分 | DockDocs" : "Batch Split & Merge PDF — Combine or Split Many PDFs Free | DockDocs",
@@ -770,11 +784,15 @@ export default async function LocalizedRoute({
   }
 
   if (slug === "batch-watermark-pdf") {
-    return <BatchStampClient locale={rawLocale} />;
+    return <BatchStampClient locale={rawLocale} lockMode="watermark" />;
+  }
+
+  if (slug === "batch-page-numbers") {
+    return <BatchStampClient locale={rawLocale} lockMode="pagenum" />;
   }
 
   if (slug === "batch-split-merge") {
-    return <BatchSplitMergeClient locale={rawLocale} />;
+    return <BatchSplitMergeClient locale={rawLocale} lockMode="split" />;
   }
 
   if (slug === "batch-rotate-pdf") {
