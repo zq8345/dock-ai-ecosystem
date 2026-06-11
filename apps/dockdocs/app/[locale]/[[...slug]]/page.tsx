@@ -800,7 +800,7 @@ export default async function LocalizedRoute({
   }
 
   if (slug === "batch-extract-sheet") {
-    return <BatchExtractSheetClient locale={rawLocale} />;
+    return <ExtractExcelClient locale={rawLocale} />;
   }
 
   if (slug === "batch-sort") {

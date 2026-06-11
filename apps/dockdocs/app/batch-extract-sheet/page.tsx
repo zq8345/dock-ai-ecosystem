@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BatchExtractSheetClient } from "@/components/BatchExtractSheetClient";
+import { ExtractExcelClient } from "@/components/ExtractExcelClient";
 
 export const metadata: Metadata = {
   title: "Batch Extract Data to Spreadsheet — Many Invoices to CSV Online | DockDocs",
@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function BatchExtractSheetPage() {
-  return <BatchExtractSheetClient />;
+  return <ExtractExcelClient />;
 }

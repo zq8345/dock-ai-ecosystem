@@ -16,7 +16,7 @@ const STR = {
   en: {
     title: "Extract data from PDFs to a spreadsheet",
     subtitle: "Upload invoices, quotes, or contracts and pull the key fields into a clean table — then download as a spreadsheet (CSV, opens in Excel & Google Sheets). The AI only reports what's actually in each document.",
-    drop: "Drag & drop PDFs here, or click to choose",
+    drop: "Drag & drop PDFs (or a folder) here, or click to choose", folder: "Choose folder",
     choose: "Choose PDFs", add: "Add more", reading: "Reading files…",
     type: "Document type", invoice: "Invoices", quote: "Quotes", contract: "Contracts",
     extract: "Extract fields", extracting: "Extracting…", reset: "Start over",
@@ -29,7 +29,7 @@ const STR = {
   zh: {
     title: "把 PDF 里的数据抽取成表格",
     subtitle: "上传发票、报价单或合同，把关键字段抽成一张干净的表格，再导出成表格文件(CSV,可用 Excel / Google 表格打开)。AI 只报告文档里真实存在的内容。",
-    drop: "把 PDF 拖到这里，或点击选择",
+    drop: "把 PDF（或整个文件夹）拖到这里，或点击选择", folder: "选择文件夹",
     choose: "选择 PDF", add: "继续添加", reading: "正在读取文件…",
     type: "文档类型", invoice: "发票", quote: "报价单", contract: "合同",
     extract: "抽取字段", extracting: "正在抽取…", reset: "重新开始",
@@ -51,6 +51,7 @@ export function ExtractExcelClient({ locale = "en" }: { locale?: Locale }) {
   const [results, setResults] = useState<DocResult[]>([]);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const folderRef = useRef<HTMLInputElement>(null);
 
   const addFiles = useCallback(async (files: File[]) => {
     const pdfs = files.filter((f) => f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf"));
@@ -131,6 +132,7 @@ export function ExtractExcelClient({ locale = "en" }: { locale?: Locale }) {
       <p className="mt-3 max-w-4xl text-[15px] leading-relaxed text-[color:var(--muted)]">{t.subtitle}</p>
 
       <input ref={inputRef} type="file" accept="application/pdf,.pdf" multiple className="hidden" onChange={(e) => { const fs = Array.from(e.target.files || []); if (fs.length) addFiles(fs); e.currentTarget.value = ""; }} />
+      <input ref={folderRef} type="file" multiple className="hidden" {...({ webkitdirectory: "", directory: "" } as Record<string, string>)} onChange={(e) => { const fs = Array.from(e.target.files || []); if (fs.length) addFiles(fs); e.currentTarget.value = ""; }} />
 
       {docs.length === 0 ? (
         <div
@@ -144,7 +146,12 @@ export function ExtractExcelClient({ locale = "en" }: { locale?: Locale }) {
           ) : (
             <p className="text-[15px] font-medium text-[color:var(--foreground)]">{t.drop}</p>
           )}
-          {!busy && <button type="button" className="mt-4 inline-flex h-10 items-center rounded-[var(--radius)] bg-[color:var(--accent)] px-5 text-[14px] font-semibold text-white transition hover:opacity-90">{t.choose}</button>}
+          {!busy && (
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+              <button type="button" onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }} className="inline-flex h-10 items-center rounded-[var(--radius)] bg-[color:var(--accent)] px-5 text-[14px] font-semibold text-white transition hover:opacity-90">{t.choose}</button>
+              <button type="button" onClick={(e) => { e.stopPropagation(); folderRef.current?.click(); }} className="inline-flex h-10 items-center rounded-[var(--radius)] border border-[color:var(--line)] px-5 text-[14px] font-semibold text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)]">{t.folder}</button>
+            </div>
+          )}
         </div>
       ) : (
         <>
