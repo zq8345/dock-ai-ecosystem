@@ -43,7 +43,7 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
             { name: "Reorder Pages", slug: "/reorder-pages" },
             { name: "Add Page", slug: "/add-page" },
             { name: "Watermark PDF", slug: "/watermark-pdf" },
-            { name: "Page Numbers", slug: "/page-numbers" },
+            { name: "Add Page Numbers", slug: "/page-numbers" },
             { name: "Crop PDF", slug: "/crop-pdf" },
             { name: "Redact PDF", slug: "/redact-pdf" },
             { name: "Sign PDF", slug: "/sign-pdf" },
@@ -54,7 +54,7 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
           items: [
             { name: "Protect PDF", slug: "/protect-pdf" },
             { name: "Unlock PDF", slug: "/unlock-pdf" },
-            { name: "OCR PDF", slug: "/ocr-pdf" },
+            { name: "PDF OCR", slug: "/ocr-pdf" },
           ],
         },
       ],
@@ -154,18 +154,18 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
             { name: "PDF 页面排序", slug: "/reorder-pages" },
             { name: "PDF 页面添加", slug: "/add-page" },
             { name: "PDF 加水印", slug: "/watermark-pdf" },
-            { name: "PDF 页码", slug: "/page-numbers" },
+            { name: "PDF 添加页码", slug: "/page-numbers" },
             { name: "PDF 裁剪", slug: "/crop-pdf" },
-            { name: "智能涂黑", slug: "/redact-pdf" },
+            { name: "PDF 智能涂黑", slug: "/redact-pdf" },
             { name: "PDF 签名", slug: "/sign-pdf" },
           ],
         },
         {
           heading: "安全 & OCR",
           items: [
-            { name: "加密 PDF", slug: "/protect-pdf" },
-            { name: "解锁 PDF", slug: "/unlock-pdf" },
-            { name: "OCR PDF", slug: "/ocr-pdf" },
+            { name: "PDF 加密", slug: "/protect-pdf" },
+            { name: "PDF 解密", slug: "/unlock-pdf" },
+            { name: "PDF OCR", slug: "/ocr-pdf" },
           ],
         },
       ],
@@ -176,15 +176,15 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
       cols: [
         {
           items: [
-            { name: "PDF 合并", slug: "/merge-pdf" },
-            { name: "版本对比", slug: "/redline" },
-            { name: "批量压缩", slug: "/batch-compress" },
+            { name: "批量 PDF 合并", slug: "/merge-pdf" },
+            { name: "批量 PDF 对比", slug: "/redline" },
+            { name: "批量 PDF 压缩", slug: "/batch-compress" },
             { name: "批量 PDF 转图片", slug: "/batch-pdf-to-image" },
-            { name: "批量加密", slug: "/batch-protect-pdf" },
-            { name: "批量改名", slug: "/batch-rename-pdf" },
+            { name: "批量 PDF 加密", slug: "/batch-protect-pdf" },
+            { name: "批量 PDF 改名", slug: "/batch-rename-pdf" },
             { name: "批量水印/页码", slug: "/batch-watermark-pdf" },
             { name: "批量拆分/合并", slug: "/batch-split-merge" },
-            { name: "批量旋转", slug: "/batch-rotate-pdf" },
+            { name: "批量 PDF 旋转", slug: "/batch-rotate-pdf" },
             { name: "批量抽取到表", slug: "/batch-extract-sheet" },
             { name: "批量分类归档", slug: "/batch-sort" },
           ],
@@ -209,7 +209,7 @@ const navCategories: Record<"en" | "zh", NavCat[]> = {
           items: [
             { name: "多文档对比", slug: "/compare" },
             { name: "跨文档问答", slug: "/compare" },
-            { name: "抽取到表格", slug: "/extract-to-excel" },
+            { name: "批量 PDF 抽取到表格", slug: "/extract-to-excel" },
             { name: "批量摘要", slug: "/batch-summary" },
             { name: "自动分类", slug: "/classify" },
           ],
@@ -262,22 +262,6 @@ function currentSlug(pathname: string | null) {
   const segs = (pathname ?? "/").split("/").filter(Boolean);
   const rest = isAllLocale(segs[0]) ? segs.slice(1) : segs;
   return rest.join("/");
-}
-
-function TierBadge({ tier }: { tier: string }) {
-  if (tier === "Free") return null;
-  const isPlus = tier === "Plus";
-  return (
-    <span
-      className={`rounded-full px-1.5 py-px text-[9px] font-bold tracking-normal ${
-        isPlus
-          ? "bg-[color:var(--soft-accent)] text-[color:var(--accent-strong)]"
-          : "border border-[color:var(--line)] text-[color:var(--faint)]"
-      }`}
-    >
-      {tier === "Soon" ? "Soon" : tier}
-    </span>
-  );
 }
 
 const HEADER_H = 52; // px — must match h-[52px] below
@@ -367,7 +351,6 @@ export function Header() {
               <div key={cat.label} className="relative group">
                 <span className={trigger}>
                   {cat.label}
-                  <TierBadge tier={cat.tier} />
                   <svg className="h-3 w-3 opacity-60 transition group-hover:rotate-180" viewBox="0 0 12 12" fill="none">
                     <path d="M3 5l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
@@ -386,18 +369,11 @@ export function Header() {
                             </p>
                           )}
                           <div className="space-y-0.5">
-                            {col.items.map((item, ii) =>
-                              cat.tier === "Soon" ? (
-                                <span key={`${item.slug}-${ii}`} className="flex cursor-not-allowed items-center justify-between gap-2 rounded-[var(--radius-sm)] px-2 py-1 text-[13px] font-medium text-[color:var(--faint)] opacity-70">
-                                  {item.name}
-                                  <span className="text-[9px] font-semibold uppercase tracking-wide opacity-80">{locale === "zh" ? "开发中" : "soon"}</span>
-                                </span>
-                              ) : (
-                                <button key={`${item.slug}-${ii}`} type="button" onClick={() => navTo(item.slug)} className={itemCls}>
-                                  {item.name}
-                                </button>
-                              ),
-                            )}
+                            {col.items.map((item, ii) => (
+                              <button key={`${item.slug}-${ii}`} type="button" onClick={() => navTo(item.slug)} className={itemCls}>
+                                {item.name}
+                              </button>
+                            ))}
                           </div>
                         </div>
                       ))}
@@ -535,7 +511,6 @@ export function Header() {
                   <div key={cat.label}>
                     <p className="mb-2.5 flex items-center gap-1.5 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--faint)]">
                       {cat.label}
-                      <TierBadge tier={cat.tier} />
                     </p>
                     {cat.cols.map((col, ci) => (
                       <div key={col.heading ?? ci} className="mb-2.5">
@@ -545,26 +520,16 @@ export function Header() {
                           </p>
                         )}
                         <div className="grid grid-cols-2 gap-1.5">
-                          {col.items.map((item, ii) =>
-                            cat.tier === "Soon" ? (
-                              <span
-                                key={`${item.slug}-${ii}`}
-                                className="flex w-full cursor-not-allowed items-center justify-between gap-1 rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-2.5 text-left text-[14px] font-medium text-[color:var(--faint)] opacity-60"
-                              >
-                                {item.name}
-                                <span className="text-[9px] font-semibold uppercase">{locale === "zh" ? "开发中" : "soon"}</span>
-                              </span>
-                            ) : (
-                              <button
-                                key={`${item.slug}-${ii}`}
-                                type="button"
-                                onClick={() => { navTo(item.slug); setMobileOpen(false); }}
-                                className="block w-full rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-2.5 text-left text-[14px] font-medium text-[color:var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[color:var(--foreground)]"
-                              >
-                                {item.name}
-                              </button>
-                            ),
-                          )}
+                          {col.items.map((item, ii) => (
+                            <button
+                              key={`${item.slug}-${ii}`}
+                              type="button"
+                              onClick={() => { navTo(item.slug); setMobileOpen(false); }}
+                              className="block w-full rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-2.5 text-left text-[14px] font-medium text-[color:var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[color:var(--foreground)]"
+                            >
+                              {item.name}
+                            </button>
+                          ))}
                         </div>
                       </div>
                     ))}
