@@ -38,6 +38,7 @@ import { MyChatsClient } from "@/components/MyChatsClient";
 import { CropPdfClient } from "@/components/CropPdfClient";
 import { ExtractExcelClient } from "@/components/ExtractExcelClient";
 import { RedlineClient } from "@/components/RedlineClient";
+import { QuizClient } from "@/components/QuizClient";
 import { ToolRuntimeClient } from "@/components/ToolRuntimeClient";
 import { UploadPanel } from "@/components/UploadPanel";
 import { ButtonLink, Container, Section } from "@dock/shared/ui";
@@ -265,6 +266,20 @@ export async function generateMetadata({
       runtimeCopy.pricing.metadataTitle,
       runtimeCopy.pricing.metadataDescription,
     );
+  }
+
+  if (slug === "flashcards") {
+    return {
+      title: rawLocale === "zh" ? "PDF 抽认卡生成 — 从课本/讲义自动出题 | DockDocs" : "PDF Flashcard Maker — Study Cards from Any PDF | DockDocs",
+      description:
+        rawLocale === "zh"
+          ? "上传课本章节、讲义或手册，用 AI 生成问答抽认卡（只来自你的文档），点卡片翻面自测。"
+          : "Turn a textbook chapter, lecture notes, or manual into study flashcards with AI — questions and answers drawn only from your document.",
+      alternates: {
+        canonical: localizedPath(rawLocale, "flashcards"),
+        languages: languageAlternates("flashcards"),
+      },
+    };
   }
 
   if (slug === "redline") {
@@ -511,6 +526,10 @@ export default async function LocalizedRoute({
 
   if (slug === "dashboard") {
     return <LocalizedDashboard locale={rawLocale} />;
+  }
+
+  if (slug === "flashcards") {
+    return <QuizClient locale={rawLocale} />;
   }
 
   if (slug === "redline") {

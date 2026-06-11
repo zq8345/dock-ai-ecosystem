@@ -67,6 +67,7 @@ export const routeSlugs = [
   "crop-pdf",
   "extract-to-excel",
   "redline",
+  "flashcards",
   "dashboard",
   "pricing",
   "account",
