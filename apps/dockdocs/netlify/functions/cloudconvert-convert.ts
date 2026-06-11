@@ -24,6 +24,13 @@ type ConversionRoute = keyof typeof SUPPORTED_CONVERSIONS;
 
 const ENCRYPT_ROUTE = "protect-pdf";
 const CLOUDCONVERT_API = "https://api.cloudconvert.com/v2";
+
+// Map a failed CloudConvert /jobs status to a clearer, user-safe reason.
+function cloudConvertFailMessage(status: number): string {
+  if (status === 401 || status === 403) return "The conversion service rejected the request (the API key may be invalid or expired).";
+  if (status === 402 || status === 429) return "The conversion service is temporarily over its quota. Please try again later.";
+  return "The conversion service could not start the job. Try again in a moment.";
+}
 const ALLOWED_ORIGIN = /^https:\/\/([a-z0-9-]+\.)*(dockdocs\.app|netlify\.app)$/i;
 
 // Best-effort per-IP sliding-window limiter (per warm instance) to bound CloudConvert credit abuse.
@@ -146,7 +153,9 @@ export default async (req: Request, _context: Context) => {
         }),
       });
       if (!jobRes.ok) {
-        return json({ ok: false, code: "JOB_CREATE_FAILED", message: "The conversion service could not start the job. Try again in a moment." }, 502);
+        const detail = await jobRes.text().catch(() => "");
+        console.error("[cloudconvert] job create failed", jobRes.status, detail.slice(0, 400));
+        return json({ ok: false, code: "JOB_CREATE_FAILED", status: jobRes.status, message: cloudConvertFailMessage(jobRes.status) }, 502);
       }
       const job = await jobRes.json() as CloudConvertJob;
       return json({ ok: true, jobId: job.data.id, outputExt: "pdf" });
@@ -212,7 +221,9 @@ export default async (req: Request, _context: Context) => {
     });
 
     if (!jobRes.ok) {
-      return json({ ok: false, code: "JOB_CREATE_FAILED", message: "The conversion service could not start the job. Try again in a moment." }, 502);
+      const detail = await jobRes.text().catch(() => "");
+      console.error("[cloudconvert] job create failed", jobRes.status, detail.slice(0, 400));
+      return json({ ok: false, code: "JOB_CREATE_FAILED", status: jobRes.status, message: cloudConvertFailMessage(jobRes.status) }, 502);
     }
 
     const job = await jobRes.json() as CloudConvertJob;
