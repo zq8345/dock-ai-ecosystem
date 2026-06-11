@@ -17,6 +17,7 @@ const SUPPORTED_CONVERSIONS = {
   "pdf-to-word": { inputFormat: "pdf", outputFormat: "docx", outputExt: "docx" },
   "html-to-pdf": { inputFormat: "html", outputFormat: "pdf", outputExt: "pdf" },
   "pdf-to-ppt": { inputFormat: "pdf", outputFormat: "pptx", outputExt: "pptx" },
+  "pdf-to-pdfa": { inputFormat: "pdf", outputFormat: "pdf", outputExt: "pdf" },
 } as const;
 
 type ConversionRoute = keyof typeof SUPPORTED_CONVERSIONS;
@@ -158,7 +159,7 @@ export default async (req: Request, _context: Context) => {
         input: "upload-file",
         input_format: inputFormat,
         output_format: outputFormat,
-        ...(outputFormat === "pdf" ? { pdf_a: false, optimize_print: false } : {}),
+        ...(outputFormat === "pdf" ? { pdf_a: route === "pdf-to-pdfa", optimize_print: false } : {}),
       };
 
   try {

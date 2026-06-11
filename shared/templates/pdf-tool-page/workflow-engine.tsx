@@ -543,6 +543,18 @@ function getWorkflowSpec(config: PdfToolPageConfig): WorkflowSpec {
               "Preparing result...",
             ],
       };
+    case "pdf-to-pdfa":
+      return {
+        acceptedLabel: "PDF",
+        minFiles: 1, maxFiles: 1,
+        maxFileSize: 100 * mb, maxTotalSize: 100 * mb,
+        processLabel: zh ? "正在转换为 PDF/A 归档格式。" : "Converting to PDF/A archival format.",
+        resultLabel: zh ? "下载 PDF/A" : "Download PDF/A",
+        outputFileName: "dockdocs-archive.pdf",
+        steps: zh
+          ? ["上传文件...", "发送到转换服务...", "转换中...", "准备下载..."]
+          : ["Uploading file...", "Sending to conversion service...", "Converting...", "Preparing download..."],
+      };
     case "pdf-to-ppt":
       return {
         acceptedLabel: "PDF",
@@ -1110,6 +1122,7 @@ function getWorkflowResult(
         ],
         preview: "text",
       };
+    case "pdf-to-pdfa":
     case "pdf-to-ppt":
     case "html-to-pdf":
     case "word-to-pdf":
