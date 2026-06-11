@@ -154,7 +154,7 @@ export function ReadyWorkflowState({
       {/* File list */}
       {bigPreview && previewFile ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
-          <FileThumb file={previewFile.file} className="h-40 w-32 sm:h-48 sm:w-36" />
+          <FileThumb file={previewFile.file} className="h-48 w-36 sm:h-72 sm:w-56" />
           <div>
             <p className="max-w-[16rem] truncate text-sm font-semibold text-[color:var(--foreground)]">{previewFile.file.name}</p>
             <p className="mt-0.5 text-xs text-[color:var(--muted)]">{formatBytes(previewFile.file.size)}</p>
