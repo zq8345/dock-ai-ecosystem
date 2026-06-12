@@ -452,8 +452,9 @@ async function extractPdfText(
   signal: AbortSignal | undefined,
   onProgress?: (progress: AiChatProgress) => void,
 ) {
-  const pdf = await loadPdfDocument(file, signal);
+  let pdf: Awaited<ReturnType<typeof loadPdfDocument>> | undefined;
   try {
+    pdf = await loadPdfDocument(file, signal);
     const pagesToRead = Math.min(pdf.numPages, maxPdfPages);
     const pageTexts: string[] = [];
 
@@ -486,7 +487,7 @@ async function extractPdfText(
 
     return normalizeText(pageTexts.join("\n\n"));
   } finally {
-    await pdf.destroy?.().catch(() => undefined);
+    await pdf?.destroy?.().catch(() => undefined);
   }
 }
 

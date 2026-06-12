@@ -55,6 +55,7 @@ export function MergePdfClient({ locale = "en" }: { locale?: Locale }) {
       pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
       const added: Item[] = [];
       let encryptedSkipped = false;
+      const skipped: string[] = [];
       for (const f of pdfs) {
         try {
           const doc = await pdfjs.getDocument({ data: new Uint8Array(await f.arrayBuffer()) }).promise;
@@ -67,12 +68,17 @@ export function MergePdfClient({ locale = "en" }: { locale?: Locale }) {
           added.push({ id: `${f.name}-${f.size}-${f.lastModified}-${Math.random().toString(36).slice(2, 7)}`, name: f.name, pages: doc.numPages, thumb: canvas.toDataURL("image/jpeg", 0.7), file: f });
           try { doc.destroy(); } catch { /* ignore */ }
         } catch (e) {
+          skipped.push(f.name);
           if (isEncryptedPdfError(e)) encryptedSkipped = true;
-          /* skip unreadable file */
         }
       }
       setItems((prev) => [...prev, ...added]);
-      if (encryptedSkipped) setError(encryptedPdfNotice(locale));
+      if (skipped.length) {
+        const list = skipped.join(", ");
+        setError(locale === "zh"
+          ? `跳过了 ${skipped.length} 个无法读取的文件:${list}${encryptedSkipped ? "(含加密文件,请先解锁)" : ""}。`
+          : `Skipped ${skipped.length} unreadable file(s): ${list}${encryptedSkipped ? " (some are password-protected — unlock them first)" : ""}.`);
+      }
     } finally {
       setBusy(false);
     }

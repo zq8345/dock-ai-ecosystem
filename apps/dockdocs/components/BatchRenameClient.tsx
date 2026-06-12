@@ -80,13 +80,17 @@ export function BatchRenameClient({ locale = "en" }: { locale?: Locale }) {
 
   const download = async () => {
     if (items.length === 0) { setError(t.need); return; }
-    const entries = await Promise.all(items.map(async (it, i) => ({ name: newNames[i], data: new Uint8Array(await it.file.arrayBuffer()) })));
-    const zip = createZipArchive(entries);
-    const blob = new Blob([zip as BlobPart], { type: "application/zip" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = "dockdocs-renamed.zip"; a.click();
-    URL.revokeObjectURL(url);
+    try {
+      const entries = await Promise.all(items.map(async (it, i) => ({ name: newNames[i], data: new Uint8Array(await it.file.arrayBuffer()) })));
+      const zip = createZipArchive(entries);
+      const blob = new Blob([zip as BlobPart], { type: "application/zip" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "dockdocs-renamed.zip"; a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      setError(locale === "zh" ? "打包下载失败,请重试。" : "Could not build the download — please try again.");
+    }
   };
 
   const inputCls = "h-9 rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 text-[13.5px] text-[color:var(--foreground)]";

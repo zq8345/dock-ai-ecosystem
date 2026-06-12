@@ -454,7 +454,7 @@ export function DocumentCompareClient({ locale = "en" }: { locale?: Locale }) {
               <button type="button" onClick={compare} disabled={comparing || okDocs.length < 2} className="inline-flex h-9 items-center rounded-[var(--radius)] bg-[color:var(--accent)] px-4 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50">
                 {comparing ? t.comparing : t.compare}
               </button>
-              <button type="button" onClick={() => { setResults([]); setComparison(null); setCompareError(null); setRecommendation(null); setQaAns(null); setQaErr(null); setQaQ(""); setTrace(null); }} className="text-xs font-medium text-[color:var(--muted)] transition hover:text-[color:var(--foreground)]">
+              <button type="button" onClick={() => { setResults([]); setComparison(null); setCompareError(null); setRecommendation(null); setQaAns(null); setQaErr(null); setQaQ(""); setTrace(null); setOcrBusy(new Set()); }} className="text-xs font-medium text-[color:var(--muted)] transition hover:text-[color:var(--foreground)]">
                 {t.clear}
               </button>
             </div>

@@ -753,7 +753,9 @@ async function addBlankPage(
   const totalPages = output.getPageCount();
 
   // pageRanges: position to insert after (e.g. "2" = insert after page 2, "0" = insert at beginning)
-  const insertAfter = Math.max(0, Math.min(totalPages, parseInt(pageRanges.trim() || String(totalPages), 10)));
+  const parsedInsert = parseInt(pageRanges.trim() || String(totalPages), 10);
+  if (!Number.isFinite(parsedInsert)) throw new Error(locale === "zh" ? "请输入有效的页码。" : "Enter a valid page number.");
+  const insertAfter = Math.max(0, Math.min(totalPages, parsedInsert));
 
   emitProgress(onProgress, 40, 1);
 

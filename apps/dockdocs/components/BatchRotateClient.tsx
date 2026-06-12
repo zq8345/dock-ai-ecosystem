@@ -80,17 +80,20 @@ export function BatchRotateClient({ locale = "en" }: { locale?: Locale }) {
     setPhase("done");
   }, [items, angle, t]);
 
-  const download = () => {
+  const download = async () => {
     const done = items.filter((it) => it.status === "done" && it.blob);
     if (!done.length) return;
-    Promise.all(done.map(async (it) => ({ name: it.name.replace(/\.pdf$/i, "") + "-rotated.pdf", data: new Uint8Array(await it.blob!.arrayBuffer()) }))).then((entries) => {
+    try {
+      const entries = await Promise.all(done.map(async (it) => ({ name: it.name.replace(/\.pdf$/i, "") + "-rotated.pdf", data: new Uint8Array(await it.blob!.arrayBuffer()) })));
       const zip = createZipArchive(entries);
       const blob = new Blob([zip as BlobPart], { type: "application/zip" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url; a.download = "dockdocs-rotated.zip"; a.click();
       URL.revokeObjectURL(url);
-    });
+    } catch (e) {
+      setError(locale === "zh" ? "打包下载失败,请重试。" : "Could not build the download — please try again.");
+    }
   };
 
   const doneCount = items.filter((it) => it.status === "done").length;
