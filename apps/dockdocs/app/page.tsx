@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { FeatureShowcase } from "@/components/FeatureShowcase";
 import { HeroBackground } from "@/components/HeroBackground";
-import { HeroFeatureGraph } from "@/components/HeroFeatureGraph";
+import { HeroBento } from "@/components/HeroBento";
 
 export const metadata: Metadata = {
   title: "DockDocs — AI Document Platform",
@@ -26,11 +26,6 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-const stats = [
-  { value: "Grounded", label: "Answers cite the source" },
-  { value: "Private", label: "Files stay on your device" },
-  { value: "Secure", label: "Files auto-delete after use" },
-] as const;
 
 const siteUrl = "https://dockdocs.app";
 const homeSchema = {
@@ -163,27 +158,9 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema) }}
       />
       {/* ── Hero ── */}
-      <section className="relative min-h-[88vh] overflow-hidden border-b border-[color:var(--line)]">
+      <section className="relative overflow-hidden border-b border-[color:var(--line)]">
         <HeroBackground />
-
-        {/* Keyword H1 for SEO — the visible hero is the interactive graph below */}
-        <h1 className="sr-only">Everything you need to do with a PDF — free tools, batch automation, and AI that actually reads your documents.</h1>
-
-        {/* Dynamic feature graph — full-bleed to the screen edges */}
-        <div className="absolute inset-0">
-          <HeroFeatureGraph locale="en" />
-        </div>
-
-        {/* Trust chips — pinned near the bottom edge */}
-        <div className="absolute inset-x-0 bottom-6 z-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 px-5">
-          {stats.map(({ value, label }) => (
-            <span key={label} className="inline-flex items-center gap-1.5 text-[13px] text-[color:var(--muted)]">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="text-[color:var(--accent)]"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              <span className="font-semibold text-[color:var(--foreground)]">{value}</span>
-              <span className="text-[color:var(--faint)]">{label}</span>
-            </span>
-          ))}
-        </div>
+        <HeroBento locale="en" />
       </section>
 
       {/* ── Core solutions + supporting metrics + quote ── */}

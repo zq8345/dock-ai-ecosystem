@@ -9,7 +9,7 @@ import { encryptedPdfMessage } from "@/lib/pdf-errors";
 type Locale = "en" | "zh";
 type Pg = { idx: number; thumb: string };
 
-const SEG_TINTS = ["", "bg-[rgba(99,102,241,0.06)]", "bg-[rgba(52,211,153,0.07)]", "bg-[rgba(251,191,36,0.08)]", "bg-[rgba(96,165,250,0.07)]"];
+const SEG_TINTS = ["", "bg-[rgba(62,207,142,0.06)]", "bg-[rgba(52,211,153,0.07)]", "bg-[rgba(251,191,36,0.08)]", "bg-[rgba(96,165,250,0.07)]"];
 
 const STR = {
   en: {

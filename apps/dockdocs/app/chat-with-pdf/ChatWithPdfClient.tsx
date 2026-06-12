@@ -243,7 +243,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale })
           data-testid="upload-panel"
           className="relative flex cursor-pointer flex-col items-center justify-center rounded-[var(--radius-xl)] border-2 border-dashed border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-6 py-14 text-center transition hover:border-[color:var(--accent)] hover:bg-[color:var(--soft-accent)]"
         >
-          <span className="inline-flex h-12 items-center rounded-[var(--radius)] bg-[color:var(--accent)] px-8 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(99,102,241,0.35)] transition hover:opacity-90">
+          <span className="inline-flex h-12 items-center rounded-[var(--radius)] bg-[color:var(--accent)] px-8 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(62,207,142,0.35)] transition hover:opacity-90">
             {copy.choosePdf}
           </span>
           <span className="mt-4 text-sm text-[color:var(--muted)]">{copy.uploadHelp}</span>

@@ -120,7 +120,7 @@ export function AiSummaryClient({ locale = "en" }: { locale?: "en" | "zh" }) {
       {/* Upload */}
       {status === "idle" || status === "error" ? (
         <label className="relative flex aspect-[16/9] w-full cursor-pointer flex-col items-center justify-center overflow-y-auto rounded-[var(--radius-xl)] border-2 border-dashed border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-6 text-center transition hover:border-[color:var(--accent)] hover:bg-[color:var(--soft-accent)]">
-          <span className="inline-flex h-12 w-1/2 items-center justify-center rounded-[var(--radius)] bg-[color:var(--accent)] px-6 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(99,102,241,0.35)] transition hover:opacity-90">
+          <span className="inline-flex h-12 w-1/2 items-center justify-center rounded-[var(--radius)] bg-[color:var(--accent)] px-6 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(62,207,142,0.35)] transition hover:opacity-90">
             {zh ? "选择 PDF" : "Choose PDF"}
           </span>
           <span className="mt-4 text-sm text-[color:var(--muted)]">

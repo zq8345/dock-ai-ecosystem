@@ -346,7 +346,7 @@ export function PdfWorkflowEngine({
                 <button
                   type="button"
                   onClick={(ev) => { ev.stopPropagation(); inputRef.current?.click(); }}
-                  className="inline-flex h-12 w-1/2 items-center justify-center gap-2 rounded-[var(--radius)] bg-[color:var(--accent)] px-6 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(99,102,241,0.35)] transition hover:opacity-90"
+                  className="inline-flex h-12 w-1/2 items-center justify-center gap-2 rounded-[var(--radius)] bg-[color:var(--accent)] px-6 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(62,207,142,0.32)] transition hover:opacity-90"
                 >
                   {config.upload.buttonLabel}
                 </button>
@@ -466,7 +466,7 @@ export function PdfWorkflowEngine({
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }}
-          className="inline-flex h-12 items-center gap-2 rounded-[var(--radius)] bg-[color:var(--accent)] px-8 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(99,102,241,0.35)] transition hover:opacity-90"
+          className="inline-flex h-12 items-center gap-2 rounded-[var(--radius)] bg-[color:var(--accent)] px-8 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(62,207,142,0.32)] transition hover:opacity-90"
         >
           {config.upload.buttonLabel}
         </button>

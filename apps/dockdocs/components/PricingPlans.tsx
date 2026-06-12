@@ -200,7 +200,7 @@ export function PricingPlans({ locale = "en" }: { locale?: Locale }) {
             <article key={plan.name}
               className={`relative flex flex-col rounded-[var(--radius-lg)] border p-6 transition hover:-translate-y-0.5 ${
                 featured
-                  ? "border-[color:var(--accent)] bg-[color:var(--surface)] shadow-[0_8px_30px_rgba(99,102,241,0.15)] lg:-mt-2 lg:mb-2"
+                  ? "border-[color:var(--accent)] bg-[color:var(--surface)] shadow-[0_8px_30px_rgba(62,207,142,0.15)] lg:-mt-2 lg:mb-2"
                   : "border-[color:var(--line)] bg-[color:var(--surface)]"
               }`}
             >

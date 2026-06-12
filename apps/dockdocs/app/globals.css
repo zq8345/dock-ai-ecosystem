@@ -30,11 +30,12 @@
   --line-strong: rgba(255, 255, 255, 0.10);
   --line-subtle: rgba(255, 255, 255, 0.04);
 
-  /* Brand accent — indigo-violet */
-  --accent: #6366f1;
-  --accent-strong: #818cf8;
-  --accent-hover: #4f46e5;
-  --soft-accent: rgba(99, 102, 241, 0.12);
+  /* Brand accent — Supabase-style fluorescent green */
+  --accent: #3ecf8e;
+  --accent-strong: #6ee7b8;
+  --accent-hover: #2cb877;
+  --soft-accent: rgba(62, 207, 142, 0.12);
+  --on-accent: #06140d; /* dark text on the bright-green accent */
 
   /* Status colors */
   --success: #34d399;
@@ -49,7 +50,7 @@
 
   /* Brand */
   --brand-ink: #f2f3f5;
-  --brand-blue: #818cf8;
+  --brand-blue: #3ecf8e;
 
   /* Radius scale */
   --radius-sm: 6px;
@@ -85,10 +86,11 @@ html.light {
   --line-strong: #d1d5db;
   --line-subtle: #f3f4f6;
 
-  --accent: #6366f1;
-  --accent-strong: #4f46e5;
-  --accent-hover: #4338ca;
-  --soft-accent: rgba(99, 102, 241, 0.08);
+  --accent: #1a9c66;
+  --accent-strong: #0f7a4f;
+  --accent-hover: #137a4f;
+  --soft-accent: rgba(26, 156, 102, 0.08);
+  --on-accent: #ffffff;
 
   --success: #059669;
   --success-surface: #ecfdf5;
@@ -101,7 +103,14 @@ html.light {
   --warning-line: #fde68a;
 
   --brand-ink: #111827;
-  --brand-blue: #6366f1;
+  --brand-blue: #1a9c66;
+}
+
+/* The accent is a bright green — pair it with dark text everywhere it's used as
+   a solid background (overrides utility text-white on buttons/badges site-wide). */
+.bg-\[color\:var\(--accent\)\],
+.hover\:bg-\[color\:var\(--accent\)\]:hover {
+  color: var(--on-accent);
 }
 
 /* ===================================================================
@@ -148,7 +157,7 @@ button, input, textarea, select, a {
 
 ::selection {
   background: var(--accent);
-  color: #ffffff;
+  color: var(--on-accent);
 }
 
 /* ===================================================================
