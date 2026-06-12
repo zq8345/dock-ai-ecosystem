@@ -66,7 +66,7 @@ const enTools: Record<ToolSlug, ToolCopy> = {
       { question: "Is my PDF sent to a server?", answer: "No. All extraction happens in your browser. Your file never leaves your device." },
     ],
     cta: { eyebrow: "PDF to HTML", title: "Convert your PDF to HTML.", description: "Get clean, structured HTML — entirely in your browser.", buttonLabel: "Convert to HTML now" },
-  },
+  },
   "pdf-to-text": {
     title: "PDF to Text (TXT) Converter Online Free | DockDocs",
     description: "Extract plain text from any PDF online for free. Fast, browser-side — your file never leaves your device.",
@@ -175,12 +175,12 @@ const enTools: Record<ToolSlug, ToolCopy> = {
   "compress-pdf": {
     title: "Compress PDF Online Free | DockDocs",
     description:
-      "Compress PDF files online with AI-powered optimization. Fast, secure, and free PDF compression tool.",
+      "Compress PDF files online, free and entirely in your browser. Reduce file size for email, uploads, and sharing — no upload to a server, no sign-up.",
     keywords: ["compress pdf", "pdf compressor", "reduce pdf size", "compress pdf online"],
     appName: "DockDocs Compress PDF",
     schemaName: "DockDocs Compress PDF",
     breadcrumbName: "Compress PDF",
-    heroTitle: "Compress PDF online free with AI-powered optimization",
+    heroTitle: "Compress PDF online free, right in your browser",
     heroDescription:
       "That PDF too big to email or upload? Shrink it in seconds — small enough to send, sharp enough to read — without installing anything.",
     primaryActionLabel: "Compress PDF",
@@ -1012,7 +1012,7 @@ const zhTools: Record<ToolSlug, ToolCopy> = {
     primaryActionLabel: "转换为 HTML",
     upload: { ...enTools["pdf-to-html"].upload, title: "上传要转换的 PDF", description: "拖放 PDF 文件，或从设备中选择。", buttonLabel: "选择 PDF" },
     cta: { eyebrow: "PDF 转 HTML", title: "把 PDF 转成 HTML。", description: "完全在浏览器中得到干净的结构化 HTML。", buttonLabel: "立即转换" },
-  },
+  },
   "pdf-to-text": {
     ...enTools["pdf-to-text"],
     title: "在线免费 PDF 转文本（TXT） | DockDocs",
@@ -1339,7 +1339,7 @@ const zhFaq: Partial<Record<ToolSlug, { faqTitle: string; faq: Array<{ question:
       { question: "会保留图片和版式吗？", answer: "会——每一页都渲染成图片，图片和版式都保留；该页的可选文字塞在下方的可折叠块里，仍可搜索。" },
       { question: "我的 PDF 会上传到服务器吗？", answer: "不会。全部在你的浏览器中完成，文件不会离开你的设备。" },
     ],
-  },
+  },
   "pdf-to-text": {
     faqTitle: "PDF 转文本常见问题",
     faq: [

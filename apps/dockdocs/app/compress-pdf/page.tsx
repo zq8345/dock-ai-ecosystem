@@ -15,36 +15,36 @@ const config = {
   appName: "DockDocs Compress PDF",
   schemaName: "DockDocs Compress PDF",
   breadcrumbName: "Compress PDF",
-  heroTitle: "Compress PDF files online without losing quality.",
+  heroTitle: "Compress PDF files online — free and in your browser.",
   heroDescription:
-    "Reduce PDF file size for email, portals, uploads, and document sharing. DockDocs keeps compression inside the same clean workspace as every document tool.",
+    "Shrink PDFs that are too big for email or portal uploads. Compression runs entirely in your browser, so your files never leave your device — nothing to install and no sign-up.",
   primaryActionLabel: "Compress PDF",
-  stats: [["Price", "Free"], ["Input", "PDF"], ["Output", "Compressed PDF"]],
+  stats: [["Price", "Free"], ["Privacy", "In-browser"], ["Output", "Smaller PDF"]],
   upload: {
     title: "Upload a PDF to compress",
     description:
       "Drag and drop a PDF file here, or choose from your device.",
     buttonLabel: "Choose PDF",
-    note: "PDF only. Fast, secure compression with clear limits and processing states.",
+    note: "PDF only. Compression runs in your browser — your file is never uploaded to a server.",
   },
-  benefitsTitle: "Reduce PDF size for sharing and uploads",
+  benefitsTitle: "Reduce PDF size for email and uploads",
   benefitsDescription:
-    "DockDocs Compress PDF shrinks file size while keeping the document readable and usable.",
+    "DockDocs Compress PDF shrinks files right in your browser, so documents fit email and upload limits without ever being sent to a server.",
   benefits: [
     {
-      title: "Smaller file size",
+      title: "Fit email & upload limits",
       description:
-        "Reduce PDF size to meet email attachment limits and upload requirements.",
+        "Bring oversized PDFs down to a size that clears common email attachment caps and portal upload limits, so files send and submit the first time.",
     },
     {
-      title: "Faster sharing",
+      title: "Stays on your device",
       description:
-        "Compressed PDFs upload, download, and transfer faster across devices and platforms.",
+        "Compression happens entirely in your browser. Your PDF is never uploaded, so sensitive documents stay private.",
     },
     {
-      title: "Clean output",
+      title: "Free with no watermark",
       description:
-        "The compressed PDF stays readable and professional for business use.",
+        "Compress as many PDFs as you need at no cost — no account, no email, and nothing stamped onto your file.",
     },
   ],
   featuresTitle: "Built for modern PDF compression",
@@ -85,22 +85,22 @@ const config = {
     {
       question: "How do I compress a PDF file online?",
       answer:
-        "Upload a PDF file to DockDocs Compress PDF and download the reduced-size version. The workflow is designed for fast, clean compression.",
+        "Drop a PDF onto DockDocs Compress PDF and download the smaller version. Everything runs in your browser — there is no upload, no sign-up, and nothing to install.",
     },
     {
       question: "Is this PDF compressor free?",
       answer:
-        "The Compress PDF page is designed as a free online PDF compression workflow for everyday document organization.",
+        "Yes. Compress PDF is completely free with no account or email required, and no watermark is added to your file.",
     },
     {
-      question: "Will the quality be affected?",
+      question: "Will compression reduce quality?",
       answer:
-        "Compression reduces file size while keeping the document readable. The output is optimized for email, uploads, and sharing.",
+        "To shrink the file, each page is re-rendered as an optimized image, so the biggest savings come from scanned or image-heavy PDFs. Pages stay clearly readable, but text on compressed pages is no longer selectable. If a PDF is already small — for example a plain-text document — DockDocs keeps the original instead of making it larger.",
     },
     {
-      question: "Is the compress PDF page mobile friendly?",
+      question: "Are my files uploaded anywhere?",
       answer:
-        "Yes. The DockDocs Compress PDF page is responsive and works across desktop, tablet, and mobile screens.",
+        "No. Compression runs entirely inside your browser using your own device, so your PDF is never uploaded to a server and never leaves your computer.",
     },
   ],
   cta: {
