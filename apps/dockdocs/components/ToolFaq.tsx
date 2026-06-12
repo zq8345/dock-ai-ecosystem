@@ -344,12 +344,12 @@ export function ToolFaq({ tool, locale = "en" }: { tool: string; locale?: Locale
   if (!data) return null;
   const items = data.items[locale] ?? data.items.en;
   return (
-    <section className="mx-auto mt-16 max-w-3xl border-t border-[color:var(--line)] pt-10">
-      <h2 className="text-lg font-semibold text-[color:var(--foreground)]">{data.title[locale] ?? data.title.en}</h2>
-      <div className="mt-5 divide-y divide-[color:var(--line)]">
+    <section className="mx-auto mt-12 border-t border-[color:var(--line)] pt-10">
+      <h2 className="text-[22px] font-normal tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[26px]">{data.title[locale] ?? data.title.en}</h2>
+      <div className="mt-6 space-y-6">
         {items.map((it) => (
-          <div key={it.q} className="py-4">
-            <h3 className="text-sm font-semibold text-[color:var(--foreground)]">{it.q}</h3>
+          <div key={it.q}>
+            <h3 className="text-[15px] font-medium text-[color:var(--foreground)]">{it.q}</h3>
             <p className="mt-2 text-sm leading-6 text-[color:var(--muted)]">{it.a}</p>
           </div>
         ))}

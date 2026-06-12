@@ -125,8 +125,8 @@ export function UrlToPdfClient({ locale = "en" }: { locale?: Locale }) {
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-16 sm:py-20">
-      <h1 className="text-[28px] font-semibold tracking-[-0.018em] text-[color:var(--foreground)] sm:text-[34px]">{t.title}</h1>
-      <p className="mt-3 max-w-4xl text-[15px] leading-relaxed text-[color:var(--muted)]">{t.subtitle}</p>
+      <h1 className="text-[30px] font-normal leading-[1.1] tracking-[-0.025em] text-[color:var(--foreground)] sm:text-[40px]">{t.title}</h1>
+      <p className="mt-4 max-w-3xl text-[16px] leading-[1.6] text-[color:var(--muted)]">{t.subtitle}</p>
 
       <div className="mt-8 rounded-[var(--radius-lg)] border border-[color:var(--line)] bg-[color:var(--surface)] p-6">
         <label className="block text-[12px] font-semibold uppercase tracking-[0.14em] text-[color:var(--muted)]">{t.label}</label>
