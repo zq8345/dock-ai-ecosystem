@@ -8,14 +8,14 @@ type Locale = "en" | "zh";
 const STR = {
   en: {
     choose: "Choose PDFs",
-    folder: "Choose folder",
-    note: "or drop multiple files / a single folder here",
+    folder: "Choose a folder instead",
+    note: "or drop files / a folder here",
     privacy: "Processed locally — never uploaded",
   },
   zh: {
     choose: "选择 PDF",
-    folder: "选择文件夹",
-    note: "或将多个文件 / 单个文件夹拖放至此处",
+    folder: "改为选择文件夹",
+    note: "或将文件 / 文件夹拖放到此处",
     privacy: "本地处理，文件不上传",
   },
 } as const;
@@ -51,7 +51,7 @@ export function BatchUploadBox({
   };
 
   const btn =
-    "inline-flex h-12 w-1/2 items-center justify-center rounded-[var(--radius)] bg-[color:var(--accent)] px-6 text-[15px] font-semibold text-[color:var(--on-accent)] shadow-[0_4px_14px_rgba(62,207,142,0.32)] transition hover:opacity-90";
+    "inline-flex h-12 w-full max-w-[280px] items-center justify-center rounded-[var(--radius)] bg-[color:var(--accent)] px-6 text-[15px] font-semibold text-[color:var(--on-accent)] shadow-[0_4px_14px_rgba(62,207,142,0.32)] transition hover:opacity-90";
 
   return (
     <div
@@ -78,10 +78,11 @@ export function BatchUploadBox({
           <button type="button" onClick={(e) => { e.stopPropagation(); fileRef.current?.click(); }} className={btn}>
             {t.choose}
           </button>
-          <button type="button" onClick={(e) => { e.stopPropagation(); folderRef.current?.click(); }} className={btn}>
+          <p className="mt-3 text-sm text-[color:var(--muted)]">{t.note}</p>
+          <button type="button" onClick={(e) => { e.stopPropagation(); folderRef.current?.click(); }} className="mt-1.5 inline-flex items-center gap-1.5 text-[13px] font-medium text-[color:var(--muted)] transition hover:text-[color:var(--accent)]">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"><path d="M2 4.5A1.5 1.5 0 0 1 3.5 3h3L8 4.5h4.5A1.5 1.5 0 0 1 14 6v5.5A1.5 1.5 0 0 1 12.5 13h-9A1.5 1.5 0 0 1 2 11.5z" /></svg>
             {t.folder}
           </button>
-          <p className="mt-1 text-[13.5px] text-[color:var(--muted)]">{t.note}</p>
           <div className="mt-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-xs text-[color:var(--faint)]">
             <span>{locale === "zh" ? "支持 PDF" : "Supports PDF"}</span>
             <span className="hidden h-3 w-px bg-[color:var(--line)] sm:inline-block" />

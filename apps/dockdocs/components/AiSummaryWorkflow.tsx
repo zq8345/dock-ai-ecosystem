@@ -208,12 +208,12 @@ export function AiSummaryWorkflow({
       data-ai-summary-status={status}
       className="border-b border-[color:var(--line)] bg-[color:var(--surface)] py-16"
     >
-      <div className="mx-auto grid max-w-6xl gap-8 px-5 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+      <div className="mx-auto grid max-w-5xl gap-8 px-5 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--muted)]">
+          <p className="text-sm font-mono uppercase tracking-[0.1em] text-[color:var(--faint)]">
             {t.eyebrow}
           </p>
-          <h2 className="mt-4 break-words text-2xl font-semibold leading-tight text-[color:var(--foreground)] sm:text-4xl">
+          <h2 className="mt-4 break-words text-[30px] font-normal leading-[1.1] tracking-[-0.025em] text-[color:var(--foreground)] sm:text-[40px]">
             {t.title}
           </h2>
           <p className="mt-4 text-sm leading-7 text-[color:var(--muted)] sm:text-base">
@@ -225,14 +225,14 @@ export function AiSummaryWorkflow({
           </div>
         </div>
 
-        <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 shadow-[0_24px_60px_rgba(24,24,20,0.08)]">
+        <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4">
           <div className="rounded-[var(--radius)] border border-dashed border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <button
                 type="button"
                 onClick={() => inputRef.current?.click()}
                 disabled={isWorking}
-                className="inline-flex min-h-11 items-center justify-center rounded-full bg-[color:var(--foreground)] px-5 py-3 text-sm font-semibold text-[color:var(--background)] shadow-[0_12px_26px_rgba(15,23,42,0.16)] transition hover:bg-[color:var(--foreground)] disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex min-h-11 items-center justify-center rounded-[var(--radius)] bg-[color:var(--accent)] px-5 py-3 text-sm font-semibold text-[color:var(--on-accent)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {t.upload}
               </button>
@@ -240,7 +240,7 @@ export function AiSummaryWorkflow({
                 type="button"
                 onClick={reset}
                 disabled={isWorking}
-                className="inline-flex min-h-11 items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--surface)] px-5 py-3 text-sm font-semibold text-[color:var(--foreground)] shadow-sm transition hover:border-[color:var(--foreground)] disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex min-h-11 items-center justify-center rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] px-5 py-3 text-sm font-medium text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {t.reset}
               </button>
@@ -279,7 +279,7 @@ export function AiSummaryWorkflow({
                 type="button"
                 onClick={startSummary}
                 disabled={!hasInput || isWorking}
-                className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-[color:var(--foreground)] px-5 py-3 text-sm font-semibold text-[color:var(--background)] shadow-[0_12px_26px_rgba(15,23,42,0.16)] transition hover:bg-[color:var(--foreground)] disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex min-h-11 flex-1 items-center justify-center rounded-[var(--radius)] bg-[color:var(--accent)] px-5 py-3 text-sm font-semibold text-[color:var(--on-accent)] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isWorking ? t.working : t.summarize}
               </button>
@@ -287,7 +287,7 @@ export function AiSummaryWorkflow({
                 <button
                   type="button"
                   onClick={cancel}
-                  className="inline-flex min-h-11 items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--surface)] px-5 py-3 text-sm font-semibold text-[color:var(--foreground)] shadow-sm transition hover:border-[color:var(--foreground)]"
+                  className="inline-flex min-h-11 items-center justify-center rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] px-5 py-3 text-sm font-medium text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)]"
                 >
                   {t.cancel}
                 </button>
@@ -349,7 +349,7 @@ export function AiSummaryWorkflow({
               <button
                 type="button"
                 onClick={() => downloadSummary(result, locale)}
-                className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-[color:var(--foreground)] px-5 py-3 text-sm font-semibold text-[color:var(--background)] shadow-[0_12px_26px_rgba(15,23,42,0.16)] transition hover:bg-[color:var(--foreground)]"
+                className="mt-5 inline-flex min-h-11 items-center justify-center rounded-[var(--radius)] bg-[color:var(--accent)] px-5 py-3 text-sm font-semibold text-[color:var(--on-accent)] transition hover:opacity-90"
               >
                 {t.download}
               </button>

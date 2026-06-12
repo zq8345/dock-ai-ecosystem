@@ -1311,14 +1311,14 @@ function LocalizedAiWorkspace({ locale }: { locale: Locale }) {
   return (
     <main className="bg-[color:var(--surface)] text-[color:var(--foreground)]">
       <Section className="border-b border-[color:var(--line)] bg-[color:var(--surface)]">
-        <Container className="py-14 sm:py-16">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--accent)]">
+        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
+          <p className="font-mono text-[12px] uppercase tracking-[0.1em] text-[color:var(--faint)]">
             {copy.eyebrow}
           </p>
-          <h1 className="mt-4 max-w-3xl text-2xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl">
+          <h1 className="mt-5 max-w-3xl text-balance text-[30px] font-normal leading-[1.1] tracking-[-0.025em] text-[color:var(--foreground)] sm:text-[40px]">
             {copy.heroTitle}
           </h1>
-          <p className="mt-4 max-w-3xl text-base leading-8 text-[color:var(--muted)]">
+          <p className="mt-4 max-w-2xl text-pretty text-[16px] leading-[1.6] text-[color:var(--muted)]">
             {copy.heroDescription}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
@@ -1329,10 +1329,10 @@ function LocalizedAiWorkspace({ locale }: { locale: Locale }) {
               OCR PDF
             </ButtonLink>
           </div>
-        </Container>
+        </div>
       </Section>
       <Section className="bg-[color:var(--surface-subtle)]">
-        <Container>
+        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {copy.cards.map((card) => (
               <article
@@ -1346,7 +1346,7 @@ function LocalizedAiWorkspace({ locale }: { locale: Locale }) {
               </article>
             ))}
           </div>
-        </Container>
+        </div>
       </Section>
       <AiSummaryWorkflow locale={locale} />
       <DocumentAnalyzerWorkflow locale={locale} />

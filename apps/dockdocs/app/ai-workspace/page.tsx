@@ -148,15 +148,13 @@ export default function AiWorkspacePage() {
       <Section className="border-b border-[color:var(--line)] bg-[color:var(--surface)]">
         <Container className="grid items-center gap-12 py-14 lg:grid-cols-[1fr_0.9fr] lg:py-16">
           <div>
-            <StatusBadge
-              className="shadow-sm"
-              label="AI Workspace layer"
-              status="Live"
-            />
-            <h1 className="mt-5 max-w-3xl text-2xl font-semibold leading-tight tracking-[-0.02em] sm:text-4xl">
+            <p className="font-mono text-[12px] uppercase tracking-[0.1em] text-[color:var(--faint)]">
+              AI workspace
+            </p>
+            <h1 className="mt-5 max-w-3xl text-balance text-[30px] font-normal leading-[1.1] tracking-[-0.025em] text-[color:var(--foreground)] sm:text-[40px]">
               AI PDF workspace for OCR, summaries, and Chat with PDF.
             </h1>
-            <p className="mt-4 max-w-2xl text-base leading-8 text-[color:var(--muted)]">
+            <p className="mt-4 max-w-2xl text-pretty text-[16px] leading-[1.6] text-[color:var(--muted)]">
               DockDocs stays PDF tools first. The AI Workspace layer helps when
               documents need OCR, summaries, Chat with PDF, or multi-step
               workflow support.
