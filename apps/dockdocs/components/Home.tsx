@@ -95,7 +95,7 @@ function MiniThumbs() {
     <div className="flex items-end gap-2">
       {[0, 1, 2, 3].map((i) => (
         <div key={i} className="flex h-14 w-10 flex-col gap-1 rounded-md border border-[color:var(--line)] p-1.5" style={i === 1 ? { transform: "translateY(-6px) rotate(-5deg)", borderColor: "var(--line-strong)" } : undefined}>
-          {[70, 90, 55].map((w, k) => <span key={k} className="h-[3px] rounded-full bg-[rgba(255,255,255,0.12)]" style={{ width: `${w}%` }} />)}
+          {[70, 90, 55].map((w, k) => <span key={k} className="h-[3px] rounded-full bg-[color:var(--skeleton)]" style={{ width: `${w}%` }} />)}
         </div>
       ))}
       <div className="flex h-14 w-10 items-center justify-center rounded-md border border-dashed border-[color:var(--line-strong)] text-[16px] text-[color:var(--faint)]">+</div>
@@ -106,7 +106,7 @@ function MiniExtract({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-2.5">
       <div className="flex h-16 w-12 flex-col gap-1 rounded-md border border-[color:var(--line)] p-1.5">
-        {[80, 60, 75, 50, 65].map((w, k) => <span key={k} className="h-[3px] rounded-full bg-[rgba(255,255,255,0.1)]" style={{ width: `${w}%` }} />)}
+        {[80, 60, 75, 50, 65].map((w, k) => <span key={k} className="h-[3px] rounded-full bg-[color:var(--skeleton)]" style={{ width: `${w}%` }} />)}
       </div>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-[color:var(--accent)]"><path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
       <div className="flex-1 rounded-md border border-[color:var(--line)] p-2">
@@ -114,7 +114,7 @@ function MiniExtract({ label }: { label: string }) {
         {[0, 1, 2].map((k) => (
           <div key={k} className="mb-1 flex items-center gap-1.5 last:mb-0">
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--accent)]" />
-            <span className="h-[3px] flex-1 rounded-full bg-[rgba(255,255,255,0.12)]" />
+            <span className="h-[3px] flex-1 rounded-full bg-[color:var(--skeleton)]" />
           </div>
         ))}
       </div>
@@ -129,7 +129,7 @@ function MiniBatch() {
           <div key={i} className="absolute h-12 w-10 rounded-md border border-[color:var(--line)]" style={{ left: `${i * 10}px`, top: `${i * 3}px`, background: "var(--background)" }} />
         ))}
       </div>
-      <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[rgba(255,255,255,0.08)]">
+      <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[color:var(--skeleton)]">
         <div className="hfg-bar h-full rounded-full bg-[color:var(--accent)]" style={{ width: "70%" }} />
       </div>
       <p className="mt-1.5 text-[11px] text-[color:var(--faint)]">142 files</p>
@@ -139,9 +139,9 @@ function MiniBatch() {
 function MiniSecure() {
   return (
     <div className="relative flex h-16 w-full flex-col justify-center gap-1.5 rounded-md border border-[color:var(--line)] px-3">
-      <span className="h-[3px] w-[60%] rounded-full bg-[rgba(255,255,255,0.12)]" />
-      <span className="h-[6px] w-[45%] rounded-sm bg-black" />
-      <span className="h-[3px] w-[70%] rounded-full bg-[rgba(255,255,255,0.12)]" />
+      <span className="h-[3px] w-[60%] rounded-full bg-[color:var(--skeleton)]" />
+      <span className="h-[6px] w-[45%] rounded-sm bg-[color:var(--foreground)]" />
+      <span className="h-[3px] w-[70%] rounded-full bg-[color:var(--skeleton)]" />
       <svg className="absolute right-3 top-3 text-[color:var(--accent)]" width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.4" /><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" strokeWidth="1.4" /></svg>
     </div>
   );
@@ -222,7 +222,7 @@ export function Home({ locale = "en" }: { locale?: Locale }) {
           <div className="hfg-in rounded-xl border border-[color:var(--line)] p-5">
             <div className="flex items-stretch gap-3">
               <div className="flex w-[36%] flex-col gap-1.5 rounded-lg border border-[color:var(--line)] p-3">
-                {[80, 60, 70, 50, 65, 55].map((w, i) => <span key={i} className={`h-[3px] rounded-full ${i === 2 ? "bg-[color:var(--accent)]" : "bg-[rgba(255,255,255,0.1)]"}`} style={{ width: `${w}%`, opacity: i === 2 ? 0.9 : 1 }} />)}
+                {[80, 60, 70, 50, 65, 55].map((w, i) => <span key={i} className={`h-[3px] rounded-full ${i === 2 ? "bg-[color:var(--accent)]" : "bg-[color:var(--skeleton)]"}`} style={{ width: `${w}%`, opacity: i === 2 ? 0.9 : 1 }} />)}
                 <span className="mt-1 text-[10px] text-[color:var(--faint)]">report.pdf</span>
               </div>
               <div className="flex items-center text-[color:var(--accent)]">
@@ -237,7 +237,7 @@ export function Home({ locale = "en" }: { locale?: Locale }) {
                 </div>
                 {[zh ? "亚太区为主要驱动" : "APAC is the main driver", zh ? "毛利率 41%（↑3pt）" : "Gross margin 41% (↑3pt)"].map((b) => (
                   <div key={b} className="mb-1.5 flex items-center gap-1.5 text-[12px] text-[color:var(--muted)] last:mb-0">
-                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[rgba(255,255,255,0.2)]" />{b}
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--ink-soft)]" />{b}
                   </div>
                 ))}
               </div>

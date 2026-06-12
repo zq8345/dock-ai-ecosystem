@@ -30,6 +30,11 @@
   --line-strong: rgba(255, 255, 255, 0.14);
   --line-subtle: rgba(255, 255, 255, 0.055);
 
+  /* Theme-aware placeholder fills (skeleton bars, soft dots) — flip in light mode
+     so SVG/mini-visuals stay visible on either background. */
+  --skeleton: rgba(255, 255, 255, 0.10);
+  --ink-soft: rgba(255, 255, 255, 0.22);
+
   /* Brand accent — Supabase-style fluorescent green */
   --accent: #3ecf8e;
   --accent-strong: #6ee7b8;
@@ -85,6 +90,8 @@ html.light {
   --line: #e5e7eb;
   --line-strong: #d1d5db;
   --line-subtle: #f3f4f6;
+  --skeleton: #e5e7eb;
+  --ink-soft: #9ca3af;
 
   --accent: #1a9c66;
   --accent-strong: #0f7a4f;

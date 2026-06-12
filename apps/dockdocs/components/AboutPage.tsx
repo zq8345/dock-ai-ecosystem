@@ -1,201 +1,338 @@
-// Shared About page — used by /about (EN) and /zh/about (ZH).
-// Same design system as the homepage: flat #171717, weight-400 headings, mono
-// --faint eyebrows, border-only cards, no internal dividers, strict colour ladder.
+// About page — a trust-conversion page, not a feature list. It argues, by
+// architecture, that your files never reach a server. Same design family as
+// the homepage (components/Home.tsx): flat #171717, weight-400 headings, mono
+// --faint eyebrows, border-only, dividers only at header/footer, theme tokens
+// only (no rgba white-alpha → survives light mode; route is force-dark anyway).
 
 type Locale = "en" | "zh";
 
 const content = {
   en: {
-    eyebrow: "About DockDocs",
-    heroTitle: ["Fast.", "Private.", "Honest."],
-    heroSub: "DockDocs is a privacy-first AI PDF platform — about 50 tools, most running in your browser so your files never leave your device, plus AI that reads your documents and shows its sources.",
-    cta1: "Use it free", cta2: "View pricing",
+    heroEyebrow: "// Why DockDocs exists",
+    heroPre: "Your documents are nobody's business but ",
+    heroAccent: "yours.",
+    heroSub: "Most DockDocs tools run inside your browser. Your files never reach us — because they never leave you.",
 
-    missionEyebrow: "Mission",
-    missionTitle: "Why DockDocs exists.",
-    missionP1: "Document work shouldn't mean installing heavy software, paying for a feature you use once, or handing your files to an opaque cloud. The tools you reach for every day should be fast, private, and honest about what they do.",
-    missionP2: "So we built one clean workspace for the whole flow — convert, organize, OCR, summarize, compare — local-first where possible, cloud only where it genuinely helps, and clearly marked when it does.",
+    originEyebrow: "// Origin",
+    originPre: "Every other PDF site asks you to upload first. We ",
+    originAccent: "refused",
+    originPost: " to build that.",
+    originBody: "Compressing a contract or an ID shouldn't mean handing it to a stranger's cloud. So we built the opposite: the work happens on your machine, and the few tools that truly need a server say so before you start.",
 
-    trustEyebrow: "Privacy",
-    trustTitle: "Built around your files staying yours.",
-    trust: [
-      { title: "Files stay on your device", body: "Compress, merge, split, convert and more run entirely in your browser. Nothing is uploaded — no server copy to leak." },
-      { title: "Cloud steps are labeled", body: "A few conversions (Office formats, large OCR) use a cloud engine. Those tools say so up front, before you start." },
-      { title: "We never train AI on your docs", body: "Your files are processed to give you a result — never used to train models, never sold, never shared." },
-      { title: "Files aren't kept", body: "Cloud conversions run, then the temporary copy is deleted automatically. We don't build a library of your documents." },
+    flowEyebrow: "// Where your file goes",
+    flowHeading: "Where your file actually goes.",
+    flowSub: "Left: the typical online tool. Right: DockDocs — for most tools the file never crosses the line.",
+    flowDevice: "Your device",
+    flowNet: "The internet",
+    flowLegacy: "uploaded · stored · scanned",
+    flowServers: "their servers",
+    flowLocal: "processed in your browser",
+    flowZero: "0 bytes uploaded",
+
+    tableEyebrow: "// In plain terms",
+    tableHeading: "What we do. What we never do.",
+    doHead: "We do",
+    neverHead: "We never",
+    doRows: ["Process files in your browser", "Delete cloud temp-files immediately", "Label every cloud step up front", "Cite the source of every AI answer", "Let you start with no account"],
+    neverRows: ["Store your documents", "Train AI on your files", "Sell or share your data", "Email-to-cancel traps", "Hidden uploads"],
+
+    statsEyebrow: "// The numbers that matter",
+    statsHeading: "The numbers that matter are zeros.",
+    stats: [
+      { n: "0", l: "files stored for in-browser tools", z: true },
+      { n: "0", l: "files used to train AI", z: true },
+      { n: "$0", l: "to start — no account", z: true },
+      { n: "~50", l: "PDF & AI tools", z: false },
     ],
 
-    forEyebrow: "Built for",
-    forTitle: "Who it's for.",
-    forItems: [
-      { title: "Professionals & teams", body: "Compress for email, convert contracts, merge reports — without uploading sensitive files to unknown servers." },
-      { title: "Students & researchers", body: "OCR scanned papers, summarize long PDFs, and ask documents to find what matters faster." },
-      { title: "Anyone with a PDF", body: "No account, no install, no learning curve. Open the tool, drop your file, get your result." },
+    cloudEyebrow: "// Honest about the cloud",
+    cloudHeading: "When a tool does use the cloud, it says so.",
+    cloudSub: "A few tools (Office conversion, big OCR, AI chat) need a server: labeled before you start, encrypted in transit, deleted right after. And the AI always cites the source line.",
+    cloudSteps: ["labeled up front", "encrypted in transit", "processed", "copy deleted"],
+    cloudNotKept: "not retained",
+    aiSummary: "AI answer",
+    aiCite: "source",
+
+    valuesEyebrow: "// What we stand on",
+    valuesHeading: "What we stand on.",
+    values: [
+      { t: "Privacy by architecture", b: "The default is local — not a setting you flip." },
+      { t: "Your files, your device", b: "In-browser tools never upload, ever." },
+      { t: "No dark patterns", b: "Cancel in two clicks. No email-to-cancel games." },
+      { t: "Open about how it works", b: "Every cloud step and AI source is labeled." },
     ],
 
-    payEyebrow: "Pricing",
-    payTitle: "Honest by default.",
-    payDesc: "Core tools are free and stay free. Plus unlocks the AI-heavy and high-volume features — on terms that respect you.",
-    payPoints: [
-      "AI features — Chat with PDF, summaries, and large-batch processing",
-      "Higher limits — bigger files and large-file cloud conversion",
-      "Cancel anytime — self-serve, a couple of clicks, no email-to-cancel games",
-      "Transparent billing — clear prices, no surprise renewals",
-    ],
-
-    ctaTitle: "Open a tool. No account needed.",
-    ctaSub: "Start with any tool right now — upgrade to Plus only if you need AI or higher limits.",
+    ctaHeading: "Try a tool. No upload. No account.",
+    ctaSub: "Open any tool and watch the network tab — for the in-browser ones, nothing leaves.",
+    cta1: "Browse the tools", cta2: "See how privacy works",
   },
-
   zh: {
-    eyebrow: "关于 DockDocs",
-    heroTitle: ["快速。", "私密。", "诚实。"],
-    heroSub: "DockDocs 是隐私优先的 AI PDF 平台——约 50 个工具，大多在浏览器内运行，文件绝不离开你的设备；还有真正读懂文档、并给你看依据的 AI。",
-    cta1: "免费使用", cta2: "查看定价",
+    heroEyebrow: "// DockDocs 为何存在",
+    heroPre: "你的文档，",
+    heroAccent: "只与你有关。",
+    heroSub: "DockDocs 的大多数工具都在你的浏览器里运行。文件到不了我们这——因为它根本没离开你。",
 
-    missionEyebrow: "使命",
-    missionTitle: "DockDocs 为何存在。",
-    missionP1: "文档工作不该意味着安装沉重软件、为只用一次的功能付费，或把文件交给不透明的云端。你每天要用的工具，应该快速、私密、并对它的行为诚实。",
-    missionP2: "所以我们把整个流程收进一个干净的工作区——转换、整理、OCR、摘要、对比——能本地就本地，只在真正有帮助时才用云端，用到时明确标注。",
+    originEyebrow: "// 缘起",
+    originPre: "别的 PDF 网站都要你先上传。我们",
+    originAccent: "偏不",
+    originPost: "这么做。",
+    originBody: "压缩一份合同或证件，不该意味着把它交给陌生人的云端。于是我们反着做：处理发生在你的设备上，少数真正需要服务器的工具，会在你开始前明确说明。",
 
-    trustEyebrow: "隐私",
-    trustTitle: "围绕「文件始终是你的」来构建。",
-    trust: [
-      { title: "文件留在你的设备上", body: "压缩、合并、拆分、转换等完全在浏览器中运行。不上传任何内容——服务器上没有副本，也就无从泄露。" },
-      { title: "云端步骤明确标注", body: "少数转换（Office 格式、大批量 OCR）需要云端引擎。这些工具会在你开始前清楚说明。" },
-      { title: "绝不用你的文档训练 AI", body: "你的文件仅用于为你生成结果——绝不训练模型、绝不出售、绝不分享。" },
-      { title: "不留存文件", body: "云端转换处理完成后，临时副本自动销毁。我们不会建立你的文档库。" },
+    flowEyebrow: "// 文件去了哪",
+    flowHeading: "你的文件，到底去了哪。",
+    flowSub: "左边是普通在线工具，右边是 DockDocs——大多数工具，文件从不越过这条线。",
+    flowDevice: "你的设备",
+    flowNet: "互联网",
+    flowLegacy: "上传 · 存储 · 扫描",
+    flowServers: "他们的服务器",
+    flowLocal: "在浏览器内处理",
+    flowZero: "0 字节上传",
+
+    tableEyebrow: "// 直白地说",
+    tableHeading: "我们做什么。我们绝不做什么。",
+    doHead: "我们会",
+    neverHead: "我们绝不",
+    doRows: ["在你的浏览器里处理", "云端临时副本即刻删除", "云端步骤事先标注", "每个 AI 答案标注原文", "无需注册即可开始"],
+    neverRows: ["存储你的文档", "用你的文件训练 AI", "出售或分享你的数据", "发邮件才能取消的套路", "隐藏的上传"],
+
+    statsEyebrow: "// 真正重要的数字",
+    statsHeading: "最重要的数字，是零。",
+    stats: [
+      { n: "0", l: "浏览器内工具不存储文件", z: true },
+      { n: "0", l: "文件用于训练 AI", z: true },
+      { n: "$0", l: "开始使用 — 无需注册", z: true },
+      { n: "~50", l: "PDF 与 AI 工具", z: false },
     ],
 
-    forEyebrow: "适用人群",
-    forTitle: "为谁而建。",
-    forItems: [
-      { title: "专业人士与团队", body: "压缩发邮件、转换合同、合并报告——无需把敏感文件上传到陌生服务器。" },
-      { title: "学生与研究者", body: "对扫描论文做 OCR、为长 PDF 生成摘要、向文档提问，更快找到关键内容。" },
-      { title: "任何有 PDF 的人", body: "无需账户、无需安装、无需学习成本。打开工具，拖入文件，拿到结果。" },
+    cloudEyebrow: "// 对云端坦诚",
+    cloudHeading: "少数工具确实要用云端——它会明说。",
+    cloudSub: "少数工具（Office 转换、大文件 OCR、AI 问答）需要服务器：开始前标注、传输加密、用完即删。而且 AI 永远标注原文出处。",
+    cloudSteps: ["事先标注", "传输加密", "处理", "副本删除"],
+    cloudNotKept: "不留存",
+    aiSummary: "AI 答案",
+    aiCite: "原文",
+
+    valuesEyebrow: "// 我们坚持什么",
+    valuesHeading: "我们坚持什么。",
+    values: [
+      { t: "架构即隐私", b: "默认本地处理，而非一个开关。" },
+      { t: "你的文件，在你的设备上", b: "浏览器内工具从不上传。" },
+      { t: "拒绝套路", b: "两次点击即可取消，没有发邮件套路。" },
+      { t: "公开运作方式", b: "每个云端步骤、每处 AI 出处都标注。" },
     ],
 
-    payEyebrow: "定价",
-    payTitle: "默认诚实。",
-    payDesc: "核心工具免费，并持续免费。Plus 解锁 AI 密集与大批量功能——配以尊重你的条款。",
-    payPoints: [
-      "AI 功能 —— PDF 问答、摘要、大批量处理",
-      "更高额度 —— 更大文件、大文件云端转换",
-      "随时取消 —— 自助、几次点击，没有「发邮件才能取消」套路",
-      "透明计费 —— 价格清晰，没有意外续费",
-    ],
-
-    ctaTitle: "打开一个工具，无需注册。",
-    ctaSub: "现在就从任意工具开始——只有需要 AI 或更高额度时，才升级 Plus。",
+    ctaHeading: "试用一个工具。无上传。无需注册。",
+    ctaSub: "打开任意工具，盯着网络面板看——浏览器内的工具，什么都不会发出去。",
+    cta1: "浏览全部工具", cta2: "看隐私怎么做到",
   },
 } as const;
 
 const Check = () => (
   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="mt-0.5 shrink-0 text-[color:var(--accent)]"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
 );
+const Dash = () => <span className="mt-0.5 shrink-0 text-[color:var(--faint)]">—</span>;
+
+const VALUE_ICONS = [
+  <path key="0" d="M5 11V8a4 4 0 1 1 8 0v3 M4 11h10v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Z" />,
+  <path key="1" d="M4 6h10v7H4z M7 16h4 M9 13v3" />,
+  <path key="2" d="M2 9s2.5-4 7-4 7 4 7 4-2.5 4-7 4-7-4-7-4Z M9 7v0 M3 3l12 12" />,
+  <path key="3" d="M6 5 2 9l4 4 M12 5l4 4-4 4" />,
+];
 
 export function AboutPage({ locale = "en" }: { locale?: Locale }) {
   const zh = locale === "zh";
   const c = content[zh ? "zh" : "en"];
   const eyebrow = `font-mono text-[12px] text-[color:var(--faint)] ${zh ? "" : "uppercase tracking-[0.08em]"}`;
+  const h2 = "text-[28px] font-normal leading-[1.15] tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[36px]";
   const path = (slug: string) => (zh ? `/zh${slug}` : slug);
-  const card = "rounded-2xl border border-[color:var(--line)] p-6 transition-colors duration-200 hover:border-[color:var(--line-strong)]";
 
   return (
     <main>
-      {/* ── Hero (who) — the only top hairline is the header's ── */}
+      <style>{`
+        @keyframes abFlow{to{stroke-dashoffset:-28}}
+        .ab-flow{stroke-dasharray:1 9;stroke-linecap:round;animation:abFlow 1.4s linear infinite}
+        @media (prefers-reduced-motion: reduce){.ab-flow{animation:none}}
+      `}</style>
+
+      {/* 1 ── Manifesto hero (the only top hairline) ── */}
       <section className="border-b border-[color:var(--line)]">
         <div className="mx-auto max-w-3xl px-5 pb-20 pt-24 text-center sm:px-6 sm:pb-28 sm:pt-32">
-          <p className={eyebrow}>{c.eyebrow}</p>
-          <h1 className="mt-5 text-[36px] font-normal leading-[1.04] tracking-[-0.03em] text-[color:var(--foreground)] sm:text-[54px] lg:text-[64px]">
-            {c.heroTitle.map((w) => <span key={w}>{w} </span>)}
+          <p className={eyebrow}>{c.heroEyebrow}</p>
+          <h1 className="mt-5 text-[36px] font-normal leading-[1.05] tracking-[-0.03em] text-[color:var(--foreground)] sm:text-[54px] lg:text-[64px]">
+            {c.heroPre}<span className="text-[color:var(--accent)]">{c.heroAccent}</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-[16px] leading-[1.6] text-[color:var(--muted)]">{c.heroSub}</p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <a href={path("/chat-with-pdf")} className="inline-flex h-11 items-center justify-center rounded-full bg-[color:var(--accent)] px-6 text-[14px] font-medium transition hover:bg-[color:var(--accent-hover)]">{c.cta1}</a>
-            <a href={path("/pricing")} className="inline-flex h-11 items-center justify-center rounded-full border border-[color:var(--line-strong)] px-6 text-[14px] font-medium text-[color:var(--foreground)] transition hover:border-[color:var(--foreground)]">{c.cta2}</a>
-          </div>
         </div>
       </section>
 
-      {/* ── Mission (why) ── */}
+      {/* 2 ── Origin ── */}
       <section>
         <div className="mx-auto grid max-w-5xl gap-10 px-5 py-20 sm:px-6 sm:py-28 lg:grid-cols-[320px_1fr] lg:px-8">
           <div>
-            <p className={eyebrow}>{c.missionEyebrow}</p>
-            <h2 className="mt-4 text-[28px] font-normal leading-[1.15] tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[34px]">{c.missionTitle}</h2>
+            <p className={eyebrow}>{c.originEyebrow}</p>
+            <h2 className={`mt-4 ${h2}`}>{c.originPre}<span className="text-[color:var(--accent)]">{c.originAccent}</span>{c.originPost}</h2>
           </div>
-          <div className="space-y-5 text-[16px] leading-[1.7] text-[color:var(--muted)]">
-            <p>{c.missionP1}</p>
-            <p>{c.missionP2}</p>
+          <p className="self-end text-[16px] leading-[1.7] text-[color:var(--muted)]">{c.originBody}</p>
+        </div>
+      </section>
+
+      {/* 3 ── Data-flow centerpiece ── */}
+      <section>
+        <div className="mx-auto max-w-5xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
+          <p className={eyebrow}>{c.flowEyebrow}</p>
+          <h2 className={`mt-4 ${h2}`}>{c.flowHeading}</h2>
+          <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-[color:var(--muted)]">{c.flowSub}</p>
+
+          <div className="mt-8 overflow-hidden rounded-2xl border border-[color:var(--line)] p-4 sm:p-8">
+            <svg viewBox="0 0 920 300" className="w-full" role="img" aria-label={c.flowHeading}>
+              {/* boundary */}
+              <line x1="560" y1="40" x2="560" y2="260" style={{ stroke: "var(--line-strong)" }} strokeWidth="1.5" strokeDasharray="3 6" />
+              <text x="280" y="32" textAnchor="middle" fill="currentColor" className="fill-[color:var(--faint)] font-mono text-[13px]">{c.flowDevice}</text>
+              <text x="745" y="32" textAnchor="middle" fill="currentColor" className="fill-[color:var(--faint)] font-mono text-[13px]">{c.flowNet}</text>
+
+              {/* legacy lane — file crosses to a server */}
+              <g className="text-[color:var(--faint)]" style={{ color: "var(--faint)" }} stroke="currentColor" fill="none" strokeWidth="1.6">
+                <rect x="70" y="92" width="74" height="52" rx="7" />
+                <line x1="70" y1="108" x2="144" y2="108" />
+                <circle cx="80" cy="100" r="1.6" fill="currentColor" />
+                <line x1="150" y1="118" x2="690" y2="118" />
+                <path d="M680 110l12 8-12 8" />
+                <rect x="700" y="96" width="64" height="46" rx="5" />
+                <line x1="712" y1="110" x2="752" y2="110" /><line x1="712" y1="120" x2="752" y2="120" /><line x1="712" y1="130" x2="752" y2="130" />
+                <text x="420" y="150" textAnchor="middle" fill="currentColor" stroke="none" className="font-mono text-[12px]">{c.flowLegacy}</text>
+                <text x="732" y="162" textAnchor="middle" fill="currentColor" stroke="none" className="text-[12px]">{c.flowServers}</text>
+                <line x1="690" y1="158" x2="774" y2="158" strokeWidth="1.4" />
+              </g>
+
+              {/* dockdocs lane — file loops back, never crosses */}
+              <g style={{ color: "var(--accent)" }} stroke="currentColor" fill="none" strokeWidth="1.8">
+                <rect x="70" y="206" width="74" height="52" rx="7" />
+                <line x1="70" y1="222" x2="144" y2="222" />
+                <circle cx="80" cy="214" r="1.6" fill="currentColor" />
+                {/* self-loop (refresh) glyph */}
+                <path d="M171 232a16 16 0 1 0 5-11" />
+                <path d="M174 206v9h9" />
+                <path className="ab-flow" d="M171 232a16 16 0 1 0 5-11" strokeWidth="2.4" />
+                <text x="300" y="226" fill="currentColor" stroke="none" className="font-mono text-[12px]">{c.flowLocal}</text>
+                {/* 0 bytes pill */}
+                <rect x="296" y="236" width="150" height="26" rx="13" strokeWidth="1.4" />
+                <text x="371" y="253" textAnchor="middle" fill="currentColor" stroke="none" className="text-[12px]">{c.flowZero}</text>
+              </g>
+            </svg>
           </div>
         </div>
       </section>
 
-      {/* ── Privacy (why-trust) ── */}
+      {/* 4 ── Do / Never table ── */}
       <section>
         <div className="mx-auto max-w-5xl px-5 py-20 sm:px-6 sm:py-28 lg:px-8">
-          <p className={eyebrow}>{c.trustEyebrow}</p>
-          <h2 className="mt-4 max-w-2xl text-[28px] font-normal leading-[1.15] tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[36px]">{c.trustTitle}</h2>
+          <p className={eyebrow}>{c.tableEyebrow}</p>
+          <h2 className={`mt-4 ${h2}`}>{c.tableHeading}</h2>
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
-            {c.trust.map((t) => (
-              <div key={t.title} className={card}>
-                <div className="flex items-start gap-2.5">
-                  <Check />
-                  <div>
-                    <p className="text-[16px] font-normal text-[color:var(--foreground)]">{t.title}</p>
-                    <p className="mt-2 text-[14px] leading-[1.6] text-[color:var(--muted)]">{t.body}</p>
+            <div className="rounded-2xl border border-[color:var(--line)] p-6" style={{ borderLeft: "2px solid var(--accent)" }}>
+              <div className="mb-4 flex items-center gap-2"><Check /><span className="text-[15px] font-normal text-[color:var(--foreground)]">{c.doHead}</span></div>
+              <ul className="space-y-2.5">
+                {c.doRows.map((r) => <li key={r} className="flex items-start gap-2.5 text-[14px] leading-[1.5] text-[color:var(--foreground)]"><Check /><span>{r}</span></li>)}
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-[color:var(--line)] p-6">
+              <div className="mb-4 flex items-center gap-2"><Dash /><span className="text-[15px] font-normal text-[color:var(--muted)]">{c.neverHead}</span></div>
+              <ul className="space-y-2.5">
+                {c.neverRows.map((r) => <li key={r} className="flex items-start gap-2.5 text-[14px] leading-[1.5] text-[color:var(--muted)]"><Dash /><span>{r}</span></li>)}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5 ── Zero stat band ── */}
+      <section className="border-y border-[color:var(--line)]">
+        <div className="mx-auto max-w-5xl px-5 py-20 sm:px-6 sm:py-24 lg:px-8">
+          <p className={`${eyebrow} text-center`}>{c.statsEyebrow}</p>
+          <h2 className={`mt-3 text-center ${h2}`}>{c.statsHeading}</h2>
+          <div className="mt-12 grid grid-cols-2 gap-y-10 md:grid-cols-4">
+            {c.stats.map((s) => (
+              <div key={s.l} className="text-center">
+                <div className={`text-[40px] font-normal tracking-[-0.02em] md:text-[60px] ${s.z ? "text-[color:var(--accent)]" : "text-[color:var(--foreground)]"}`}>{s.n}</div>
+                <div className="mx-auto mt-2 max-w-[160px] font-mono text-[12px] leading-[1.4] text-[color:var(--faint)]">{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6 ── Honest about the cloud + cited AI ── */}
+      <section>
+        <div className="mx-auto max-w-5xl px-5 py-20 sm:px-6 sm:py-28 lg:px-8">
+          <p className={eyebrow}>{c.cloudEyebrow}</p>
+          <h2 className={`mt-4 max-w-2xl ${h2}`}>{c.cloudHeading}</h2>
+          <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-[color:var(--muted)]">{c.cloudSub}</p>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
+            {/* cloud lifecycle */}
+            <div className="rounded-2xl border border-[color:var(--line)] p-6">
+              <ol className="space-y-4">
+                {c.cloudSteps.map((step, i) => {
+                  const last = i === c.cloudSteps.length - 1;
+                  return (
+                    <li key={step} className="flex items-center gap-3">
+                      <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border font-mono text-[11px] ${last ? "border-[color:var(--accent)] text-[color:var(--accent)]" : "border-[color:var(--line)] text-[color:var(--faint)]"}`}>{`0${i + 1}`}</span>
+                      <span className="text-[14px] text-[color:var(--foreground)]">{step}</span>
+                      {last && <span className="ml-auto rounded-full border border-[color:var(--line)] px-2 py-0.5 text-[11px] text-[color:var(--accent)]">{c.cloudNotKept}</span>}
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+            {/* traceable AI */}
+            <div className="rounded-2xl border border-[color:var(--line)] p-6">
+              <div className="flex items-stretch gap-3">
+                <div className="flex w-[36%] flex-col gap-1.5 rounded-lg border border-[color:var(--line)] p-3">
+                  {[80, 60, 70, 50, 65].map((w, i) => <span key={i} className="h-[3px] rounded-full" style={{ width: `${w}%`, background: i === 2 ? "var(--accent)" : "var(--skeleton)" }} />)}
+                </div>
+                <div className="flex items-center text-[color:var(--accent)]"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg></div>
+                <div className="flex-1 rounded-lg border border-[color:var(--line)] p-3">
+                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.12em] text-[color:var(--faint)]">{c.aiSummary}</p>
+                  <div className="flex items-center gap-1.5 text-[12px] text-[color:var(--foreground)]">
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--accent)]" />
+                    <span className="h-[3px] flex-1 rounded-full bg-[color:var(--skeleton)]" />
+                    <span className="rounded border border-[color:var(--line)] px-1.5 py-0.5 text-[9px] text-[color:var(--accent)]">{c.aiCite}</span>
                   </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Who it's for (who) ── */}
+      {/* 7 ── Values ── */}
       <section>
         <div className="mx-auto max-w-5xl px-5 py-20 sm:px-6 sm:py-28 lg:px-8">
-          <p className={eyebrow}>{c.forEyebrow}</p>
-          <h2 className="mt-4 text-[28px] font-normal leading-[1.15] tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[36px]">{c.forTitle}</h2>
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
-            {c.forItems.map((f) => (
-              <div key={f.title} className={card}>
-                <p className="text-[16px] font-normal text-[color:var(--foreground)]">{f.title}</p>
-                <p className="mt-2 text-[14px] leading-[1.6] text-[color:var(--muted)]">{f.body}</p>
+          <p className={eyebrow}>{c.valuesEyebrow}</p>
+          <h2 className={`mt-4 ${h2}`}>{c.valuesHeading}</h2>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {c.values.map((v, i) => (
+              <div key={v.t} className="rounded-2xl border border-[color:var(--line)] p-6">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-[color:var(--line)] text-[color:var(--accent)]">
+                  <svg viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">{VALUE_ICONS[i]}</svg>
+                </span>
+                <p className="mt-4 font-mono text-[11px] text-[color:var(--faint)]">{`0${i + 1}`}</p>
+                <p className="mt-1.5 text-[16px] font-normal text-[color:var(--foreground)]">{v.t}</p>
+                <p className="mt-2 text-[14px] leading-[1.5] text-[color:var(--muted)]">{v.b}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Pricing (what-paid) ── */}
-      <section>
-        <div className="mx-auto grid max-w-5xl gap-10 px-5 py-20 sm:px-6 sm:py-28 lg:grid-cols-[320px_1fr] lg:px-8">
-          <div>
-            <p className={eyebrow}>{c.payEyebrow}</p>
-            <h2 className="mt-4 text-[28px] font-normal leading-[1.15] tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[34px]">{c.payTitle}</h2>
-            <p className="mt-4 max-w-xs text-[15px] leading-[1.6] text-[color:var(--muted)]">{c.payDesc}</p>
-          </div>
-          <ul className="space-y-3">
-            {c.payPoints.map((p) => (
-              <li key={p} className="flex items-start gap-2.5 text-[15px] leading-[1.55] text-[color:var(--foreground)]">
-                <Check />
-                <span>{p}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ── Final CTA — bottom hairline is owned by the footer ── */}
+      {/* 8 ── Soft CTA (bottom hairline owned by footer) ── */}
       <section>
         <div className="mx-auto max-w-3xl px-5 py-24 text-center sm:px-6 sm:py-32">
-          <h2 className="text-[28px] font-normal leading-[1.1] tracking-[-0.025em] text-[color:var(--foreground)] sm:text-[40px]">{c.ctaTitle}</h2>
+          <h2 className="text-[28px] font-normal leading-[1.1] tracking-[-0.025em] text-[color:var(--foreground)] sm:text-[40px]">{c.ctaHeading}</h2>
           <p className="mx-auto mt-4 max-w-xl text-[16px] leading-[1.55] text-[color:var(--muted)]">{c.ctaSub}</p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <a href={path("/chat-with-pdf")} className="inline-flex h-11 items-center justify-center rounded-full bg-[color:var(--accent)] px-6 text-[14px] font-medium transition hover:bg-[color:var(--accent-hover)]">{c.cta1}</a>
-            <a href={path("/pricing")} className="inline-flex h-11 items-center justify-center rounded-full border border-[color:var(--line-strong)] px-6 text-[14px] font-medium text-[color:var(--foreground)] transition hover:border-[color:var(--foreground)]">{c.cta2}</a>
+            <a href={path("/sitemap")} className="inline-flex h-11 items-center justify-center rounded-full bg-[color:var(--accent)] px-6 text-[14px] font-medium transition hover:bg-[color:var(--accent-hover)]">{c.cta1}</a>
+            <a href={path("/privacy-policy")} className="inline-flex h-11 items-center justify-center rounded-full border border-[color:var(--line-strong)] px-6 text-[14px] font-medium text-[color:var(--foreground)] transition hover:border-[color:var(--foreground)]">{c.cta2}</a>
           </div>
         </div>
       </section>

@@ -40,7 +40,10 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           (function() {
             try {
               var theme = localStorage.getItem('dockdocs-theme');
-              if (theme === 'light' || (!theme && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+              // Marketing/story pages (home, about) are force-dark — the brand stage.
+              var mp = window.location.pathname.replace(/^\\/(zh|en)(?=\\/|$)/,'');
+              var marketing = (mp === '' || mp === '/' || mp === '/about' || mp === '/about/');
+              if (!marketing && (theme === 'light' || (!theme && window.matchMedia('(prefers-color-scheme: light)').matches))) {
                 document.documentElement.classList.add('light');
               }
             } catch(e) {}
