@@ -11,7 +11,7 @@
 - Next.js 15.5 with static export (output: "export")
 - Monorepo: apps/dockdocs (main), shared/templates/pdf-tool-page (shared tool template)
 - TypeScript strict mode, zero errors required before push
-- Dark-first Linear-inspired design system (#6366f1 accent, max-w-6xl)
+- Dark-first Supabase-inspired design system: green #3ecf8e accent on warm near-black #171717 (NOT indigo — rebranded 2026-06); max-w-6xl
 
 ## Key Commands
 - Build: `cd apps/dockdocs && npm run build`
@@ -20,7 +20,8 @@
 - NEVER push without a successful local build
 
 ## Design Rules
-- Dark-first, CSS custom properties (--background, --surface, --accent, --line, --muted)
+- Supabase-style: brand accent is green --accent #3ecf8e on flat warm near-black --background #171717; depth via 1px --line borders (hover --line-strong), NOT shadows; green only on CTAs/links/small accents; green buttons use dark --on-accent text (a global CSS rule flips text-white). Headings weight 400 (hierarchy by size); mono --faint eyebrows. Marketing pages (homepage = components/Home.tsx, About = components/AboutPage.tsx) are flat #171717 with section dividers ONLY under the header and above the footer.
+- Dark-first, CSS custom properties (--background, --surface, --accent, --line, --muted, --faint, --on-accent)
 - max-w-6xl on all pages, centered layout
 - No sidebar nav, top nav only with hover dropdowns (group-hover + pt-2 bridge)
 - Language switcher uses useRouter().push() — SPA navigation, no page reload

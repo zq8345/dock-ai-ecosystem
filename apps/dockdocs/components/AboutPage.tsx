@@ -107,7 +107,7 @@ export function AboutPage({ locale = "en" }: { locale?: Locale }) {
       <section className="border-b border-[color:var(--line)]">
         <div className="mx-auto max-w-3xl px-5 pb-20 pt-24 text-center sm:px-6 sm:pb-28 sm:pt-32">
           <p className={eyebrow}>{c.eyebrow}</p>
-          <h1 className="mt-5 text-[40px] font-normal leading-[1.04] tracking-[-0.03em] text-[color:var(--foreground)] sm:text-[58px] lg:text-[66px]">
+          <h1 className="mt-5 text-[36px] font-normal leading-[1.04] tracking-[-0.03em] text-[color:var(--foreground)] sm:text-[54px] lg:text-[64px]">
             {c.heroTitle.map((w) => <span key={w}>{w} </span>)}
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-[16px] leading-[1.6] text-[color:var(--muted)]">{c.heroSub}</p>
