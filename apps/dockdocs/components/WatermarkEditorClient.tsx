@@ -97,7 +97,7 @@ export function WatermarkEditorClient({ locale = "en" }: { locale?: Locale }) {
       const ctx = canvas.getContext("2d");
       if (ctx) await page.render({ canvas, canvasContext: ctx, viewport }).promise;
       setPreview(canvas.toDataURL("image/jpeg", 0.8));
-      setNumPages(doc.numPages);
+      if (doc.numPages === 0) { setError(locale === "zh" ? "该 PDF 没有页面。" : "This PDF has no pages."); setPhase("idle"); return; } setNumPages(doc.numPages);
       setFrom(1); setTo(doc.numPages);
       try { doc.destroy(); } catch { /* ignore */ }
       setPhase("ready");

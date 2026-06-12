@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState, type DragEvent } from "react";
 import { isEncryptedPdfError, encryptedPdfNotice } from "@/lib/pdf-errors";
+import { ToolFaq } from "@/components/ToolFaq";
 
 // Comparison engine UI (bilingual).
 //  D5: multi-file upload -> browser-side text extraction (pdf.js).
@@ -657,6 +658,7 @@ export function DocumentCompareClient({ locale = "en" }: { locale?: Locale }) {
             </div>
           );
         })()}
+      <ToolFaq tool="compare" locale={locale} />
     </main>
   );
 }

@@ -60,7 +60,7 @@ export function SignPdfClient({ locale = "en" }: { locale?: Locale }) {
       const pdfjs = await import("pdfjs-dist");
       pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
       const doc = await pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
-      setNumPages(doc.numPages);
+      if (doc.numPages === 0) { setError(locale === "zh" ? "该 PDF 没有页面。" : "This PDF has no pages."); setPhase("idle"); return; } setNumPages(doc.numPages);
       const p = Math.max(1, Math.min(pageNum, doc.numPages));
       const pg = await doc.getPage(p);
       const viewport = pg.getViewport({ scale: 1.1 });

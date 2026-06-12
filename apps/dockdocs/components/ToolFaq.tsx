@@ -3,6 +3,258 @@ type QA = { q: string; a: string };
 
 // FAQ content for the custom-client tools (which don't use the PdfToolPage template).
 const FAQS: Record<string, { title: { en: string; zh: string }; items: { en: QA[]; zh: QA[] } }> = {
+  "batch-compress": {
+    title: { en: "Batch compress PDF — FAQ", zh: "批量 PDF 压缩常见问题" },
+    items: {
+      en: [
+        { q: "How do I compress several PDFs at once?", a: "Drag your PDFs onto the page — or drop a whole folder, or use \"Choose folder\" — and any non-PDF files in that folder are filtered out automatically. Pick a compression strength (\"Light\", \"Recommended\", or \"Strong\"), then click \"Compress all\". Each file is processed one by one, and when it finishes you click \"Download ZIP\" to get them all back in a single archive." },
+        { q: "Are my files uploaded to a server?", a: "No. This is a 100% client-side tool: every PDF is read and compressed right inside your browser, and nothing is ever sent to any server. Your files never leave your device, which is also why you can use it on confidential documents without worry." },
+        { q: "What do I get back, and how are the files named?", a: "You get a single ZIP file (dockdocs-compressed.zip). Inside it, each PDF keeps its original name with \"-compressed\" added before the extension — so report.pdf becomes report-compressed.pdf. Each row also shows how much that file shrank, and the download button shows the overall size reduction." },
+        { q: "Is there a limit on how many files or how large they can be?", a: "You can add up to 30 PDFs per batch. There's no fixed per-file size cap — because everything runs in your browser, the real limit is your device's memory. Big or numerous files still work, they just take longer to process on a weaker machine." },
+        { q: "Why didn't my PDF shrink much?", a: "Compression works by rendering each page to an image, which is great for scans and image-heavy PDFs but does little for files that are mostly plain text — there's simply not much to squeeze out. If a file barely changes, that's expected; try \"Strong\" for a bit more, but text-only PDFs are already close to their minimum size." },
+        { q: "Is it free? Do I need an account?", a: "Yes, it's completely free — no signup, no watermark, no daily limit. Just open the page and start compressing." },
+      ],
+      zh: [
+        { q: "怎么一次压缩多个 PDF？", a: "把多个 PDF 拖到页面上——也可以直接拖入整个文件夹，或点「选择文件夹」——文件夹里的非 PDF 文件会被自动过滤掉。选择压缩强度（「轻度」「推荐」或「强力」），再点「全部压缩」。每个文件会逐个处理，完成后点「下载 ZIP」，就能把它们打包成一个压缩包一起拿回。" },
+        { q: "我的文件会被上传到服务器吗？", a: "不会。这是一个 100% 在本地运行的工具——每个 PDF 都在你的浏览器里读取和压缩，不会发送到任何服务器。文件始终不离开你的设备，所以处理机密文档也可以放心使用。" },
+        { q: "我拿回的是什么格式？文件怎么命名？", a: "你拿回的是一个 ZIP 压缩包（dockdocs-compressed.zip）。里面每个 PDF 保留原文件名，并在扩展名前加上「-compressed」——比如 report.pdf 会变成 report-compressed.pdf。每一行还会显示该文件减小了多少，下载按钮上则显示整体的压缩比例。" },
+        { q: "对文件数量或大小有限制吗？", a: "每批最多可以添加 30 份 PDF。单个文件没有固定的大小上限——因为全部在浏览器里完成，真正的上限是你设备的内存。文件很大或很多依然可以处理，只是在配置较弱的机器上会慢一些。" },
+        { q: "为什么我的 PDF 压不了多少？", a: "压缩的原理是把每一页渲染成图片——这对扫描件和图片多的 PDF 效果很好，但对以纯文字为主的文件作用有限，因为本来就没多少可压的空间。如果某个文件几乎没变化，这是正常的；可以试试「强力」再多压一点，但纯文字 PDF 通常已经接近它的最小体积了。" },
+        { q: "免费吗？需要注册吗？", a: "完全免费——无需注册、没有水印、也没有每日次数限制。打开页面就能直接开始压缩。" },
+      ],
+    },
+  },
+  "batch-pdf-to-image": {
+    title: { en: "Batch PDF to image — FAQ", zh: "批量 PDF 转图片常见问题" },
+    items: {
+      en: [
+        { q: "How do I convert a batch of PDFs to images?", a: "Drag your PDFs onto the upload box — or drop a whole folder, or click \"Choose folder\" to pick one. Choose JPG or PNG, then click \"Convert all\". Every page of every PDF is turned into an image and the result downloads as a single ZIP. There's no signup and no watermark." },
+        { q: "Are my files uploaded to a server?", a: "No. This tool is 100% client-side: each PDF is read and rendered into images entirely inside your browser, and nothing is ever uploaded to any server. The ZIP you download is built locally on your device. You can even run it offline once the page has loaded." },
+        { q: "What do I get back, and how are the images named?", a: "You get one ZIP file (named dockdocs-images.zip) containing every page as a separate image. Each file is named after its source PDF plus the page number — for example report.pdf becomes report-1.jpg, report-2.jpg, and so on. Pages are rendered at 2× scale for crisp, high-resolution output." },
+        { q: "What's the difference between JPG and PNG here?", a: "JPG gives smaller files and flattens each page onto a white background — ideal for photo-heavy or scanned documents. PNG is lossless and keeps transparency, which is better for line art, diagrams, or pages you'll edit later. Pick whichever fits before you hit \"Convert all\"; you can re-run with the other format any time." },
+        { q: "How many files or pages can I convert at once?", a: "You can queue up to 20 PDFs per batch — extra files beyond that are dropped automatically. There's no fixed page or size limit, so the real ceiling is your device's memory: very large PDFs or huge page counts simply take longer and run slower on weaker machines. For a big job, split it into a few batches." },
+        { q: "Why did one of my PDFs show \"failed\"?", a: "The most common cause is a password-protected or encrypted PDF — the tool can't render pages it can't open, so that file is marked failed while the rest of the batch still converts normally. Remove the password first (our Unlock PDF tool can help), then add it back. Corrupted or non-PDF files can also fail; note that if you drop a folder, non-PDF files are filtered out automatically rather than failing." },
+      ],
+      zh: [
+        { q: "怎么批量把 PDF 转成图片?", a: "把 PDF 拖到上传框里——也可以直接拖入整个文件夹，或点击「选择文件夹」挑一个。选好 JPG 或 PNG，再点「全部转换」。每份 PDF 的每一页都会转成一张图片，结果打包成一个 ZIP 下载下来。无需注册，也没有水印。" },
+        { q: "我的文件会被上传到服务器吗?", a: "不会。本工具 100% 在本地运行——每份 PDF 都在你的浏览器里读取并渲染成图片，任何文件都不会上传到任何服务器。下载的 ZIP 也是在你设备上本地生成的。页面加载完后，即使断网也能用。" },
+        { q: "转完得到什么?图片怎么命名?", a: "你会得到一个 ZIP 文件(名为 dockdocs-images.zip)，里面每一页都是一张单独的图片。每个文件以源 PDF 名加页码命名——比如 report.pdf 会生成 report-1.jpg、report-2.jpg，以此类推。每页都以 2× 倍率渲染，输出清晰、分辨率高。" },
+        { q: "这里的 JPG 和 PNG 有什么区别?", a: "JPG 文件更小，会把每一页铺在白色背景上——适合图片多的文档或扫描件。PNG 是无损的，保留透明背景，更适合线稿、图表或之后要再编辑的页面。点「全部转换」前选好就行；想换格式随时可以重新跑一次。" },
+        { q: "一次能转多少份文件或多少页?", a: "每一批最多排入 20 份 PDF——超出的会被自动丢弃。页数和大小没有固定上限，真正的天花板是你设备的内存：超大 PDF 或页数极多时只是更慢一些，在配置较弱的机器上跑得吃力。任务很大时，建议拆成几批来转。" },
+        { q: "为什么有一份 PDF 显示「失败」?", a: "最常见的原因是带密码或加密的 PDF——工具打不开就没法渲染页面，于是这份会被标为「失败」，而同批其他文件照常转换。请先去掉密码(可以用我们的「解锁 PDF」工具)，再把它加回来。损坏的文件或非 PDF 文件也可能失败；不过——如果你拖入的是文件夹，里面的非 PDF 文件会被自动过滤掉，而不会报失败。" },
+      ],
+    },
+  },
+  "batch-protect-pdf": {
+    title: { en: "Batch encrypt PDF — FAQ", zh: "批量 PDF 加密常见问题" },
+    items: {
+      en: [
+        { q: "How do I encrypt several PDFs at once?", a: "Drag your PDFs onto the box — or drop an entire folder, or click to choose files. Type one password (the \"Password\" field), then click \"Encrypt all\". Every file is locked with that same password, and you get a single ZIP back with each file renamed to \"…-protected.pdf\"." },
+        { q: "Are my files uploaded to a server?", a: "No. This is a 100% client-side tool — every PDF is encrypted right inside your browser and nothing ever leaves your device. There is no upload, no account, and no copy kept anywhere. You can even run it offline once the page has loaded." },
+        { q: "What do I get back, and in what format?", a: "You get one ZIP file named \"dockdocs-protected.zip\". Inside it, each input PDF appears as its own encrypted file with a \"-protected.pdf\" suffix. Open any of them and your reader will ask for the password you set." },
+        { q: "Are there rules for the password or limits on how many files?", a: "The password must be 4–32 characters using only letters, digits, and the underscore (_) — that keeps it safe to apply across every PDF reader. You can encrypt up to 30 files per batch; for more, just run the tool again. There's no hard size limit, but because everything runs in your browser, very large jobs go slower on low-memory devices." },
+        { q: "What happens to a PDF that's already password-protected?", a: "It's skipped. The tool can't re-lock a file it can't open, so any PDF that already has a password is left out of the ZIP rather than failing the whole batch. Decrypt it first (with the original password) if you want to re-encrypt it here." },
+        { q: "Is it really free? Any watermark or sign-up?", a: "Yes, completely free with no sign-up and no watermark. The encrypted PDFs are byte-for-byte your originals plus the password — DockDocs adds nothing to them." },
+      ],
+      zh: [
+        { q: "怎么一次给多个 PDF 加密？", a: "把 PDF 拖进上传框——也可以直接拖入整个文件夹，或点击选择文件。在「密码」框里输入一个密码，然后点「全部加密」。所有文件都会用这同一个密码上锁，最后你会得到一个 ZIP，每份文件都被重命名为「…-protected.pdf」。" },
+        { q: "我的文件会被上传到服务器吗？", a: "不会。这是一个 100% 在本地运行的工具——每份 PDF 都在你的浏览器里加密，任何文件都不会离开你的设备。没有上传、不用注册、也不会在任何地方留副本。页面加载完成后，你甚至可以断网使用。" },
+        { q: "加密完我会拿到什么？什么格式？", a: "你会得到一个名为「dockdocs-protected.zip」的压缩包。里面每份原 PDF 都是一份独立的加密文件，文件名带「-protected.pdf」后缀。打开其中任意一份时，阅读器都会要求输入你设的密码。" },
+        { q: "密码有规则吗？文件数量有上限吗？", a: "密码必须是 4–32 位，且只能用字母、数字和下划线(_)——这样才能保证在各种 PDF 阅读器里都通用。每批最多加密 30 份文件，要更多就再运行一次即可。没有硬性大小限制，但由于全部在浏览器里完成，文件特别多或特别大时——在内存较小的设备上会慢一些。" },
+        { q: "已经设过密码的 PDF 会怎么处理？", a: "会被跳过。工具打不开一个已加密的文件，自然也无法再次上锁，所以这类 PDF 会被排除在 ZIP 之外，而不会让整批任务失败。如果想在这里重新加密，请先用原密码解密它。" },
+        { q: "真的免费吗？有水印或要注册吗？", a: "是的，完全免费，无需注册，也没有水印。加密后的 PDF 与你的原件逐字节一致，只是多了一道密码——DockDocs 不会往里面添加任何东西。" },
+      ],
+    },
+  },
+  "batch-rename-pdf": {
+    title: { en: "Batch rename PDF — FAQ", zh: "批量 PDF 改名常见问题" },
+    items: {
+      en: [
+        { q: "How do I rename a batch of PDFs?", a: "Drag a whole folder (or a set of PDFs) onto the upload box, or click to choose files. Then pick a mode: \"Numbered\" gives every file a base name plus a sequence number (invoice-01.pdf, invoice-02.pdf…), and \"Find & replace\" swaps any text that appears in the existing filenames. A live preview shows each old name struck through next to its new name, so you can check the result before you commit. When it looks right, click \"Download renamed ZIP\"." },
+        { q: "Are my files uploaded anywhere?", a: "No. This tool is 100% client-side — every file is read and renamed inside your own browser, and nothing is ever sent to a server. There is no upload step at all; the renaming and the ZIP are built locally on your device. That is also why it is free, with no signup, no watermark, and no account to create." },
+        { q: "What do I get back, and are the PDFs modified?", a: "You get a single ZIP file (dockdocs-renamed.zip) containing copies of your PDFs with the new filenames. Renaming changes the filenames only — the PDF contents, pages, and quality are left completely untouched. The original files on your computer are not altered either; you just download a freshly named set." },
+        { q: "Is there a limit on how many files I can rename?", a: "Yes — this tool handles up to 100 PDFs per batch. Because everything runs in your browser, very large batches use more memory and take a little longer on weaker machines, but well within the 100-file limit it is fast. If you have more than 100 files, just run a second batch." },
+        { q: "Can I drop a folder that has non-PDF files in it?", a: "Yes. You can drop an entire folder, and the tool automatically filters out anything that is not a PDF — images, spreadsheets, and other documents are ignored, so only your PDFs are added to the list. You do not need to clean up the folder first." },
+        { q: "What happens if two files would end up with the same name?", a: "The tool catches that automatically. If a numbered pattern or find-and-replace would produce two identical filenames, it adds a -1, -2 (and so on) suffix to the later ones so every file in the ZIP keeps a unique name. Nothing gets silently overwritten or lost." },
+      ],
+      zh: [
+        { q: "怎么批量给 PDF 改名？", a: "把整个文件夹（或一批 PDF）拖到上传框里，或点击选择文件。然后选一种模式：「编号」会给每个文件一个基础名加上序号（invoice-01.pdf、invoice-02.pdf……），「查找替换」则替换原文件名里出现的任意文字。预览区会把每个旧名字（带删除线）和它的新名字并排显示，你可以在确认前先核对结果。看起来没问题后，点击「下载改名后的 ZIP」即可。" },
+        { q: "我的文件会被上传到哪里吗？", a: "不会。本工具 100% 在本地运行——每个文件都在你自己的浏览器里读取和改名，绝不会发送到任何服务器。整个过程根本没有上传这一步；改名和打包 ZIP 都在你的设备上本地完成。这也是为什么它免费——无需注册、无水印，也不用创建账号。" },
+        { q: "我拿回来的是什么？PDF 内容会被改动吗？", a: "你会得到一个 ZIP 文件（dockdocs-renamed.zip），里面是用新文件名打包好的 PDF 副本。重命名只改文件名——PDF 的内容、页面和清晰度完全不变。你电脑上的原始文件也不会被改动，你只是下载了一套重新命名的文件。" },
+        { q: "能改名的文件数量有上限吗？", a: "有——本工具每批最多处理 100 份 PDF。因为全部在浏览器里运行，超大批次会占用更多内存，在配置较弱的机器上会稍慢一些，但在 100 份以内速度很快。如果文件超过 100 份，再跑一批即可。" },
+        { q: "文件夹里混有非 PDF 文件可以直接拖进来吗？", a: "可以。你能直接拖入整个文件夹，工具会自动过滤掉所有非 PDF 的文件——图片、表格和其他文档都会被忽略，只有 PDF 才会被加入列表。你不需要事先清理文件夹。" },
+        { q: "如果两个文件改名后重名了会怎样？", a: "工具会自动处理。如果编号模板或查找替换会产生两个相同的文件名，它会给靠后的那些加上 -1、-2（以此类推）的后缀，保证 ZIP 里每个文件名都唯一。不会有任何文件被悄悄覆盖或丢失。" },
+      ],
+    },
+  },
+  "batch-rotate-pdf": {
+    title: { en: "Batch rotate PDF — FAQ", zh: "批量 PDF 旋转常见问题" },
+    items: {
+      en: [
+        { q: "How do I rotate a batch of PDFs?", a: "Drag your PDFs onto the box — or drop a whole folder, or use \"Choose folder\". Pick a rotation angle (90°, 180° or 270°), then click \"Rotate all\". When it finishes, click \"Download ZIP\" to get every rotated file in one archive. You can also use the \"+\" button to add more PDFs before running." },
+        { q: "Are my files uploaded to a server?", a: "No. This is a 100% client-side tool — every PDF is opened and rotated right inside your browser using your device's own resources, and the ZIP is assembled locally too. Nothing is ever uploaded to DockDocs or anywhere else, so your documents never leave your computer." },
+        { q: "What do I get back, and how are the files named?", a: "You get a single ZIP file (dockdocs-rotated.zip) containing every successfully rotated PDF. Each file keeps its original name with \"-rotated\" added before the extension — for example invoice.pdf becomes invoice-rotated.pdf — so it's easy to tell the new copies from your originals." },
+        { q: "What gets rotated, and can I rotate only some pages?", a: "The chosen angle is applied to every page of every PDF in the batch — this is a whole-folder fixer, not a per-page editor, so you can't rotate individual pages here. The rotation also adds to any existing rotation, so applying 90° to an already-rotated page turns it a further 90°. For per-page control, use our single-file rotate tool instead." },
+        { q: "Are there limits, and why might a PDF say \"failed\"?", a: "You can add up to 50 PDFs per batch. There's no fixed file-size cap — because everything runs in your browser, the real limit is your device's memory, so big jobs on a weak laptop or phone are just slower. Encrypted or password-protected PDFs can't be opened for rotation, so they're skipped and marked \"failed\"; the rest of the batch still processes and only the successful files go into the ZIP. Unlock the file first, then add it again." },
+        { q: "Is it free? Do I need an account?", a: "Yes, it's completely free — no signup, no account, and no watermark on your output. Because all the work happens in your browser, there's nothing to pay for and no usage meter; just open the page and start rotating." },
+      ],
+      zh: [
+        { q: "怎么批量旋转 PDF？", a: "把 PDF 拖到上传框里——也可以直接拖入整个文件夹，或用「选择文件夹」。选好旋转角度（90°、180° 或 270°），再点「全部旋转」。完成后点「下载 ZIP」，所有旋转好的文件会打包在一个压缩包里。开始前还能用「+」按钮继续添加 PDF。" },
+        { q: "我的文件会被上传到服务器吗？", a: "不会。这是一个 100% 在本地完成的工具——每份 PDF 都在你的浏览器里、用你自己设备的资源打开并旋转，连 ZIP 也是在本地打包的。任何文件都不会上传到 DockDocs 或别处，文档自始至终不会离开你的电脑。" },
+        { q: "我会得到什么？文件怎么命名？", a: "你会得到一个 ZIP 压缩包（dockdocs-rotated.zip），里面是所有成功旋转的 PDF。每份文件保留原文件名，只在扩展名前加上「-rotated」——例如 invoice.pdf 会变成 invoice-rotated.pdf——这样很容易把新文件和原件区分开。" },
+        { q: "会旋转哪些内容？能只转部分页面吗？", a: "所选角度会应用到批次中每份 PDF 的每一页——它是用来一次性纠正整个文件夹的工具，而不是逐页编辑器，所以这里没法只旋转某几页。旋转还会叠加在已有的旋转角度上，比如对一页已经转过的页面再加 90°，它会再转 90°。需要逐页控制的话，请改用我们的单文件旋转工具。" },
+        { q: "有数量限制吗？为什么有文件显示「失败」？", a: "每个批次最多可以添加 50 份 PDF。文件大小没有固定上限——因为全部在浏览器里运行，真正的限制是你设备的内存，所以在性能较弱的笔记本或手机上处理大批量只是会慢一些。已加密或设了密码的 PDF 无法被打开旋转，会被跳过并标记为「失败」；批次里其余文件照常处理，只有成功的文件会进入 ZIP。先解除密码，再重新添加即可。" },
+        { q: "是免费的吗？需要注册账号吗？", a: "是的，完全免费——无需注册、无需账号，输出也不带水印。因为所有处理都在你的浏览器里完成，既没有任何费用，也没有使用次数限制；打开页面就能直接旋转。" },
+      ],
+    },
+  },
+  "batch-watermark-pdf": {
+    title: { en: "Batch watermark PDFs — FAQ", zh: "批量 PDF 添加水印常见问题" },
+    items: {
+      en: [
+        { q: "How do I watermark a whole folder of PDFs at once?", a: "Drag a folder (or several PDFs) onto the upload box, or click to pick files. Type your watermark text — for example CONFIDENTIAL — then click \"Apply to all\". Each PDF is stamped one by one, and when it finishes you click \"Download ZIP\" to get every watermarked file in a single archive. If you dropped a folder, any non-PDF files inside it are filtered out automatically, so you don't have to clean the folder first." },
+        { q: "Are my files uploaded to a server?", a: "No. Every PDF is processed entirely in your browser, on your own device — nothing is uploaded to any server, and there's no account or sign-in. Your documents never leave your computer, which is exactly why it's safe for confidential files." },
+        { q: "What do I get back, and how are the files named?", a: "You get one ZIP file (dockdocs-batch.zip) containing all the watermarked PDFs. Each output keeps its original name with a \"-watermarked.pdf\" suffix — so report.pdf becomes report-watermarked.pdf. Your original files are left untouched." },
+        { q: "Is there a limit on how many PDFs I can do at once?", a: "This batch tool processes up to 30 PDFs per run. If you add more, only the first 30 are kept. There's no fixed file-size cap — since everything runs in your browser, the real limit is your device's memory, so very large files or weak machines will simply be slower. For a bigger job, split it into batches of 30." },
+        { q: "Is it free? Does it add its own watermark or branding?", a: "Yes, it's completely free with no signup, no trial, and no usage limits beyond the 30-files-per-run batch size. The only watermark on your PDFs is the text you type — DockDocs never stamps its own logo or branding onto your files." },
+        { q: "Can I choose where the watermark goes or how transparent it is?", a: "Not in the batch tool. It uses a fixed default placement — a diagonal watermark across each page — to keep the whole folder consistent. If you need a custom position, opacity, or font size, use the single-file Watermark tool instead, which gives you full control over one document at a time." },
+      ],
+      zh: [
+        { q: "怎么给整个文件夹的 PDF 一次性加水印？", a: "把文件夹(或多份 PDF)拖到上传框,或点击选择文件。输入水印文字——比如「机密」或「CONFIDENTIAL」——再点「全部应用」。每份 PDF 会被逐个加上水印,完成后点「下载 ZIP」就能把所有加好水印的文件打包成一个压缩包拿到手。如果你拖进来的是文件夹,里面的非 PDF 文件会被自动过滤掉,不用提前清理。" },
+        { q: "我的文件会被上传到服务器吗？", a: "不会。每份 PDF 都完全在你的浏览器、你自己的设备上处理——不上传任何文件到服务器,也不需要注册或登录。你的文档从不离开本机,所以处理机密文件也很安全。" },
+        { q: "处理完我拿到的是什么？文件怎么命名？", a: "你会拿到一个 ZIP 压缩包(dockdocs-batch.zip),里面是所有加好水印的 PDF。每个输出文件保留原文件名并加上「-watermarked.pdf」后缀——比如 report.pdf 会变成 report-watermarked.pdf。原始文件不会被改动。" },
+        { q: "一次最多能处理多少份 PDF？", a: "这个批量工具每次最多处理 30 份 PDF。多加的部分只会保留前 30 份。文件大小没有固定上限——因为全部在浏览器里运行,真正的限制是设备内存,所以文件很大或机器较弱时只是会慢一些。任务更大时,把它拆成每批 30 份处理即可。" },
+        { q: "免费吗？会加上它自己的水印或品牌标识吗？", a: "完全免费,无需注册、无试用、除了每次 30 份的批量上限外没有任何使用限制。你的 PDF 上唯一的水印就是你自己输入的文字——DockDocs 绝不会在你的文件上打上自己的 logo 或品牌标识。" },
+        { q: "能自定义水印的位置或透明度吗？", a: "批量工具里不行。它使用固定的默认排版——每页一条对角水印——以保证整个文件夹效果一致。如果需要自定义位置、透明度或字号,请改用单文件的「加水印」工具,它能对单份文档进行完整控制。" },
+      ],
+    },
+  },
+  "batch-page-numbers": {
+    title: { en: "Batch page numbers — FAQ", zh: "批量 PDF 添加页码常见问题" },
+    items: {
+      en: [
+        { q: "How do I add page numbers to a batch of PDFs?", a: "Drag your PDFs onto the upload box — or drop a whole folder, or use \"Choose folder\" to pick one. The tool adds each PDF to the list, then click \"Apply to all\". Every file is numbered one by one, and when it finishes you click \"Download ZIP\" to get them all in a single archive." },
+        { q: "Are my files uploaded anywhere?", a: "No. This is a 100% client-side tool — every PDF is opened and numbered right inside your browser, and nothing is sent to any server. Your files never leave your device, which is why it works even on confidential documents." },
+        { q: "What do I get back, and how are the files named?", a: "You get one ZIP file (named dockdocs-batch.zip) containing every successfully numbered PDF. Each output keeps its original name with a \"-numbered.pdf\" suffix added — so report.pdf becomes report-numbered.pdf. Only files that processed successfully are included; any that failed are skipped and the rest still come through." },
+        { q: "Is there a limit on how many files I can do at once, and can I drop a folder with non-PDFs in it?", a: "You can process up to 30 PDFs per batch — the counter next to the list shows how many you've added (for example \"12 / 30 files\"). There's no hard size limit, but since everything runs in your browser, very large or numerous files use more memory and run slower on weaker devices. You can safely drop a folder that also contains images or Word docs: the tool automatically keeps only the actual PDFs and filters everything else out." },
+        { q: "Can I choose where the page numbers go or change their style?", a: "Not in the batch tool — it uses a fixed default placement to keep the whole folder consistent in one click. If you need to control the position, font, or starting number, use the single-file \"Add page numbers\" tool instead, which gives you those options." },
+        { q: "Is it free? Do I need an account or will there be a watermark?", a: "It's completely free with no signup required, and there's no watermark added to your PDFs. Because everything runs locally in your browser, there's nothing to pay for and no upload quota." },
+      ],
+      zh: [
+        { q: "怎么给一批 PDF 批量加页码?", a: "把 PDF 拖到上传框里——也可以直接拖入整个文件夹,或用「选择文件夹」来挑选。工具会把每份 PDF 加进列表,然后点「全部应用」。文件会一份份依次加上页码,完成后点「下载 ZIP」,所有文件会打包在一个压缩包里。" },
+        { q: "我的文件会被上传吗?", a: "不会。这是一个 100% 在本地运行的工具——每份 PDF 都在你的浏览器里打开并加页码,不会发送到任何服务器。文件始终留在你的设备上,所以处理机密文档也很放心。" },
+        { q: "处理完拿到的是什么?文件怎么命名?", a: "你会得到一个 ZIP 压缩包(名为 dockdocs-batch.zip),里面是每份成功加好页码的 PDF。每个输出文件保留原文件名,并加上「-numbered.pdf」后缀——比如 report.pdf 会变成 report-numbered.pdf。只有处理成功的文件会被打包,个别失败的会被跳过,其余照常输出。" },
+        { q: "一次最多能处理多少份?文件夹里混了非 PDF 也能拖进来吗?", a: "一次最多 30 份 PDF——列表旁的计数会显示已添加的数量(例如「12 / 30 份」)。没有严格的大小上限,但因为全部在浏览器里运行,文件过大或过多会占用更多内存,在性能较弱的设备上会慢一些。文件夹里混了图片、Word 文档也没关系——工具会自动只保留真正的 PDF,其余全部过滤掉。" },
+        { q: "能选择页码的位置或样式吗?", a: "批量工具里不行——它使用固定的默认排版,好让整个文件夹一键处理、风格统一。如果需要控制位置、字体或起始页码,请改用单文件的「加页码」工具,那里提供这些选项。" },
+        { q: "免费吗?需要注册吗?会加水印吗?", a: "完全免费,无需注册,也不会给你的 PDF 加任何水印。因为一切都在你的浏览器本地完成,所以没有付费项目,也没有上传配额限制。" },
+      ],
+    },
+  },
+  "batch-split-merge": {
+    title: { en: "Batch split PDF — FAQ", zh: "批量 PDF 拆分常见问题" },
+    items: {
+      en: [
+        { q: "How do I split a whole folder of PDFs at once?", a: "Drag and drop your PDFs — or a whole folder — onto the upload box, or click to choose them. Set \"Pages per file\" to how many pages each output piece should contain (1 splits every page into its own file), then click \"Run\". Each PDF is cut into chunks of that size and everything is packaged into a single ZIP you can download with \"Download ZIP\"." },
+        { q: "Are my files uploaded to a server?", a: "No. Splitting runs entirely in your browser using a local PDF engine — nothing is uploaded, nothing is stored, and nothing leaves your device. You can even disconnect from the internet after the page loads and it still works. That is why it is safe for sensitive or confidential documents." },
+        { q: "What do I get back, and how are the files named?", a: "You get one ZIP file (dockdocs-split.zip). Inside, every PDF is split into pieces named after the original — for example report.pdf becomes report-part1.pdf, report-part2.pdf, and so on. If you uploaded several PDFs, all of their parts are flattened together into the same ZIP." },
+        { q: "Can I add a folder, and what happens to non-PDF files in it?", a: "Yes — you can drop or choose an entire folder. Any file that is not a PDF is filtered out automatically, so you do not have to clean the folder first. Only the PDFs are added to the list and processed." },
+        { q: "Is there a limit on how many or how large the files can be?", a: "There is a cap of 50 files per batch — if you add more, only the first 50 are kept. There is no fixed page or file-size limit; the real constraint is your device's memory, so very large PDFs or huge batches will simply run slower on weaker machines. If one PDF is corrupt or password-protected it is marked \"failed\" and skipped, while the rest still split normally." },
+        { q: "Is it free? Do I need an account or will it add a watermark?", a: "Yes, it is completely free with no sign-up and no watermark. Because the work happens on your own device, there are no usage credits or limits to worry about — use it as often as you like." },
+      ],
+      zh: [
+        { q: "怎么一次拆分整个文件夹的 PDF?", a: "把 PDF——或整个文件夹——拖到上传框，或点击选择。把「每个文件页数」设成每份输出包含多少页(填 1 就是每页拆成一份),然后点「开始」。每份 PDF 都会按这个页数切成若干块,全部打包进一个 ZIP,点「下载 ZIP」即可保存。" },
+        { q: "我的文件会上传到服务器吗?", a: "不会。拆分完全在你的浏览器里用本地 PDF 引擎完成——不上传、不存储,任何文件都不会离开你的设备。页面加载完后即使断网也照样能用。所以处理敏感或机密文档很安全。" },
+        { q: "我会拿到什么?文件怎么命名?", a: "你会得到一个 ZIP 文件(dockdocs-split.zip)。里面每份 PDF 都按原名拆成若干块——比如 report.pdf 会变成 report-part1.pdf、report-part2.pdf 等等。如果你上传了多份 PDF,所有切出来的部分会一起放进同一个 ZIP。" },
+        { q: "可以直接选文件夹吗?里面的非 PDF 文件怎么办?", a: "可以——你可以拖入或选择整个文件夹。其中所有非 PDF 文件会被自动过滤掉,无需事先清理文件夹。只有 PDF 会被加入列表并处理。" },
+        { q: "文件数量或大小有限制吗?", a: "单次最多 50 份——超出的部分只保留前 50 份。页数和文件大小没有固定上限,真正的限制是设备内存,所以超大 PDF 或超大批量在性能较弱的机器上只会更慢一些。如果某份 PDF 损坏或加了密码,它会被标为「失败」并跳过——其余文件照常拆分。" },
+        { q: "免费吗?需要注册吗?会加水印吗?", a: "完全免费,无需注册,也不加水印。因为所有处理都在你自己的设备上完成,没有任何用量额度或次数限制——想用多少次都可以。" },
+      ],
+    },
+  },
+  "batch-summary": {
+    title: { en: "Batch summary — FAQ", zh: "批量摘要常见问题" },
+    items: {
+      en: [
+        { q: "How do I summarize several PDFs at once?", a: "Drag and drop your PDFs onto the drop zone, or click \"Choose PDFs\" to pick them. You can add up to 5 files at a time. Once they're loaded, click \"Summarize all\" — each document is summarized in turn, and you'll see a progress count like 2/5 while it works. When it finishes you get an executive summary plus key points for every file." },
+        { q: "Is my file uploaded anywhere? Where does the work happen?", a: "Your PDF file is never uploaded. The text is extracted right inside your browser, and only that extracted text — not the original file — is sent to our AI summary service to generate the summary. This is an AI tool, so it does need an internet connection to reach the AI service, but the document itself stays on your device." },
+        { q: "It says \"no extractable text (scan?)\" for one of my files. What's wrong?", a: "That means the PDF has no text layer to read — it's almost always a scanned page or a photo saved as PDF, which is just an image to the tool. Run our OCR PDF tool on it first to add a real text layer, then come back and summarize it here. PDFs that are encrypted or password-protected also won't extract; remove the password first." },
+        { q: "What do I get back, and can I save it?", a: "For each PDF you get a short executive summary plus a list of key points, shown as a card on the page. Once all files are done, click \"Download all (.md)\" to save everything as a single Markdown file (dockdocs-summaries.md) with one section per document — easy to drop into your notes, a doc, or a wiki." },
+        { q: "Why only 5 files at a time, and why one at a time?", a: "We cap each run at 5 PDFs and process them one after another to stay within fair-use limits and keep results reliable rather than overloading the AI service. If you have more, just run a batch, click \"Start over\", and load the next set. Files that fail are marked individually, so one bad PDF won't stop the rest." },
+        { q: "The summaries look good — can I trust them blindly?", a: "Treat them as a fast first pass, not a substitute for reading. Summaries are AI-generated from each document, so they can miss nuance or occasionally get a detail wrong — always give them a quick check against the source before you rely on anything important, especially in contracts or reports." },
+      ],
+      zh: [
+        { q: "怎么一次给多份 PDF 生成摘要?", a: "把 PDF 拖到上传区，或点击「选择 PDF」挑选文件——一次最多 5 份。文件加载好后点「全部摘要」，工具会逐份处理，期间会显示像 2/5 这样的进度。完成后，每份文件都会给出执行摘要 + 关键要点。" },
+        { q: "我的文件会被上传吗?处理在哪里进行?", a: "你的 PDF 文件不会被上传。文字是在你的浏览器里就地提取的，只有提取出来的文本——而不是原始文件——才会发送到我们的 AI 摘要服务来生成摘要。这是一款 AI 工具，需要联网才能访问 AI 服务，但文档本身始终留在你的设备上。" },
+        { q: "某份文件显示「无可提取文字(扫描件?)」是怎么回事?", a: "这表示该 PDF 没有可读取的文字层——多半是扫描件，或把照片存成了 PDF，对工具来说它只是一张图片。请先用我们的「OCR PDF」工具给它加上真正的文字层，再回到这里生成摘要。加密或带密码的 PDF 同样无法提取文字——请先解除密码。" },
+        { q: "我会得到什么结果?能保存吗?", a: "每份 PDF 都会得到一段简短的执行摘要，外加一组关键要点，以卡片形式显示在页面上。全部处理完后，点「下载全部 (.md)」即可把所有结果存成一个 Markdown 文件(dockdocs-summaries.md)，每份文档一节——方便直接粘进笔记、文档或知识库。" },
+        { q: "为什么一次只能 5 份,而且要逐份处理?", a: "每次最多 5 份、并且逐份依次处理——这是为了符合合理用量限制，让结果稳定可靠，而不至于让 AI 服务过载。文件更多时，跑完一批后点「重新开始」再加载下一批即可。处理失败的文件会单独标记出来，所以一份坏 PDF 不会拖垮其余的。" },
+        { q: "摘要看起来不错,可以完全照搬吗?", a: "请把它当作快速的初步速览，而不是替代通读。摘要由 AI 从每份文档生成，可能漏掉细微之处，偶尔也会弄错某个细节——在依赖任何重要内容之前(尤其是合同或报告),建议对照原文快速核对一遍。" },
+      ],
+    },
+  },
+  "batch-sort": {
+    title: { en: "Classify PDFs — FAQ", zh: "PDF 智能分类常见问题" },
+    items: {
+      en: [
+        { q: "How do I use it?", a: "Drag and drop your PDFs — or a whole folder — onto the page, or click \"Choose PDFs\" / \"Choose folder\". Press \"Sort all\" and the AI labels each file with a category (invoice, contract, resume, report and so on). When it finishes, click \"Download sorted ZIP\" to get one ZIP with your files grouped into category folders. You can sort up to 30 files at a time." },
+        { q: "Are my files uploaded to a server?", a: "No — your actual PDF files never leave your device. Each PDF is read right in your browser to pull out its text, and only that extracted text is sent to our AI service to decide the category. The files themselves stay local, and the final ZIP is built in your browser from your originals." },
+        { q: "Does it work on scanned PDFs or photos of documents?", a: "Not directly. A scanned or image-only PDF has no text layer, so there's nothing to read — those files come back marked \"no text\" and land in an \"Uncategorized\" folder. Run them through OCR first (our \"OCR PDF\" tool adds a text layer), then sort them here." },
+        { q: "Do I need an internet connection?", a: "Yes. The text is extracted on your device, but the actual classification is done by our AI service online, so you need to be connected. The text extraction and the final ZIP packaging happen locally; only the category decision needs the internet." },
+        { q: "What do I get back, and are my original files changed?", a: "You get a single ZIP named dockdocs-sorted.zip with one subfolder per category, and your original PDFs placed inside — untouched and unmodified. If two files would end up with the same name in the same folder, we add a \"-1\", \"-2\" suffix so nothing gets overwritten." },
+        { q: "How accurate are the categories?", a: "The categories are AI-suggested from each document's text, so they're a strong starting point but worth a quick check — especially for unusual documents. To keep it fast, the AI reads only the first 6 pages of each PDF, which is plenty for most files but can miss the point on a document whose type only becomes clear later on." },
+      ],
+      zh: [
+        { q: "怎么使用?", a: "把 PDF——或者整个文件夹——拖到页面上，或点击「选择 PDF」/「选择文件夹」。点「全部分类」，AI 会给每份文件打上类别(发票、合同、简历、报告等)。完成后点「下载归档 ZIP」，得到一个把文件按类别分到不同文件夹的 ZIP。一次最多处理 30 份文件。" },
+        { q: "我的文件会被上传到服务器吗?", a: "不会——你的 PDF 文件本身始终不离开你的设备。每份 PDF 都在浏览器里读取并提取出文字，只有提取出来的文字才会发送到我们的 AI 服务去判断类别。文件本身留在本地，最终的 ZIP 也是在你的浏览器里用你的原文件打包生成的。" },
+        { q: "扫描件或拍照的文档能用吗?", a: "不能直接用。扫描件或纯图片 PDF 没有文字层——没有文字可读，这类文件会被标记为「无文字」并归入「未分类」文件夹。请先做 OCR(我们的「PDF OCR」工具会加上文字层)，再回到这里分类。" },
+        { q: "需要联网吗?", a: "需要。文字是在你的设备上提取的，但真正的分类由我们在线的 AI 服务完成，所以必须联网。文字提取和最终的 ZIP 打包都在本地进行——只有类别判断这一步需要联网。" },
+        { q: "我会拿到什么?原文件会被改动吗?", a: "你会拿到一个名为 dockdocs-sorted.zip 的 ZIP，里面每个类别一个子文件夹，你的原 PDF 原封不动地放在里面——不修改、不改名。如果同一文件夹里有两份文件会重名，我们会自动加上「-1」「-2」后缀，确保不会互相覆盖。" },
+        { q: "分类准不准?", a: "类别由 AI 从每份文档的文字推断而来，是很好的起点，但建议快速核对一下——尤其是不常见的文档。为了保证速度，AI 只读取每份 PDF 的前 6 页，对大多数文件足够了，但如果某份文档要到后面才能看出类型，可能会判断偏差。" },
+      ],
+    },
+  },
+  "flashcards": {
+    title: { en: "PDF Flashcards — FAQ", zh: "PDF 抽认卡常见问题" },
+    items: {
+      en: [
+        { q: "How do I turn a PDF into flashcards?", a: "Drop in a PDF — a textbook chapter, lecture notes, or a manual — and the tool reads the text right in your browser. Pick how many cards you want (5, 10, 15, or 20), then press \"Generate cards.\" You get a grid of question/answer cards; tap any card to flip it and check yourself." },
+        { q: "Is my PDF uploaded anywhere?", a: "Your PDF file is never uploaded. The text is extracted inside your browser, and only that plain text (plus your card count and language) is sent to our AI service to write the cards. The original file, with its images, layout, and metadata, stays on your device." },
+        { q: "Why does it say \"No text found in this PDF\"?", a: "Your PDF is a scan or a picture — it has no text layer to read, only an image of the page. Run it through OCR first to add a searchable text layer, then come back and try again. Tip: if the PDF is password-protected, unlock it first with the \"Unlock PDF\" tool." },
+        { q: "Are the cards accurate?", a: "The cards are written by AI using only the text from your document — it's told not to use outside knowledge or invent facts. Even so, AI can misread or oversimplify, so give the cards a quick check before you study from them. The tool reminds you of this on the results screen." },
+        { q: "Is there a size or usage limit?", a: "Yes. Each run accepts up to about 16,000 characters of text — roughly 12 pages — so feed it one chapter or section at a time rather than a whole book. There's also a fair-use rate limit of about six generations per minute. If you hit either, you'll see a clear message; just shorten the content or wait a minute." },
+        { q: "Is it free, and do I need an internet connection?", a: "It's free to use — no account or payment needed. Because the cards are written by an AI service, you do need an internet connection: the browser reads your PDF offline, but generating the cards makes a quick call to our server." },
+      ],
+      zh: [
+        { q: "怎么把 PDF 变成抽认卡？", a: "把 PDF 拖进来——课本章节、讲义或手册都行——工具会直接在你的浏览器里读取文字。选择想要的卡片数量（5、10、15 或 20 张），然后点「生成卡片」。你会得到一组问答卡片，点任意一张即可翻面自测。" },
+        { q: "我的 PDF 会被上传吗？", a: "你的 PDF 文件不会被上传。文字是在你的浏览器内提取的，只有提取出的纯文本（加上卡片数量和语言）会发给我们的 AI 服务来生成卡片。原始文件——连同里面的图片、排版和元数据——始终留在你的设备上。" },
+        { q: "为什么提示「这个 PDF 里没有文字」？", a: "你的 PDF 是扫描件或图片——它没有可读取的文字层，只有页面的图像。请先用 OCR 给它加上可检索的文字层，再回来重试。提示：如果 PDF 有密码保护，请先用「解锁 PDF」工具去掉保护。" },
+        { q: "卡片内容准确吗？", a: "卡片由 AI 仅根据你文档里的文字生成——我们要求它不使用外部知识、不编造事实。即便如此，AI 也可能误读或过度简化，所以学习前请快速核对一遍。工具在结果页面也会提醒你这一点。" },
+        { q: "有大小或使用限制吗？", a: "有。每次最多处理约 16,000 字符的文字——大约 12 页——所以请一次喂一个章节或小节，而不是整本书。另外还有合理使用的频率限制，约为每分钟六次生成。一旦触及，你会看到清晰的提示；缩短内容或稍等一分钟即可。" },
+        { q: "是免费的吗？需要联网吗？", a: "免费使用——无需注册或付费。由于卡片是由 AI 服务生成的，你确实需要联网——浏览器离线读取你的 PDF，但生成卡片会向我们的服务器发起一次快速请求。" },
+      ],
+    },
+  },
+  "compare": {
+    title: { en: "Compare documents — FAQ", zh: "多文档对比常见问题" },
+    items: {
+      en: [
+        { q: "How do I compare documents?", a: "Upload 2 to 8 PDFs of the same kind — quotes, invoices, or contracts — then pick the type and click \"Compare fields\". DockDocs lines up the key terms (price, delivery, payment, warranty, and so on) side by side in one table, with the exact source line behind every value. You also get a sourced recommendation for which option wins, and you can ask one question across all the documents at once." },
+        { q: "Are my files uploaded to your server?", a: "No — your PDFs never leave your device. DockDocs reads them right in your browser to pull out the text. Only that extracted plain text (not the file itself) is sent to our server, where the AI extracts and aligns the fields. So the document, its layout, and any embedded data stay local; what travels is the words on the page." },
+        { q: "Why does my PDF say \"Not recognized (likely scanned — needs OCR)\"?", a: "That means the PDF has no selectable text layer — it's usually a scan or a photo of a page, so there's nothing to read. Click \"Extract text with OCR\" on that document and DockDocs will run OCR in your browser to recognize the text (the first few pages), then you can compare it like any other file. Encrypted or password-protected PDFs also can't be read until they're unlocked." },
+        { q: "What do I get back, and can I trust the values?", a: "You get a comparison table where every cell shows the value plus the exact source line it came from — and that line is verified to actually appear in your document, so nothing is invented. Click any source line to jump to a highlighted snippet of the original text. If a document simply doesn't state something, you'll see \"Not recognized\" rather than a guess. One caveat: the overall recommendation is the AI's reasoning over those numbers and isn't individually source-checked, so confirm the figures in the table before you decide." },
+        { q: "Is there a limit on file count or size?", a: "You can compare up to 8 PDFs at a time, and you need at least 2 readable ones for the comparison to run. For the \"ask across documents\" feature, the combined text of all documents must stay under 60,000 characters and your question under 500 characters — if you hit that, use fewer or shorter documents. The tool needs an internet connection, since the field extraction and recommendation run on our server." },
+        { q: "Is it free?", a: "Yes — you can upload your PDFs, run the side-by-side comparison, get the recommendation, and ask questions across your documents. The in-browser OCR for scanned files is free too, since it runs locally on your device. The comparison engine is in beta, so behavior may keep improving." },
+      ],
+      zh: [
+        { q: "怎么对比文档？", a: "上传 2 到 8 份同类 PDF——报价单、账单或合同——选好类型,点「对比字段」。DockDocs 会把关键条款(总价、交期、付款方式、质保等)并排放进一张表里,每个值后面都带着它在原文里的那一句出处。你还会得到一份带依据的推荐(选哪个、为什么),并且可以用一个问题问遍所有上传的文档。" },
+        { q: "我的文件会上传到你们服务器吗？", a: "不会——你的 PDF 不离开你的设备。DockDocs 直接在你浏览器里读取文件、抽出文字,只有抽出的纯文本(而不是文件本身)会发到我们服务器,由 AI 在那里抽取并对齐字段。所以文档、版式和任何内嵌数据都留在本地,真正传出去的只是页面上的文字。" },
+        { q: "为什么我的 PDF 显示「未识别(可能是扫描件——需 OCR)」？", a: "这表示这份 PDF 没有可选中的文字层——通常是扫描件或页面照片,里面没有现成的文字可读。点这份文档上的「用 OCR 提取文字」,DockDocs 会在你浏览器里跑 OCR 识别文字(前几页),识别后就能像普通文件一样对比了。加密或带密码的 PDF 在解锁前也读不了。" },
+        { q: "对比完我能拿到什么？这些值可信吗？", a: "你会拿到一张对比表,每个单元格都显示具体的值,以及它来自原文的那一句——而且这句已校验确实出现在你的文档里,绝不凭空编造。点任意一句出处,就能跳到原文对应片段并高亮显示。如果某份文档根本没写某项,你看到的是「未识别」而不是猜测。需要留意一点——最终的推荐结论是 AI 基于表格里数字做的推理,它不像表格每个单元格那样逐条核对过出处,所以决定前请以表格里的数字为准。" },
+        { q: "对文件数量或大小有限制吗？", a: "一次最多对比 8 份 PDF,且至少要有 2 份可读才能开始对比。对于「跨文档提问」功能,所有文档合计文字需在 60,000 字符以内,问题在 500 字符以内——超了就换用更少或更短的文档。该工具需要联网,因为字段抽取和推荐是在我们服务器上完成的。" },
+        { q: "免费吗？", a: "免费——你可以上传 PDF、做并排对比、拿到推荐,并跨文档提问。扫描件的浏览器内 OCR 也免费,因为它在你本地设备上运行。对比引擎目前是测试版,体验会持续改进。" },
+      ],
+    },
+  },
   "merge-pdf": {
     title: { en: "Merge PDF files — FAQ", zh: "合并 PDF 常见问题" },
     items: {

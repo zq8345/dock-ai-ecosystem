@@ -197,11 +197,12 @@ export function writeSubscriptionRecord(
   }
 
   const normalizedUserId = userId || anonymousUserId;
-  writeJson(subscriptionKey(normalizedUserId), {
-    ...record,
-    userId: normalizedUserId,
-    updatedAt: record.updatedAt || new Date().toISOString(),
-  });
+  const validated = normalizeSubscriptionRecord(
+    { ...record, userId: normalizedUserId, updatedAt: record.updatedAt || new Date().toISOString() },
+    normalizedUserId,
+  );
+  if (!validated) return;
+  writeJson(subscriptionKey(normalizedUserId), validated);
 }
 
 export function createFreeSubscription(

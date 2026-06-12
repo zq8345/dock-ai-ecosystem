@@ -388,7 +388,7 @@ const enTools: Record<ToolSlug, ToolCopy> = {
     keywords: ["ocr pdf", "pdf ocr", "scan pdf to text", "extract text from pdf"],
     appName: "DockDocs OCR PDF",
     schemaName: "DockDocs OCR PDF",
-    breadcrumbName: "OCR PDF",
+    breadcrumbName: "PDF OCR",
     heroTitle: "OCR PDF online to make scanned documents searchable.",
     heroDescription: "Turn scanned PDFs into searchable, reusable text workflows inside DockDocs.",
     primaryActionLabel: "OCR PDF",
@@ -1055,7 +1055,7 @@ const zhTools: Record<ToolSlug, ToolCopy> = {
     description: "使用 DockDocs 在线压缩 PDF 文件，适合上传、邮件、表单和日常共享。",
     appName: "DockDocs 压缩 PDF",
     schemaName: "DockDocs 压缩 PDF",
-    breadcrumbName: "压缩 PDF",
+    breadcrumbName: "PDF 压缩",
     heroTitle: "在线压缩 PDF，减小文件体积。",
     heroDescription: "为邮件、门户上传、表单提交和文档共享减小 PDF 文件体积。",
     primaryActionLabel: "压缩 PDF",
@@ -1155,7 +1155,7 @@ const zhTools: Record<ToolSlug, ToolCopy> = {
     description: "使用 DockDocs 从扫描 PDF 中提取文本。",
     appName: "DockDocs OCR PDF",
     schemaName: "DockDocs OCR PDF",
-    breadcrumbName: "OCR PDF",
+    breadcrumbName: "PDF OCR",
     heroTitle: "OCR PDF：从扫描 PDF 提取可复用文字。",
     heroDescription: "将扫描 PDF 转换为可搜索、可复用的文本工作流。",
     primaryActionLabel: "OCR PDF",
@@ -1298,7 +1298,7 @@ const zhTools: Record<ToolSlug, ToolCopy> = {
     title: "在线免费为 PDF 设置密码 | DockDocs",
     description: "在线免费为任意 PDF 添加密码保护。",
     appName: "DockDocs 加密 PDF",
-    breadcrumbName: "密码保护",
+    breadcrumbName: "PDF 加密",
     heroTitle: "立即为 PDF 添加密码保护。",
     heroDescription: "用密码加密 PDF，完全在浏览器中处理——文件不会离开您的设备。",
     primaryActionLabel: "加密 PDF",
@@ -1319,7 +1319,7 @@ const zhTools: Record<ToolSlug, ToolCopy> = {
 
   "translate-pdf": { ...enTools["translate-pdf"], title: "在线免费 AI 翻译 PDF | DockDocs", description: "在线免费用 AI 翻译 PDF 的文字，支持 18+ 种语言，浏览器内私密处理。", appName: "DockDocs 翻译 PDF", breadcrumbName: "翻译 PDF", heroTitle: "用 AI 免费翻译 PDF 文档。", heroDescription: "提取 PDF 文字并用 AI 翻译成 18+ 种语言。目前为纯文本，保留版式即将推出。", primaryActionLabel: "翻译 PDF", upload: { ...enTools["translate-pdf"].upload, title: "上传要翻译的 PDF", description: "拖放 PDF 文件，或从设备中选择。", buttonLabel: "选择 PDF" }, cta: { eyebrow: "翻译 PDF", title: "用 AI 翻译您的 PDF 文档。", description: "免费快速。把 PDF 的文字翻译成 18+ 种语言。", buttonLabel: "立即翻译" } },
 
-  "unlock-pdf": { ...enTools["unlock-pdf"], title: "在线免费解锁 PDF | DockDocs", description: "在线免费移除 PDF 密码保护。", appName: "DockDocs 解锁 PDF", breadcrumbName: "解锁 PDF", heroTitle: "免费移除 PDF 密码保护。", heroDescription: "解锁受密码保护的 PDF 文件，让您可以自由编辑、打印和分享。", primaryActionLabel: "解锁 PDF", upload: { ...enTools["unlock-pdf"].upload, title: "上传受保护的 PDF", description: "拖放受密码保护的 PDF 文件，或从设备中选择。", buttonLabel: "选择 PDF" }, cta: { eyebrow: "解锁 PDF", title: "免费移除 PDF 密码保护。", description: "无需下载，无需账号，不存储文件。在浏览器中安全解锁 PDF。", buttonLabel: "立即解锁" } },
+  "unlock-pdf": { ...enTools["unlock-pdf"], title: "在线免费解锁 PDF | DockDocs", description: "在线免费移除 PDF 密码保护。", appName: "DockDocs 解锁 PDF", breadcrumbName: "PDF 解密", heroTitle: "免费移除 PDF 密码保护。", heroDescription: "解锁受密码保护的 PDF 文件，让您可以自由编辑、打印和分享。", primaryActionLabel: "解锁 PDF", upload: { ...enTools["unlock-pdf"].upload, title: "上传受保护的 PDF", description: "拖放受密码保护的 PDF 文件，或从设备中选择。", buttonLabel: "选择 PDF" }, cta: { eyebrow: "解锁 PDF", title: "免费移除 PDF 密码保护。", description: "无需下载，无需账号，不存储文件。在浏览器中安全解锁 PDF。", buttonLabel: "立即解锁" } },
 
 };
 

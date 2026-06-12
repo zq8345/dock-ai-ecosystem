@@ -182,6 +182,7 @@ export function AiSummaryWorkflow({
 
   function cancel() {
     abortRef.current?.abort();
+    setError("");
     setStatus(hasInput ? "ready" : "idle");
     setProgress(0);
     setProgressStep("");
@@ -262,7 +263,7 @@ export function AiSummaryWorkflow({
               value={pastedText}
               onChange={(event) => {
                 setPastedText(event.target.value);
-                setStatus(event.target.value.trim() || file ? "ready" : "idle");
+                setStatus(event.target.value.trim() ? "ready" : "idle");
                 setError("");
                 setResult(null);
               }}

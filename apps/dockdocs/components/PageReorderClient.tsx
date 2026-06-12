@@ -95,7 +95,7 @@ export function PageReorderClient({ locale = "en" }: { locale?: Locale }) {
   }, [t, locale]);
 
   const move = (from: number, to: number) => {
-    if (from === to || from < 0 || to < 0) return;
+    if (from === to || from < 0 || to < 0 || from >= pages.length || to >= pages.length) return;
     setPages((prev) => {
       const next = [...prev];
       const [item] = next.splice(from, 1);
