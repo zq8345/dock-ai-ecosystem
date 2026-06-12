@@ -13,7 +13,8 @@ const COPY = {
     primary: "Chat with a PDF", primaryHref: "/chat-with-pdf",
     secondary: "Compare documents", secondaryHref: "/compare",
     toolsLabel: "tools",
-    explore: "Explore every tool",
+    explore: "Every tool, one workspace",
+    exploreTitle: "All your PDF tools, in one place.",
     stats: [["Grounded", "Answers cite the source"], ["Private", "Files stay on your device"], ["Secure", "Files auto-delete after use"]],
   },
   zh: {
@@ -23,7 +24,8 @@ const COPY = {
     primary: "与 PDF 对话", primaryHref: "/chat-with-pdf",
     secondary: "多文档对比", secondaryHref: "/compare",
     toolsLabel: "个工具",
-    explore: "浏览全部工具",
+    explore: "一个工作区,所有工具",
+    exploreTitle: "全部 PDF 工具，集中一处。",
     stats: [["可溯源", "答案可点回原文"], ["隐私", "文件留在你的设备"], ["安全", "文件用后自动删除"]],
   },
 } as const;
@@ -54,11 +56,12 @@ export function HeroBento({ locale = "en" }: { locale?: Locale }) {
   const c = COPY[zh ? "zh" : "en"];
   const cats = (navCategories[zh ? "zh" : "en"] ?? navCategories.en).slice(0, 4);
   const path = (slug: string) => (zh ? `/zh${slug}` : slug);
-  // bento order: PDF tools (wide, full row) then AI · Batch · Profession
-  const order = [0, 2, 1, 3];
+  // balanced bento: content-heavy categories (PDF·26, Batch·11) get the wide
+  // cards; lighter ones (AI·9, Profession·6) sit beside them — [navIndex, span]
+  const LAYOUT: [number, number][] = [[0, 2], [2, 1], [1, 2], [3, 1]];
 
   return (
-    <div className="relative mx-auto max-w-6xl px-5 pb-20 pt-16 sm:px-6 sm:pt-24 lg:px-8">
+    <div className="relative mx-auto max-w-6xl px-5 pb-24 pt-20 sm:px-6 sm:pt-28 lg:px-8">
       {/* ── Headline block ── */}
       <div className="mx-auto max-w-3xl text-center">
         <span className={`inline-flex items-center gap-2 rounded-full border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-3 py-1 text-[11px] font-semibold text-[color:var(--muted)] ${zh ? "" : "uppercase tracking-[0.14em]"}`}>
@@ -96,34 +99,40 @@ export function HeroBento({ locale = "en" }: { locale?: Locale }) {
       </div>
 
       {/* ── Bento grid of categories ── */}
-      <p className="mt-16 text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--faint)]">{c.explore}</p>
-      <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
-        {order.map((ci) => {
-          const cat = cats[ci];
-          if (!cat) return null;
-          const tools = flatItems(cat as { cols: { items: Item[] }[] });
-          const wide = ci === 0;
-          return (
-            <div key={ci} className={`group relative overflow-hidden rounded-2xl border border-[color:var(--line)] bg-[color:var(--surface)] p-5 transition-colors duration-200 hover:border-[color:var(--line-strong)] ${wide ? "md:col-span-3" : "md:col-span-1"}`}>
-              <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: "radial-gradient(460px circle at 28% 0%, rgba(62,207,142,0.07), transparent 60%)" }} />
-              <div className="relative">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[color:var(--line)] bg-[color:var(--surface-subtle)] text-[color:var(--accent)]">
-                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">{ICONS[ci]}</svg>
-                  </span>
-                  <h3 className="text-[15.5px] font-semibold text-[color:var(--foreground)]">{cat.label}</h3>
-                  <span className="ml-auto text-[11px] font-medium text-[color:var(--faint)]">{tools.length} {c.toolsLabel}</span>
-                </div>
-                <p className="mt-2.5 text-[13px] leading-relaxed text-[color:var(--muted)]">{zh ? BLURB[ci].zh : BLURB[ci].en}</p>
-                <div className={`mt-4 flex flex-wrap gap-x-4 gap-y-1.5 ${wide ? "" : "max-w-full"}`}>
-                  {tools.map((t, k) => (
-                    <a key={k} href={path(t.slug)} className="text-[12.5px] text-[color:var(--muted)] transition-colors hover:text-[color:var(--accent-strong)]">{t.name}</a>
-                  ))}
+      <div className="mt-20 border-t border-[color:var(--line)] pt-14 sm:mt-28 sm:pt-16">
+        <div className="text-center">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--accent)]">{c.explore}</p>
+          <h2 className="mt-3 text-[26px] font-semibold tracking-[-0.025em] text-[color:var(--foreground)] sm:text-[32px]">{c.exploreTitle}</h2>
+        </div>
+
+        <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {LAYOUT.map(([ci, span]) => {
+            const cat = cats[ci];
+            if (!cat) return null;
+            const tools = flatItems(cat as { cols: { items: Item[] }[] });
+            const wide = span === 2;
+            return (
+              <div key={ci} className={`group relative overflow-hidden rounded-2xl border border-[color:var(--line)] bg-[color:var(--surface)] p-6 transition-colors duration-200 hover:border-[color:var(--line-strong)] ${wide ? "md:col-span-2" : "md:col-span-1"}`}>
+                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: "radial-gradient(480px circle at 30% 0%, rgba(62,207,142,0.06), transparent 62%)" }} />
+                <div className="relative">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[color:var(--line)] bg-[color:var(--surface-subtle)] text-[color:var(--accent)]">
+                      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">{ICONS[ci]}</svg>
+                    </span>
+                    <h3 className="text-[15.5px] font-semibold text-[color:var(--foreground)]">{cat.label}</h3>
+                    <span className="ml-auto text-[11px] font-medium text-[color:var(--faint)]">{tools.length} {c.toolsLabel}</span>
+                  </div>
+                  <p className="mt-2.5 text-[13px] leading-relaxed text-[color:var(--muted)]">{zh ? BLURB[ci].zh : BLURB[ci].en}</p>
+                  <div className={`mt-5 grid gap-x-5 gap-y-2 ${wide ? "grid-cols-2 sm:grid-cols-3" : "grid-cols-1 sm:grid-cols-2"}`}>
+                    {tools.map((t, k) => (
+                      <a key={k} href={path(t.slug)} className="truncate text-[12.5px] text-[color:var(--muted)] transition-colors hover:text-[color:var(--accent-strong)]" title={t.name}>{t.name}</a>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

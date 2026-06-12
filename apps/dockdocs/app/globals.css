@@ -14,21 +14,21 @@
 :root {
   color-scheme: dark;
 
-  /* Background surfaces — luminance stacking */
-  --background: #0a0b0c;
-  --surface: #111214;
-  --surface-subtle: #18191b;
-  --surface-raised: #1e1f22;
+  /* Background surfaces — Supabase warm near-black, small luminance steps */
+  --background: #171717;
+  --surface: #1c1c1c;
+  --surface-subtle: #212121;
+  --surface-raised: #272727;
 
-  /* Text — cool white/gray scale */
-  --foreground: #f2f3f5;
-  --muted: #9498a0;
-  --faint: #5e6168;
+  /* Text — warm white/gray scale */
+  --foreground: #fafafa;
+  --muted: #a0a0a0;
+  --faint: #707070;
 
-  /* Borders — semi-transparent white */
-  --line: rgba(255, 255, 255, 0.06);
-  --line-strong: rgba(255, 255, 255, 0.10);
-  --line-subtle: rgba(255, 255, 255, 0.04);
+  /* Borders — depth comes from these hairlines (Supabase relies on borders, not shadows) */
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --line-subtle: rgba(255, 255, 255, 0.055);
 
   /* Brand accent — Supabase-style fluorescent green */
   --accent: #3ecf8e;

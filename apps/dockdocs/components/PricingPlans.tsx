@@ -186,7 +186,7 @@ export function PricingPlans({ locale = "en" }: { locale?: Locale }) {
           >{c.monthly}</button>
           <button type="button" onClick={() => setYearly(true)}
             className={`rounded-[var(--radius-sm)] px-4 py-1.5 text-[13px] font-medium transition ${yearly ? "bg-[color:var(--accent)] text-white" : "text-[color:var(--muted)] hover:text-[color:var(--foreground)]"}`}
-          >{c.yearly} <span className={`ml-1 text-[11px] ${yearly ? "text-white/90" : "text-[color:var(--accent-strong)]"}`}>{c.save}</span></button>
+          >{c.yearly} <span className={`ml-1 text-[11px] ${yearly ? "text-[color:var(--on-accent)]" : "text-[color:var(--accent-strong)]"}`}>{c.save}</span></button>
         </div>
       </div>
 
