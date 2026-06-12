@@ -15,9 +15,7 @@ import { GeoHubPage } from "@/components/GeoHubPage";
 import { ProgrammaticGeoPage } from "@/components/ProgrammaticGeoPage";
 import { PricingPlans } from "@/components/PricingPlans";
 import { DocumentCompareClient } from "@/components/DocumentCompareClient";
-import { FeatureShowcase } from "@/components/FeatureShowcase";
-import { HeroBento } from "@/components/HeroBento";
-import { HeroBackground } from "@/components/HeroBackground";
+import { Home as HomeSections } from "@/components/Home";
 import { SaasInfoPage } from "@/components/SaasInfoPage";
 import { AboutPage } from "@/components/AboutPage";
 import { AccountClient } from "@/components/AccountClient";
@@ -1243,40 +1241,12 @@ const localizedTools = [
 ] as const;
 
 function LocalizedHome({ locale }: { locale: Locale }) {
-  const copy = homeCopy[locale];
   const zh = locale === "zh";
 
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema()) }} />
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-[color:var(--line)]">
-        <HeroBackground />
-        <HeroBento locale={zh ? "zh" : "en"} />
-      </section>
-
-      {/* Core solutions + supporting metrics + quote */}
-      <FeatureShowcase locale={zh ? "zh" : "en"} />
-
-      {/* Manifesto */}
-      <section className="bg-[color:var(--surface)]">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28 lg:px-8">
-          <div className="relative overflow-hidden rounded-[var(--radius-xl)] border border-[color:var(--line)] bg-[color:var(--surface-subtle)] px-6 py-16 text-center sm:px-12 sm:py-20">
-            <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[color:var(--accent)] to-transparent opacity-60" />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--accent)]">DockDocs</p>
-            <h2 className="mx-auto mt-4 max-w-3xl text-[28px] font-semibold leading-[1.18] tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[40px]">{copy.aiTitle}</h2>
-            <p className="mx-auto mt-5 max-w-xl text-[15px] leading-7 text-[color:var(--muted)] sm:text-base">{copy.aiDescription}</p>
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-              <a href={localizedPath(locale, "chat-with-pdf")} className="inline-flex h-11 items-center rounded-[var(--radius)] bg-[color:var(--accent)] px-7 text-sm font-semibold text-white transition hover:opacity-90">
-                {copy.primary}
-              </a>
-              <a href={localizedPath(locale, "pricing")} className="inline-flex h-11 items-center rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] px-7 text-sm font-semibold text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)]">
-                {zh ? "查看定价" : "View pricing"}
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeSections locale={zh ? "zh" : "en"} />
     </main>
   );
 }
