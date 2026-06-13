@@ -9,6 +9,23 @@ import {
 } from "../../../lib/usage-limits";
 import type { SubscriptionPlan } from "../../../lib/subscription-runtime";
 
+declare const Netlify: {
+  env: { get(name: string): string | undefined };
+};
+
+// Server-side PRO comp list: emails here are treated as PRO regardless of any
+// Blobs subscription record. Used to (a) test the paid path before Creem is live
+// and (b) comp specific testers/friends. Reuses NEXT_PUBLIC_DEV_PRO_EMAILS so the
+// same accounts that are Pro in the client UI are Pro server-side too.
+const PRO_EMAIL_ALLOWLIST = (
+  Netlify.env.get("DOCKDOCS_PRO_EMAILS") ||
+  Netlify.env.get("NEXT_PUBLIC_DEV_PRO_EMAILS") ||
+  ""
+)
+  .split(",")
+  .map((entry) => entry.trim().toLowerCase())
+  .filter(Boolean);
+
 // Server-side plan + usage gate. This is the authoritative enforcement of the
 // per-plan caps — the client localStorage metering (lib/usage-runtime.ts) is
 // just a UX nudge and is trivially bypassable; this is not.
@@ -50,9 +67,13 @@ export async function enforceFeatureGate(
     const user = await readBillingUser(req);
     if (user) {
       subjectId = `user:${user.id}`;
-      const sub = await readSubscriptionByUserId(user.id);
-      if (sub?.plan) {
-        plan = sub.plan;
+      if (user.email && PRO_EMAIL_ALLOWLIST.includes(user.email.toLowerCase())) {
+        plan = "PRO";
+      } else {
+        const sub = await readSubscriptionByUserId(user.id);
+        if (sub?.plan) {
+          plan = sub.plan;
+        }
       }
     }
   } catch {
