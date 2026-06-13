@@ -1,4 +1,5 @@
 import type { PdfRuntimeArtifact, PdfRuntimeProgress } from "./pdf-runtime";
+import { tryAdobeExport } from "./adobe-runtime";
 
 export type CloudConvertRoute =
   | "word-to-pdf"
@@ -75,6 +76,11 @@ export async function runCloudConvert({
   // Falls back to CloudConvert on any failure, oversized file, or reverse route.
   const viaGotenberg = await tryGotenbergConvert({ file, route, outputFileName, locale, signal, onProgress });
   if (viaGotenberg) return viaGotenberg;
+
+  // ── Fast path: Adobe PDF Services for reverse pdf->office (high-fidelity, ToS-clean). ──
+  // Falls back to CloudConvert if Adobe is unconfigured or fails.
+  const viaAdobe = await tryAdobeExport({ file, route, outputFileName, locale, signal, onProgress });
+  if (viaAdobe) return viaAdobe;
 
   // ── 1. Ask our function to create a CloudConvert job ──
   emitProgress(onProgress, 6, 0, zh ? "正在创建转换任务..." : "Creating conversion job...");
