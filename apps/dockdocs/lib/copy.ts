@@ -1062,8 +1062,572 @@ export const runtimeCopy = {
       activity: ["已生成董事会报告摘要", "供应商合同已进入 PDF 对话", "扫描发票已进入 OCR 队列"],
     },
   },
+  es: {
+    shell: {
+      header: {
+        aria: "Navegación de DockDocs",
+        homeAria: "Inicio de DockDocs",
+        tagline: "Plataforma de documentos con IA",
+        tools: "Herramientas",
+        menu: "Menú",
+        closeMenu: "Cerrar menú",
+        featureMenu: "Menú de funciones",
+        utilityMenu: "Cuenta y enlaces",
+        free: "FREE",
+        plus: "PLUS",
+        comingSoon: "Próximamente",
+      },
+      nav: [
+        { name: "IA", href: "/es/#ai" },
+        { name: "Convertir", href: "/pdf-to-word", slug: "pdf-to-word" },
+        { name: "Optimizar", href: "/compress-pdf", slug: "compress-pdf" },
+        { name: "Panel", href: "/dashboard", slug: "dashboard" },
+        { name: "Mis chats", href: "/my-chats" },
+        { name: "Precios", href: "/pricing" },
+        { name: "Cuenta", href: "/account" },
+      ],
+      brand: {
+        aria: "Navegación de marca",
+        products: [
+          {
+            name: "DockDocs",
+            href: "https://dockdocs.app",
+            description: "Espacio de trabajo de documentos con IA para archivos, resúmenes, conversión y revisión.",
+          },
+          {
+            name: "DockIMG",
+            href: "https://dockimg.app",
+            description: "Espacio de trabajo de imágenes con IA para edición visual, limpieza y conversión.",
+          },
+          {
+            name: "DockSEO",
+            href: "https://dockseo.app",
+            description: "Espacio de trabajo de búsqueda para fragmentos, metadatos y revisión de contenido.",
+          },
+          {
+            name: "DockText",
+            href: "https://docktext.app",
+            description: "Espacio de trabajo de escritura con IA para limpieza, resúmenes y formato.",
+          },
+        ],
+      },
+      footer: {
+        aria: "Navegación del pie de página",
+        copyrightPrefix: "(c)",
+        links: [
+          { name: "Espacios relacionados", href: "/es/#related-tools" },
+          { name: "DockDocs", href: "/es/" },
+          { name: "Política de privacidad", href: "/es/privacy-policy/" },
+          { name: "Términos", href: "/es/terms/" },
+          { name: "Mapa del sitio", href: "/es/sitemap/" },
+        ],
+      },
+      relatedTools: {
+        title: "Espacios relacionados",
+        description:
+          "Navega entre los productos Dock con un patrón de espacio de trabajo consistente en escritorio y móvil.",
+      },
+      account: {
+        account: "Cuenta",
+        myChats: "Mis chats",
+        signedIn: "Sesión iniciada",
+        logout: "Cerrar sesión",
+        continueGoogle: "Continuar con Google",
+        email: "Correo electrónico",
+        password: "Contraseña",
+        login: "Iniciar sesión",
+        signedOutTitle: "Cuenta del espacio de trabajo",
+        signedOutDescription: "Inicia sesión para acceder a la cuenta, actualizar el plan y los puntos de entrada del espacio de trabajo en un solo menú.",
+        upgrade: "Mejorar plan",
+        currentPlan: "Espacio de trabajo gratuito",
+        actionFailed: "La acción de cuenta falló.",
+      },
+      utility: {
+        accountTitle: "Cuenta",
+        languageTitle: "Idioma",
+        linksTitle: "Empresa",
+        about: "Acerca de",
+        blog: "Blog",
+      },
+      toolTemplate: {
+        eyebrow: "Plataforma de documentos con IA",
+        schemaSlogan: "Plataforma de documentos con IA para flujos de trabajo reales",
+      },
+      legal: {
+        privacy: "Política de privacidad",
+        terms: "Términos",
+        sitemap: "Mapa del sitio",
+      },
+      trust: {
+        localFirst: "Local primero",
+        exportReady: "Listo para exportar",
+      },
+      metadata: {
+        title: "DockDocs — Espacio de trabajo de documentos con IA",
+        description: "Herramientas de documentos con IA para PDFs, archivos de oficina, limpieza de texto y flujos de trabajo de documentos.",
+      },
+    },
+    common: {
+      upload: {
+        label: "Subir",
+        dragDrop: "Arrastra y suelta el documento",
+        selectedDescription: "El archivo está seleccionado y listo para el siguiente paso.",
+        supported: "Compatibles",
+        limit: "Límite",
+        processing: "Procesando",
+        successMessage: "El estado del entorno de ejecución está listo y el resultado está disponible a continuación.",
+        states: {
+          empty: "Esperando archivo",
+          idle: "Listo para subir",
+          selected: "Archivo seleccionado",
+          processing: "Procesando documento",
+          success: "Documento listo",
+          error: "Requiere atención",
+        },
+      },
+      result: {
+        states: {
+          empty: "Sin resultado",
+          processing: "Generando",
+          success: "Listo",
+          error: "Error",
+        },
+        resultUnavailable: "Resultado no disponible",
+        waitingForOutput: "Esperando resultado",
+        runtimeError: "El entorno de ejecución devolvió un estado de error.",
+        processingMessage:
+          "El entorno de ejecución está procesando este documento. El resultado aparecerá aquí cuando esté listo.",
+        keyPoints: "Puntos clave",
+        nextActions: "Próximas acciones",
+        copy: "Copiar",
+        download: "Descargar",
+        startChat: "Iniciar chat",
+      },
+      errors: {
+        unsupportedFile: "Tipo de archivo no compatible. Formatos admitidos:",
+        fileTooLarge: "El archivo supera el límite de 25 MB.",
+      },
+    },
+    chat: {
+      heroEyebrow: "Chat con PDF MVP",
+      heroTitle: "Haz preguntas fundamentadas sobre un PDF.",
+      heroDescription:
+        "Sube un PDF con texto seleccionable, revisa el estado de extracción de la fuente y haz preguntas concretas en un espacio de trabajo de IA centrado en el documento.",
+      primaryCta: "Abrir chat",
+      secondaryCta: "Comprimir PDF",
+      metrics: [
+        { value: "12", label: "Límite de páginas" },
+        { value: "40k", label: "Límite de texto" },
+        { value: "En vivo", label: "Llamada IA" },
+      ],
+      workspaceLabel: "Espacio de trabajo DockDocs",
+      workspaceTitle: "Chat con PDF",
+      mvp: "MVP",
+      document: "Documento",
+      choosePdf: "Elegir PDF",
+      uploadHelp: "El texto se extrae localmente antes de realizar la solicitud al proveedor.",
+      documentStatus: "Estado del documento",
+      untitled: "Documento sin título",
+      initialStatus: "Sube un PDF para comenzar.",
+      pdfRequiredStatus: "Se requiere un PDF.",
+      pdfRequiredError: "Por favor, elige un archivo PDF.",
+      fileLimitStatus: "Se superó el límite de tamaño de archivo.",
+      fileLimitError: "Por favor, elige un PDF de hasta 25 MB.",
+      readingStatus: "Leyendo el texto del PDF en tu navegador.",
+      noTextStatus: "No se encontró texto seleccionable.",
+      noTextError: "Este PDF no expone texto legible. Se requiere OCR antes de iniciar el chat.",
+      extractionFailedStatus: "Falló la extracción de texto del PDF.",
+      extractionFailedError: "No se puede leer este PDF.",
+      readyStatus: "Listo: se extrajeron {characters} caracteres de {pages} página{plural}.",
+      sourceWaiting: "Esperando texto fuente",
+      sourceReady: "{characters} caracteres listos",
+      checks: ["Texto seleccionable extraído", "Referencia del proveedor recibida", "Resultado generado"],
+      collectionsLabel: "Colecciones",
+      collections: [
+        { name: "Materiales de directorio", count: "4 docs" },
+        { name: "Contratos", count: "9 docs" },
+        { name: "Notas de investigación", count: "6 docs" },
+      ],
+      historyLabel: "Historial de conversaciones",
+      defaultHistory: ["Revisar riesgos de renovación", "Extraer acciones de seguimiento", "Comparar cláusulas de política"],
+      aiChat: "Chat con IA",
+      conversationTitle: "Haz una pregunta sobre el PDF",
+      conversationDescription:
+        "Un espacio de trabajo de IA fundamentada para preguntas sobre documentos, resúmenes, referencias y próximas acciones.",
+      messages: "Mensajes",
+      runtime: "Entorno de ejecución",
+      asking: "Preguntando",
+      starterTitle: "Comienza desde una pregunta fundamentada",
+      starterDescription:
+        "Sube un PDF con texto seleccionable y luego pregunta sobre hechos, fechas, cláusulas, riesgos o elementos de acción fundamentados en el archivo.",
+      suggestedQuestions: [
+        "Resume los principales puntos de decisión",
+        "¿Qué riesgos o bloqueos se mencionan?",
+        "Lista fechas, responsables y elementos de acción",
+      ],
+      knowledgeCards: [
+        {
+          title: "Resumen",
+          description: "Genera un resumen ejecutivo a partir del texto extraído del documento.",
+          prompt: "Crea un resumen ejecutivo de este PDF.",
+        },
+        {
+          title: "Riesgos",
+          description: "Identifica cláusulas poco claras, bloqueos, obligaciones y fechas.",
+          prompt: "Identifica riesgos, bloqueos y obligaciones en este PDF.",
+        },
+        {
+          title: "Acciones",
+          description: "Convierte el contenido del documento en responsables, plazos y próximos pasos.",
+          prompt: "Lista los elementos de acción, responsables y fechas de este PDF.",
+        },
+      ],
+      you: "Tú",
+      assistant: "DockDocs",
+      questionLabel: "Pregunta",
+      placeholder: "Pregunta sobre este PDF",
+      ask: "Preguntar",
+      sourceReferences: "Referencias de fuente",
+      documentText: "Texto del documento",
+      notExtracted: "No extraído",
+      pageContext: "Contexto de página",
+      firstPages: "Primeras {pages} páginas",
+      pageIndexed: "{pages} página{plural} indexada{plural}",
+      references: "Referencias",
+      citationCount: "{count} cita{plural}",
+      providerResponseReceived: "Respuesta del proveedor recibida",
+      providerCitations: "Citas del proveedor cuando estén disponibles",
+      provider: "Proveedor",
+      waitingForAi: "Esperando respuesta de IA",
+      knowledgeCardsLabel: "Tarjetas de conocimiento",
+      suggestedActions: "Acciones sugeridas",
+      sideActions: ["Resumir", "Buscar riesgos", "Crear acciones"],
+      groundedTitle: "Solo respuestas fundamentadas",
+      groundedDescription:
+        "La solicitud de chat usa el texto extraído del documento como contexto. Si el PDF no contiene la respuesta, el proveedor debe indicarlo.",
+      providerFailed: "La solicitud al proveedor de chat falló.",
+      providerEmpty: "El proveedor de chat no devolvió ninguna respuesta.",
+      providerUnavailable: "El endpoint del proveedor de chat no está disponible.",
+      unableToAnswer: "No se puede responder:",
+      faqTitle: "Preguntas sobre Chat con PDF",
+      faqs: [
+        {
+          question: "¿Qué es DockDocs Chat con PDF?",
+          answer:
+            "DockDocs Chat con PDF permite a los usuarios subir un PDF, extraer texto legible en el navegador y hacer preguntas a través de un proveedor de IA configurado.",
+        },
+        {
+          question: "¿Puede responder sin un proveedor de IA?",
+          answer:
+            "No. Si el endpoint del proveedor o la clave API no están disponibles, la página devuelve un error real en lugar de una respuesta simulada.",
+        },
+        {
+          question: "¿Es compatible con PDFs escaneados?",
+          answer:
+            "Este MVP lee texto PDF seleccionable. Los PDFs escaneados requieren OCR antes de que el chat pueda responder sobre su contenido.",
+        },
+        {
+          question: "¿Es compatible con la exportación estática?",
+          answer:
+            "Sí. La página es compatible con exportación estática, mientras que las llamadas al proveedor se enrutan a través de una Netlify Function cuando se despliega.",
+        },
+      ],
+    },
+    summary: {
+      eyebrow: "IA",
+      title: "Resume documentos en decisiones y próximas acciones.",
+      description:
+        "Convierte PDFs y archivos de oficina largos en una salida de IA revisable: resumen, puntos clave, entidades y próximos pasos sugeridos.",
+      primaryCta: "Subir documento",
+      secondaryCta: "Iniciar chat",
+      uploadTitle: "Subir para resumen con IA",
+      uploadDescription:
+        "Suelta un documento aquí para preparar un flujo de trabajo de resumen con IA con límites y estados visibles.",
+      formats: "PDF, DOC, DOCX",
+      limit: "Hasta 25 MB",
+      cta: "Seleccionar documento",
+      outputEyebrow: "Resultado",
+      outputHeading: "El resultado del resumen invita a la revisión y al seguimiento.",
+      outputDescription:
+        "La vista de resultados prioriza la salida legible de IA sobre un simple estado de éxito, manteniendo la próxima acción a un clic.",
+      runtimeUploadTitle: "Carga de resumen vinculada al entorno de ejecución",
+      runtimeUploadDescription:
+        "Selecciona un documento para verificar los estados vacío, seleccionado, procesando, éxito y error del resumen.",
+      resultEyebrow: "Resumen con IA",
+      resultTitle: "Resumen del informe de directorio",
+      resultSummary:
+        "Los ingresos aumentaron en el último trimestre, pero el volumen de soporte al cliente y el riesgo de renovación de proveedores requieren seguimiento antes de la próxima revisión operativa.",
+      keyPoints: [
+        "El volumen de soporte aumentó en las cuentas empresariales.",
+        "Dos renovaciones de proveedores necesitan confirmación de responsable.",
+        "Las decisiones de presupuesto están bloqueadas por falta de información financiera.",
+      ],
+      actions: ["Copiar resumen", "Descargar informe", "Hacer preguntas de seguimiento"],
+      emptyMessage: "Selecciona un documento para generar una vista previa del resumen.",
+    },
+    ocr: {
+      eyebrow: "IA",
+      title: "Haz que los documentos escaneados sean buscables y listos para IA.",
+      description:
+        "Prepara PDFs escaneados para flujos de trabajo de IA posteriores con una interfaz limpia de carga, procesamiento y salida de OCR.",
+      uploadTitle: "Subir PDF escaneado",
+      uploadDescription:
+        "Suelta un escaneo o PDF aquí para preparar la extracción OCR. La interfaz muestra archivos compatibles, límites y estado de procesamiento.",
+      formats: "PDF, PNG, JPG",
+      limit: "Hasta 25 MB",
+      cta: "Seleccionar escaneo",
+      outputEyebrow: "Salida",
+      outputHeading: "La salida OCR pertenece al espacio de trabajo, no a un archivo oculto.",
+      outputDescription:
+        "La extracción de texto, la confianza y las próximas acciones de IA se muestran juntas para que los usuarios entiendan qué está listo.",
+      runtimeUploadTitle: "Carga de OCR vinculada al entorno de ejecución",
+      runtimeUploadDescription:
+        "Selecciona un PDF escaneado o imagen para verificar los estados de carga, procesamiento, salida y error de OCR.",
+      resultEyebrow: "Texto OCR",
+      resultTitle: "Vista previa del texto extraído",
+      resultSummary:
+        "El documento está listo para revisión. Las secciones de baja confianza se identifican antes de continuar con resumen o chat.",
+      keyPoints: [
+        "Texto seleccionable extraído de páginas escaneadas.",
+        "Las áreas de baja confianza permanecen visibles para revisión.",
+        "La salida puede continuar en Chat con PDF o Resumen con IA.",
+      ],
+      actions: ["Copiar texto extraído", "Descargar archivo de texto", "Resumir documento"],
+      emptyMessage: "Selecciona un documento escaneado para generar la salida OCR.",
+    },
+    compress: {
+      eyebrow: "Optimizar",
+      title: "Comprime PDFs sin salir del espacio de trabajo de documentos.",
+      description:
+        "Reduce el tamaño del archivo para correo electrónico, portales y entrega en oficina mientras mantienes la próxima acción de documento visible.",
+      primaryCta: "Subir PDF",
+      secondaryCta: "Chat con PDF",
+      uploadTitle: "Subir PDF para comprimir",
+      uploadDescription:
+        "Suelta un PDF aquí o selecciona un archivo desde tu dispositivo. La interfaz mantiene visibles los límites, el estado y las expectativas de salida.",
+      formats: "PDF",
+      limit: "Hasta 25 MB",
+      cta: "Seleccionar PDF",
+      outputEyebrow: "Salida",
+      outputHeading: "Los resultados de compresión deben ser revisables, no solo descargables.",
+      outputDescription:
+        "El área de resultados establece un patrón consistente de DockDocs para ahorro de archivos, verificaciones de calidad y próximas acciones de documentos con IA.",
+      runtimeUploadTitle: "Carga de compresión vinculada al entorno de ejecución",
+      runtimeUploadDescription:
+        "Selecciona un PDF para verificar los estados de carga, seleccionado, procesando, éxito y error sin cambiar la lógica de compresión.",
+      resultEyebrow: "PDF comprimido",
+      resultTitle: "Listo para entrega en oficina",
+      resultSummary:
+        "La interfaz está vinculada al estado del archivo seleccionado y muestra la salida de compresión solo después de que el estado del entorno de ejecución local alcanza el éxito.",
+      keyPoints: [
+        "El archivo es más pequeño y está listo para portales de carga.",
+        "La legibilidad del documento sigue siendo la principal señal de calidad.",
+        "Las acciones de IA de seguimiento permanecen cerca del resultado.",
+      ],
+      actions: ["Descargar PDF comprimido", "Enviar a Chat con PDF", "Ejecutar Resumen con IA"],
+      emptyMessage: "Selecciona un PDF para generar una vista previa del resultado de compresión.",
+      faqTitle: "Preguntas sobre compresión de PDF",
+      faqs: [
+        {
+          question: "¿Qué es DockDocs Comprimir PDF?",
+          answer:
+            "DockDocs Comprimir PDF reduce el tamaño del archivo como parte de un flujo de trabajo más amplio de plataforma de documentos con IA.",
+        },
+        {
+          question: "¿Qué archivos son compatibles?",
+          answer:
+            "Esta interfaz está enfocada en la carga y salida de PDF, con límites y estados de procesamiento claros.",
+        },
+        {
+          question: "¿Puedo continuar después de comprimir?",
+          answer:
+            "Sí. La superficie de resultados dirige a los usuarios hacia la descarga, copia y flujos de trabajo de documentos de seguimiento.",
+        },
+        {
+          question: "¿Funciona en móvil?",
+          answer:
+            "Sí. El área de carga, los límites y la vista previa de salida se apilan en un diseño de columna única en móvil.",
+        },
+      ],
+    },
+    pdfToWord: {
+      eyebrow: "Convertir",
+      title: "Convierte PDFs en documentos editables listos para Word.",
+      description:
+        "Mantén la conversión dentro de la misma plataforma de documentos con IA, con límites de carga, estado de salida y próximas acciones en un solo lugar.",
+      uploadTitle: "Subir PDF para convertir",
+      uploadDescription:
+        "Suelta un PDF aquí para preparar un flujo de trabajo de conversión a Word sin cambiar la lógica del proveedor backend.",
+      formats: "PDF",
+      limit: "Hasta 25 MB",
+      cta: "Seleccionar PDF",
+      outputEyebrow: "Salida",
+      outputHeading: "La salida de conversión debe explicar qué ocurrió.",
+      outputDescription:
+        "La interfaz establece expectativas sobre contenido editable, revisión de diseño y acciones de documentos de seguimiento.",
+      runtimeUploadTitle: "Carga de conversión vinculada al entorno de ejecución",
+      runtimeUploadDescription:
+        "Selecciona un PDF para verificar los estados de carga, procesamiento, éxito y error de conversión sin cambiar la lógica del proveedor.",
+      resultEyebrow: "Salida Word",
+      resultTitle: "Documento editable listo",
+      resultSummary:
+        "El documento convertido está listo para revisión, con notas de diseño y acciones de seguimiento mostradas junto al resultado.",
+      keyPoints: [
+        "El contenido de texto está preparado para edición.",
+        "La revisión de diseño permanece visible antes de la entrega.",
+        "Los usuarios pueden continuar con flujos de trabajo de resumen o chat.",
+      ],
+      actions: ["Descargar DOCX", "Revisar notas de diseño", "Ejecutar Resumen con IA"],
+      emptyMessage: "Selecciona un PDF para generar una vista previa de salida Word.",
+    },
+    pricing: {
+      metadataTitle: "Precios",
+      metadataDescription:
+        "Interfaz de precios Free, Plus y Pro de DockDocs para flujos de trabajo de plataforma de documentos con IA.",
+      eyebrow: "Precios",
+      title: "Planes para un espacio de trabajo de documentos con IA.",
+      description:
+        "Comienza gratis, luego mejora cuando el chat de documentos, los resúmenes, el OCR, la conversión y la revisión en equipo necesiten límites más altos.",
+      primaryCta: "Comparar planes",
+      secondaryCta: "Comenzar con Chat PDF",
+      recommended: "Recomendado",
+      featureColumn: "Función",
+      comparisonEyebrow: "Comparación de funciones",
+      comparisonTitle: "Compara la disponibilidad del espacio de trabajo.",
+      billingNote:
+        "Solo interfaz: Stripe, la API de facturación, la aplicación de cuotas y las verificaciones de suscripción no están conectados en este diseño.",
+      flowEyebrow: "Ruta de mejora",
+      flowTitle: "Pasa de la primera carga a un espacio de trabajo de documentos más amplio.",
+      flowDescription:
+        "El flujo de precios es solo presentacional aquí: elige un plan, revisa la disponibilidad de funciones y continúa desde el punto de entrada de la cuenta.",
+      flowSteps: ["Comienza con un archivo real", "Compara el acceso al espacio de trabajo de IA", "Mejora desde el menú de cuenta"],
+      plans: [
+        {
+          tier: "FREE",
+          name: "Gratis",
+          price: "$0",
+          description: "Para primeras cargas, trabajo ligero de documentos con IA y flujos de trabajo de archivos principales.",
+          cta: "Comenzar gratis",
+          href: "/chat-with-pdf/",
+          recommended: false,
+          highlights: [
+            "Chat con PDF MVP",
+            "Vista previa de Resumen con IA",
+            "Puntos de entrada para OCR, Comprimir y PDF a Word",
+            "Shell del panel del espacio de trabajo",
+          ],
+        },
+        {
+          tier: "PLUS",
+          name: "Plus",
+          price: "$5",
+          description: "Para personas que trabajan con documentos semanalmente y necesitan flujos de trabajo de IA más completos.",
+          cta: "Mejorar a Plus",
+          href: "/account/?plan=PLUS",
+          recommended: true,
+          highlights: [
+            "Límites más altos del espacio de trabajo con IA",
+            "Tarjetas de conocimiento y revisión de fuentes",
+            "Flujos de trabajo prioritarios de conversión y OCR",
+            "Marcador de posición de UX de conversación guardada",
+          ],
+        },
+        {
+          tier: "PRO",
+          name: "Pro",
+          price: "$20",
+          description: "Para equipos que necesitan patrones de revisión de documentos compartidos y mayor visibilidad del espacio de trabajo.",
+          cta: "Mejorar a Pro",
+          href: "/account/?plan=PRO",
+          recommended: false,
+          highlights: [
+            "Marcador de posición de IA del espacio de trabajo en equipo",
+            "Superficies del panel de uso y actividad",
+            "Etiquetas avanzadas de inteligencia de documentos",
+            "Marcadores de posición de estado del proveedor y cumplimiento",
+          ],
+        },
+      ],
+      comparison: [
+        { feature: "Chat con PDF", values: ["FREE", "PLUS", "PRO"] },
+        { feature: "Resumen con IA", values: ["FREE", "PLUS", "PRO"] },
+        { feature: "OCR y extracción", values: ["FREE", "PLUS", "PRO"] },
+        { feature: "PDF a Word", values: ["FREE", "PLUS", "PRO"] },
+        { feature: "Tarjetas de conocimiento", values: ["Vista previa PLUS", "PLUS", "PRO"] },
+        { feature: "Análisis del espacio de trabajo", values: ["Básico", "Marcador de uso", "Marcador de equipo"] },
+        { feature: "Colecciones de documentos", values: ["Básico", "PLUS", "PRO"] },
+      ],
+    },
+    dashboard: {
+      eyebrow: "Panel",
+      title: "Resumen del espacio de trabajo de documentos.",
+      description: "Un centro de control para documentos, conversaciones con IA, resúmenes y estado de flujos de trabajo.",
+      newDocument: "Nuevo documento",
+      startChat: "Iniciar chat",
+      workspace: "Espacio de trabajo",
+      nav: ["Documentos", "IA", "Convertir", "Optimizar", "Configuración"],
+      stats: [
+        { label: "Documentos", value: "18" },
+        { label: "Conversaciones", value: "9" },
+        { label: "Resúmenes", value: "14" },
+        { label: "Flujos de trabajo", value: "6" },
+      ],
+      overviewLabel: "Resumen",
+      recentLabel: "Documentos recientes",
+      conversationsLabel: "Conversaciones recientes",
+      actionsLabel: "Acciones de IA",
+      healthLabel: "Estado del espacio de trabajo",
+      nextStepsLabel: "Próximos pasos recomendados",
+      emptyTitle: "Aún no hay cargas",
+      emptyDescription:
+        "Comienza subiendo un PDF, escaneo, informe o documento de oficina. DockDocs mantendrá el archivo, la salida de IA y la próxima acción visibles.",
+      continueWork: "Continuar trabajo",
+      openChat: "Abrir chat con IA",
+      upgradeCta: "Ver precios",
+      upgradeDescription:
+        "¿Necesitas más capacidad en el espacio de trabajo de documentos? Revisa las opciones Plus y Pro sin cambiar el estado de facturación en esta interfaz.",
+      analyticsLabel: "Análisis",
+      usageLabel: "Marcador de uso",
+      activityLabel: "Actividad reciente",
+      onboardingTitle: "¿Primera vez? Comienza con un archivo.",
+      onboardingDescription:
+        "Sube un documento, haz una pregunta fundamentada y luego regresa al panel para revisar los archivos recientes y las próximas acciones.",
+      documents: [
+        { name: "Informe-directorio.pdf", type: "PDF", status: "Listo", action: "Resumen con IA" },
+        { name: "Contrato-proveedor.pdf", type: "PDF", status: "Revisión", action: "Chat" },
+        { name: "Factura-escaneada.pdf", type: "Escaneo", status: "Procesando", action: "OCR" },
+      ],
+      conversations: [
+        { title: "Extraer riesgos del contrato con proveedor", meta: "Contrato-proveedor.pdf", status: "2 fuentes" },
+        { title: "Resumir acciones del informe de directorio", meta: "Informe-directorio.pdf", status: "Listo" },
+        { title: "Encontrar términos de pago de factura", meta: "Factura-escaneada.pdf", status: "OCR primero" },
+      ],
+      actions: [
+        { title: "Chat con PDF", description: "Haz preguntas fundamentadas con contexto de fuente.", href: "/chat-with-pdf", tier: "FREE" },
+        { title: "Resumir", description: "Crea un resumen, puntos clave, entidades y próximos pasos.", href: "/ai-summary", tier: "FREE" },
+        { title: "OCR", description: "Haz que los documentos escaneados sean buscables antes de la revisión con IA.", href: "/ocr", tier: "FREE" },
+        { title: "Convertir", description: "Mueve PDFs a flujos de trabajo editables listos para Word.", href: "/pdf-to-word", tier: "FREE" },
+        { title: "Comprimir", description: "Reduce el tamaño del archivo para correo electrónico, portales y entrega.", href: "/compress-pdf", tier: "FREE" },
+      ],
+      health: [
+        { label: "Almacenamiento", value: "Vista previa local", tone: "Listo" },
+        { label: "Procesamiento", value: "Vinculado al entorno de ejecución", tone: "Saludable" },
+        { label: "Proveedor", value: "Configurado en el entorno", tone: "Marcador" },
+      ],
+      nextSteps: [
+        "Sube un PDF real e inicia una conversación con fuentes.",
+        "Genera un Resumen con IA antes de enviar un documento para revisión.",
+        "Usa OCR para escaneos antes de hacer preguntas.",
+      ],
+      activity: [
+        "Resumen del informe de directorio generado",
+        "Contrato con proveedor abierto en Chat con PDF",
+        "Factura escaneada en cola para OCR",
+      ],
+    },
+  },
 } as const;
 
-export function getRuntimeCopy(locale: RuntimeLocale = defaultLocale) {
+export function getRuntimeCopy(locale: RuntimeLocale | "es" = defaultLocale) {
   return runtimeCopy[locale];
 }

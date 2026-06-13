@@ -11,16 +11,18 @@ import { WorkspaceDashboardClient } from "@/components/WorkspaceDashboardClient"
 import { getRuntimeCopy, type RuntimeLocale } from "@/lib/copy";
 import { defaultLocale, localizedPath, normalizeSlug } from "@/lib/i18n";
 
+type DashLocale = RuntimeLocale | "es";
 type DashboardCopy = ReturnType<typeof getRuntimeCopy>["dashboard"];
 
 type DashboardWorkspaceProps = {
-  locale?: RuntimeLocale;
+  locale?: DashLocale;
 };
 
 export function DashboardWorkspace({
   locale = defaultLocale,
 }: DashboardWorkspaceProps) {
-  const page = getRuntimeCopy(locale).dashboard;
+  const effectiveLocale: RuntimeLocale = locale === "es" ? "en" : locale;
+  const page = getRuntimeCopy(effectiveLocale).dashboard;
 
   return (
     <main>
@@ -83,7 +85,7 @@ function DashboardSidebar({
   locale,
 }: {
   page: DashboardCopy;
-  locale: RuntimeLocale;
+  locale: DashLocale;
 }) {
   return (
     <Card
@@ -141,7 +143,7 @@ function OnboardingState({
   locale,
 }: {
   page: DashboardCopy;
-  locale: RuntimeLocale;
+  locale: DashLocale;
 }) {
   return (
     <section className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--foreground)] p-4 text-[color:var(--background)] sm:p-5">
@@ -200,7 +202,7 @@ function EmptyState({
   locale,
 }: {
   page: DashboardCopy;
-  locale: RuntimeLocale;
+  locale: DashLocale;
 }) {
   return (
     <section className="rounded-[var(--radius)] border border-dashed border-[color:var(--line)] bg-[color:var(--surface-subtle)] p-4 sm:p-5">
@@ -224,7 +226,7 @@ function RecentDocuments({
   locale,
 }: {
   page: DashboardCopy;
-  locale: RuntimeLocale;
+  locale: DashLocale;
 }) {
   const documentHrefs = ["/ai-summary", "/chat-with-pdf", "/ocr"];
 
@@ -284,7 +286,7 @@ function RecentConversations({
   locale,
 }: {
   page: DashboardCopy;
-  locale: RuntimeLocale;
+  locale: DashLocale;
 }) {
   const conversationHrefs = ["/chat-with-pdf", "/chat-with-pdf", "/ocr"];
 
@@ -318,7 +320,7 @@ function AiActions({
   locale,
 }: {
   page: DashboardCopy;
-  locale: RuntimeLocale;
+  locale: DashLocale;
 }) {
   return (
     <section id="actions" className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-4 sm:p-5">
@@ -385,7 +387,7 @@ function WorkspaceHealth({ page }: { page: DashboardCopy }) {
   );
 }
 
-function localizedDashboardHref(locale: RuntimeLocale, href: string) {
+function localizedDashboardHref(locale: DashLocale, href: string) {
   const slug = normalizeSlug(href);
 
   if (!slug) {

@@ -5,12 +5,13 @@
 
 import { navCategories } from "@/components/Header";
 
-type Locale = "en" | "zh";
+type Locale = "en" | "zh" | "es";
 type Item = { name: string; slug: string };
 
 const PAGES: Record<Locale, { label: string; items: [string, string][] }> = {
   en: { label: "Pages", items: [["Home", "/"], ["About", "/about"], ["Pricing", "/pricing"], ["Blog", "/blog"], ["Guides", "/guides"], ["Resources", "/resources"], ["Privacy", "/privacy-policy"], ["Terms", "/terms"]] },
   zh: { label: "页面", items: [["首页", "/"], ["关于", "/about"], ["定价", "/pricing"], ["博客", "/blog"], ["指南", "/guides"], ["资源", "/resources"], ["隐私", "/privacy-policy"], ["条款", "/terms"]] },
+  es: { label: "Páginas", items: [["Inicio", "/"], ["Acerca de", "/about"], ["Precios", "/pricing"], ["Blog", "/blog"], ["Guías", "/guides"], ["Recursos", "/resources"], ["Privacidad", "/privacy-policy"], ["Términos", "/terms"]] },
 };
 
 function flatItems(cat: { cols: { items: Item[] }[] }): Item[] {
@@ -21,11 +22,12 @@ function flatItems(cat: { cols: { items: Item[] }[] }): Item[] {
 
 export function SitemapContent({ locale = "en" }: { locale?: Locale }) {
   const zh = locale === "zh";
-  const cats = (navCategories[zh ? "zh" : "en"] ?? navCategories.en).slice(0, 4);
-  const path = (slug: string) => (zh ? `/zh${slug}` : slug);
+  const es = locale === "es";
+  const cats = (navCategories[locale] ?? navCategories.en).slice(0, 4);
+  const path = (slug: string) => (zh ? `/zh${slug}` : es ? `/es${slug}` : slug);
   const eyebrow = `font-mono text-[12px] text-[color:var(--faint)] ${zh ? "" : "uppercase tracking-[0.08em]"}`;
   const link = "text-[14px] text-[color:var(--muted)] transition hover:text-[color:var(--accent-strong)]";
-  const pages = PAGES[zh ? "zh" : "en"];
+  const pages = PAGES[locale] ?? PAGES.en;
 
   return (
     <div className="mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
