@@ -141,7 +141,15 @@ export default async (req: Request, _context: Context) => {
     // ── STATUS: poll the job ──
     if (body.action === "status") {
       const jobUrl = body.jobUrl?.trim() ?? "";
-      if (!jobUrl.startsWith(`${ADOBE}/`)) {
+      // SSRF guard: only Adobe PDF Services hosts (incl. regional, e.g. pdf-services-ue1.adobe.io).
+      let jobHost = "";
+      try {
+        const u = new URL(jobUrl);
+        if (u.protocol === "https:") jobHost = u.hostname;
+      } catch {
+        jobHost = "";
+      }
+      if (!/^pdf-services[a-z0-9-]*\.adobe\.io$/i.test(jobHost)) {
         return json({ ok: false, code: "INVALID_JOB", message: "Invalid job URL." }, 400);
       }
       const tok = await getToken(id, secret);
