@@ -2,11 +2,11 @@
 
 import { usePathname } from "next/navigation";
 import { BrandMark } from "@/components/BrandMark";
-import { defaultLocale, isLocale } from "@/lib/i18n";
+import { defaultLocale } from "@/lib/i18n";
 
 function l(pathname: string | null): string {
   const first = (pathname ?? "/").split("/").filter(Boolean)[0];
-  return isLocale(first) ? first : defaultLocale;
+  return first === "zh" || first === "es" ? first : defaultLocale;
 }
 function href(path: string, locale: string) {
   return locale === defaultLocale ? path : `/${locale}${path}`;
@@ -128,6 +128,64 @@ const toolColsZh = [
   },
 ];
 
+const toolColsEs = [
+  {
+    title: "Espacio de trabajo IA",
+    links: [
+      { label: "Chat con PDF", href: "/chat-with-pdf" },
+      { label: "Resumen IA", href: "/ai-summary" },
+      { label: "Tarjetas", href: "/flashcards" },
+      { label: "Resumen por lotes", href: "/batch-summary" },
+      { label: "Clasificar", href: "/classify" },
+      { label: "Espacio OCR", href: "/ocr-pdf" },
+      { label: "Extraer a Excel", href: "/extract-to-excel" },
+      { label: "Comparar versiones", href: "/redline" },
+    ],
+  },
+  {
+    title: "Convertir",
+    links: [
+      { label: "Word a PDF", href: "/word-to-pdf" },
+      { label: "PDF a Word", href: "/pdf-to-word" },
+      { label: "Excel a PDF", href: "/excel-to-pdf" },
+      { label: "PDF a Excel", href: "/pdf-to-excel" },
+      { label: "PDF a PPT", href: "/pdf-to-ppt" },
+      { label: "PDF a PDF/A", href: "/pdf-to-pdfa" },
+      { label: "PPT a PDF", href: "/ppt-to-pdf" },
+      { label: "JPG a PDF", href: "/jpg-to-pdf" },
+      { label: "HTML a PDF", href: "/html-to-pdf" },
+      { label: "URL a PDF", href: "/url-to-pdf" },
+    ],
+  },
+  {
+    title: "Editar y organizar",
+    links: [
+      { label: "Unir PDF", href: "/merge-pdf" },
+      { label: "Dividir PDF", href: "/split-pdf" },
+      { label: "Comprimir PDF", href: "/compress-pdf" },
+      { label: "Eliminar página", href: "/delete-page" },
+      { label: "Rotar página", href: "/rotate-page" },
+      { label: "Recortar PDF", href: "/crop-pdf" },
+      { label: "Marca de agua", href: "/watermark-pdf" },
+      { label: "Firmar PDF", href: "/sign-pdf" },
+      { label: "Censurar PDF", href: "/redact-pdf" },
+      { label: "Compresión por lotes", href: "/batch-compress" },
+      { label: "Proteger PDF", href: "/protect-pdf" },
+      { label: "Desbloquear PDF", href: "/unlock-pdf" },
+    ],
+  },
+  {
+    title: "Empresa",
+    links: [
+      { label: "Acerca de", href: "/about" },
+      { label: "Blog", href: "/blog" },
+      { label: "Guías", href: "/guides" },
+      { label: "Precios", href: "/pricing" },
+      { label: "Contacto", href: "/contact" },
+    ],
+  },
+];
+
 export function Footer() {
   const pathname = usePathname();
   const locale = l(pathname);
@@ -142,10 +200,10 @@ export function Footer() {
               <BrandMark showWordmark={true} />
             </a>
             <p className="mt-3 text-[13px] leading-relaxed text-[color:var(--faint)]">
-              {locale === "zh" ? "面向 PDF 工作流的 AI 文档工具。" : "AI-powered document tools for PDF workflows."}
+              {locale === "zh" ? "面向 PDF 工作流的 AI 文档工具。" : locale === "es" ? "Herramientas de documentos con IA para flujos de trabajo PDF." : "AI-powered document tools for PDF workflows."}
             </p>
           </div>
-          {(locale === "zh" ? toolColsZh : toolColsEn).map((col) => (
+          {(locale === "zh" ? toolColsZh : locale === "es" ? toolColsEs : toolColsEn).map((col) => (
             <div key={col.title}>
               <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--faint)]">
                 {col.title}
@@ -172,9 +230,9 @@ export function Footer() {
             &copy; {new Date().getFullYear()} DockDocs. All rights reserved.
           </p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[12px] text-[color:var(--faint)]">
-            <a href={href("/sitemap", locale)} className="transition hover:text-[color:var(--muted)]">{locale === "zh" ? "站点地图" : "Sitemap"}</a>
-            <a href={href("/privacy-policy", locale)} className="transition hover:text-[color:var(--muted)]">{locale === "zh" ? "隐私" : "Privacy"}</a>
-            <a href={href("/terms", locale)} className="transition hover:text-[color:var(--muted)]">{locale === "zh" ? "条款" : "Terms"}</a>
+            <a href={href("/sitemap", locale)} className="transition hover:text-[color:var(--muted)]">{locale === "zh" ? "站点地图" : locale === "es" ? "Mapa del sitio" : "Sitemap"}</a>
+            <a href={href("/privacy-policy", locale)} className="transition hover:text-[color:var(--muted)]">{locale === "zh" ? "隐私" : locale === "es" ? "Privacidad" : "Privacy"}</a>
+            <a href={href("/terms", locale)} className="transition hover:text-[color:var(--muted)]">{locale === "zh" ? "条款" : locale === "es" ? "Términos" : "Terms"}</a>
           </div>
         </div>
       </div>

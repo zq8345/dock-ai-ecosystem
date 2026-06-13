@@ -186,23 +186,27 @@ const CARDS: { nav: number; span: number; visual: "thumbs" | "extract" | "batch"
 const SCENARIOS = [
   { icon: <path d="M4 13h3v6H4zM10 9h3v10h-3zM16 5h3v14h-3z" />, href: "/compare",
     en: ["Compare quotes, pick the best", "3 files into a sheet · ~1h", "a sourced pick · 1 min"],
-    zh: ["比报价,选最优", "开 3 个文件抄进表格 · 约 1 小时", "带出处的推荐 · 1 分钟"] },
+    zh: ["比报价,选最优", "开 3 个文件抄进表格 · 约 1 小时", "带出处的推荐 · 1 分钟"],
+    es: ["Compara presupuestos, elige el mejor", "3 archivos a una hoja · ~1 h", "una elección con fuentes · 1 min"] },
   { icon: <path d="M6 3h7l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1ZM13 3v4h4M8.5 14l2 2 4-4" />, href: "/redline",
     en: ["Catch the traps in a contract", "a lawyer, or sign blind", "AI flags risky & missing clauses"],
-    zh: ["看穿合同里的坑", "花钱找律师,或盲签踩坑", "AI 标出风险与缺失条款"] },
+    zh: ["看穿合同里的坑", "花钱找律师,或盲签踩坑", "AI 标出风险与缺失条款"],
+    es: ["Detecta las trampas de un contrato", "un abogado, o firmar a ciegas", "la IA señala cláusulas de riesgo y ausentes"] },
   { icon: <path d="M4 7l8-4 8 4-8 4-8-4ZM4 12l8 4 8-4M4 17l8 4 8-4" />, href: "/batch-extract-sheet",
     en: ["Process a batch of invoices", "key them in one by one · hours", "drop the batch → auto-extract"],
-    zh: ["批量处理发票", "一张张录入 · 几小时", "整批丢进去 → 自动抽取"] },
+    zh: ["批量处理发票", "一张张录入 · 几小时", "整批丢进去 → 自动抽取"],
+    es: ["Procesa un lote de facturas", "teclearlas una a una · horas", "suelta el lote → extracción automática"] },
   { icon: <path d="M5 4h11a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H5zM8.5 9h6M8.5 13h6" />, href: "/chat-with-pdf",
     en: ["Understand a long report fast", "read 80 pages for a few answers", "ask it → sourced answers · 30s"],
-    zh: ["快速读懂长报告", "读 80 页找几个答案", "问它 → 30 秒带出处答案"] },
+    zh: ["快速读懂长报告", "读 80 页找几个答案", "问它 → 30 秒带出处答案"],
+    es: ["Entiende un informe largo rápido", "leer 80 páginas por unas respuestas", "pregúntale → respuestas con fuentes · 30 s"] },
 ];
 
 export function Home({ locale = "en" }: { locale?: Locale }) {
   const zh = locale === "zh";
-  const c = COPY[zh ? "zh" : "en"];
-  const cats = (navCategories[zh ? "zh" : "en"] ?? navCategories.en).slice(0, 4);
-  const path = (slug: string) => (zh ? `/zh${slug}` : slug);
+  const c = COPY[locale] ?? COPY.en;
+  const cats = (navCategories[locale] ?? navCategories.en).slice(0, 4);
+  const path = (slug: string) => (locale === "zh" ? `/zh${slug}` : locale === "es" ? `/es${slug}` : slug);
 
   return (
     <>
@@ -263,10 +267,10 @@ export function Home({ locale = "en" }: { locale?: Locale }) {
                 <p className="mb-2 text-[10px] font-normal uppercase tracking-[0.12em] text-[color:var(--faint)]">{c.aiSummary}</p>
                 <div className="mb-1.5 flex items-center gap-1.5 text-[12px] text-[color:var(--foreground)]">
                   <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--accent)]" />
-                  <span className="min-w-0">{zh ? "营收同比 +23%" : "Revenue +23% YoY"}</span>
+                  <span className="min-w-0">{locale === "zh" ? "营收同比 +23%" : locale === "es" ? "Ingresos +23% interanual" : "Revenue +23% YoY"}</span>
                   <span className="ml-auto inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded border border-[color:var(--line)] px-1.5 py-0.5 text-[9px] font-medium text-[color:var(--accent)]">{c.cite}</span>
                 </div>
-                {[zh ? "亚太区为主要驱动" : "APAC is the main driver", zh ? "毛利率 41%（↑3pt）" : "Gross margin 41% (↑3pt)"].map((b) => (
+                {[locale === "zh" ? "亚太区为主要驱动" : locale === "es" ? "APAC es el motor principal" : "APAC is the main driver", locale === "zh" ? "毛利率 41%（↑3pt）" : locale === "es" ? "Margen bruto 41% (↑3pt)" : "Gross margin 41% (↑3pt)"].map((b) => (
                   <div key={b} className="mb-1.5 flex items-center gap-1.5 text-[12px] text-[color:var(--muted)] last:mb-0">
                     <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--ink-soft)]" />{b}
                   </div>
@@ -297,16 +301,16 @@ export function Home({ locale = "en" }: { locale?: Locale }) {
           {/* grounded Q&A: a question, then an answer that cites the exact pages */}
           <div className="hfg-in rounded-xl border border-[color:var(--line)] bg-[color:var(--surface)] p-5">
             <div className="flex justify-end">
-              <span className="max-w-[80%] rounded-2xl rounded-br-md border border-[color:var(--line)] bg-[color:var(--background)] px-3.5 py-2 text-[12.5px] leading-[1.45] text-[color:var(--foreground)]">{zh ? "第 3 季度营收增长了多少？" : "How much did Q3 revenue grow?"}</span>
+              <span className="max-w-[80%] rounded-2xl rounded-br-md border border-[color:var(--line)] bg-[color:var(--background)] px-3.5 py-2 text-[12.5px] leading-[1.45] text-[color:var(--foreground)]">{locale === "zh" ? "第 3 季度营收增长了多少？" : locale === "es" ? "¿Cuánto crecieron los ingresos del 3.er trimestre?" : "How much did Q3 revenue grow?"}</span>
             </div>
             <div className="mt-3 rounded-lg border border-[color:var(--line)] p-3.5">
               <div className="mb-2.5 flex items-center gap-1.5 text-[10px] font-normal uppercase tracking-[0.12em] text-[color:var(--faint)]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--accent)]" />{zh ? "有据回答" : "Grounded answer"}
+                <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--accent)]" />{locale === "zh" ? "有据回答" : locale === "es" ? "Respuesta fundamentada" : "Grounded answer"}
               </div>
-              <p className="mb-3 text-[12.5px] leading-[1.5] text-[color:var(--foreground)]">{zh ? "第 3 季度营收同比增长 23%，主要由亚太区驱动。" : "Q3 revenue grew 23% year-over-year, driven mainly by APAC."}</p>
+              <p className="mb-3 text-[12.5px] leading-[1.5] text-[color:var(--foreground)]">{locale === "zh" ? "第 3 季度营收同比增长 23%，主要由亚太区驱动。" : locale === "es" ? "Los ingresos del 3.er trimestre crecieron un 23% interanual, impulsados principalmente por APAC." : "Q3 revenue grew 23% year-over-year, driven mainly by APAC."}</p>
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-[10px] text-[color:var(--faint)]">{zh ? "依据" : "Sources"}</span>
-                {(zh ? ["第 12 页", "第 27 页"] : ["p.12", "p.27"]).map((cite) => (
+                <span className="text-[10px] text-[color:var(--faint)]">{locale === "zh" ? "依据" : locale === "es" ? "Fuentes" : "Sources"}</span>
+                {(locale === "zh" ? ["第 12 页", "第 27 页"] : locale === "es" ? ["p.12", "p.27"] : ["p.12", "p.27"]).map((cite) => (
                   <span key={cite} className="inline-flex items-center gap-1 rounded border border-[color:var(--line)] px-1.5 py-0.5 text-[10px] font-medium text-[color:var(--accent)] transition-colors hover:border-[color:var(--accent)]">
                     <svg width="9" height="9" viewBox="0 0 16 16" fill="none"><path d="M4 2h6l3 3v9H4z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" /></svg>
                     {cite}
@@ -371,11 +375,11 @@ export function Home({ locale = "en" }: { locale?: Locale }) {
       {/* ── Use cases (understand what it solves) ── */}
       <section>
         <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28 lg:px-8">
-          <p className={EYEBROW(zh)}>{zh ? "能替你做什么" : "What it does for you"}</p>
-          <h2 className="mt-4 text-[28px] font-normal leading-[1.15] tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[36px]">{zh ? "几分钟,搞定原本要几小时的事。" : "Minutes, not hours."}</h2>
+          <p className={EYEBROW(zh)}>{locale === "zh" ? "能替你做什么" : locale === "es" ? "Lo que hace por ti" : "What it does for you"}</p>
+          <h2 className="mt-4 text-[28px] font-normal leading-[1.15] tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[36px]">{locale === "zh" ? "几分钟,搞定原本要几小时的事。" : locale === "es" ? "Minutos, no horas." : "Minutes, not hours."}</h2>
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
             {SCENARIOS.map((s) => {
-              const t = zh ? s.zh : s.en;
+              const t = locale === "zh" ? s.zh : locale === "es" ? s.es : s.en;
               return (
                 <a key={t[0]} href={path(s.href)} className="rounded-2xl border border-[color:var(--line)] p-6 transition-colors hover:border-[color:var(--line-strong)]">
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-[color:var(--line)] text-[color:var(--accent)]">

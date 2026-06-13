@@ -55,6 +55,7 @@ const config = {
   faqTitle: "PDF to Markdown questions",
   faq: [
     { question: "How do I convert PDF to Markdown?", answer: "Upload a PDF and download the extracted Markdown file." },
+    { question: "Can I convert a PDF to MD?", answer: "Yes — MD is just the Markdown file extension (.md). DockDocs extracts your PDF's text as clean Markdown you can download as a .md file." },
     { question: "Does it work with scanned PDFs?", answer: "Scanned PDFs have no text layer — run OCR first, then convert." },
     { question: "Is my PDF sent to a server?", answer: "No. All conversion happens in your browser." },
     { question: "Is this free?", answer: "Yes, PDF to Markdown is a free workflow." },

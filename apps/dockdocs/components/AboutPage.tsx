@@ -4,7 +4,7 @@
 // --faint eyebrows, border-only, dividers only at header/footer, theme tokens
 // only (no rgba white-alpha → survives light mode; route is force-dark anyway).
 
-type Locale = "en" | "zh";
+type Locale = "en" | "zh" | "es";
 
 const content = {
   en: {
@@ -125,6 +125,65 @@ const content = {
     ctaSub: "打开任意工具，盯着网络面板看——浏览器内的工具，什么都不会发出去。",
     cta1: "浏览全部工具", cta2: "看隐私怎么做到",
   },
+  es: {
+    heroEyebrow: "// Por qué existe DockDocs",
+    heroPre: "Tus documentos no son asunto de nadie más que ",
+    heroAccent: "tuyo.",
+    heroSub: "La mayoría de las herramientas de DockDocs funcionan dentro de tu navegador. Tus archivos nunca llegan a nosotros, porque nunca salen de ti.",
+
+    originEyebrow: "// Origen",
+    originPre: "Las demás webs de PDF te piden subir el archivo primero. Nosotros nos ",
+    originAccent: "negamos",
+    originPost: " a construir eso.",
+    originBody: "Comprimir un contrato o un documento de identidad no debería significar entregárselo a la nube de un desconocido. Por eso hicimos lo contrario: el trabajo ocurre en tu equipo, y las pocas herramientas que de verdad necesitan un servidor lo advierten antes de empezar.",
+
+    flowEyebrow: "// Adónde va tu archivo",
+    flowHeading: "Adónde va realmente tu archivo.",
+    flowSub: "Izquierda: la típica herramienta en línea. Derecha: DockDocs, donde en la mayoría de las herramientas el archivo nunca cruza la línea.",
+    flowDevice: "Tu dispositivo",
+    flowNet: "Internet",
+    flowLegacy: "subido · almacenado · escaneado",
+    flowServers: "sus servidores",
+    flowLocal: "procesado en tu navegador",
+    flowZero: "0 bytes subidos",
+
+    tableEyebrow: "// En pocas palabras",
+    tableHeading: "Lo que hacemos. Lo que nunca hacemos.",
+    doHead: "Sí hacemos",
+    neverHead: "Nunca hacemos",
+    doRows: ["Procesar archivos en tu navegador", "Borrar al instante los temporales en la nube", "Señalar cada paso en la nube por adelantado", "Citar la fuente de cada respuesta de IA", "Dejarte empezar sin crear cuenta"],
+    neverRows: ["Almacenar tus documentos", "Entrenar IA con tus archivos", "Vender o compartir tus datos", "Trampas de cancelación por correo", "Subidas ocultas"],
+
+    statsEyebrow: "// Los números que importan",
+    statsHeading: "Los números que importan son ceros.",
+    stats: [
+      { n: "0", l: "archivos guardados en herramientas del navegador", z: true },
+      { n: "0", l: "archivos usados para entrenar IA", z: true },
+      { n: "$0", l: "para empezar, sin cuenta", z: true },
+      { n: "~50", l: "herramientas de PDF e IA", z: false },
+    ],
+
+    cloudEyebrow: "// Sinceros sobre la nube",
+    cloudHeading: "Cuando una herramienta sí usa la nube, lo dice.",
+    cloudSub: "Algunas herramientas (conversión de Office, OCR grande, chat con IA) necesitan un servidor: se avisa antes de empezar, va cifrado en tránsito y se borra justo después. Y la IA siempre cita la línea de origen.",
+    cloudSteps: ["avisado por adelantado", "cifrado en tránsito", "procesado", "copia borrada"],
+    cloudNotKept: "no se conserva",
+    aiSummary: "respuesta de IA",
+    aiCite: "fuente",
+
+    valuesEyebrow: "// En lo que nos apoyamos",
+    valuesHeading: "En lo que nos apoyamos.",
+    values: [
+      { t: "Privacidad por arquitectura", b: "Lo local es lo predeterminado, no una opción que activas." },
+      { t: "Tus archivos, tu dispositivo", b: "Las herramientas del navegador nunca suben nada, jamás." },
+      { t: "Sin trucos engañosos", b: "Cancela en dos clics. Nada de cancelar por correo." },
+      { t: "Claros sobre cómo funciona", b: "Cada paso en la nube y cada fuente de IA llevan etiqueta." },
+    ],
+
+    ctaHeading: "Prueba una herramienta. Sin subir nada. Sin cuenta.",
+    ctaSub: "Abre cualquier herramienta y mira la pestaña de red: con las del navegador, nada sale.",
+    cta1: "Explorar las herramientas", cta2: "Ver cómo funciona la privacidad",
+  },
 } as const;
 
 const Check = () => (
@@ -141,10 +200,10 @@ const VALUE_ICONS = [
 
 export function AboutPage({ locale = "en" }: { locale?: Locale }) {
   const zh = locale === "zh";
-  const c = content[zh ? "zh" : "en"];
+  const c = content[locale] ?? content.en;
   const eyebrow = `font-mono text-[12px] text-[color:var(--faint)] ${zh ? "" : "uppercase tracking-[0.08em]"}`;
   const h2 = "text-[28px] font-normal leading-[1.15] tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[36px]";
-  const path = (slug: string) => (zh ? `/zh${slug}` : slug);
+  const path = (slug: string) => (locale === "zh" ? `/zh${slug}` : locale === "es" ? `/es${slug}` : slug);
 
   return (
     <main>

@@ -942,7 +942,7 @@ export default async function LocalizedRoute({
       return (
         <>
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema(uiLocale)) }} />
-          <AboutPage locale={uiLocale} />
+          <AboutPage locale={rawLocale} />
         </>
       );
     }
@@ -969,7 +969,7 @@ export default async function LocalizedRoute({
     );
   }
 
-  return <LocalizedHome locale={uiLocale} />;
+  return <LocalizedHome locale={rawLocale} />;
 }
 
 function LocalizedAccount({ locale }: { locale: Locale }) {
@@ -1271,13 +1271,11 @@ const localizedTools = [
   { slug: "protect-pdf", icon: "PR", tier: "FREE", group: { en: "Security", zh: "安全" }, en: "Protect PDF", zh: "加密 PDF", description: { en: "Add password protection.", zh: "为 PDF 添加密码保护。" } },
 ] as const;
 
-function LocalizedHome({ locale }: { locale: Locale }) {
-  const zh = locale === "zh";
-
+function LocalizedHome({ locale }: { locale: "en" | "zh" | "es" }) {
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema()) }} />
-      <HomeSections locale={zh ? "zh" : "en"} />
+      <HomeSections locale={locale} />
     </main>
   );
 }

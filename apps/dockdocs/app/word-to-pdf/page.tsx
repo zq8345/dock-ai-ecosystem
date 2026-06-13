@@ -36,6 +36,7 @@ const config = {
   faqTitle: "Word to PDF questions",
   faq: [
     { question: "How do I convert Word to PDF?", answer: "Upload a DOCX file and download the converted PDF." },
+    { question: "Can I convert DOC and DOCX files to PDF?", answer: "Yes. DockDocs converts both legacy DOC and modern DOCX Word documents to PDF, keeping fonts, tables, and layout intact." },
     { question: "Will the formatting be preserved?", answer: "Yes. CloudConvert uses LibreOffice to accurately render Word formatting." },
     { question: "Is this free?", answer: "Yes, Word to PDF is a free conversion workflow." },
   ],
