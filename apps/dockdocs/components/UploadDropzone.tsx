@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { Spinner } from "@/components/Spinner";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 
 // Shared single-file upload box for the hand-rolled visual PDF tools (split,
 // crop, sign, rotate, …). One look site-wide: a min-height dashed frame with an
