@@ -18,10 +18,13 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           command_timeout: 15m
           script: |
-            cd ~/dock-ai-ecosystem/infra/gotenberg
-            git pull
+            set -e
+            cd ~/dock-ai-ecosystem
+            git fetch origin master
+            git reset --hard origin/master
+            cd infra/gotenberg
             docker compose build --no-cache
-            docker compose up -d
-            echo "=== Health checks ==="
-            sleep 5
+            docker compose up -d --force-recreate --remove-orphans
+            echo "=== compose ps ==="
+            sleep 6
             docker compose ps
