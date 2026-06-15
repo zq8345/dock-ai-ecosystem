@@ -2931,6 +2931,304 @@ const esFaq: Partial<Record<ToolSlug, { faqTitle: string; faq: Array<{ question:
   },
 };
 
+const ptFaq: Partial<Record<ToolSlug, { faqTitle: string; faq: Array<{ question: string; answer: string }> }>> = {
+  "compress-pdf": {
+    faqTitle: "Perguntas sobre compressão de PDF",
+    faq: [
+      { question: "Como comprimo um PDF?", answer: "Envie um PDF, confira o status da compressão e baixe o resultado comprimido." },
+      { question: "O compressor é grátis?", answer: "A página foi pensada como um fluxo de trabalho de PDF gratuito para o dia a dia." },
+      { question: "Posso usar no celular?", answer: "Sim. As páginas da DockDocs são adaptáveis para celular e computador." },
+      { question: "Meu arquivo é enviado a um servidor?", answer: "Não. A compressão é feita dentro do seu navegador, então o seu PDF não é enviado a nenhum servidor." },
+    ],
+  },
+  "protect-pdf": {
+    faqTitle: "Perguntas sobre proteção de PDFs com senha",
+    faq: [
+      { question: "Como protejo um PDF com senha?", answer: "Envie um PDF, insira uma senha e baixe o resultado criptografado." },
+      { question: "Meu PDF é enviado a um servidor?", answer: "Não. Toda a criptografia acontece no seu navegador." },
+      { question: "Qual é a segurança da criptografia?", answer: "Seu PDF é criptografado com AES-128, um padrão da indústria compatível com todos os principais leitores de PDF. Sem a senha, o arquivo não pode ser aberto." },
+      { question: "E se eu esquecer a senha?", answer: "Não podemos recuperá-la, porque a senha nunca sai do seu dispositivo. Guarde-a em um lugar seguro; sem ela, você não conseguirá abrir o PDF criptografado." },
+    ],
+  },
+  "unlock-pdf": {
+    faqTitle: "Perguntas frequentes sobre como desbloquear PDFs",
+    faq: [
+      { question: "Posso desbloquear um PDF se não sei a senha?", answer: "Não. O DockDocs Desbloquear PDF exige que você conheça a senha. Remove a proteção para uso legítimo: quando você tem a senha mas quer editar, imprimir ou compartilhar o documento sem restrições. Não é uma ferramenta para decifrar nem recuperar senhas. Se esqueceu a senha, entre em contato com o proprietário do documento." },
+      { question: "É seguro inserir a senha do meu PDF online?", answer: "O DockDocs Desbloquear PDF processa tudo no seu navegador usando tecnologia do lado do cliente. Seu arquivo PDF e a senha nunca saem do seu dispositivo: não são enviados a nenhum servidor. Isso é totalmente diferente dos serviços que enviam seu PDF protegido e a senha ao servidor deles para processamento." },
+      { question: "Que tipos de senha de PDF a DockDocs consegue remover?", answer: "A DockDocs consegue remover tanto senhas de proprietário (que restringem a edição, a impressão e a cópia) quanto senhas de usuário ou de abertura (que impedem abrir o arquivo), desde que você conheça a senha. Depois de desbloqueado, o PDF fica sem restrições e você pode usá-lo livremente." },
+      { question: "Desbloquear um PDF afeta a qualidade do arquivo?", answer: "Não. Remover a proteção com senha não altera o conteúdo, a formatação, as imagens nem a qualidade do texto do PDF. O arquivo é idêntico bit a bit, exceto pela remoção da restrição de senha. Você recebe exatamente o mesmo documento, mas sem o bloqueio." },
+      { question: "Posso desbloquear um PDF e depois comprimi-lo ou combiná-lo?", answer: "Sim. Depois de desbloquear seu PDF com o DockDocs Desbloquear PDF, você pode usar qualquer outra ferramenta da DockDocs: Comprimir PDF para reduzir o tamanho do arquivo, Mesclar PDF para uni-lo a outros documentos, Editar PDF para adicionar anotações ou convertê-lo para Word/Excel. O arquivo desbloqueado funciona com todas as ferramentas da DockDocs." },
+    ],
+  },
+  "ocr-pdf": {
+    faqTitle: "Perguntas sobre OCR de PDF",
+    faq: [
+      { question: "Qual é a precisão do OCR?", answer: "A precisão depende da qualidade da digitalização, do contraste, do idioma e do layout do documento." },
+      { question: "Posso copiar o texto extraído?", answer: "O fluxo inclui ações para copiar e baixar o texto." },
+      { question: "O OCR é uma função de IA?", answer: "O OCR usa reconhecimento óptico de caracteres para converter imagens digitalizadas em texto que você pode selecionar e pesquisar." },
+      { question: "Que tipos de arquivo posso enviar?", answer: "Esta ferramenta funciona com arquivos PDF digitalizados, ideal para documentos, formulários e outras páginas baseadas em imagem." },
+    ],
+  },
+  "pdf-to-word": {
+    faqTitle: "Perguntas sobre PDF para Word",
+    faq: [
+      { question: "Como converto um PDF em Word?", answer: "Envie seu PDF, clique em Converter em Word e baixe o arquivo .docx editável em alguns segundos." },
+      { question: "O layout original será preservado?", answer: "O texto é convertido em conteúdo editável; documentos simples convertem bem, enquanto layouts complexos, imagens e tabelas podem precisar de ajustes manuais no Word." },
+      { question: "Posso converter um PDF digitalizado ou baseado em imagem?", answer: "PDFs digitalizados não têm uma camada de texto, então uma conversão direta pode sair em branco ou com caracteres ilegíveis. Use primeiro o OCR de PDF da DockDocs para extrair o texto e depois converta." },
+      { question: "Meu arquivo é enviado a um servidor?", answer: "Sim. PDF para Word requer uma conversão no lado do servidor, então o arquivo é enviado ao nosso serviço de conversão, processado e depois excluído; não é usado para nenhum outro fim." },
+      { question: "Há um limite de tamanho de arquivo?", answer: "Arquivos convertidos na nuvem têm um limite de 100 MB cada." },
+      { question: "Quanto tempo demora?", answer: "Normalmente entre alguns segundos e um minuto, dependendo do tamanho do arquivo e do número de páginas." },
+      { question: "É grátis e em que formato recebo?", answer: "Completamente grátis. O resultado é um arquivo .docx padrão que se abre no Microsoft Word, WPS ou Google Docs." },
+    ],
+  },
+  "pdf-to-excel": {
+    faqTitle: "Perguntas sobre PDF para Excel",
+    faq: [
+      { question: "Como converto um PDF em Excel?", answer: "Envie um PDF e baixe o XLSX." },
+      { question: "E se não houver tabelas?", answer: "PDFs com apenas texto serão convertidos, mas podem não gerar dados limpos na planilha." },
+      { question: "Em que formato o arquivo é baixado?", answer: "O resultado é baixado como um arquivo XLSX, que você pode abrir no Excel, Google Sheets ou Numbers." },
+      { question: "Há um limite de tamanho?", answer: "Você pode converter arquivos PDF de até 100 MB, suficiente para a maioria dos documentos com dados e tabelas." },
+    ],
+  },
+  "pdf-to-ppt": {
+    faqTitle: "Perguntas sobre PDF para PowerPoint",
+    faq: [
+      { question: "Como converto um PDF em PowerPoint?", answer: "Envie um PDF e baixe o arquivo PPTX convertido." },
+      { question: "Os slides são editáveis?", answer: "Sim, o resultado é um arquivo de PowerPoint padrão e editável." },
+      { question: "É grátis?", answer: "Sim, converter de PDF para PowerPoint é um fluxo de trabalho gratuito." },
+      { question: "Preciso instalar o PowerPoint?", answer: "Não. A conversão é feita inteiramente no seu navegador; você só precisa do PowerPoint se quiser editar o arquivo PPTX baixado." },
+    ],
+  },
+  "pdf-to-pdfa": {
+    faqTitle: "Perguntas sobre PDF para PDF/A",
+    faq: [
+      { question: "O que é PDF/A?", answer: "PDF/A é uma versão do PDF padronizada pela ISO e projetada para arquivamento de longo prazo, com fontes e recursos incorporados." },
+      { question: "Por que converter para PDF/A?", answer: "Muitos sistemas jurídicos, de órgãos públicos e de gestão de registros exigem PDF/A para que os documentos continuem legíveis por muito tempo." },
+      { question: "É grátis?", answer: "Sim, a conversão de PDF para PDF/A é um fluxo de trabalho gratuito." },
+      { question: "Meus arquivos ficam privados?", answer: "A conversão é feita pela CloudConvert e seus arquivos são excluídos automaticamente após o processo. Não é necessário criar uma conta para usar a ferramenta." },
+    ],
+  },
+  "pdf-to-html": {
+    faqTitle: "Perguntas sobre PDF para HTML",
+    faq: [
+      { question: "Como converto um PDF em HTML?", answer: "Envie um PDF e baixe o arquivo HTML gerado." },
+      { question: "As imagens e o layout são preservados?", answer: "Sim: cada página é representada como uma imagem, então imagens e layout são preservados, e o texto selecionável daquela página é guardado em um bloco recolhível abaixo para continuar pesquisável." },
+      { question: "Meu PDF é enviado a um servidor?", answer: "Não. Toda a extração acontece no seu navegador. Seu arquivo nunca sai do seu dispositivo." },
+      { question: "Posso converter apenas algumas páginas?", answer: "Sim. Informe um intervalo de páginas para converter apenas as que precisar, ou deixe o campo vazio para converter o documento inteiro." },
+    ],
+  },
+  "pdf-to-markdown": {
+    faqTitle: "Perguntas sobre PDF para Markdown",
+    faq: [
+      { question: "Como converto um PDF em Markdown?", answer: "Envie um PDF e baixe o arquivo Markdown com o conteúdo extraído." },
+      { question: "Meu PDF é enviado a um servidor?", answer: "Não. Toda a conversão acontece no seu navegador." },
+      { question: "Funciona com PDFs digitalizados?", answer: "PDFs digitalizados não contêm texto selecionável, então é melhor aplicar OCR primeiro. A ferramenta funciona melhor com PDFs baseados em texto." },
+      { question: "Tem algum custo?", answer: "Não. Converter de PDF para Markdown é grátis e sem limites de uso." },
+    ],
+  },
+  "word-to-pdf": {
+    faqTitle: "Perguntas sobre Word para PDF",
+    faq: [
+      { question: "Como converto Word em PDF?", answer: "Envie um arquivo DOCX e baixe o PDF convertido." },
+      { question: "A formatação é preservada?", answer: "Sim. A CloudConvert usa o LibreOffice para uma renderização fiel." },
+      { question: "Preciso instalar o Microsoft Word?", answer: "Não. A conversão é feita online, então você não precisa ter o Word nem nenhum outro programa instalado no seu computador." },
+      { question: "Qual é o limite de tamanho de arquivo?", answer: "Você pode converter arquivos DOCX e DOC de até 100 MB, suficiente para a maioria dos contratos, relatórios e propostas." },
+    ],
+  },
+  "excel-to-pdf": {
+    faqTitle: "Perguntas sobre Excel para PDF",
+    faq: [
+      { question: "Como converto Excel em PDF?", answer: "Envie um arquivo XLSX e baixe o PDF." },
+      { question: "Os gráficos são preservados?", answer: "Sim. Os gráficos e os valores das células são incluídos no resultado." },
+      { question: "Funciona com XLS além de XLSX?", answer: "Sim. A ferramenta suporta tanto XLSX quanto o formato XLS mais antigo." },
+      { question: "Há um limite de tamanho?", answer: "Você pode converter planilhas de até 100 MB, suficiente para a maioria dos arquivos." },
+    ],
+  },
+  "ppt-to-pdf": {
+    faqTitle: "Perguntas sobre PPT para PDF",
+    faq: [
+      { question: "Como converto PowerPoint em PDF?", answer: "Envie um arquivo PPTX e baixe o PDF." },
+      { question: "Os slides ficarão iguais?", answer: "Sim. A CloudConvert preserva os layouts, as fontes e as imagens." },
+      { question: "Que formatos posso enviar?", answer: "Você pode enviar arquivos PPTX e PPT. O tamanho máximo é 100 MB por arquivo." },
+      { question: "Preciso ter o PowerPoint instalado?", answer: "Não. A conversão é feita online, então você não precisa do PowerPoint nem de nenhum outro software no seu computador." },
+    ],
+  },
+  "html-to-pdf": {
+    faqTitle: "Perguntas sobre HTML para PDF",
+    faq: [
+      { question: "Como converto HTML em PDF?", answer: "Envie um arquivo .html e baixe o PDF convertido." },
+      { question: "Imagens e CSS são incluídos?", answer: "Sim, desde que estejam incorporados ou sejam acessíveis. Arquivos HTML autossuficientes convertem melhor." },
+      { question: "É grátis?", answer: "Sim, converter de HTML para PDF é um fluxo de trabalho gratuito." },
+      { question: "O que posso fazer com o PDF depois de convertido?", answer: "Depois de convertido, você pode usar qualquer outra ferramenta da DockDocs: comprimir o PDF para reduzir seu tamanho, combiná-lo com outros documentos ou editá-lo para adicionar anotações." },
+    ],
+  },
+  "pdf-to-text": {
+    faqTitle: "Perguntas sobre PDF para texto",
+    faq: [
+      { question: "Como converto um PDF em texto?", answer: "Arraste seu PDF para a caixa de upload ou clique em «Escolher PDF» para selecionar um arquivo do seu dispositivo. A ferramenta lê o texto contido nele e permite baixar um arquivo .txt de texto simples. Se quiser apenas certas páginas, informe um intervalo primeiro. Sem cadastro e sem instalar nada." },
+      { question: "Como funciona na prática?", answer: "Abre o PDF no seu navegador com pdf.js e extrai a camada de texto existente página por página, em ordem de leitura. Lê os caracteres que já estão armazenados como texto no arquivo; não regrava nem reconhece nada. Depois une as páginas em um único arquivo .txt para você baixar." },
+      { question: "Meu arquivo é enviado a algum lugar?", answer: "Não. Tudo roda inteiramente no seu navegador, no seu próprio dispositivo. Seu PDF nunca é enviado a um servidor nem sai do seu dispositivo; não há nada para excluir do nosso lado porque nunca o recebemos. Você pode até se desconectar da internet depois de carregar a página que continuará funcionando." },
+      { question: "Há um limite de tamanho de arquivo?", answer: "Não impomos um limite fixo. Como o trabalho acontece localmente, o teto prático é a memória e a paciência do seu dispositivo: PDFs muito grandes ou com muitas imagens usam mais RAM e demoram mais. A maioria dos documentos do dia a dia processa em um ou dois segundos; um arquivo enorme de centenas de páginas em um celular pode ficar lento ou ficar sem memória." },
+      { question: "Como é o resultado?", answer: "Você recebe um arquivo .txt de texto simples e limpo, apenas com as palavras. A formatação não é preservada: fontes, cores, negrito/itálico, colunas, tabelas e o layout exato são descartados. É pensado para copiar citações, inserir texto em outras ferramentas, pesquisa ou acessibilidade, não para recriar o layout original da página." },
+      { question: "Recebi um arquivo vazio ou incompleto, o que aconteceu?", answer: "A causa mais comum é um PDF digitalizado ou baseado apenas em imagem. Se o seu PDF é na verdade uma foto de uma página (uma digitalização ou uma imagem), ele não tem uma camada de texto para extrair, então nada sai. Esses precisam de OCR primeiro para converter a imagem em texto real. Alguns outros PDFs armazenam o texto de formas incomuns ou comprimidas que não são fáceis de selecionar, o que pode gerar caracteres incompletos ou ilegíveis; um teste rápido é abrir o PDF em um visualizador normal e tentar selecionar o texto com o mouse. Se lá você não conseguir selecioná-lo, essa ferramenta também não conseguirá extraí-lo." },
+      { question: "É grátis?", answer: "Sim, completamente grátis. Como a extração acontece no seu navegador, não há custo de servidor, então você pode converter quantos PDFs quiser sem conta, sem marca d'água e sem limites." },
+    ],
+  },
+  "merge-pdf": {
+    faqTitle: "Mesclar arquivos PDF — perguntas frequentes",
+    faq: [
+      { question: "Como combino arquivos PDF?", answer: "Adicione dois ou mais PDFs, arraste as miniaturas dos arquivos para a ordem desejada e clique em «Mesclar e baixar». As páginas são unidas de cima para baixo nessa ordem em um único PDF." },
+      { question: "Posso controlar a ordem em que são mesclados?", answer: "Sim. Cada arquivo mostra uma miniatura e um emblema com número; arraste-os para reordená-los antes de mesclar. Você vê exatamente o que vai onde antes de clicar, não depois." },
+      { question: "Meus arquivos são enviados a um servidor?", answer: "Não. Tudo roda localmente no seu navegador: a mesclagem é feita no seu dispositivo e seus arquivos nunca são enviados a lugar nenhum. Não é necessária conta nem cadastro." },
+      { question: "Há um limite de tamanho de arquivo ou de páginas?", answer: "Não há um teto fixo. Como todo o trabalho roda no seu navegador, o limite prático é a memória do seu dispositivo: arquivos muito grandes ou muitos ao mesmo tempo podem ficar lentos em dispositivos com pouca RAM." },
+      { question: "Por que um dos meus PDFs foi ignorado?", answer: "PDFs protegidos com senha ou criptografados não podem ser lidos, então ficam de fora com um aviso. Desbloqueie-os ou remova a senha primeiro e adicione o arquivo novamente." },
+      { question: "É grátis?", answer: "Sim: completamente grátis, sem marca d'água e sem cadastro. O arquivo mesclado é baixado como um único PDF." },
+    ],
+  },
+  "split-pdf": {
+    faqTitle: "Dividir um PDF — perguntas frequentes",
+    faq: [
+      { question: "Como divido um PDF?", answer: "Envie o PDF e clique nas ✂ entre duas páginas quaisquer para definir um ponto de corte. Você pode adicionar quantos cortes quiser, ou usar «Dividir a cada N páginas» para colocá-los automaticamente. Quando clicar em «Dividir e baixar», cada segmento é salvo como seu próprio PDF, todos agrupados em um único ZIP." },
+      { question: "Como sei o que vai em cada arquivo?", answer: "Antes de baixar, as páginas são coloridas e rotuladas como «Arquivo 1», «Arquivo 2» e assim por diante, e um contador em tempo real informa exatamente quantos arquivos serão criados, sem surpresas." },
+      { question: "Meu arquivo é enviado a algum lugar?", answer: "Não. Toda a divisão roda localmente no seu navegador: o PDF é lido, cortado e comprimido no seu dispositivo e nunca é enviado a um servidor. Nada sai do seu computador." },
+      { question: "Há um limite de tamanho de arquivo ou de páginas?", answer: "Não há um teto fixo. Como tudo roda no seu navegador, o limite prático é a memória do seu dispositivo: PDFs muito grandes ou com muitas páginas demoram mais para renderizar e podem exigir muito de um celular ou notebook antigo." },
+      { question: "O que recebo de volta e é grátis?", answer: "Você recebe um ZIP com um PDF por segmento (nomeados como document-part-1.pdf, document-part-2.pdf). Mesmo que defina apenas um corte, o resultado ainda é um ZIP. É completamente grátis, sem cadastro nem marca d'água. Observação: PDFs protegidos com senha devem ser desbloqueados primeiro." },
+    ],
+  },
+  "jpg-to-pdf": {
+    faqTitle: "Imagens para PDF — perguntas frequentes",
+    faq: [
+      { question: "Como converto imagens em um PDF?", answer: "Adicione suas imagens, arraste as miniaturas para a ordem desejada e clique em «Converter para PDF». Cada imagem se torna uma página, de cima para baixo, em um único arquivo para baixar." },
+      { question: "Quais formatos de imagem são suportados?", answer: "JPG, PNG, WebP, GIF e BMP. HEIC (o formato em que iPhones costumam salvar fotos) ainda não é suportado: converta-as para JPG primeiro, ou mude a configuração da câmera do iPhone para «Mais compatível»." },
+      { question: "Posso combinar muitas imagens em um único PDF?", answer: "Sim. Adicione quantas quiser e arraste-as para reordená-las: elas são combinadas em um único PDF exatamente nessa ordem, uma imagem por página." },
+      { question: "Minhas imagens são enviadas a algum lugar?", answer: "Não. Tudo roda localmente no seu navegador: o PDF é gerado no seu dispositivo e suas imagens nunca são enviadas a um servidor nem armazenadas em nenhum lugar." },
+      { question: "Há um limite de tamanho ou de quantidade de arquivos?", answer: "Não há um limite fixo. Como tudo acontece no seu dispositivo, o teto prático é a memória do seu dispositivo: imagens de alta resolução muito grandes ou em grande quantidade podem deixar um celular antigo ou um notebook com pouca RAM mais lento." },
+      { question: "É grátis? Preciso de conta?", answer: "Sim, é completamente grátis, sem cadastro, sem marca d'água e sem precisar de e-mail. Só abra a página e comece." },
+    ],
+  },
+  "png-to-pdf": {
+    faqTitle: "Imagens para PDF — perguntas frequentes",
+    faq: [
+      { question: "Como converto imagens em um PDF?", answer: "Adicione suas imagens, arraste as miniaturas para a ordem desejada e clique em «Converter para PDF». Cada imagem se torna uma página, de cima para baixo, em um único arquivo para baixar." },
+      { question: "Quais formatos de imagem são suportados?", answer: "JPG, PNG, WebP, GIF e BMP. HEIC (o formato em que iPhones costumam salvar fotos) ainda não é suportado: converta-as para JPG primeiro, ou mude a configuração da câmera do iPhone para «Mais compatível»." },
+      { question: "Posso combinar muitas imagens em um único PDF?", answer: "Sim. Adicione quantas quiser e arraste-as para reordená-las: elas são combinadas em um único PDF exatamente nessa ordem, uma imagem por página." },
+      { question: "Minhas imagens são enviadas a algum lugar?", answer: "Não. Tudo roda localmente no seu navegador: o PDF é gerado no seu dispositivo e suas imagens nunca são enviadas a um servidor nem armazenadas em nenhum lugar." },
+      { question: "Há um limite de tamanho ou de quantidade de arquivos?", answer: "Não há um limite fixo. Como tudo acontece no seu dispositivo, o teto prático é a memória do seu dispositivo: imagens de alta resolução muito grandes ou em grande quantidade podem deixar um celular antigo ou um notebook com pouca RAM mais lento." },
+      { question: "É grátis? Preciso de conta?", answer: "Sim, é completamente grátis, sem cadastro, sem marca d'água e sem precisar de e-mail. Só abra a página e comece." },
+    ],
+  },
+  "pdf-to-jpg": {
+    faqTitle: "PDF para imagem — perguntas frequentes",
+    faq: [
+      { question: "Como converto um PDF em JPG ou PNG?", answer: "Solte um PDF e cada página aparece como uma miniatura. Clique nas páginas para incluí-las ou excluí-las (ou use «Selecionar tudo» / «Desmarcar tudo»), escolha JPG ou PNG e clique em «Converter e baixar». Uma única página é baixada como uma imagem; várias páginas são agrupadas em um ZIP." },
+      { question: "Meu PDF é enviado a algum lugar?", answer: "Não. Todo o processo roda no seu navegador: o PDF é lido e renderizado em imagens localmente, e o download é gerado no seu dispositivo. Nada é enviado a um servidor, então seu arquivo nunca sai do seu computador." },
+      { question: "JPG ou PNG, qual devo escolher?", answer: "PNG não tem perdas, então é ideal para texto nítido, desenhos lineares e capturas de tela. Arquivos JPG são menores e funcionam bem para fotos e digitalizações. Um detalhe importante: JPG não suporta transparência, então áreas transparentes de uma página são achatadas sobre um fundo branco." },
+      { question: "Há um limite de tamanho de arquivo ou de páginas?", answer: "Não há um teto fixo nem cadastro. Como tudo é processado no seu navegador, o limite real é a memória do seu dispositivo: PDFs muito grandes ou com muitas páginas usam mais RAM e demoram mais, especialmente em celulares ou computadores antigos." },
+      { question: "Meu PDF não abre, o que aconteceu?", answer: "A causa mais comum é um PDF protegido com senha ou criptografado, que a ferramenta não consegue ler; remova a senha primeiro e tente novamente. O resultado é renderizado em 2× para imagens nítidas, mas continua sendo uma imagem: o texto é convertido em pixels, então você não poderá selecioná-lo nem pesquisá-lo depois." },
+      { question: "É grátis?", answer: "Sim: completamente grátis, sem conta, sem marca d'água e sem limite de uso." },
+    ],
+  },
+  "pdf-to-png": {
+    faqTitle: "PDF para imagem — perguntas frequentes",
+    faq: [
+      { question: "Como converto um PDF em JPG ou PNG?", answer: "Solte um PDF e cada página aparece como uma miniatura. Clique nas páginas para incluí-las ou excluí-las (ou use «Selecionar tudo» / «Desmarcar tudo»), escolha JPG ou PNG e clique em «Converter e baixar». Uma única página é baixada como uma imagem; várias páginas são agrupadas em um ZIP." },
+      { question: "Meu PDF é enviado a algum lugar?", answer: "Não. Todo o processo roda no seu navegador: o PDF é lido e renderizado em imagens localmente, e o download é gerado no seu dispositivo. Nada é enviado a um servidor, então seu arquivo nunca sai do seu computador." },
+      { question: "JPG ou PNG, qual devo escolher?", answer: "PNG não tem perdas, então é ideal para texto nítido, desenhos lineares e capturas de tela. Arquivos JPG são menores e funcionam bem para fotos e digitalizações. Um detalhe importante: JPG não suporta transparência, então áreas transparentes de uma página são achatadas sobre um fundo branco." },
+      { question: "Há um limite de tamanho de arquivo ou de páginas?", answer: "Não há um teto fixo nem cadastro. Como tudo é processado no seu navegador, o limite real é a memória do seu dispositivo: PDFs muito grandes ou com muitas páginas usam mais RAM e demoram mais, especialmente em celulares ou computadores antigos." },
+      { question: "Meu PDF não abre, o que aconteceu?", answer: "A causa mais comum é um PDF protegido com senha ou criptografado, que a ferramenta não consegue ler; remova a senha primeiro e tente novamente. O resultado é renderizado em 2× para imagens nítidas, mas continua sendo uma imagem: o texto é convertido em pixels, então você não poderá selecioná-lo nem pesquisá-lo depois." },
+      { question: "É grátis?", answer: "Sim: completamente grátis, sem conta, sem marca d'água e sem limite de uso." },
+    ],
+  },
+  "delete-page": {
+    faqTitle: "Excluir páginas de PDF — perguntas frequentes",
+    faq: [
+      { question: "Como excluo páginas de um PDF?", answer: "Envie seu PDF, clique nas páginas que quiser remover (ficam vermelhas com um ✕) e clique em «Excluir e baixar». Um contador mostra quantas páginas serão excluídas e quantas restam." },
+      { question: "E se eu marcar a página errada?", answer: "Basta clicar nela novamente para mantê-la: a marcação vermelha e o ✕ somem. Você pode marcar e desmarcar quantas vezes quiser antes de baixar." },
+      { question: "Meu arquivo é enviado a algum lugar?", answer: "Não. Todo o processo roda no seu navegador usando a própria memória do seu dispositivo: seu PDF nunca é enviado a um servidor nem sai do seu dispositivo." },
+      { question: "Há um limite de tamanho de arquivo?", answer: "Não há um teto fixo. Como o trabalho acontece localmente, o limite prático é a memória do seu dispositivo: PDFs muito grandes ou com muitas imagens podem ficar lentos em máquinas de baixo desempenho." },
+      { question: "O que recebo de volta?", answer: "Um novo PDF com as páginas marcadas excluídas, baixado como «seuarquivo-pages-removed.pdf». As demais páginas mantêm seu conteúdo e ordem originais; seu arquivo original não é modificado. Você precisa manter pelo menos uma página." },
+      { question: "É grátis?", answer: "Sim: completamente grátis, sem cadastro nem conta necessária." },
+    ],
+  },
+  "rotate-page": {
+    faqTitle: "Girar páginas de PDF — perguntas frequentes",
+    faq: [
+      { question: "Como giro páginas de um PDF?", answer: "Envie o PDF e clique em uma página para girá-la 90° no sentido horário. Continue clicando na mesma página para rodá-la 180°, 270° e de volta. Ou clique em «Girar tudo 90°» para girar todas as páginas de uma vez e baixe." },
+      { question: "Posso girar apenas uma página, ou páginas diferentes com ângulos diferentes?", answer: "Sim. Cada página é girada individualmente, então você pode corrigir apenas uma digitalização de lado ou ajustar diferentes páginas em diferentes ângulos: só mudam as páginas em que você clica." },
+      { question: "Meu arquivo é enviado a algum lugar?", answer: "Não. Tudo roda localmente no seu navegador: a rotação é escrita no PDF no seu dispositivo e o arquivo nunca é enviado a um servidor nem sai do seu dispositivo." },
+      { question: "Há um limite de tamanho de arquivo ou de páginas?", answer: "Não impomos um limite fixo. Como tudo acontece no seu navegador, o teto prático depende da memória do seu dispositivo: PDFs muito grandes podem ficar lentos em celulares ou tablets com pouca memória." },
+      { question: "Girar perde qualidade ou muda o conteúdo?", answer: "Não. A rotação apenas ajusta o indicador de orientação de cada página; o texto, as imagens e a resolução ficam exatamente iguais. Nada é rerenderizado nem comprimido." },
+      { question: "É grátis? Preciso de conta?", answer: "É completamente grátis, sem cadastro. Abra a página, gire e baixe." },
+    ],
+  },
+  "reorder-pages": {
+    faqTitle: "Reordenar páginas de PDF — perguntas frequentes",
+    faq: [
+      { question: "Como reordeno as páginas de um PDF?", answer: "Envie seu PDF, arraste as miniaturas das páginas para a ordem desejada e clique em «Aplicar e baixar». Não é preciso digitar números de página: você as organiza visualmente." },
+      { question: "Posso excluir páginas ao mesmo tempo?", answer: "Sim. Clique no ✕ de qualquer miniatura para descartar aquela página e baixe. Reordenar e excluir páginas acontecem no mesmo passo." },
+      { question: "Meu arquivo é enviado a algum lugar?", answer: "Não. Tudo roda localmente no seu navegador: seu PDF nunca é enviado nem sai do seu dispositivo." },
+      { question: "Há um limite de tamanho de arquivo ou de páginas?", answer: "Não há um limite fixo. PDFs muito grandes simplesmente dependem da memória do seu dispositivo, já que todo o trabalho acontece no seu computador." },
+      { question: "Reordenar vai reduzir a qualidade?", answer: "Não. As páginas mantêm seu conteúdo e resolução originais; só a ordem muda, nada é rerenderizado nem comprimido." },
+      { question: "É grátis? Preciso de conta?", answer: "É completamente grátis, sem cadastro necessário." },
+    ],
+  },
+  "add-page": {
+    faqTitle: "Inserir páginas em um PDF — perguntas frequentes",
+    faq: [
+      { question: "Como insiro páginas em um PDF?", answer: "Envie seu PDF, clique onde quer inserir (bem no início ou depois de uma página específica), escolha o arquivo a inserir e clique em «Inserir e baixar»." },
+      { question: "O que posso inserir?", answer: "Outro PDF (todas as suas páginas são colocadas naquele ponto) ou uma única imagem PNG/JPG, que é adicionada como uma nova página." },
+      { question: "Meu arquivo é enviado?", answer: "Não. Tudo roda localmente no seu navegador usando pdf-lib: seus arquivos nunca saem do seu dispositivo e nada é enviado a um servidor." },
+      { question: "O que recebo de volta?", answer: "Um único PDF novo com as páginas inseridas no lugar, baixado como «<seu-arquivo>-with-insert.pdf». Seu arquivo original não é modificado." },
+      { question: "Há um limite de tamanho de arquivo?", answer: "Não há um limite fixo, mas como tudo acontece no seu navegador, PDFs muito grandes dependem da memória do seu dispositivo. Se um arquivo muito grande tiver dificuldades, tente com um menor." },
+      { question: "É grátis?", answer: "Sim: é completamente grátis, sem cadastro nem conta necessária." },
+    ],
+  },
+  "page-numbers": {
+    faqTitle: "Adicionar números de página a um PDF — perguntas frequentes",
+    faq: [
+      { question: "Como adiciono números de página a um PDF?", answer: "Envie seu PDF, escolha onde o número vai (acima ou abaixo, esquerda/centro/direita), escolha o formato e o número inicial e defina o intervalo de páginas. A prévia em tempo real mostra exatamente como ficará; clique em «Adicionar números e baixar»." },
+      { question: "Meu arquivo é enviado a algum lugar?", answer: "Não. Tudo roda localmente no seu navegador: o PDF é lido, numerado e salvo no seu dispositivo. Seu arquivo nunca é enviado nem sai do seu computador." },
+      { question: "Quais formatos e posições posso usar?", answer: "Quatro formatos: só o número (1), Página 1, 1 / N ou 1 de N. Seis posições: acima ou abaixo, combinadas com esquerda, centro ou direita. Você também pode definir uma margem pequena, média ou grande." },
+      { question: "Posso começar de um número específico ou numerar apenas algumas páginas?", answer: "Sim. Use «Começar em» para o primeiro número (útil se a capa não deve contar) e use o intervalo de/até para numerar apenas uma parte do documento. A contagem continua ao longo do intervalo escolhido." },
+      { question: "Há um limite de tamanho de arquivo?", answer: "Não há um teto fixo. Como o trabalho acontece no seu navegador, PDFs muito grandes são limitados apenas pela memória do seu dispositivo; na maioria das máquinas, documentos típicos passam sem problema." },
+      { question: "É grátis? Preciso de conta?", answer: "Sim, é completamente grátis e não requer cadastro. Só abra a página e comece." },
+    ],
+  },
+  "watermark-pdf": {
+    faqTitle: "Adicionar marca d'água a um PDF — perguntas frequentes",
+    faq: [
+      { question: "Como adiciono uma marca d'água a um PDF?", answer: "Envie o PDF, crie uma marca d'água de texto ou imagem e ajuste sua posição, opacidade e rotação enquanto vê a prévia em tempo real. Escolha quais páginas carimbar e clique em «Aplicar e baixar»." },
+      { question: "Posso usar uma imagem ou logotipo em vez de texto?", answer: "Sim. Mude para o modo «Imagem» para colocar um logotipo ou imagem como marca d'água. Em qualquer caso, você pode ajustar a posição, a opacidade e a rotação." },
+      { question: "Carimba em todas as páginas?", answer: "Você decide. A marca d'água vai nas páginas que você selecionar, então pode marcar o documento inteiro ou apenas páginas específicas." },
+      { question: "Meus arquivos são enviados a algum lugar?", answer: "Não. A marca d'água é aplicada diretamente no seu navegador: seu PDF nunca sai do seu dispositivo e nada é enviado a um servidor." },
+      { question: "Há um limite de tamanho de arquivo?", answer: "Não há um teto fixo. Como tudo roda localmente, PDFs muito grandes são limitados apenas pela memória do seu dispositivo, que na maioria das máquinas é suficiente." },
+      { question: "É grátis? Preciso de conta?", answer: "É grátis e sem cadastro. Só abra a página, adicione seu PDF e baixe o arquivo com marca d'água." },
+    ],
+  },
+  "sign-pdf": {
+    faqTitle: "Assinar PDF — perguntas frequentes",
+    faq: [
+      { question: "Como assino um PDF?", answer: "Envie seu PDF, desenhe ou escreva sua assinatura, escolha a página, a posição e o tamanho e clique em «Assinar e baixar». Você recebe um novo arquivo chamado …-signed.pdf." },
+      { question: "Meu arquivo é enviado a algum lugar?", answer: "Não. Todo o processo roda no seu navegador: a página é renderizada e sua assinatura é carimbada no PDF localmente. Seu arquivo nunca sai do seu dispositivo e nada é enviado a um servidor." },
+      { question: "Posso desenhar minha assinatura ou preciso digitá-la?", answer: "Qualquer uma das opções funciona. Desenhe com o mouse ou o dedo no painel, ou mude para «Digitar» para representar seu nome com uma fonte caligráfica. Clique em «Limpar» para refazer uma assinatura desenhada." },
+      { question: "Há um limite de tamanho de arquivo e tem algum custo?", answer: "É grátis e sem cadastro. Não há um teto fixo de tamanho, mas como tudo é processado em memória, PDFs muito grandes dependem da RAM do seu dispositivo: um arquivo enorme pode ficar lento em um celular ou notebook antigo." },
+      { question: "Onde exatamente fica a assinatura e há algum detalhe a saber?", answer: "Ela é colocada em uma de nove posições de ancoragem (cantos, bordas, centro) e ajustada com o controle deslizante de tamanho; você não pode arrastá-la para um pixel exato. É carimbada em uma página por vez, então repita o processo para cada página que precisar assinar. PDFs criptografados ou protegidos com senha devem ser desbloqueados primeiro." },
+      { question: "Isso conta como uma assinatura eletrônica legal?", answer: "A assinatura é carimbada na página como uma imagem, não como uma assinatura digital baseada em certificado. Assinaturas eletrônicas escritas e desenhadas são aceitas em muitos documentos do dia a dia, mas verifique os requisitos específicos do seu caso de uso." },
+    ],
+  },
+  "translate-pdf": {
+    faqTitle: "Traduzir um PDF — perguntas frequentes",
+    faq: [
+      { question: "Como traduzo um PDF?", answer: "Envie seu PDF, escolha um idioma de destino da lista e clique em «Traduzir». O texto é extraído do arquivo e traduzido pela IA; depois você pode copiá-lo ou baixá-lo como um arquivo .txt." },
+      { question: "Meu arquivo é enviado? É privado?", answer: "O PDF é lido diretamente no seu navegador: o arquivo em si nunca sai do seu dispositivo. Apenas o texto simples extraído dele é enviado à IA para tradução. O documento original, a formatação e as imagens nunca são enviados." },
+      { question: "Há um limite de tamanho?", answer: "Sim: cerca de 14.000 caracteres por execução, aproximadamente 10 páginas. Se o seu documento for mais longo, divida-o em partes menores e traduza uma por vez." },
+      { question: "Para quais idiomas posso traduzir?", answer: "Mais de 18, incluindo inglês, chinês simplificado e tradicional, espanhol, francês, alemão, japonês, coreano, português, italiano, russo, árabe, hindi e outros. A ferramenta detecta automaticamente o idioma de origem, então você só escolhe o de destino." },
+      { question: "Preserva o layout original? O que recebo de volta?", answer: "Ainda não: esta versão traduz apenas o conteúdo de texto e fornece o texto traduzido para copiar ou baixar. A tradução que preserva o layout e reconstrói o PDF está no roteiro. Observação: se o PDF for uma digitalização ou imagem sem texto selecionável, não há nada para extrair; aplique OCR primeiro." },
+      { question: "É grátis? Posso confiar nela para documentos legais?", answer: "Sim, é grátis para usar. A tradução com IA é ótima para entender um documento e conseguir um bom rascunho inicial, mas não é uma tradução certificada: para fins legais, oficiais ou certificados, peça a uma pessoa qualificada para revisar ou traduzir." },
+    ],
+  },
+};
+
 export function getLocalizedToolConfig(
   locale: RouteLocale,
   slug: ToolSlug,
@@ -2948,6 +3246,10 @@ export function getLocalizedToolConfig(
   }
   if (locale === "es" && esFaq[slug]) {
     return { ...base, faqTitle: esFaq[slug]!.faqTitle, faq: esFaq[slug]!.faq };
+  }
+  // cast: remove when "pt" is added to routeLocales
+  if ((locale as string) === "pt" && ptFaq[slug]) {
+    return { ...base, faqTitle: ptFaq[slug]!.faqTitle, faq: ptFaq[slug]!.faq };
   }
   if (locale === "en" && enFaq[slug]) {
     return { ...base, faqTitle: enFaq[slug]!.faqTitle, faq: enFaq[slug]!.faq };
