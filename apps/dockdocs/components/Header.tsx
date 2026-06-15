@@ -11,7 +11,7 @@ type NavItem = { name: string; slug: string; soon?: boolean };
 type NavCol = { heading?: string; items: NavItem[] };
 type NavCat = { label: string; tier: string; cols: NavCol[] };
 
-export const navCategories: Record<"en" | "zh" | "es" | "pt", NavCat[]> = {
+export const navCategories: Record<"en" | "zh" | "es" | "pt" | "fr", NavCat[]> = {
   en: [
     {
       label: "PDF tools",
@@ -484,6 +484,124 @@ export const navCategories: Record<"en" | "zh" | "es" | "pt", NavCat[]> = {
       ],
     },
   ],
+  fr: [
+    {
+      label: "Outils PDF",
+      tier: "Free",
+      cols: [
+        {
+          heading: "Convertir",
+          items: [
+            { name: "PDF en Word", slug: "/pdf-to-word" },
+            { name: "PDF en Excel", slug: "/pdf-to-excel" },
+            { name: "PDF en PPT", slug: "/pdf-to-ppt" },
+            { name: "PDF en PDF/A", slug: "/pdf-to-pdfa" },
+            { name: "PDF en image", slug: "/pdf-to-image" },
+            { name: "PDF en HTML", slug: "/pdf-to-html" },
+            { name: "PDF en Markdown", slug: "/pdf-to-markdown" },
+            { name: "Word en PDF", slug: "/word-to-pdf" },
+            { name: "Excel en PDF", slug: "/excel-to-pdf" },
+            { name: "PPT en PDF", slug: "/ppt-to-pdf" },
+            { name: "Image en PDF", slug: "/images-to-pdf" },
+            { name: "HTML en PDF", slug: "/html-to-pdf" },
+          ],
+        },
+        {
+          heading: "Organiser",
+          items: [
+            { name: "Diviser PDF", slug: "/split-pdf" },
+            { name: "Compresser PDF", slug: "/compress-pdf" },
+            { name: "Supprimer des pages", slug: "/delete-page" },
+            { name: "Faire pivoter des pages", slug: "/rotate-page" },
+            { name: "Réorganiser les pages", slug: "/reorder-pages" },
+            { name: "Ajouter une page", slug: "/add-page" },
+            { name: "Filigrane PDF", slug: "/watermark-pdf" },
+            { name: "Numéros de page", slug: "/page-numbers" },
+            { name: "Rogner PDF", slug: "/crop-pdf" },
+            { name: "Caviarder PDF", slug: "/redact-pdf" },
+            { name: "Signer PDF", slug: "/sign-pdf" },
+          ],
+        },
+        {
+          heading: "Sécurité et OCR",
+          items: [
+            { name: "Protéger PDF", slug: "/protect-pdf" },
+            { name: "Déverrouiller PDF", slug: "/unlock-pdf" },
+            { name: "OCR PDF", slug: "/ocr-pdf" },
+          ],
+        },
+      ],
+    },
+    {
+      label: "Traitement par lots",
+      tier: "Plus",
+      cols: [
+        {
+          items: [
+            { name: "Fusionner PDF", slug: "/merge-pdf" },
+            { name: "Compression par lots", slug: "/batch-compress" },
+            { name: "PDF en image par lots", slug: "/batch-pdf-to-image" },
+            { name: "Chiffrement par lots", slug: "/batch-protect-pdf" },
+            { name: "Renommage par lots", slug: "/batch-rename-pdf" },
+            { name: "Filigrane par lots", slug: "/batch-watermark-pdf" },
+            { name: "Numéros de page par lots", slug: "/batch-page-numbers" },
+            { name: "Division par lots", slug: "/batch-split-merge" },
+            { name: "Rotation par lots", slug: "/batch-rotate-pdf" },
+            { name: "PDF en Word/Excel par lots", slug: "/batch-pdf-to-office" },
+            { name: "Office en PDF par lots", slug: "/batch-office-to-pdf" },
+            { name: "Traduction par lots", slug: "/batch-translate" },
+            { name: "Corriger scans par lots", slug: "/batch-fix-scans" },
+          ],
+        },
+      ],
+    },
+    {
+      label: "Flux de travail IA",
+      tier: "Plus",
+      cols: [
+        {
+          heading: "IA pour un document",
+          items: [
+            { name: "Espace de travail IA", slug: "/ai-workspace" },
+            { name: "Chat avec PDF", slug: "/chat-with-pdf" },
+            { name: "Résumé PDF", slug: "/ai-summary" },
+            { name: "Traduire PDF", slug: "/translate-pdf" },
+            { name: "Flashcards PDF", slug: "/flashcards" },
+            { name: "Analyse de risques du contrat", slug: "/contract-risk" },
+            { name: "Signaux d'alerte du bail", slug: "/lease-redflag" },
+            { name: "Matrice de conformité d'appel d'offres", slug: "/govbid-matrix" },
+          ],
+        },
+        {
+          heading: "IA pour plusieurs documents",
+          items: [
+            { name: "Comparer des documents", slug: "/compare" },
+            { name: "Questions multi-documents", slug: "/compare" },
+            { name: "Comparer des versions", slug: "/redline" },
+            { name: "Extraire vers Excel", slug: "/extract-to-excel" },
+            { name: "Résumé par lots", slug: "/batch-summary" },
+            { name: "Classer PDF", slug: "/batch-sort" },
+          ],
+        },
+      ],
+    },
+    {
+      label: "Par profession",
+      tier: "Soon",
+      cols: [
+        {
+          items: [
+            { name: "Juridique et contrats", slug: "/pricing", soon: true },
+            { name: "Finance et fiscalité", slug: "/pricing", soon: true },
+            { name: "Recherche et académique", slug: "/pricing", soon: true },
+            { name: "Banque et finance", slug: "/pricing", soon: true },
+            { name: "Architecture et ingénierie", slug: "/pricing", soon: true },
+            { name: "Santé et médecine", slug: "/pricing", soon: true },
+          ],
+        },
+      ],
+    },
+  ],
 };
 
 const pageLinks = {
@@ -501,10 +619,10 @@ const pageLinks = {
 
 type Locale = "en" | "zh";
 
-function stripLocale(p: string): "en" | "zh" | "es" | "pt" {
+function stripLocale(p: string): "en" | "zh" | "es" | "pt" | "fr" {
   const s = p.split("/").filter(Boolean);
   const first = s[0];
-  return first === "zh" || first === "es" || first === "pt" ? first : "en";
+  return first === "zh" || first === "es" || first === "pt" || first === "fr" ? first : "en";
 }
 function lh(h: string, l: string) {
   return l === defaultLocale ? h : `/${l}${h}`;
@@ -528,7 +646,7 @@ export function Header() {
   const locale = stripLocale(pathname ?? "/");
 
   const cats = navCategories[locale] ?? navCategories.en;
-  const pages = pageLinks[(locale === "es" || locale === "pt") ? "en" : locale as "en" | "zh"] ?? pageLinks.en;
+  const pages = pageLinks[(locale === "es" || locale === "pt" || locale === "fr") ? "en" : locale as "en" | "zh"] ?? pageLinks.en;
 
   useEffect(() => {
     setLight(document.documentElement.classList.contains("light"));
@@ -582,7 +700,7 @@ export function Header() {
         onClick={() => setLangOpen((v) => !v)}
         className="flex w-full items-center justify-between rounded-[var(--radius-sm)] px-3 py-2 text-left text-[13px] font-medium text-[color:var(--muted)] transition hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)]"
       >
-        <span>{locale === "zh" ? "语言" : locale === "es" ? "Idioma" : locale === "pt" ? "Idioma" : "Language"}</span>
+        <span>{locale === "zh" ? "语言" : locale === "es" ? "Idioma" : locale === "pt" ? "Idioma" : locale === "fr" ? "Langue" : "Language"}</span>
         <span className="flex items-center gap-1.5">
           <span className="text-[12px] text-[color:var(--faint)]">{localeLabels[locale as keyof typeof localeLabels] ?? locale}</span>
           <svg className="h-3 w-3 rotate-90 opacity-60" viewBox="0 0 12 12" fill="none">
@@ -619,7 +737,7 @@ export function Header() {
         onClick={() => setLangOpen((v) => !v)}
         className="flex w-full items-center justify-between rounded-[var(--radius-sm)] px-3 py-2 text-left text-[13px] font-medium text-[color:var(--muted)] transition hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)]"
       >
-        <span>{locale === "zh" ? "语言" : locale === "es" ? "Idioma" : locale === "pt" ? "Idioma" : "Language"}</span>
+        <span>{locale === "zh" ? "语言" : locale === "es" ? "Idioma" : locale === "pt" ? "Idioma" : locale === "fr" ? "Langue" : "Language"}</span>
         <span className="flex items-center gap-1.5">
           <span className="text-[12px] text-[color:var(--faint)]">{localeLabels[locale as keyof typeof localeLabels] ?? locale}</span>
           <svg className={`h-3 w-3 transition-transform ${langOpen ? "rotate-180" : ""}`} viewBox="0 0 12 12" fill="none">
@@ -714,8 +832,8 @@ export function Header() {
               className="hidden rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--background)] px-3 py-1.5 text-[13px] font-medium text-[color:var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[color:var(--foreground)] md:inline-flex"
             >
               {authUser
-                ? (authUser.name ?? authUser.email ?? (locale === "zh" ? "账户" : locale === "es" ? "Cuenta" : locale === "pt" ? "Conta" : "Account"))
-                : (locale === "zh" ? "登录" : locale === "es" ? "Iniciar sesión" : locale === "pt" ? "Entrar" : "Sign in")}
+                ? (authUser.name ?? authUser.email ?? (locale === "zh" ? "账户" : locale === "es" ? "Cuenta" : locale === "pt" ? "Conta" : locale === "fr" ? "Compte" : "Account"))
+                : (locale === "zh" ? "登录" : locale === "es" ? "Iniciar sesión" : locale === "pt" ? "Entrar" : locale === "fr" ? "Connexion" : "Sign in")}
             </button>
 
             {/* Consolidated "More" menu (desktop) — Pricing/Blog/About + language + theme */}
@@ -804,8 +922,8 @@ export function Header() {
                     className="ml-auto rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--background)] px-3 py-1.5 text-[13px] font-semibold text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)]"
                   >
                     {authUser
-                      ? (authUser.name ?? authUser.email ?? (locale === "zh" ? "账户" : locale === "es" ? "Cuenta" : locale === "pt" ? "Conta" : "Account"))
-                      : (locale === "zh" ? "登录" : locale === "es" ? "Iniciar sesión" : locale === "pt" ? "Entrar" : "Sign in")}
+                      ? (authUser.name ?? authUser.email ?? (locale === "zh" ? "账户" : locale === "es" ? "Cuenta" : locale === "pt" ? "Conta" : locale === "fr" ? "Compte" : "Account"))
+                      : (locale === "zh" ? "登录" : locale === "es" ? "Iniciar sesión" : locale === "pt" ? "Entrar" : locale === "fr" ? "Connexion" : "Sign in")}
                   </button>
                 </div>
               </div>
