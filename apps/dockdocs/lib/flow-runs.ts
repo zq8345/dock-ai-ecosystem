@@ -76,6 +76,12 @@ export function relativeTime(iso: string, locale: "en" | "zh" | "es" | "pt" | "f
     if (hours < 24) return `há ${hours} h`;
     return `há ${days} dia${days > 1 ? "s" : ""}`;
   }
+  if (locale === "fr") {
+    if (mins < 1) return "à l'instant";
+    if (mins < 60) return `il y a ${mins} min`;
+    if (hours < 24) return `il y a ${hours} h`;
+    return `il y a ${days} jour${days > 1 ? "s" : ""}`;
+  }
   if (mins < 1) return "just now";
   if (mins < 60) return `${mins}m ago`;
   if (hours < 24) return `${hours}h ago`;

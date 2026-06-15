@@ -2190,8 +2190,571 @@ export const runtimeCopy = {
       ],
     },
   },
+  fr: {
+    shell: {
+      header: {
+        aria: "Navigation DockDocs",
+        homeAria: "Accueil DockDocs",
+        tagline: "Plateforme de documents IA",
+        tools: "Outils",
+        menu: "Menu",
+        closeMenu: "Fermer le menu",
+        featureMenu: "Menu des fonctionnalités",
+        utilityMenu: "Compte et liens",
+        free: "GRATUIT",
+        plus: "PLUS",
+        comingSoon: "Bientôt",
+      },
+      nav: [
+        { name: "IA", href: "/fr/#ai" },
+        { name: "Convertir", href: "/pdf-to-word", slug: "pdf-to-word" },
+        { name: "Optimiser", href: "/compress-pdf", slug: "compress-pdf" },
+        { name: "Tableau de bord", href: "/dashboard", slug: "dashboard" },
+        { name: "Mes conversations", href: "/my-chats" },
+        { name: "Tarifs", href: "/pricing" },
+        { name: "Compte", href: "/account" },
+      ],
+      brand: {
+        aria: "Navigation de la marque",
+        products: [
+          {
+            name: "DockDocs",
+            href: "https://dockdocs.app",
+            description: "Espace de travail de documents IA pour fichiers, résumés, conversion et révision.",
+          },
+          {
+            name: "DockIMG",
+            href: "https://dockimg.app",
+            description: "Espace de travail d'images IA pour l'édition visuelle, le nettoyage et la conversion.",
+          },
+          {
+            name: "DockSEO",
+            href: "https://dockseo.app",
+            description: "Espace de travail de recherche pour les extraits, métadonnées et révision de contenu.",
+          },
+          {
+            name: "DockText",
+            href: "https://docktext.app",
+            description: "Espace de travail d'écriture IA pour le nettoyage, les résumés et la mise en forme.",
+          },
+        ],
+      },
+      footer: {
+        aria: "Navigation du pied de page",
+        copyrightPrefix: "(c)",
+        links: [
+          { name: "Espaces associés", href: "/fr/#related-tools" },
+          { name: "DockDocs", href: "/fr/" },
+          { name: "Politique de confidentialité", href: "/fr/privacy-policy/" },
+          { name: "Conditions", href: "/fr/terms/" },
+          { name: "Plan du site", href: "/fr/sitemap/" },
+        ],
+      },
+      relatedTools: {
+        title: "Espaces associés",
+        description:
+          "Naviguez entre les produits Dock avec un espace de travail cohérent sur ordinateur et mobile.",
+      },
+      account: {
+        account: "Compte",
+        myChats: "Mes conversations",
+        signedIn: "Connecté",
+        logout: "Se déconnecter",
+        continueGoogle: "Continuer avec Google",
+        email: "E-mail",
+        password: "Mot de passe",
+        login: "Se connecter",
+        signedOutTitle: "Compte de l'espace de travail",
+        signedOutDescription: "Connectez-vous pour accéder au compte, mettre à jour le plan et les points d'entrée de l'espace de travail en un seul menu.",
+        upgrade: "Passer à la version supérieure",
+        currentPlan: "Espace de travail gratuit",
+        actionFailed: "L'action de compte a échoué.",
+      },
+      utility: {
+        accountTitle: "Compte",
+        languageTitle: "Langue",
+        linksTitle: "Entreprise",
+        about: "À propos",
+        blog: "Blog",
+      },
+      toolTemplate: {
+        eyebrow: "Plateforme de documents IA",
+        schemaSlogan: "Plateforme de documents IA pour les flux de travail réels",
+      },
+      legal: {
+        privacy: "Politique de confidentialité",
+        terms: "Conditions",
+        sitemap: "Plan du site",
+      },
+      trust: {
+        localFirst: "Local en priorité",
+        exportReady: "Prêt à exporter",
+      },
+      metadata: {
+        title: "DockDocs — Espace de travail de documents IA",
+        description: "Outils de documents IA pour les PDF, fichiers Office, nettoyage de texte et flux de travail documentaires.",
+      },
+    },
+    common: {
+      upload: {
+        label: "Envoyer",
+        dragDrop: "Faites glisser le document ici",
+        selectedDescription: "Le fichier est sélectionné et prêt pour l'étape suivante.",
+        supported: "Formats acceptés",
+        limit: "Limite",
+        processing: "Traitement en cours",
+        successMessage: "L'état de l'environnement d'exécution est prêt et le résultat est disponible ci-dessous.",
+        states: {
+          empty: "En attente d'un fichier",
+          idle: "Prêt à envoyer",
+          selected: "Fichier sélectionné",
+          processing: "Traitement du document",
+          success: "Document prêt",
+          error: "Attention requise",
+        },
+      },
+      result: {
+        states: {
+          empty: "Aucun résultat",
+          processing: "Génération en cours",
+          success: "Prêt",
+          error: "Erreur",
+        },
+        resultUnavailable: "Résultat indisponible",
+        waitingForOutput: "En attente du résultat",
+        runtimeError: "L'environnement d'exécution a renvoyé une erreur.",
+        processingMessage:
+          "L'environnement d'exécution traite ce document. Le résultat apparaîtra ici une fois prêt.",
+        keyPoints: "Points clés",
+        nextActions: "Actions suivantes",
+        copy: "Copier",
+        download: "Télécharger",
+        startChat: "Démarrer le chat",
+      },
+      errors: {
+        unsupportedFile: "Type de fichier non pris en charge. Formats acceptés :",
+        fileTooLarge: "Le fichier dépasse la limite de 25 Mo.",
+      },
+    },
+    chat: {
+      heroEyebrow: "Chat avec PDF",
+      heroTitle: "Posez des questions fondées sur un PDF.",
+      heroDescription:
+        "Envoyez un PDF avec du texte sélectionnable, vérifiez l'état d'extraction de la source et posez des questions précises dans un espace de travail IA centré sur le document.",
+      primaryCta: "Ouvrir le chat",
+      secondaryCta: "Compresser un PDF",
+      metrics: [
+        { value: "12", label: "Limite de pages" },
+        { value: "40k", label: "Limite de texte" },
+        { value: "En direct", label: "Appel IA" },
+      ],
+      workspaceLabel: "Espace de travail DockDocs",
+      workspaceTitle: "Chat avec PDF",
+      mvp: "MVP",
+      document: "Document",
+      choosePdf: "Choisir un PDF",
+      uploadHelp: "Le texte est extrait localement avant l'envoi de la requête au fournisseur.",
+      documentStatus: "État du document",
+      untitled: "Document sans titre",
+      initialStatus: "Envoyez un PDF pour commencer.",
+      pdfRequiredStatus: "Un PDF est obligatoire.",
+      pdfRequiredError: "Veuillez choisir un fichier PDF.",
+      fileLimitStatus: "Limite de taille de fichier dépassée.",
+      fileLimitError: "Veuillez choisir un PDF de 25 Mo maximum.",
+      readingStatus: "Lecture du texte PDF dans votre navigateur.",
+      noTextStatus: "Aucun texte sélectionnable trouvé.",
+      noTextError: "Ce PDF ne contient pas de texte lisible. Une OCR est nécessaire avant de lancer le chat.",
+      extractionFailedStatus: "Échec de l'extraction du texte PDF.",
+      extractionFailedError: "Impossible de lire ce PDF.",
+      readyStatus: "Prêt : {characters} caractères extraits de {pages} page{plural}.",
+      sourceWaiting: "En attente du texte source",
+      sourceReady: "{characters} caractères prêts",
+      checks: ["Texte sélectionnable extrait", "Référence du fournisseur reçue", "Résultat généré"],
+      collectionsLabel: "Collections",
+      collections: [
+        { name: "Documents du conseil", count: "4 docs" },
+        { name: "Contrats", count: "9 docs" },
+        { name: "Notes de recherche", count: "6 docs" },
+      ],
+      historyLabel: "Historique des conversations",
+      defaultHistory: ["Réviser les risques de renouvellement", "Extraire les actions de suivi", "Comparer les clauses de police"],
+      aiChat: "Chat IA",
+      conversationTitle: "Posez une question sur le PDF",
+      conversationDescription:
+        "Un espace de travail IA fondé pour les questions sur les documents, les résumés, les références et les prochaines actions.",
+      messages: "Messages",
+      runtime: "Environnement d'exécution",
+      asking: "En cours",
+      starterTitle: "Commencez par une question fondée",
+      starterDescription:
+        "Envoyez un PDF avec du texte sélectionnable et posez des questions sur les faits, dates, clauses, risques ou actions fondées sur le fichier.",
+      suggestedQuestions: [
+        "Résumez les principaux points de décision",
+        "Quels risques ou blocages sont mentionnés ?",
+        "Listez les dates, responsables et actions à mener",
+      ],
+      knowledgeCards: [
+        {
+          title: "Résumé",
+          description: "Générez un résumé exécutif à partir du texte extrait du document.",
+          prompt: "Créez un résumé exécutif de ce PDF.",
+        },
+        {
+          title: "Risques",
+          description: "Identifiez les clauses floues, blocages, obligations et dates.",
+          prompt: "Identifiez les risques, blocages et obligations de ce PDF.",
+        },
+        {
+          title: "Actions",
+          description: "Transformez le contenu du document en responsables, délais et prochaines étapes.",
+          prompt: "Listez les actions, responsables et dates de ce PDF.",
+        },
+      ],
+      you: "Vous",
+      assistant: "DockDocs",
+      questionLabel: "Question",
+      placeholder: "Posez une question sur ce PDF",
+      ask: "Envoyer",
+      sourceReferences: "Références de source",
+      documentText: "Texte du document",
+      notExtracted: "Non extrait",
+      pageContext: "Contexte de page",
+      firstPages: "{pages} premières pages",
+      pageIndexed: "{pages} page{plural} indexée{plural}",
+      references: "Références",
+      citationCount: "{count} citation{plural}",
+      providerResponseReceived: "Réponse du fournisseur reçue",
+      providerCitations: "Citations du fournisseur si disponibles",
+      provider: "Fournisseur",
+      waitingForAi: "En attente de la réponse IA",
+      knowledgeCardsLabel: "Cartes de connaissances",
+      suggestedActions: "Actions suggérées",
+      sideActions: ["Résumer", "Rechercher des risques", "Créer des actions"],
+      groundedTitle: "Uniquement des réponses fondées",
+      groundedDescription:
+        "La requête de chat utilise le texte extrait du document comme contexte. Si le PDF ne contient pas la réponse, le fournisseur doit l'indiquer.",
+      providerFailed: "La requête au fournisseur de chat a échoué.",
+      providerEmpty: "Le fournisseur de chat n'a renvoyé aucune réponse.",
+      providerUnavailable: "Le point de terminaison du fournisseur de chat n'est pas disponible.",
+      unableToAnswer: "Impossible de répondre :",
+      faqTitle: "Questions sur Chat avec PDF",
+      faqs: [
+        {
+          question: "Qu'est-ce que DockDocs Chat avec PDF ?",
+          answer:
+            "DockDocs Chat avec PDF vous permet d'envoyer un PDF, d'extraire le texte lisible dans le navigateur et de poser des questions via un fournisseur IA configuré.",
+        },
+        {
+          question: "Fonctionne-t-il sans fournisseur IA ?",
+          answer:
+            "Non. Si le point de terminaison du fournisseur ou la clé API ne sont pas disponibles, la page renvoie une erreur réelle plutôt qu'une réponse simulée.",
+        },
+        {
+          question: "Est-il compatible avec les PDF numérisés ?",
+          answer:
+            "Ce MVP lit le texte PDF sélectionnable. Les PDF numérisés nécessitent une OCR avant que le chat puisse répondre sur leur contenu.",
+        },
+        {
+          question: "Est-il compatible avec l'export statique ?",
+          answer:
+            "Oui. La page est compatible avec l'export statique, tandis que les appels au fournisseur sont acheminés via une Netlify Function lors du déploiement.",
+        },
+      ],
+    },
+    summary: {
+      eyebrow: "IA",
+      title: "Résumez des documents en décisions et prochaines actions.",
+      description:
+        "Transformez de longs PDF et fichiers Office en une sortie IA révisable : résumé, points clés, entités et prochaines étapes suggérées.",
+      primaryCta: "Envoyer un document",
+      secondaryCta: "Démarrer le chat",
+      uploadTitle: "Envoyer pour résumé IA",
+      uploadDescription:
+        "Déposez un document ici pour préparer un flux de résumé IA avec des limites et des états visibles.",
+      formats: "PDF, DOC, DOCX",
+      limit: "Jusqu'à 25 Mo",
+      cta: "Sélectionner un document",
+      outputEyebrow: "Résultat",
+      outputHeading: "Le résultat invite à la révision et au suivi.",
+      outputDescription:
+        "La vue des résultats privilégie la sortie IA lisible plutôt qu'un simple statut de succès, avec la prochaine action accessible en un clic.",
+      runtimeUploadTitle: "Envoi de résumé lié à l'environnement d'exécution",
+      runtimeUploadDescription:
+        "Sélectionnez un document pour vérifier les états vide, sélectionné, en traitement, succès et erreur du résumé.",
+      resultEyebrow: "Résumé IA",
+      resultTitle: "Résumé du rapport du conseil",
+      resultSummary:
+        "Le chiffre d'affaires a progressé ce trimestre, mais le volume du support client et le risque de renouvellement fournisseur nécessitent un suivi avant la prochaine revue opérationnelle.",
+      keyPoints: [
+        "Le volume de support a augmenté sur les comptes entreprise.",
+        "Deux renouvellements fournisseurs nécessitent une confirmation du responsable.",
+        "Les décisions budgétaires sont bloquées par un manque d'informations financières.",
+      ],
+      actions: ["Copier le résumé", "Télécharger le rapport", "Poser des questions de suivi"],
+      emptyMessage: "Sélectionnez un document pour générer un aperçu du résumé.",
+    },
+    ocr: {
+      eyebrow: "IA",
+      title: "Rendez les documents numérisés recherchables et prêts pour l'IA.",
+      description:
+        "Préparez les PDF numérisés pour les flux de travail IA ultérieurs avec une interface claire d'envoi, de traitement et de sortie OCR.",
+      uploadTitle: "Envoyer un PDF numérisé",
+      uploadDescription:
+        "Déposez un scan ou un PDF ici pour préparer l'extraction OCR. L'interface indique les fichiers compatibles, les limites et le statut de traitement.",
+      formats: "PDF, PNG, JPG",
+      limit: "Jusqu'à 25 Mo",
+      cta: "Sélectionner le scan",
+      outputEyebrow: "Sortie",
+      outputHeading: "La sortie OCR appartient à l'espace de travail, pas à un fichier caché.",
+      outputDescription:
+        "L'extraction de texte, la confiance et les prochaines actions IA sont affichées ensemble pour que les utilisateurs comprennent ce qui est prêt.",
+      runtimeUploadTitle: "Envoi OCR lié à l'environnement d'exécution",
+      runtimeUploadDescription:
+        "Sélectionnez un PDF numérisé ou une image pour vérifier les états d'envoi, de traitement, de sortie et d'erreur OCR.",
+      resultEyebrow: "Texte OCR",
+      resultTitle: "Aperçu du texte extrait",
+      resultSummary:
+        "Le document est prêt pour révision. Les sections à faible confiance sont identifiées avant de continuer avec le résumé ou le chat.",
+      keyPoints: [
+        "Texte sélectionnable extrait des pages numérisées.",
+        "Les zones à faible confiance restent visibles pour révision.",
+        "La sortie peut continuer dans Chat avec PDF ou Résumé IA.",
+      ],
+      actions: ["Copier le texte extrait", "Télécharger le fichier texte", "Résumer le document"],
+      emptyMessage: "Sélectionnez un document numérisé pour générer la sortie OCR.",
+    },
+    compress: {
+      eyebrow: "Optimiser",
+      title: "Compressez des PDF sans quitter l'espace de travail documentaire.",
+      description:
+        "Réduisez la taille du fichier pour l'e-mail, les portails et la remise au bureau tout en gardant la prochaine action visible.",
+      primaryCta: "Envoyer un PDF",
+      secondaryCta: "Chat avec PDF",
+      uploadTitle: "Envoyer un PDF à compresser",
+      uploadDescription:
+        "Déposez un PDF ici ou sélectionnez un fichier depuis votre appareil. L'interface maintient les limites, le statut et les attentes de sortie visibles.",
+      formats: "PDF",
+      limit: "Jusqu'à 25 Mo",
+      cta: "Sélectionner un PDF",
+      outputEyebrow: "Sortie",
+      outputHeading: "Les résultats de compression doivent être révisables, pas seulement téléchargeables.",
+      outputDescription:
+        "La zone de résultats établit un standard DockDocs cohérent pour les économies de fichier, les vérifications de qualité et les prochaines actions documentaires IA.",
+      runtimeUploadTitle: "Envoi de compression lié à l'environnement d'exécution",
+      runtimeUploadDescription:
+        "Sélectionnez un PDF pour vérifier les états d'envoi, sélectionné, en traitement, succès et erreur sans modifier la logique de compression.",
+      resultEyebrow: "PDF compressé",
+      resultTitle: "Prêt pour la remise au bureau",
+      resultSummary:
+        "L'interface est liée à l'état du fichier sélectionné et affiche la sortie de compression uniquement après que l'état de l'environnement d'exécution local atteint le succès.",
+      keyPoints: [
+        "Le fichier est plus petit et prêt pour les portails d'envoi.",
+        "La lisibilité du document reste le principal indicateur de qualité.",
+        "Les actions IA de suivi restent proches du résultat.",
+      ],
+      actions: ["Télécharger le PDF compressé", "Envoyer vers Chat avec PDF", "Lancer le Résumé IA"],
+      emptyMessage: "Sélectionnez un PDF pour générer un aperçu du résultat de compression.",
+      faqTitle: "Questions sur la compression PDF",
+      faqs: [
+        {
+          question: "Qu'est-ce que DockDocs Compresser PDF ?",
+          answer:
+            "DockDocs Compresser PDF réduit la taille du fichier dans le cadre d'un flux de travail plus large de plateforme de documents IA.",
+        },
+        {
+          question: "Quels fichiers sont compatibles ?",
+          answer:
+            "Cette interface est axée sur l'envoi et la sortie de PDF, avec des limites et des états de traitement clairs.",
+        },
+        {
+          question: "Puis-je continuer après la compression ?",
+          answer:
+            "Oui. La surface de résultats dirige les utilisateurs vers le téléchargement, la copie et les flux de travail documentaires de suivi.",
+        },
+        {
+          question: "Fonctionne-t-il sur mobile ?",
+          answer:
+            "Oui. La zone d'envoi, les limites et l'aperçu de sortie s'empilent en disposition colonne unique sur mobile.",
+        },
+      ],
+    },
+    pdfToWord: {
+      eyebrow: "Convertir",
+      title: "Convertissez des PDF en documents modifiables prêts pour Word.",
+      description:
+        "Gardez la conversion dans la même plateforme de documents IA, avec les limites d'envoi, le statut de sortie et les prochaines actions en un seul endroit.",
+      uploadTitle: "Envoyer un PDF à convertir",
+      uploadDescription:
+        "Déposez un PDF ici pour préparer un flux de conversion vers Word sans modifier la logique du fournisseur backend.",
+      formats: "PDF",
+      limit: "Jusqu'à 25 Mo",
+      cta: "Sélectionner un PDF",
+      outputEyebrow: "Sortie",
+      outputDescription:
+        "L'interface établit les attentes sur le contenu modifiable, la révision de la mise en page et les actions documentaires de suivi.",
+      runtimeUploadTitle: "Envoi de conversion lié à l'environnement d'exécution",
+      runtimeUploadDescription:
+        "Sélectionnez un PDF pour vérifier les états d'envoi, de traitement, de succès et d'erreur de conversion sans modifier la logique du fournisseur.",
+      resultEyebrow: "Sortie Word",
+      resultTitle: "Document modifiable prêt",
+      resultSummary:
+        "Le document converti est prêt pour révision, avec les notes de mise en page et les actions de suivi affichées à côté du résultat.",
+      keyPoints: [
+        "Le contenu textuel est préparé pour l'édition.",
+        "La révision de la mise en page reste visible avant la remise.",
+        "Les utilisateurs peuvent continuer avec les flux de résumé ou de chat.",
+      ],
+      actions: ["Télécharger DOCX", "Réviser les notes de mise en page", "Lancer le Résumé IA"],
+      emptyMessage: "Sélectionnez un PDF pour générer un aperçu de la sortie Word.",
+    },
+    pricing: {
+      metadataTitle: "Tarifs",
+      metadataDescription:
+        "Interface de tarification Gratuit, Plus et Pro de DockDocs pour les flux de travail de la plateforme de documents IA.",
+      eyebrow: "Tarifs",
+      title: "Des plans pour un espace de travail de documents IA.",
+      description:
+        "Commencez gratuitement, puis passez à la version supérieure quand le chat de documents, les résumés, l'OCR, la conversion et la révision en équipe nécessitent des limites plus élevées.",
+      primaryCta: "Comparer les plans",
+      secondaryCta: "Commencer avec Chat PDF",
+      recommended: "Recommandé",
+      featureColumn: "Fonctionnalité",
+      comparisonEyebrow: "Comparaison des fonctionnalités",
+      comparisonTitle: "Comparez la disponibilité de l'espace de travail.",
+      billingNote:
+        "Interface uniquement : Stripe, l'API de facturation, l'application des quotas et les vérifications d'abonnement ne sont pas connectés dans ce design.",
+      flowEyebrow: "Parcours de mise à niveau",
+      flowTitle: "Du premier envoi à un espace de travail documentaire plus large.",
+      flowDescription:
+        "Le flux de tarification est ici uniquement présentationnel : choisissez un plan, révisez la disponibilité des fonctionnalités et continuez depuis le point d'entrée du compte.",
+      flowSteps: ["Commencez avec un fichier réel", "Comparez l'accès à l'espace de travail IA", "Mettez à niveau via le menu compte"],
+      plans: [
+        {
+          tier: "FREE",
+          name: "Gratuit",
+          price: "$0",
+          description: "Pour les premiers envois, le travail léger de documents IA et les flux de fichiers essentiels.",
+          cta: "Commencer gratuitement",
+          href: "/chat-with-pdf/",
+          recommended: false,
+          highlights: [
+            "Chat avec PDF MVP",
+            "Aperçu du Résumé IA",
+            "Points d'entrée pour OCR, Compresser et PDF vers Word",
+            "Shell du tableau de bord de l'espace de travail",
+          ],
+        },
+        {
+          tier: "PLUS",
+          name: "Plus",
+          price: "$5",
+          description: "Pour ceux qui travaillent avec des documents chaque semaine et ont besoin de flux IA plus complets.",
+          cta: "Passer à Plus",
+          href: "/account/?plan=PLUS",
+          recommended: true,
+          highlights: [
+            "Limites plus élevées de l'espace de travail IA",
+            "Cartes de connaissances et révision des sources",
+            "Flux de conversion et d'OCR prioritaires",
+            "Marqueur UX de conversation sauvegardée",
+          ],
+        },
+        {
+          tier: "PRO",
+          name: "Pro",
+          price: "$20",
+          description: "Pour les équipes ayant besoin de standards de révision documentaire partagés et d'une plus grande visibilité de l'espace de travail.",
+          cta: "Passer à Pro",
+          href: "/account/?plan=PRO",
+          recommended: false,
+          highlights: [
+            "Marqueur IA de l'espace de travail en équipe",
+            "Surfaces du tableau de bord d'utilisation et d'activité",
+            "Étiquettes avancées d'intelligence documentaire",
+            "Marqueurs de statut fournisseur et de conformité",
+          ],
+        },
+      ],
+      comparison: [
+        { feature: "Chat avec PDF", values: ["GRATUIT", "PLUS", "PRO"] },
+        { feature: "Résumé IA", values: ["GRATUIT", "PLUS", "PRO"] },
+        { feature: "OCR et extraction", values: ["GRATUIT", "PLUS", "PRO"] },
+        { feature: "PDF vers Word", values: ["GRATUIT", "PLUS", "PRO"] },
+        { feature: "Cartes de connaissances", values: ["Aperçu PLUS", "PLUS", "PRO"] },
+        { feature: "Analyses de l'espace de travail", values: ["Basique", "Marqueur d'utilisation", "Marqueur d'équipe"] },
+        { feature: "Collections de documents", values: ["Basique", "PLUS", "PRO"] },
+      ],
+    },
+    dashboard: {
+      eyebrow: "Tableau de bord",
+      title: "Résumé de l'espace de travail documentaire.",
+      description: "Un centre de contrôle pour les documents, conversations IA, résumés et statuts des flux de travail.",
+      newDocument: "Nouveau document",
+      startChat: "Démarrer le chat",
+      workspace: "Espace de travail",
+      nav: ["Documents", "IA", "Convertir", "Optimiser", "Paramètres"],
+      stats: [
+        { label: "Documents", value: "18" },
+        { label: "Conversations", value: "9" },
+        { label: "Résumés", value: "14" },
+        { label: "Flux de travail", value: "6" },
+      ],
+      overviewLabel: "Vue d'ensemble",
+      recentLabel: "Documents récents",
+      conversationsLabel: "Conversations récentes",
+      actionsLabel: "Actions IA",
+      healthLabel: "Statut de l'espace de travail",
+      nextStepsLabel: "Prochaines étapes recommandées",
+      emptyTitle: "Aucun envoi pour l'instant",
+      emptyDescription:
+        "Commencez par envoyer un PDF, un scan, un rapport ou un document Office. DockDocs gardera le fichier, la sortie IA et la prochaine action visibles.",
+      continueWork: "Continuer le travail",
+      openChat: "Ouvrir le chat IA",
+      upgradeCta: "Voir les tarifs",
+      upgradeDescription:
+        "Besoin de plus de capacité dans l'espace de travail documentaire ? Révisez les options Plus et Pro sans modifier le statut de facturation dans cette interface.",
+      analyticsLabel: "Analyses",
+      usageLabel: "Marqueur d'utilisation",
+      activityLabel: "Activité récente",
+      onboardingTitle: "Première fois ? Commencez avec un fichier.",
+      onboardingDescription:
+        "Envoyez un document, posez une question fondée et revenez au tableau de bord pour réviser les fichiers récents et les prochaines actions.",
+      documents: [
+        { name: "Rapport-conseil.pdf", type: "PDF", status: "Prêt", action: "Résumé IA" },
+        { name: "Contrat-fournisseur.pdf", type: "PDF", status: "Révision", action: "Chat" },
+        { name: "Facture-numérisée.pdf", type: "Scan", status: "En traitement", action: "OCR" },
+      ],
+      conversations: [
+        { title: "Extraire les risques du contrat fournisseur", meta: "Contrat-fournisseur.pdf", status: "2 sources" },
+        { title: "Résumer les actions du rapport du conseil", meta: "Rapport-conseil.pdf", status: "Prêt" },
+        { title: "Trouver les conditions de paiement de la facture", meta: "Facture-numérisée.pdf", status: "OCR d'abord" },
+      ],
+      actions: [
+        { title: "Chat avec PDF", description: "Posez des questions fondées avec contexte de source.", href: "/chat-with-pdf", tier: "FREE" },
+        { title: "Résumer", description: "Créez un résumé, des points clés, des entités et des prochaines étapes.", href: "/ai-summary", tier: "FREE" },
+        { title: "OCR", description: "Rendez les documents numérisés recherchables avant la révision IA.", href: "/ocr", tier: "FREE" },
+        { title: "Convertir", description: "Passez les PDF en flux de travail modifiables prêts pour Word.", href: "/pdf-to-word", tier: "FREE" },
+        { title: "Compresser", description: "Réduisez la taille du fichier pour l'e-mail, les portails et la remise.", href: "/compress-pdf", tier: "FREE" },
+      ],
+      health: [
+        { label: "Stockage", value: "Aperçu local", tone: "Prêt" },
+        { label: "Traitement", value: "Lié à l'environnement d'exécution", tone: "Sain" },
+        { label: "Fournisseur", value: "Configuré dans l'environnement", tone: "Marqueur" },
+      ],
+      nextSteps: [
+        "Envoyez un vrai PDF et lancez une conversation avec des sources.",
+        "Générez un Résumé IA avant d'envoyer un document en révision.",
+        "Utilisez l'OCR pour les scans avant de poser des questions.",
+      ],
+      activity: [
+        "Résumé du rapport du conseil généré",
+        "Contrat fournisseur ouvert dans Chat avec PDF",
+        "Facture numérisée en attente d'OCR",
+      ],
+    },
+  },
 } as const;
 
-export function getRuntimeCopy(locale: RuntimeLocale | "es" | "pt" = defaultLocale) {
+export function getRuntimeCopy(locale: RuntimeLocale | "es" | "pt" | "fr" = defaultLocale) {
   return runtimeCopy[locale] ?? runtimeCopy.en;
 }
