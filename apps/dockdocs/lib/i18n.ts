@@ -4,7 +4,9 @@ export const locales = ["en", "zh"] as const;
 export type Locale = (typeof locales)[number];
 
 // Locales that GENERATE routes. es is a "pilot" route locale: tool pages render
-// Spanish, everything else falls back to English (content type stays en|zh).
+// the locale, everything else falls back to English (content type stays en|zh).
+// pt-BR is being built content-first (inert ptTools/ptFaq/STR.pt/etc.); add "pt"
+// to this array to ACTIVATE it (LAST step, once content is complete).
 export const routeLocales = ["en", "zh", "es"] as const;
 export type RouteLocale = (typeof routeLocales)[number];
 
