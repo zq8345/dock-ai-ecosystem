@@ -101,6 +101,9 @@ const STR = {
     tplDimAdd: "+ Add",
     tplDimApply: "Apply",
     tplDimReset: "Reset to default",
+    tplNewFiles: "New files",
+    tplDims: "dims",
+    tplDropHere: "Drop PDFs to rerun",
     retry: "Try again",
   },
   zh: {
@@ -159,6 +162,9 @@ const STR = {
     tplDimAdd: "+ 添加",
     tplDimApply: "应用",
     tplDimReset: "恢复默认",
+    tplNewFiles: "新文件",
+    tplDims: "个维度",
+    tplDropHere: "拖入 PDF 即重跑",
     retry: "重试",
   },
   es: {
@@ -217,6 +223,9 @@ const STR = {
     tplDimAdd: "+ Agregar",
     tplDimApply: "Aplicar",
     tplDimReset: "Restaurar predeterminado",
+    tplNewFiles: "Archivos nuevos",
+    tplDims: "dims.",
+    tplDropHere: "Suelta PDFs para volver a ejecutar",
     retry: "Reintentar",
   },
   pt: {
@@ -275,6 +284,9 @@ const STR = {
     tplDimAdd: "+ Adicionar",
     tplDimApply: "Aplicar",
     tplDimReset: "Restaurar padrão",
+    tplNewFiles: "Novos arquivos",
+    tplDims: "dims.",
+    tplDropHere: "Solte PDFs para reexecutar",
     retry: "Tentar novamente",
   },
 } as const;
@@ -435,6 +447,7 @@ export function DocumentCompareClient({ locale = "en" }: { locale?: Locale }) {
   const [customDims, setCustomDims] = useState<Array<{ key: string; label: string }> | null>(null);
   const [editDims, setEditDims] = useState(false);
   const [editDimsRows, setEditDimsRows] = useState<Array<{ key: string; label: string }>>([]);
+  const [cardDragTarget, setCardDragTarget] = useState<string | null>(null);
 
   useEffect(() => {
     setTemplates(loadTemplates());
@@ -714,40 +727,81 @@ export function DocumentCompareClient({ locale = "en" }: { locale?: Locale }) {
       <p className="mt-3 max-w-4xl text-[color:var(--muted)]">{t.intro}</p>
 
       {templates.length > 0 && (
-        <div className="mt-5">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--muted)]">{t.tplMyTemplates}</p>
-          <div className="flex flex-wrap gap-2">
-            {templates.map((tpl) => (
-              <div key={tpl.id} className={`group flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition ${activeTemplate?.id === tpl.id ? "border-[color:var(--accent)] bg-[color:var(--soft-accent)] text-[color:var(--accent-strong)]" : "border-[color:var(--line)] bg-[color:var(--surface)] text-[color:var(--foreground)] hover:border-[color:var(--line-strong)]"}`}>
-                <button type="button" onClick={() => handleLoadTemplate(tpl)}>
-                  {tpl.name}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDeleteTemplate(tpl.id)}
-                  title={t.tplDelete}
-                  className="ml-0.5 opacity-0 transition group-hover:opacity-60 hover:!opacity-100"
+        <div className="mt-6">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--muted)]">{t.tplMyTemplates}</p>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {templates.map((tpl) => {
+              const runs = loadRunsForTemplate(tpl.id);
+              const lastRun = runs[0];
+              const isActive = activeTemplate?.id === tpl.id;
+              const isDragTarget = cardDragTarget === tpl.id;
+              return (
+                <div
+                  key={tpl.id}
+                  onDragOver={(e) => { e.preventDefault(); setCardDragTarget(tpl.id); }}
+                  onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setCardDragTarget(null); }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setCardDragTarget(null);
+                    handleLoadTemplate(tpl);
+                    void addFiles(Array.from(e.dataTransfer.files));
+                  }}
+                  className={`relative rounded-[var(--radius-lg)] border p-4 transition ${
+                    isDragTarget
+                      ? "border-[color:var(--accent)] bg-[color:var(--soft-accent)] scale-[1.02]"
+                      : isActive
+                      ? "border-[color:var(--accent)] bg-[color:var(--soft-accent)]"
+                      : "border-[color:var(--line)] bg-[color:var(--surface)] hover:border-[color:var(--line-strong)]"
+                  }`}
                 >
-                  ✕
-                </button>
-              </div>
-            ))}
-          </div>
-          {activeTemplate && (
-            <div className="mt-2 space-y-1">
-              <p className="text-xs text-[color:var(--accent)]">{t.tplLoaded(activeTemplate.name)} · {t.tplRerunHint}</p>
-              {templateRuns.length > 0 && (
-                <div className="flex flex-wrap gap-x-4 gap-y-0.5">
-                  <span className="text-xs text-[color:var(--faint)]">{t.tplLastRun}:</span>
-                  {templateRuns.slice(0, 3).map((run) => (
-                    <span key={run.id} className="text-xs text-[color:var(--faint)]">
-                      {t.tplRunFiles(run.fileNames.length)} · {relativeTime(run.createdAt, locale)}
-                    </span>
-                  ))}
+                  <div className="flex items-start justify-between gap-1">
+                    <button
+                      type="button"
+                      onClick={() => handleLoadTemplate(tpl)}
+                      className="text-sm font-semibold text-[color:var(--foreground)] text-left hover:text-[color:var(--accent)] transition"
+                    >
+                      {tpl.name}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteTemplate(tpl.id)}
+                      title={t.tplDelete}
+                      className="shrink-0 text-[11px] text-[color:var(--error)] opacity-0 transition hover:opacity-80 group-hover:opacity-60 focus:opacity-100"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <p className="mt-1 text-[11px] text-[color:var(--faint)]">
+                    {tpl.docType} · {tpl.dimensions.length} {t.tplDims}
+                  </p>
+                  {lastRun ? (
+                    <p className="mt-0.5 text-[11px] text-[color:var(--faint)]">
+                      {t.tplLastRun}: {relativeTime(lastRun.createdAt, locale)} · {t.tplRunFiles(lastRun.fileNames.length)}
+                    </p>
+                  ) : (
+                    <p className="mt-0.5 text-[11px] text-[color:var(--faint)]">{t.tplNoRuns}</p>
+                  )}
+                  <div className="mt-3 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => { handleLoadTemplate(tpl); inputRef.current?.click(); }}
+                      className="inline-flex h-7 items-center rounded-[var(--radius-sm)] border border-[color:var(--accent)] px-2.5 text-[11px] font-medium text-[color:var(--accent)] transition hover:bg-[color:var(--soft-accent)]"
+                    >
+                      {t.tplNewFiles}
+                    </button>
+                    {isActive && (
+                      <span className="text-[11px] font-medium text-[color:var(--accent)]">✓</span>
+                    )}
+                  </div>
+                  {isDragTarget && (
+                    <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-[var(--radius-lg)] bg-[color:var(--soft-accent)]/90 text-[13px] font-semibold text-[color:var(--accent)]">
+                      {t.tplDropHere}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          )}
+              );
+            })}
+          </div>
         </div>
       )}
 
