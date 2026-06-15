@@ -5,7 +5,7 @@ import { UploadDropzone } from "@/components/UploadDropzone";
 import { ToolFaq } from "@/components/ToolFaq";
 import { encryptedPdfMessage } from "@/lib/pdf-errors";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Edges = { top: number; right: number; bottom: number; left: number };
 
 const STR = {
@@ -38,6 +38,16 @@ const STR = {
     reset: "Restablecer bordes", apply: "Recortar y descargar", working: "Recortando…", start: "Empezar de nuevo",
     hint: "Arrastra los controles para recortar cada borde (como % de la página). El área despejada es lo que conservas.",
     err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "Recortar PDF",
+    subtitle: "Envie um PDF, recorte o espaço em branco de qualquer borda com uma prévia ao vivo e baixe: todas as páginas são recortadas da mesma forma, tudo no seu navegador.",
+    drop: "Arraste e solte um PDF aqui, ou clique para escolher",
+    choose: "Escolher PDF", rendering: "Gerando prévia…",
+    preview: "Prévia ao vivo", top: "Acima", right: "Direita", bottom: "Abaixo", left: "Esquerda",
+    reset: "Redefinir bordas", apply: "Recortar e baixar", working: "Recortando…", start: "Recomeçar",
+    hint: "Arraste os controles para recortar cada borda (como % da página). A área visível é o que você mantém.",
+    err: "Algo deu errado: ",
   },
 };
 

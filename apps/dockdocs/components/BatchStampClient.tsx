@@ -6,7 +6,7 @@ import { useCallback, useRef, useState } from "react";
 import { Spinner } from "@/components/Spinner";
 import { runPdfRuntime, createZipArchive } from "../../../shared/templates/pdf-tool-page/pdf-runtime";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Mode = "watermark" | "pagenum";
 type Item = { id: string; name: string; file: File; status: "queued" | "done" | "error"; blob?: Blob; msg?: string };
 
@@ -57,6 +57,21 @@ const STR = {
     needText: "Ingresa el texto de la marca de agua.", needFile: "Agrega al menos un PDF.",
     note: "Usa la disposición predeterminada (marca de agua diagonal / números de página). Para una posición u opacidad personalizadas, usa las herramientas individuales de Marca de agua o Números de página. Todo permanece en tu dispositivo.",
     err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "Marca d'água ou numeração em lote de PDFs",
+    titleWm: "Marca d'água em lote", titlePn: "Números de página em lote",
+    subWm: "Aplique uma marca d'água em uma pasta inteira de PDFs de uma só vez: cada um é processado no seu navegador e empacotado em um único ZIP. Nada é enviado.",
+    subPn: "Adicione números de página em uma pasta inteira de PDFs de uma só vez: cada um é processado no seu navegador e empacotado em um único ZIP. Nada é enviado.",
+    subtitle: "Aplique uma marca d'água ou adicione números de página em uma pasta inteira de PDFs de uma só vez: cada um é processado no seu navegador e empacotado em um único ZIP. Nada é enviado.",
+    drop: "Arraste e solte PDFs (ou uma pasta) aqui, ou clique para escolher", choose: "Escolher PDFs", folder: "Escolher pasta",
+    wm: "Marca d'água", pn: "Números de página",
+    wmText: "Texto da marca d'água", wmPlaceholder: "ex.: CONFIDENCIAL",
+    run: "Aplicar a todos", running: "Processando", download: "Baixar ZIP", reset: "Recomeçar",
+    files: (n: number) => `${n} / ${MAX_FILES} arquivos`, done: "pronto", failed: "erro",
+    needText: "Insira o texto da marca d'água.", needFile: "Adicione pelo menos um PDF.",
+    note: "Usa o posicionamento padrão (marca d'água diagonal / números de página). Para posição ou opacidade personalizadas, use as ferramentas individuais de Marca d'água ou Números de página. Tudo permanece no seu dispositivo.",
+    err: "Algo deu errado: ",
   },
 };
 

@@ -11,7 +11,7 @@ import { WorkspaceDashboardClient } from "@/components/WorkspaceDashboardClient"
 import { getRuntimeCopy, type RuntimeLocale } from "@/lib/copy";
 import { defaultLocale, localizedPath, normalizeSlug } from "@/lib/i18n";
 
-type DashLocale = RuntimeLocale | "es";
+type DashLocale = RuntimeLocale | "es" | "pt";
 type DashboardCopy = ReturnType<typeof getRuntimeCopy>["dashboard"];
 
 type DashboardWorkspaceProps = {
@@ -21,8 +21,7 @@ type DashboardWorkspaceProps = {
 export function DashboardWorkspace({
   locale = defaultLocale,
 }: DashboardWorkspaceProps) {
-  const effectiveLocale: RuntimeLocale = locale === "es" ? "en" : locale;
-  const page = getRuntimeCopy(effectiveLocale).dashboard;
+  const page = getRuntimeCopy(locale).dashboard;
 
   return (
     <main>

@@ -7,7 +7,7 @@ export type Locale = (typeof locales)[number];
 // the locale, everything else falls back to English (content type stays en|zh).
 // pt-BR is being built content-first (inert ptTools/ptFaq/STR.pt/etc.); add "pt"
 // to this array to ACTIVATE it (LAST step, once content is complete).
-export const routeLocales = ["en", "zh", "es"] as const;
+export const routeLocales = ["en", "zh", "es", "pt"] as const;
 export type RouteLocale = (typeof routeLocales)[number];
 
 export const allLocales = ["en", "zh", "ja", "ko", "es", "fr", "de", "pt", "it", "ru", "ar", "hi"] as const;
@@ -188,7 +188,7 @@ export function pathForSlug(slug: RouteSlug): string {
   return slug ? `/${slug}/` : "/";
 }
 
-export function localizedPath(locale: RouteLocale, slug: RouteSlug): string {
+export function localizedPath(locale: RouteLocale | (string & {}), slug: RouteSlug): string {
   return slug ? `/${locale}/${slug}/` : `/${locale}/`;
 }
 
@@ -273,6 +273,18 @@ export const navCopy = {
     aiWorkspace: "Espacio de trabajo IA",
     language: "Idioma",
   },
+  pt: {
+    brand: "DockDocs",
+    badge: "Plataforma de documentos com IA",
+    pdfTools: "Ferramentas de documentos",
+    compress: "Comprimir",
+    merge: "Unir",
+    split: "Dividir",
+    ocr: "OCR",
+    jpgToPdf: "JPG para PDF",
+    aiWorkspace: "Espaço de trabalho IA",
+    language: "Idioma",
+  },
 } as const;
 
 export const relatedToolsCopy = {
@@ -339,6 +351,16 @@ export const relatedToolsCopy = {
       { name: "Espacio de trabajo IA", href: "/ai-workspace", description: "Revisa, resume y trabaja con documentos usando capas de IA." },
     ],
   },
+  pt: {
+    title: "Ferramentas relacionadas",
+    description: "Navegue entre as ferramentas de PDF e os fluxos de trabalho de documentos com IA do DockDocs sem sair da plataforma.",
+    tools: [
+      { name: "JPG para PDF", href: "/jpg-to-pdf", description: "Converta imagens JPG, PNG e WebP em documentos PDF." },
+      { name: "Comprimir PDF", href: "/compress-pdf", description: "Reduza o tamanho do PDF para compartilhamento, portais e e-mail." },
+      { name: "OCR de PDF", href: "/ocr-pdf", description: "Extraia texto de arquivos PDF digitalizados e baseados em imagens." },
+      { name: "Espaço de trabalho IA", href: "/ai-workspace", description: "Revise, resuma e trabalhe com documentos usando camadas de IA." },
+    ],
+  },
 } as const;
 
 export const footerCopy = {
@@ -384,6 +406,20 @@ export const footerCopy = {
     terms: "Términos",
     sitemap: "Mapa del sitio",
   },
+  pt: {
+    relatedTools: "Ferramentas relacionadas",
+    resources: "Recursos",
+    guides: "Guias",
+    aiPdfGuides: "Guias de PDF com IA",
+    aiWorkspace: "Espaço de escritório com IA",
+    about: "Sobre",
+    help: "Ajuda",
+    faq: "Perguntas frequentes",
+    contact: "Contato",
+    privacy: "Política de privacidade",
+    terms: "Termos",
+    sitemap: "Mapa do site",
+  },
 } as const;
 
 export type InfoPageData = {
@@ -403,7 +439,7 @@ export type InfoPageData = {
   faqs?: Array<{ question: string; answer: string }>;
 };
 
-export const infoPages: Record<"en" | "zh" | "es", Record<InfoPageSlug, InfoPageData>> = {
+export const infoPages: Record<"en" | "zh" | "es" | "pt", Record<InfoPageSlug, InfoPageData>> = {
   en: {
     about: {
       slug: "about",
@@ -1417,8 +1453,354 @@ export const infoPages: Record<"en" | "zh" | "es", Record<InfoPageSlug, InfoPage
       ],
     },
   },
+  pt: {
+    about: {
+      slug: "about",
+      title: "Sobre o DockDocs",
+      description:
+        "Conheça o DockDocs, uma plataforma de ferramentas PDF com foco em privacidade que evolui para um espaço de trabalho de documentos com IA.",
+      eyebrow: "Sobre o DockDocs",
+      heroTitle: "Espaço de trabalho de documentos com IA para fluxos reais.",
+      heroDescription:
+        "O DockDocs foi criado para simplificar o trabalho diário com documentos: comprimir, unir, dividir, converter, aplicar OCR, resumir e revisar documentos em um único espaço de trabalho limpo.",
+      primaryAction: { label: "Comece com JPG para PDF", href: "/jpg-to-pdf" },
+      secondaryAction: { label: "Ver o espaço de trabalho IA", href: "/ai-workspace" },
+      sections: [
+        {
+          title: "Missão",
+          description:
+            "Nossa missão é oferecer a equipes, estudantes, operadores e profissionais independentes um fluxo de trabalho de PDF rápido que não pareça um site de utilitários sobrecarregado.",
+          items: [
+            {
+              title: "Ferramentas PDF em primeiro lugar",
+              description:
+                "O DockDocs começa com tarefas práticas: comprimir, unir, dividir, converter, aplicar OCR e preparar arquivos para entrega.",
+            },
+            {
+              title: "IA como aprimoramento",
+              description:
+                "A IA é adicionada apenas onde melhora a compreensão de documentos, como OCR, resumos, chat com PDF e orientação de fluxos de trabalho.",
+            },
+            {
+              title: "Filosofia centrada em privacidade",
+              description:
+                "A direção do produto favorece expectativas de envio claras, estados de processamento transparentes e exposição mínima de dados.",
+            },
+          ],
+        },
+        {
+          title: "Direção do produto",
+          description:
+            "O DockDocs está passando de ferramentas PDF individuais para um espaço de trabalho de documentos com IA mais amplo para a produtividade global.",
+          items: [
+            {
+              title: "Fluxos de trabalho compatíveis",
+              description:
+                "Compressão de PDF, união de PDF, divisão de PDF, PDF para Word, OCR de PDF, JPG para PDF, resumo com IA e perguntas e respostas sobre documentos.",
+            },
+            {
+              title: "Visão do espaço de trabalho",
+              description:
+                "A direção de longo prazo é um único lugar para organizar, transformar, compreender e reutilizar o conteúdo dos documentos.",
+            },
+          ],
+        },
+      ],
+    },
+    blog: {
+      slug: "blog",
+      title: "Recursos e blog | DockDocs",
+      description:
+        "Recursos do DockDocs sobre ferramentas PDF, fluxos de trabalho de OCR, conversão de JPG para PDF e produtividade de documentos com IA.",
+      eyebrow: "Recursos",
+      heroTitle: "Recursos sobre ferramentas PDF e fluxos de documentos com IA.",
+      heroDescription:
+        "Um hub de conteúdo com guias práticos, explicações de fluxos de trabalho, novidades do produto e futuros recursos de SEO sobre produtividade de documentos PDF e com IA.",
+      sections: [
+        {
+          title: "Áreas de recursos previstas",
+          description:
+            "O blog está preparado para conteúdo perene e útil, não para anúncios superficiais.",
+          items: [
+            {
+              title: "Guias de fluxos de trabalho com PDF",
+              description:
+                "Guias para comprimir, unir, dividir, converter e preparar pacotes de documentos organizados.",
+            },
+            {
+              title: "Recursos de conversão",
+              description:
+                "Artigos sobre JPG para PDF, PDF para Word, PDFs digitalizados e fluxos de trabalho de entrega de documentos.",
+            },
+            {
+              title: "Produtividade de documentos com IA",
+              description:
+                "Recursos sobre OCR, resumo com IA, chat com PDF e padrões de automação de documentos.",
+            },
+          ],
+        },
+      ],
+    },
+    help: {
+      slug: "help",
+      title: "Central de ajuda | DockDocs",
+      description:
+        "Ajuda sobre envios no DockDocs, fluxos de trabalho de PDF centrados em privacidade, formatos compatíveis, processamento local e limites dos documentos com IA.",
+      eyebrow: "Central de ajuda",
+      heroTitle: "Ajuda sobre envios, privacidade, formatos e fluxos com IA.",
+      heroDescription:
+        "Use esta página para entender como as páginas de ferramentas do DockDocs são organizadas, quais arquivos cada fluxo de trabalho espera e onde as funcionalidades de IA se encaixam.",
+      sections: [
+        {
+          title: "Comportamento de envio e formatos compatíveis",
+          description:
+            "Cada página de ferramenta indica o que os usuários podem enviar, o que o fluxo de trabalho está preparando e qual ação de exportação aparece ao final.",
+          items: [
+            {
+              title: "Comportamento de envio",
+              description:
+                "Escolha arquivos no cartão de envio do fluxo de trabalho selecionado. As ferramentas PDF focam em PDF, enquanto JPG para PDF aceita arquivos de imagem para criar documentos.",
+            },
+            {
+              title: "Formatos compatíveis",
+              description:
+                "Os fluxos de trabalho principais abrangem PDF, PDF digitalizado, JPG, PNG, WebP e conversão para documentos editáveis orientados ao Word.",
+            },
+            {
+              title: "Solução de problemas",
+              description:
+                "Se um arquivo for muito grande ou tiver formato incorreto, comece com compressão ou conversão antes de usar os fluxos de trabalho orientados a IA.",
+            },
+          ],
+        },
+        {
+          title: "Processamento local, tratamento centrado em privacidade e limites da IA",
+          description:
+            "O DockDocs foi projetado em torno da preparação de documentos local quando possível, tratamento centrado em privacidade e limites claros para funcionalidades assistidas por IA.",
+          items: [
+            {
+              title: "Processamento local",
+              description:
+                "Quando possível, o DockDocs favorece um design de fluxo de trabalho baseado no navegador e local, para que a preparação simples de documentos ocorra próxima ao usuário antes de introduzir qualquer etapa futura na nuvem ou com IA.",
+            },
+            {
+              title: "Tratamento centrado em privacidade",
+              description:
+                "As páginas de ferramentas devem explicar as expectativas de envio, o propósito do processamento, a política de retenção e o comportamento de exclusão antes de habilitar o processamento em produção.",
+            },
+            {
+              title: "Limitações da IA",
+              description:
+                "O OCR, os resumos e o chat com PDF podem ajudar a revisar documentos, mas os usuários devem verificar os resultados importantes antes de arquivar, assinar ou compartilhar.",
+            },
+          ],
+        },
+      ],
+    },
+    faq: {
+      slug: "faq",
+      title: "Perguntas frequentes | DockDocs",
+      description:
+        "Perguntas frequentes sobre as ferramentas PDF do DockDocs, os fluxos de trabalho centrados em privacidade, o OCR, o resumo com IA e o chat com PDF.",
+      eyebrow: "Perguntas frequentes",
+      heroTitle: "Perguntas e respostas do DockDocs.",
+      heroDescription:
+        "Respostas sobre ferramentas PDF, privacidade de arquivos, fluxos de trabalho baseados no navegador, OCR, conversão de JPG, exportações, uso no celular e funcionalidades de documentos com IA.",
+      sections: [
+        {
+          title: "Perguntas frequentes do site",
+          description: "Respostas práticas às perguntas comuns que os usuários fazem antes de enviar documentos.",
+        },
+      ],
+      faqs: [
+        {
+          question: "O que é o DockDocs?",
+          answer:
+            "O DockDocs é uma plataforma de ferramentas PDF centrada em privacidade, com funcionalidades de IA adicionadas como uma camada secundária de produtividade.",
+        },
+        {
+          question: "Os arquivos são processados no navegador?",
+          answer:
+            "O DockDocs é projetado para fluxos de trabalho baseados no navegador e locais quando possível. Qualquer processamento futuro na nuvem ou com IA deve ser divulgado claramente antes do envio.",
+        },
+        {
+          question: "Quão privados são meus arquivos?",
+          answer:
+            "A direção do produto é centrada em privacidade: propósito de envio claro, estados de processamento transparentes e regras de retenção documentadas antes do processamento em produção.",
+        },
+        {
+          question: "Quão preciso é o OCR?",
+          answer:
+            "A precisão do OCR depende da qualidade da digitalização, do contraste da imagem, do idioma e do layout da página. Os usuários devem revisar o texto extraído antes de usá-lo em fluxos de trabalho importantes.",
+        },
+        {
+          question: "Posso converter imagens JPG para PDF?",
+          answer:
+            "Sim. JPG para PDF é projetado para envios de JPG, PNG e WebP, ordenação de páginas e exportação para PDF.",
+        },
+        {
+          question: "O que o resumo com IA e o chat com PDF podem fazer?",
+          answer:
+            "As funcionalidades de IA podem ajudar a resumir, pesquisar e fazer perguntas sobre documentos. Elas não substituem a revisão legal, financeira ou profissional.",
+        },
+        {
+          question: "As exportações são definitivas?",
+          answer:
+            "As prévias de exportação e os estados de fluxo de trabalho simulados ajudam os usuários a entender o resultado pretendido. Os usuários devem verificar os arquivos finais antes de compartilhá-los.",
+        },
+        {
+          question: "O DockDocs funciona no celular?",
+          answer:
+            "Sim. A navegação, as áreas de envio, os cartões e os CTAs são projetados para funcionar em telas de computador, tablet e celular.",
+        },
+      ],
+    },
+    contact: {
+      slug: "contact",
+      title: "Contato | DockDocs",
+      description:
+        "Entre em contato com o DockDocs para consultas sobre o produto, comentários sobre fluxos de trabalho de PDF, perguntas de privacidade e consultas sobre o espaço de trabalho de documentos com IA.",
+      eyebrow: "Contato",
+      heroTitle: "Entre em contato com a equipe do DockDocs.",
+      heroDescription:
+        "Use esta página para comentários sobre o produto, perguntas de privacidade, solicitações de fluxos de trabalho de PDF, ideias para o espaço de trabalho IA e consultas comerciais.",
+      primaryAction: { label: "Enviar e-mail ao DockDocs", href: "mailto:hello@dockdocs.app" },
+      secondaryAction: { label: "Visitar a central de ajuda", href: "/help" },
+      sections: [
+        {
+          title: "Canais de suporte",
+          description:
+            "O DockDocs mantém as opções de contato simples enquanto o produto cresce.",
+          items: [
+            {
+              title: "E-mail de suporte",
+              description:
+                "Use hello@dockdocs.app para consultas sobre o produto, relatórios de bugs, perguntas de privacidade e comentários sobre fluxos de trabalho.",
+            },
+            {
+              title: "Expectativas de resposta",
+              description:
+                "As solicitações de suporte em estágio inicial são revisadas como feedback do produto; SLAs urgentes de produção devem ser gerenciados por meio de futuros planos empresariais.",
+            },
+            {
+              title: "Consultas empresariais",
+              description:
+                "As equipes podem entrar em contato sobre volume de fluxos de trabalho de PDF, revisão de documentos com IA, requisitos de privacidade e ideias de integração.",
+            },
+          ],
+        },
+      ],
+    },
+    "privacy-policy": {
+      slug: "privacy-policy",
+      title: "Política de privacidade | DockDocs",
+      description:
+        "Política de privacidade do DockDocs sobre envios, fluxos de trabalho de PDF locais, processamento com IA, retenção, cookies e análises.",
+      eyebrow: "Política de privacidade",
+      heroTitle: "Os fluxos de documentos centrados em privacidade precisam de regras claras.",
+      heroDescription:
+        "Esta estrutura de política explica como o DockDocs aborda os envios, o processamento local, o futuro processamento com IA, a retenção, os cookies e as análises.",
+      sections: [
+        {
+          title: "Tratamento de documentos",
+          description:
+            "O DockDocs é projetado para deixar claras as expectativas de processamento de documentos antes que os usuários enviem arquivos.",
+          items: [
+            {
+              title: "Envios",
+              description:
+                "As páginas de ferramentas devem indicar os formatos aceitos, o propósito do processamento e o resultado esperado antes do envio.",
+            },
+            {
+              title: "Processamento local",
+              description:
+                "Quando possível, a preparação simples de documentos deve ocorrer no navegador ou próxima ao usuário antes de introduzir qualquer fluxo de trabalho na nuvem.",
+            },
+            {
+              title: "Processamento com IA",
+              description:
+                "As funcionalidades de IA, como OCR, resumos e perguntas e respostas sobre documentos, podem exigir processamento por modelos. Esses fluxos de trabalho devem divulgar claramente os limites e as regras de tratamento.",
+            },
+          ],
+        },
+        {
+          title: "Dados e operação do site",
+          description:
+            "Uma página de privacidade de um SaaS em produção deve definir retenção, cookies, análises e canais de contato.",
+          items: [
+            {
+              title: "Retenção",
+              description:
+                "Os períodos de retenção em produção, o comportamento de exclusão e o tratamento de arquivos temporários devem ser documentados antes do lançamento.",
+            },
+            {
+              title: "Cookies",
+              description:
+                "O DockDocs pode usar cookies essenciais para a operação do site e futuras preferências, como seleção de idioma.",
+            },
+            {
+              title: "Análises",
+              description:
+                "Se análises forem habilitadas, devem ser usadas para entender o uso agregado do produto e não para expor o conteúdo dos documentos.",
+            },
+          ],
+        },
+      ],
+    },
+    terms: {
+      slug: "terms",
+      title: "Termos | DockDocs",
+      description:
+        "Termos das ferramentas PDF do DockDocs, dos fluxos de trabalho de documentos com IA, das limitações, da propriedade intelectual e da responsabilidade.",
+      eyebrow: "Termos",
+      heroTitle: "Termos para usar os fluxos de PDF e IA do DockDocs.",
+      heroDescription:
+        "Estes termos descrevem o uso aceitável, a responsabilidade do usuário, as limitações da IA, a propriedade intelectual e as expectativas de responsabilidade.",
+      sections: [
+        {
+          title: "Uso do DockDocs",
+          description:
+            "As ferramentas do DockDocs são destinadas a fluxos de trabalho de documentos legais, produtividade, conversão, organização e revisão.",
+          items: [
+            {
+              title: "Uso",
+              description:
+                "Os usuários são responsáveis por garantir que têm o direito de enviar, converter, revisar e exportar documentos.",
+            },
+            {
+              title: "Limitações",
+              description:
+                "O processamento de arquivos, a qualidade de saída, a precisão do OCR e a revisão assistida por IA podem variar conforme o arquivo de origem e o fluxo de trabalho.",
+            },
+            {
+              title: "Propriedade intelectual",
+              description:
+                "Os usuários mantêm a responsabilidade sobre o conteúdo que processam. A marca, a interface e os materiais do produto do DockDocs permanecem como ativos do DockDocs.",
+            },
+          ],
+        },
+        {
+          title: "IA e responsabilidade",
+          description:
+            "As funcionalidades de IA são auxiliares de produtividade e não devem ser tratadas como assessoria profissional.",
+          items: [
+            {
+              title: "Avisos sobre IA",
+              description:
+                "Os resumos com IA, o texto de OCR e as respostas do chat com PDF podem ser incompletos ou incorretos. Os usuários devem verificar os resultados importantes.",
+            },
+            {
+              title: "Limitações de responsabilidade",
+              description:
+                "O DockDocs não deve ser usado como única base para decisões legais, financeiras, médicas ou de conformidade.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 };
 
-export function getInfoPage(locale: "en" | "zh" | "es", slug: InfoPageSlug) {
+export function getInfoPage(locale: "en" | "zh" | "es" | "pt", slug: InfoPageSlug) {
   return infoPages[locale][slug];
 }

@@ -1,10 +1,10 @@
-// Shared detection + friendly messaging for password-protected (encrypted) PDFs.
+﻿// Shared detection + friendly messaging for password-protected (encrypted) PDFs.
 // pdf.js rejects getDocument() with a PasswordException; pdf-lib throws an
 // EncryptedPDFError from PDFDocument.load(). Either way the user just needs to
 // unlock the file first — so we turn the raw stack message into a clear hint
 // instead of dumping "PasswordException: No password given" onto the page.
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 
 /** True if the error is pdf.js / pdf-lib refusing a password-protected PDF. */
 export function isEncryptedPdfError(e: unknown): boolean {
@@ -21,9 +21,10 @@ export function isEncryptedPdfError(e: unknown): boolean {
 
 /** The bilingual "unlock first" notice shown for encrypted PDFs. */
 export function encryptedPdfNotice(locale: Locale): string {
-  return locale === "zh"
-    ? "这个 PDF 受密码保护，无法读取。请先用「解锁 PDF」工具（输入密码移除保护）处理后，再回到这里使用本工具。"
-    : "This PDF is password-protected, so it can't be opened. Remove the protection first with the “Unlock PDF” tool, then come back and try again.";
+  if (locale === "zh") return "这个 PDF 受密码保护，无法读取。请先用「解锁 PDF」工具（输入密码移除保护）处理后，再回到这里使用本工具。";
+  if (locale === "es") return "Este PDF está protegido con contraseña y no se puede abrir. Elimina la protección primero con la herramienta \"Desbloquear PDF\" y luego vuelve a intentarlo.";
+  if (locale === "pt") return "Este PDF está protegido por senha e não pode ser aberto. Remova a proteção primeiro com a ferramenta \"Desbloquear PDF\" e tente novamente.";
+  return "This PDF is password-protected, so it can't be opened. Remove the protection first with the \"Unlock PDF\" tool, then come back and try again.";
 }
 
 /**

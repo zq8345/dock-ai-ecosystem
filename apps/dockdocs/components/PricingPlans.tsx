@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { localizedPath, type RouteSlug } from "@/lib/i18n";
+import { localizedPath, type RouteSlug, type RouteLocale } from "@/lib/i18n";
 import { createBillingCheckoutSession, getSubscriptionSnapshot, type SubscriptionSnapshot } from "@/lib/subscription-runtime";
 import type { PaidSubscriptionPlan } from "@/lib/billing-config";
 import { getUser, onAuthChange } from "@/lib/auth";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 
 const copy = {
   en: {
@@ -238,6 +238,82 @@ const copy = {
       { f: "Espacio de equipo · soporte prioritario", v: ["—", "—", "✓"] },
     ],
   },
+  pt: {
+    title: "Preços simples. Documentos poderosos.",
+    subtitle: "Comece grátis — sem conta, sem cartão. Faça upgrade só quando precisar de IA, arquivos maiores ou maior volume. Cancele a qualquer momento, em dois cliques.",
+    monthly: "Mensal",
+    yearly: "Anual",
+    save: "Economize ~40%",
+    perMo: "/mês",
+    mostPopular: "Mais popular",
+    billedYearly: (v: string) => `${v} cobrado anualmente`,
+    trust: ["Garantia de reembolso de 7 dias", "Cancele a qualquer momento, sem perguntas", "Seus arquivos nunca são usados para treinar IA"],
+    plans: [
+      {
+        name: "Grátis",
+        monthlyPrice: "$0",
+        yearlyPrice: "$0",
+        tagline: "Tudo que você precisa para o trabalho diário com PDF.",
+        highlights: ["20+ ferramentas PDF — converter, comprimir, mesclar, dividir", "Criptografar, editar páginas e OCR de docs digitalizados", "Processado no seu navegador — arquivos ficam privados", "Grátis para sempre, sem conta necessária"],
+        cta: "Comece grátis agora",
+        href: "/chat-with-pdf" as RouteSlug,
+        featured: false,
+      },
+      {
+        name: "Plus",
+        monthlyPrice: "$5",
+        yearlyPrice: "$3",
+        yearlyTotal: "$36/ano",
+        tagline: "A IA lê e compara seus documentos — em segundos.",
+        valueLine: "Menos que um café por mês.",
+        highlights: ["Tudo do Grátis", "Converse com qualquer PDF — respostas citam a fonte", "Resumos e pontos-chave com IA em segundos", "Compare vários documentos lado a lado", "Arquivos de 100 MB, lote e prioridade, sem anúncios"],
+        cta: "Fazer upgrade para Plus",
+        href: "" as RouteSlug,
+        featured: true,
+      },
+      {
+        name: "Pro",
+        monthlyPrice: "$20",
+        yearlyPrice: "$12",
+        yearlyTotal: "$144/ano",
+        tagline: "Automatize fluxos de documentos e revisão profissional.",
+        highlights: ["Tudo do Plus", "Automatize fluxos de trabalho de documentos em lote", "Revisão de contratos — detecta cláusulas arriscadas e ausentes", "Acesso à API e classificação automática", "Espaço de trabalho em equipe e suporte prioritário"],
+        cta: "Fazer upgrade para Pro",
+        href: "" as RouteSlug,
+        featured: false,
+      },
+    ],
+    faqTitle: "Perguntas antes de comprar",
+    faq: [
+      { q: "Posso cancelar a qualquer momento?", a: "Sim. Gerencie ou cancele sua assinatura você mesmo em alguns cliques — sem e-mails, sem truques de retenção. Você mantém o acesso até o final do período pago." },
+      { q: "Há reembolso?", a: "Sim. Se o Plus ou Pro não for o certo para você, solicite reembolso dentro de 7 dias do pagamento e devolveremos." },
+      { q: "Preciso pagar para usar o DockDocs?", a: "Não. Todas as 20+ ferramentas PDF básicas são gratuitas para sempre, sem necessidade de conta. Você só paga se quiser recursos de IA, arquivos maiores ou maior volume." },
+      { q: "O que acontece com meus arquivos?", a: "A maioria das ferramentas processa inteiramente no seu navegador — seus arquivos nunca saem do seu dispositivo. Conversões em nuvem são processadas e a cópia temporária é excluída automaticamente. Nunca usamos seus documentos para treinar IA." },
+      { q: "Posso trocar de plano depois?", a: "A qualquer momento. Faça upgrade, downgrade ou mude entre mensal e anual quando quiser." },
+    ],
+    ctaTitle: "Experimente grátis — decida depois.",
+    ctaDesc: "Abra qualquer ferramenta agora mesmo. Sem conta, sem cartão, sem compromisso.",
+    ctaBtn: "Comece com uma ferramenta gratuita",
+    scenariosTitle: "O que o DockDocs pode resolver para você?",
+    scenarios: [
+      { emoji: "📊", title: "Compare orçamentos e escolha o melhor", before: "Abrir 3 arquivos, copiar números numa planilha — ~1 hora", after: "Carregar → tabela comparativa + recomendação com fonte — 1 min", tier: "Plus", href: "/compare" as RouteSlug },
+      { emoji: "📄", title: "Detecte as armadilhas em um contrato", before: "Pagar $300 a um advogado, ou assinar às cegas e se arrepender", after: "A IA detecta cláusulas arriscadas e ausentes em minutos", tier: "Pro", href: "/compare" as RouteSlug },
+      { emoji: "🧾", title: "Processe um lote de faturas", before: "Inserir uma a uma — horas, ou contratar ajuda", after: "Envie o lote inteiro → extração e resumo automáticos", tier: "Pro", href: "/extract-to-excel" as RouteSlug },
+      { emoji: "📕", title: "Entenda um relatório longo rapidamente", before: "Ler 80 páginas para encontrar algumas respostas — horas", after: "Pergunte o que quiser → respostas com fonte em 30s", tier: "Plus", href: "/chat-with-pdf" as RouteSlug },
+    ],
+    compareTitle: "Comparar planos",
+    compareCols: ["Grátis", "Plus", "Pro"],
+    compareRows: [
+      { f: "20+ ferramentas PDF — converter, comprimir, mesclar, criptografar, OCR", v: ["✓", "✓", "✓"] },
+      { f: "Chat com PDF · Resumos de IA", v: ["—", "✓", "✓"] },
+      { f: "Traduzir PDF com IA (mantém o formato)", v: ["—", "Em breve", "Em breve"] },
+      { f: "Comparar vários documentos", v: ["—", "✓", "✓"] },
+      { f: "Arquivos de 100 MB · lote · sem anúncios", v: ["—", "✓", "✓"] },
+      { f: "Automatizar fluxos · API · auto-classificar", v: ["—", "—", "✓"] },
+      { f: "Revisão de contratos — riscos e cláusulas ausentes", v: ["—", "—", "✓"] },
+      { f: "Espaço de equipe · suporte prioritário", v: ["—", "—", "✓"] },
+    ],
+  },
 } as const;
 
 export function PricingPlans({ locale = "en" }: { locale?: Locale }) {
@@ -282,15 +358,15 @@ export function PricingPlans({ locale = "en" }: { locale?: Locale }) {
     }
   }
   // 账户页全站统一为 /account(无语言版本)，不要按 locale 加 /zh 前缀，否则 /zh/account 会 404
-  const toolHref = (href: RouteSlug) => (href ? localizedPath(locale, href) : "/account");
-  const eyebrow = `font-mono text-[12px] text-[color:var(--faint)] ${zh ? "" : locale === "es" ? "" : "uppercase tracking-[0.08em]"}`;
+  const toolHref = (href: RouteSlug) => (href ? localizedPath(locale as RouteLocale, href) : "/account");
+  const eyebrow = `font-mono text-[12px] text-[color:var(--faint)] ${zh || locale === "es" ? "" : "uppercase tracking-[0.08em]"}`;
   const h2 = "text-[26px] font-normal leading-[1.15] tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[32px]";
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
       {/* Header */}
       <div className="text-center">
-        <p className={eyebrow}>{locale === "zh" ? "// 定价" : locale === "es" ? "// Precios" : "// Pricing"}</p>
+        <p className={eyebrow}>{locale === "zh" ? "// 定价" : locale === "es" ? "// Precios" : locale === "pt" ? "// Preços" : "// Pricing"}</p>
         <h1 className="mt-4 text-[34px] font-normal leading-[1.08] tracking-[-0.025em] text-[color:var(--foreground)] sm:text-[48px]">
           {c.title}
         </h1>
@@ -359,9 +435,9 @@ export function PricingPlans({ locale = "en" }: { locale?: Locale }) {
               {planKey ? (
                 <button type="button" onClick={() => !isCurrentPlan && upgrade(planKey)} disabled={isCurrentPlan || billingLoading === planKey} className={ctaCls}>
                   {isCurrentPlan
-                    ? (locale === "zh" ? "当前套餐" : locale === "es" ? "Plan actual" : "Current plan")
+                    ? (locale === "zh" ? "当前套餐" : locale === "es" ? "Plan actual" : locale === "pt" ? "Plano atual" : "Current plan")
                     : billingLoading === planKey
-                      ? (locale === "zh" ? "跳转中…" : locale === "es" ? "Redirigiendo…" : "Redirecting…")
+                      ? (locale === "zh" ? "跳转中…" : locale === "es" ? "Redirigiendo…" : locale === "pt" ? "Redirecionando…" : "Redirecting…")
                       : plan.cta}
                 </button>
               ) : (
@@ -384,7 +460,7 @@ export function PricingPlans({ locale = "en" }: { locale?: Locale }) {
 
       {/* Solutions by scenario */}
       <div className="mx-auto mt-24 max-w-5xl">
-        <p className={`${eyebrow} text-center`}>{locale === "zh" ? "// 应用场景" : locale === "es" ? "// Casos de uso" : "// Use cases"}</p>
+        <p className={`${eyebrow} text-center`}>{locale === "zh" ? "// 应用场景" : locale === "es" ? "// Casos de uso" : locale === "pt" ? "// Casos de uso" : "// Use cases"}</p>
         <h2 className={`mt-3 text-center ${h2}`}>{c.scenariosTitle}</h2>
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
           {c.scenarios.map((s) => (
@@ -396,7 +472,7 @@ export function PricingPlans({ locale = "en" }: { locale?: Locale }) {
               <p className="mt-3 text-[13px] leading-6 text-[color:var(--muted)]">😩 {s.before}</p>
               <p className="mt-1.5 text-[13px] leading-6 text-[color:var(--foreground)]"><span className="text-[color:var(--accent)]">⚡</span> {s.after}</p>
               {s.href && (
-                <a href={toolHref(s.href)} className="mt-3 inline-block text-[13px] font-medium text-[color:var(--accent)] transition hover:text-[color:var(--accent-strong)]">{locale === "zh" ? "去试试 →" : locale === "es" ? "Pruébalo →" : "Try it →"}</a>
+                <a href={toolHref(s.href)} className="mt-3 inline-block text-[13px] font-medium text-[color:var(--accent)] transition hover:text-[color:var(--accent-strong)]">{locale === "zh" ? "去试试 →" : locale === "es" ? "Pruébalo →" : locale === "pt" ? "Experimente →" : "Try it →"}</a>
               )}
             </div>
           ))}
@@ -405,7 +481,7 @@ export function PricingPlans({ locale = "en" }: { locale?: Locale }) {
 
       {/* Compare plans */}
       <div className="mx-auto mt-24 max-w-4xl">
-        <p className={`${eyebrow} text-center`}>{locale === "zh" ? "// 套餐对照" : locale === "es" ? "// Comparar" : "// Compare"}</p>
+        <p className={`${eyebrow} text-center`}>{locale === "zh" ? "// 套餐对照" : locale === "es" ? "// Comparar" : locale === "pt" ? "// Comparar" : "// Compare"}</p>
         <h2 className={`mt-3 text-center ${h2}`}>{c.compareTitle}</h2>
         <div className="mt-10 overflow-x-auto rounded-2xl border border-[color:var(--line)]">
           <table className="w-full border-collapse text-[14px]">
@@ -433,7 +509,7 @@ export function PricingPlans({ locale = "en" }: { locale?: Locale }) {
 
       {/* FAQ */}
       <div className="mx-auto mt-24 max-w-3xl">
-        <p className={`${eyebrow} text-center`}>{locale === "zh" ? "// 常见问题" : locale === "es" ? "// Preguntas frecuentes" : "// FAQ"}</p>
+        <p className={`${eyebrow} text-center`}>{locale === "zh" ? "// 常见问题" : locale === "es" ? "// Preguntas frecuentes" : locale === "pt" ? "// Perguntas frequentes" : "// FAQ"}</p>
         <h2 className={`mt-3 text-center ${h2}`}>{c.faqTitle}</h2>
         <div className="mt-8 divide-y divide-[color:var(--line)] border-y border-[color:var(--line)]">
           {c.faq.map((item, i) => (
@@ -458,7 +534,7 @@ export function PricingPlans({ locale = "en" }: { locale?: Locale }) {
       <div className="mx-auto mt-24 max-w-3xl text-center">
         <h2 className={h2}>{c.ctaTitle}</h2>
         <p className="mx-auto mt-4 max-w-xl text-[16px] leading-[1.55] text-[color:var(--muted)]">{c.ctaDesc}</p>
-        <a href={locale === "zh" ? "/zh/" : locale === "es" ? "/es/" : "/"}
+        <a href={locale === "zh" ? "/zh/" : locale === "es" ? "/es/" : locale === "pt" ? "/pt/" : "/"}
           className="mt-8 inline-flex h-11 items-center rounded-full bg-[color:var(--accent)] px-6 text-[14px] font-medium transition hover:bg-[color:var(--accent-hover)]"
         >{c.ctaBtn}</a>
       </div>

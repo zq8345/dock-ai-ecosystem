@@ -26,7 +26,7 @@ import {
   type WorkspaceIdentity,
 } from "@/lib/workspace-runtime";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 
 const STR = {
   en: {
@@ -172,6 +172,54 @@ const STR = {
     savedDocs: "Documentos guardados",
     noDocs: "Aún no hay metadatos de documentos guardados.",
     docMeta: (chats: number, analyses: number) => `${chats} chats · ${analyses} análisis`,
+  },
+  pt: {
+    eyebrow: "Meus chats",
+    heroTitle: "Histórico salvo de «Chat com PDF».",
+    heroIntro: "Usuários com sessão iniciada podem manter o histórico de chat e os metadados de documentos enviados para revisão posterior. Os arquivos PDF originais não são armazenados.",
+    loading: "Carregando conta…",
+    signInTitle: "Entre para separar os dados da área de trabalho.",
+    signInDesc: "O DockDocs pode manter registros locais no navegador para uso anônimo e separar os dados com sessão iniciada por ID de conta. Os PDFs originais não são salvos.",
+    currentStorage: "Armazenamento atual",
+    plan: "Plano",
+    sessionOnly: "Somente esta sessão",
+    savedChats: "Chats salvos",
+    documents: "Documentos",
+    turns: "Turnos",
+    storage: "Armazenamento",
+    browser: "Navegador",
+    signedIn: "Sessão iniciada",
+    workspaceStorage: "Armazenamento da área de trabalho",
+    saved: "Salvo",
+    clearChats: "Limpar chats da conta",
+    noChatsTitle: "Nenhum chat na conta ainda.",
+    noChatsDesc: "Comece no Chat com PDF com sessão iniciada. O DockDocs salvará a pergunta, resposta, referências, uso de tokens e metadados do documento.",
+    openChat: "Abrir Chat com PDF",
+    turnsLabel: (n: number) => `${n} turno${n === 1 ? "" : "s"}`,
+    user: "Usuário",
+    assistant: "Assistente",
+    context: "Contexto",
+    trimmed: " · cortado",
+    provider: "Provedor",
+    tokenUsage: "Uso de tokens",
+    totalTokens: (n: number) => `total ${n}`,
+    notAvailable: "não disponível",
+    workspace: "Área de trabalho",
+    account: "Conta",
+    local: "Local",
+    todayChat: "Chat de IA de hoje",
+    totalTokensLabel: "Total de tokens",
+    savedSessions: "Sessões salvas",
+    resumeWork: "Retomar trabalho com documentos",
+    sessionsCount: (n: number) => `${n} sessão${n === 1 ? "" : "ões"}`,
+    noSessions: "Nenhuma sessão salva ainda.",
+    sessionMeta: (turns: number, tokens: number) => `${turns} turnos · ${tokens} tokens`,
+    restore: "Restaurar",
+    delete: "Excluir",
+    references: "Referências",
+    savedDocs: "Documentos salvos",
+    noDocs: "Nenhum metadado de documento salvo ainda.",
+    docMeta: (chats: number, analyses: number) => `${chats} chats · ${analyses} análises`,
   },
 };
 

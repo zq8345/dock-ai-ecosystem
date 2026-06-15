@@ -3,7 +3,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { navCategories } from "@/components/Header";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Item = { name: string; slug: string };
 
 const COPY = {
@@ -87,6 +87,33 @@ const COPY = {
     viewPricing: "Ver precios",
     aiSummary: "Resumen de IA",
     cite: "fuente",
+  },
+  pt: {
+    eyebrow: "Plataforma de PDF com IA focada em privacidade",
+    heroA: "Leia qualquer documento.",
+    heroB: "Confie em cada resposta.",
+    heroSub: "~50 ferramentas PDF que rodam no seu navegador, mais uma IA que lê, compara e extrai seus documentos — com fontes em que você pode clicar para voltar.",
+    primary: "Use gratuitamente",
+    secondary: "Veja como a privacidade funciona",
+    proofHeading: "Seus arquivos nunca saem do seu dispositivo.",
+    proof: [{ t: "Processado no seu navegador" }, { g: "0", t: " arquivos enviados" }, { t: "As respostas citam a fonte" }, { t: "Sem cadastro" }],
+    aiEyebrow: "IA embasada",
+    aiHeading: "Uma IA que mostra seu trabalho.",
+    aiSub: "Pergunte a qualquer documento e cada resposta aponta para a linha exata de onde veio. Compare, extraia, resuma — embasado, nunca inventado.",
+    aiCta: "Converse com um PDF",
+    aiChips: ["Comparar", "Extrair para Excel", "Resumir", "Traduzir 18 idiomas"],
+    capEyebrow: "O que você pode fazer",
+    capHeading: "Um kit completo. Quatro formas de trabalhar.",
+    capSub: "Cerca de 50 ferramentas PDF em um só lugar — converter, organizar, assinar, redigir, OCR — a maioria roda localmente no seu navegador.",
+    browseAll: "Ver todas as ferramentas",
+    more: (n: number) => `e mais ${n}`,
+    tools: "ferramentas",
+    ctaHeadA: "Leia qualquer documento.",
+    ctaHeadB: "Confie em cada resposta.",
+    ctaSub: "~50 ferramentas, IA embasada, nada é enviado. Grátis para começar — sem cadastro.",
+    viewPricing: "Ver preços",
+    aiSummary: "Resumo de IA",
+    cite: "fonte",
   },
 } as const;
 
@@ -206,7 +233,7 @@ export function Home({ locale = "en" }: { locale?: Locale }) {
   const zh = locale === "zh";
   const c = COPY[locale] ?? COPY.en;
   const cats = (navCategories[locale] ?? navCategories.en).slice(0, 4);
-  const path = (slug: string) => (locale === "zh" ? `/zh${slug}` : locale === "es" ? `/es${slug}` : slug);
+  const path = (slug: string) => (locale === "zh" ? `/zh${slug}` : locale === "es" ? `/es${slug}` : locale === "pt" ? `/pt${slug}` : slug);
 
   return (
     <>
@@ -267,10 +294,10 @@ export function Home({ locale = "en" }: { locale?: Locale }) {
                 <p className="mb-2 text-[10px] font-normal uppercase tracking-[0.12em] text-[color:var(--faint)]">{c.aiSummary}</p>
                 <div className="mb-1.5 flex items-center gap-1.5 text-[12px] text-[color:var(--foreground)]">
                   <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--accent)]" />
-                  <span className="min-w-0">{locale === "zh" ? "营收同比 +23%" : locale === "es" ? "Ingresos +23% interanual" : "Revenue +23% YoY"}</span>
+                  <span className="min-w-0">{locale === "zh" ? "营收同比 +23%" : locale === "es" ? "Ingresos +23% interanual" : locale === "pt" ? "Receita +23% ano a ano" : "Revenue +23% YoY"}</span>
                   <span className="ml-auto inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded border border-[color:var(--line)] px-1.5 py-0.5 text-[9px] font-medium text-[color:var(--accent)]">{c.cite}</span>
                 </div>
-                {[locale === "zh" ? "亚太区为主要驱动" : locale === "es" ? "APAC es el motor principal" : "APAC is the main driver", locale === "zh" ? "毛利率 41%（↑3pt）" : locale === "es" ? "Margen bruto 41% (↑3pt)" : "Gross margin 41% (↑3pt)"].map((b) => (
+                {[locale === "zh" ? "亚太区为主要驱动" : locale === "es" ? "APAC es el motor principal" : locale === "pt" ? "APAC é o motor principal" : "APAC is the main driver", locale === "zh" ? "毛利率 41%（↑3pt）" : locale === "es" ? "Margen bruto 41% (↑3pt)" : locale === "pt" ? "Margem bruta 41% (↑3pt)" : "Gross margin 41% (↑3pt)"].map((b) => (
                   <div key={b} className="mb-1.5 flex items-center gap-1.5 text-[12px] text-[color:var(--muted)] last:mb-0">
                     <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--ink-soft)]" />{b}
                   </div>
@@ -301,16 +328,16 @@ export function Home({ locale = "en" }: { locale?: Locale }) {
           {/* grounded Q&A: a question, then an answer that cites the exact pages */}
           <div className="hfg-in rounded-xl border border-[color:var(--line)] bg-[color:var(--surface)] p-5">
             <div className="flex justify-end">
-              <span className="max-w-[80%] rounded-2xl rounded-br-md border border-[color:var(--line)] bg-[color:var(--background)] px-3.5 py-2 text-[12.5px] leading-[1.45] text-[color:var(--foreground)]">{locale === "zh" ? "第 3 季度营收增长了多少？" : locale === "es" ? "¿Cuánto crecieron los ingresos del 3.er trimestre?" : "How much did Q3 revenue grow?"}</span>
+              <span className="max-w-[80%] rounded-2xl rounded-br-md border border-[color:var(--line)] bg-[color:var(--background)] px-3.5 py-2 text-[12.5px] leading-[1.45] text-[color:var(--foreground)]">{locale === "zh" ? "第 3 季度营收增长了多少？" : locale === "es" ? "¿Cuánto crecieron los ingresos del 3.er trimestre?" : locale === "pt" ? "Quanto cresceu a receita do 3.º trimestre?" : "How much did Q3 revenue grow?"}</span>
             </div>
             <div className="mt-3 rounded-lg border border-[color:var(--line)] p-3.5">
               <div className="mb-2.5 flex items-center gap-1.5 text-[10px] font-normal uppercase tracking-[0.12em] text-[color:var(--faint)]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--accent)]" />{locale === "zh" ? "有据回答" : locale === "es" ? "Respuesta fundamentada" : "Grounded answer"}
+                <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--accent)]" />{locale === "zh" ? "有据回答" : locale === "es" ? "Respuesta fundamentada" : locale === "pt" ? "Resposta embasada" : "Grounded answer"}
               </div>
-              <p className="mb-3 text-[12.5px] leading-[1.5] text-[color:var(--foreground)]">{locale === "zh" ? "第 3 季度营收同比增长 23%，主要由亚太区驱动。" : locale === "es" ? "Los ingresos del 3.er trimestre crecieron un 23% interanual, impulsados principalmente por APAC." : "Q3 revenue grew 23% year-over-year, driven mainly by APAC."}</p>
+              <p className="mb-3 text-[12.5px] leading-[1.5] text-[color:var(--foreground)]">{locale === "zh" ? "第 3 季度营收同比增长 23%，主要由亚太区驱动。" : locale === "es" ? "Los ingresos del 3.er trimestre crecieron un 23% interanual, impulsados principalmente por APAC." : locale === "pt" ? "A receita do 3.º trimestre cresceu 23% ano a ano, impulsionada principalmente pela APAC." : "Q3 revenue grew 23% year-over-year, driven mainly by APAC."}</p>
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-[10px] text-[color:var(--faint)]">{locale === "zh" ? "依据" : locale === "es" ? "Fuentes" : "Sources"}</span>
-                {(locale === "zh" ? ["第 12 页", "第 27 页"] : locale === "es" ? ["p.12", "p.27"] : ["p.12", "p.27"]).map((cite) => (
+                <span className="text-[10px] text-[color:var(--faint)]">{locale === "zh" ? "依据" : locale === "es" ? "Fuentes" : locale === "pt" ? "Fontes" : "Sources"}</span>
+                {(locale === "zh" ? ["第 12 页", "第 27 页"] : locale === "es" ? ["p.12", "p.27"] : locale === "pt" ? ["p.12", "p.27"] : ["p.12", "p.27"]).map((cite) => (
                   <span key={cite} className="inline-flex items-center gap-1 rounded border border-[color:var(--line)] px-1.5 py-0.5 text-[10px] font-medium text-[color:var(--accent)] transition-colors hover:border-[color:var(--accent)]">
                     <svg width="9" height="9" viewBox="0 0 16 16" fill="none"><path d="M4 2h6l3 3v9H4z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" /></svg>
                     {cite}
@@ -375,11 +402,11 @@ export function Home({ locale = "en" }: { locale?: Locale }) {
       {/* ── Use cases (understand what it solves) ── */}
       <section>
         <div className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28 lg:px-8">
-          <p className={EYEBROW(zh)}>{locale === "zh" ? "能替你做什么" : locale === "es" ? "Lo que hace por ti" : "What it does for you"}</p>
-          <h2 className="mt-4 text-[28px] font-normal leading-[1.15] tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[36px]">{locale === "zh" ? "几分钟，搞定原本要几小时的事。" : locale === "es" ? "Minutos, no horas." : "Minutes, not hours."}</h2>
+          <p className={EYEBROW(zh)}>{locale === "zh" ? "能替你做什么" : locale === "es" ? "Lo que hace por ti" : locale === "pt" ? "O que faz por você" : "What it does for you"}</p>
+          <h2 className="mt-4 text-[28px] font-normal leading-[1.15] tracking-[-0.02em] text-[color:var(--foreground)] sm:text-[36px]">{locale === "zh" ? "几分钟，搞定原本要几小时的事。" : locale === "es" ? "Minutos, no horas." : locale === "pt" ? "Minutos, não horas." : "Minutes, not hours."}</h2>
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
             {SCENARIOS.map((s) => {
-              const t = locale === "zh" ? s.zh : locale === "es" ? s.es : s.en;
+              const t = locale === "zh" ? s.zh : locale === "es" ? s.es : locale === "pt" ? ((s as unknown as Record<string, string[]>).pt ?? s.es) : s.en;
               return (
                 <a key={t[0]} href={path(s.href)} className="rounded-2xl border border-[color:var(--line)] p-6 transition-colors hover:border-[color:var(--line-strong)]">
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-[color:var(--line)] text-[color:var(--accent)]">

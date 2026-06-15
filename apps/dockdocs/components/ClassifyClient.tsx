@@ -5,7 +5,7 @@ import { Spinner } from "@/components/Spinner";
 import { encryptedPdfMessage } from "@/lib/pdf-errors";
 import { authHeader } from "@/lib/supabase";
 
-type Locale = "en" | "zh";
+type Locale = "en" | "zh" | "es" | "pt";
 type Doc = { id: string; name: string; text: string };
 type Result = { name: string; category?: string; tags?: string[]; error?: string };
 
@@ -29,6 +29,24 @@ const STR = {
     files: (n: number) => `${n} / ${MAX_FILES} 份`, uncategorized: "未分类",
     need: "至少添加一份 PDF。", noText: "无可提取文字(扫描件？)", err: "出错了：",
     note: "类别由 AI 从每份文档的文字推断，可按需调整。",
+  },
+  es: {
+    title: "Clasificar y etiquetar PDFs automáticamente",
+    subtitle: "Sube un montón de PDFs y deja que la IA etiquete cada uno con una categoría y etiquetas — facturas, currículums, contratos, artículos — para ver de un vistazo de qué está compuesto un montón desordenado.",
+    drop: "Arrastra y suelta PDF aquí, o haz clic para elegir", choose: "Elegir PDF", add: "Agregar más", reading: "Leyendo…",
+    run: "Clasificar todo", running: "Clasificando", reset: "Empezar de nuevo",
+    files: (n: number) => `${n} / ${MAX_FILES} archivos`, uncategorized: "Sin categoría",
+    need: "Agrega al menos un PDF.", noText: "sin texto extraíble (¿escaneado?)", err: "Algo salió mal: ",
+    note: "Las categorías las sugiere la IA a partir del texto de cada documento; ajústalas según necesites.",
+  },
+  pt: {
+    title: "Classificar e etiquetar PDFs automaticamente",
+    subtitle: "Envie uma pilha de PDFs e deixe a IA rotular cada um com uma categoria e etiquetas — faturas, currículos, contratos, artigos — para ver de relance do que é feita uma pilha bagunçada.",
+    drop: "Arraste e solte PDFs aqui, ou clique para escolher", choose: "Escolher PDFs", add: "Adicionar mais", reading: "Lendo…",
+    run: "Classificar tudo", running: "Classificando", reset: "Recomeçar",
+    files: (n: number) => `${n} / ${MAX_FILES} arquivos`, uncategorized: "Sem categoria",
+    need: "Adicione pelo menos um PDF.", noText: "sem texto extraível (digitalizado?)", err: "Algo deu errado: ",
+    note: "As categorias são sugeridas pela IA a partir do texto de cada documento — ajuste conforme necessário.",
   },
 };
 

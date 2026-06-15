@@ -6,7 +6,7 @@ import { useCallback, useRef, useState } from "react";
 import { Spinner } from "@/components/Spinner";
 import { createZipArchive } from "../../../shared/templates/pdf-tool-page/pdf-runtime";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Format = "word" | "excel";
 type Status = "queued" | "done" | "error";
 type Item = { id: string; name: string; file: File; status: Status; blob?: Blob; msg?: string };
@@ -69,6 +69,24 @@ const STR = {
     tooBig: "Más de 5 MB — usa la herramienta de un solo archivo",
     note: "El texto y las tablas se extraen en un archivo editable. Los PDF escaneados o con mucho diseño pueden no convertirse perfectamente. Los archivos de más de 5 MB no se admiten por lotes; usa el convertidor de un solo archivo para esos.",
     err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "PDF para Word / Excel em lote",
+    subtitle:
+      "Converta uma pasta inteira de PDFs para arquivos Word ou Excel editáveis de uma vez: cada um é convertido no nosso servidor e empacotado em um único ZIP.",
+    word: "Para Word (.docx)",
+    excel: "Para Excel (.xlsx)",
+    run: "Converter tudo",
+    running: "Convertendo",
+    download: "Baixar ZIP",
+    reset: "Recomeçar",
+    files: (n: number) => `${n} / ${MAX_FILES} arquivos`,
+    done: "pronto",
+    failed: "falhou",
+    need: "Adicione pelo menos um PDF.",
+    tooBig: "Mais de 5 MB — use a ferramenta de arquivo único",
+    note: "O texto e as tabelas são extraídos para um arquivo editável. PDFs digitalizados ou com muito design podem não converter perfeitamente. Arquivos acima de 5 MB não são suportados em lote — use o conversor de arquivo único para esses.",
+    err: "Algo deu errado: ",
   },
 };
 

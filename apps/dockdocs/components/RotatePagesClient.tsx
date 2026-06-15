@@ -6,7 +6,7 @@ import { encryptedPdfMessage } from "@/lib/pdf-errors";
 
 import { useCallback, useRef, useState } from "react";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Pg = { idx: number; thumb: string };
 
 const STR = {
@@ -36,6 +36,15 @@ const STR = {
     hint: "Haz clic en una página para rotarla 90°. Sigue haciendo clic para seguir girando.",
     rotateAll: "Rotar todo 90°", apply: "Aplicar y descargar", working: "Generando PDF…",
     reset: "Empezar de nuevo", none: "Aún no hay rotaciones: haz clic en una página.", err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "Girar páginas",
+    subtitle: "Envie um PDF e clique em uma página para girá-la: veja-a girar antes de baixar. Corrija digitalizações tortas e páginas horizontais no seu navegador.",
+    drop: "Arraste e solte um PDF aqui, ou clique para escolher",
+    choose: "Escolher PDF", rendering: "Processando páginas…",
+    hint: "Clique em uma página para girá-la 90°. Continue clicando para continuar girando.",
+    rotateAll: "Girar tudo 90°", apply: "Aplicar e baixar", working: "Gerando PDF…",
+    reset: "Recomeçar", none: "Nenhuma rotação ainda — clique em uma página.", err: "Algo deu errado: ",
   },
 };
 

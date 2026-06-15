@@ -6,7 +6,7 @@ import { Spinner } from "@/components/Spinner";
 import { encryptedPdfMessage } from "@/lib/pdf-errors";
 import { authHeader } from "@/lib/supabase";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Summary = { executiveSummary: string; keyPoints: string[]; actionItems?: string[]; nextSteps?: string[] };
 type Doc = { id: string; name: string; text: string };
 type Result = { name: string; summary?: Summary; error?: string };
@@ -43,6 +43,16 @@ const STR = {
     keyPoints: "Puntos clave", download: "Descargar todo (.md)", need: "Agrega al menos un PDF.",
     noText: "sin texto extraíble (¿escaneado?)", err: "Algo salió mal: ",
     note: "Los resúmenes los genera la IA a partir de cada documento; conviene revisarlos rápidamente. Se procesan de uno en uno para no superar los límites.",
+  },
+  pt: {
+    title: "Resumo em lote",
+    subtitle: "Envie vários relatórios, artigos ou contratos e receba um resumo conciso de cada um gerado por IA — resumo executivo mais pontos-chave. Até 5 de uma vez.",
+    drop: "Arraste e solte PDFs aqui, ou clique para escolher", choose: "Escolher PDFs", add: "Adicionar mais", reading: "Lendo…",
+    run: "Resumir tudo", running: "Resumindo", reset: "Recomeçar",
+    files: (n: number) => `${n} / ${MAX_FILES} arquivos`,
+    keyPoints: "Pontos-chave", download: "Baixar tudo (.md)", need: "Adicione pelo menos um PDF.",
+    noText: "sem texto extraível (digitalizado?)", err: "Algo deu errado: ",
+    note: "Os resumos são gerados pela IA a partir de cada documento — verifique-os rapidamente. Processados um por vez para manter-se dentro dos limites.",
   },
 };
 

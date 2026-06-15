@@ -6,7 +6,7 @@ import { ToolFaq } from "@/components/ToolFaq";
 import { encryptedPdfMessage } from "@/lib/pdf-errors";
 import { authHeader } from "@/lib/supabase";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type DocType = "invoice" | "quote" | "contract";
 type Dim = { key: string; label: string };
 type Field = { value: string | null; source: string | null };
@@ -52,6 +52,19 @@ const STR = {
     needFile: "Agrega al menos un PDF.",
     err: "Algo salió mal: ",
     note: "Los campos los extrae la IA y puede que necesiten una revisión rápida. Los valores que no encuentra se dejan en blanco; no los inventa.",
+  },
+  pt: {
+    title: "Extrair para Excel",
+    subtitle: "Envie faturas, orçamentos ou contratos e extraia os campos-chave em uma tabela limpa — depois baixe como planilha (CSV, abre no Excel e Google Sheets). A IA relata apenas o que realmente consta em cada documento.",
+    drop: "Arraste e solte PDFs (ou uma pasta) aqui, ou clique para escolher", folder: "Escolher pasta",
+    choose: "Escolher PDFs", add: "Adicionar mais", reading: "Lendo arquivos…",
+    type: "Tipo de documento", invoice: "Faturas", quote: "Orçamentos", contract: "Contratos",
+    extract: "Extrair campos", extracting: "Extraindo…", reset: "Recomeçar",
+    download: "Baixar CSV", doc: "Documento", notRecognized: "—",
+    files: (n: number) => `${n} arquivo${n === 1 ? "" : "s"}`,
+    needFile: "Adicione pelo menos um PDF.",
+    err: "Algo deu errado: ",
+    note: "Os campos são extraídos por IA e podem precisar de uma verificação rápida. Valores não encontrados são deixados em branco — a IA não os inventa.",
   },
 };
 

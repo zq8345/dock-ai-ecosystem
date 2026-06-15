@@ -3,7 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import { ToolFaq } from "@/components/ToolFaq";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Item = { id: string; name: string; url: string; file: File };
 
 const ACCEPT = "image/png,image/jpeg,image/webp,image/gif,image/bmp,.png,.jpg,.jpeg,.webp,.gif,.bmp";
@@ -38,6 +38,16 @@ const STR = {
     count: (n: number) => `${n} ${n === 1 ? "imagen" : "imágenes"}`,
     convert: "Convertir a PDF", working: "Generando PDF…", reset: "Empezar de nuevo",
     needOne: "Agrega al menos una imagen.", err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "Imagem para PDF",
+    subtitle: "Adicione imagens JPG, PNG, WebP, GIF ou BMP, arraste-as para ordená-las e combine-as em um único PDF: uma imagem por página. Você vê cada imagem antes de converter.",
+    drop: "Arraste e solte as imagens aqui, ou clique para escolher",
+    choose: "Escolher imagens", add: "Adicionar mais", reading: "Lendo imagens…",
+    hint: "Arraste para reordenar. Cada imagem vira uma página do PDF, de cima para baixo.",
+    count: (n: number) => `${n} ${n === 1 ? "imagem" : "imagens"}`,
+    convert: "Converter para PDF", working: "Gerando PDF…", reset: "Recomeçar",
+    needOne: "Adicione pelo menos uma imagem.", err: "Algo deu errado: ",
   },
 };
 

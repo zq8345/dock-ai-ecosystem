@@ -13,7 +13,7 @@ import { UpgradePrompt } from "@/components/ui/UpgradePrompt";
 //  D5: multi-file upload -> browser-side text extraction (pdf.js).
 //  D6: /api/compare-extract -> aligned structured fields with sources -> table.
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type DocStatus = "ok" | "empty" | "error";
 
 type DocResult = {
@@ -204,6 +204,59 @@ const STR = {
     tplNoRuns: "Sin ejecuciones aún",
     retry: "Reintentar",
   },
+  pt: {
+    badge: "Motor de comparação · beta",
+    h1: "Comparar documentos",
+    intro: `Envie de 2 a ${MAX_FILES} PDFs do mesmo tipo. O DockDocs os lê no seu navegador e alinha os termos-chave lado a lado — com a linha de origem por trás de cada valor.`,
+    drop: "Arraste e solte PDFs aqui",
+    dropHint: "Lidos localmente: seus arquivos nunca saem do seu dispositivo. A extração de campos é executada no nosso servidor.",
+    choose: "Escolher PDFs",
+    samples: "Experimentar 3 orçamentos de exemplo",
+    extracting: "Extraindo texto…",
+    typeLabel: "Tipo",
+    compare: "Comparar campos",
+    comparing: "Comparando…",
+    clear: "Limpar",
+    bExtracted: "Texto extraído",
+    bEmpty: "Não reconhecido (provavelmente digitalizado: precisa de OCR)",
+    ocrRun: "Extrair texto com OCR",
+    ocrBusy: "Lendo com OCR… (pode levar alguns segundos)",
+    bError: "Erro ao ler",
+    needTwo: "Adicione pelo menos 2 documentos legíveis para comparar.",
+    failed: "A comparação falhou.",
+    comparison: "Comparação",
+    dimension: "Dimensão",
+    notRecognized: "Não reconhecido",
+    tableNote:
+      "Extraído por IA. Cada valor mostra a linha de origem exata de onde veio (verificada como presente nesse documento). \"Não reconhecido\" significa que o documento não o indicava — nada é inventado.",
+    comingNext: "Em breve",
+    next: [
+      "Uma recomendação com fontes (qual opção vence e por quê)",
+      "Clique em qualquer valor para ir ao ponto exato no PDF original",
+      "Adicione suas próprias dimensões para comparar",
+    ],
+    docCount: (n: number) => `${n} documento${n > 1 ? "s" : ""}`,
+    pages: (n: number) => `${n} página${n === 1 ? "" : "s"} · `,
+    chars: (n: number) => `${n.toLocaleString()} caracteres`,
+    docTypes: [
+      { value: "quote", label: "Orçamentos" },
+      { value: "invoice", label: "Faturas" },
+      { value: "contract", label: "Contratos" },
+    ],
+    tplSave: "Salvar como modelo",
+    tplSaving: "Salvando…",
+    tplNamePlaceholder: "Nome do modelo (ex.: Orçamentos de fornecedores)",
+    tplConfirm: "Salvar",
+    tplCancel: "Cancelar",
+    tplMyTemplates: "Meus modelos",
+    tplDelete: "Excluir",
+    tplLoaded: (name: string) => `Modelo: ${name}`,
+    tplRerunHint: "Solte novos arquivos para recomparar automaticamente",
+    tplLastRun: "Última execução",
+    tplRunFiles: (n: number) => `${n} arquivo${n > 1 ? "s" : ""}`,
+    tplNoRuns: "Nenhuma execução ainda",
+    retry: "Tentar novamente",
+  },
 } as const;
 
 const REC = {
@@ -228,12 +281,20 @@ const REC = {
     disclaimer: "Este veredicto es el razonamiento de la IA sobre las cifras de la tabla de abajo; a diferencia de cada celda de la tabla, no se verifica su fuente de forma individual. Confirma los números en la tabla antes de decidir.",
     recError: "Recomendación no disponible; la tabla de comparación sigue siendo precisa.",
   },
+  pt: {
+    title: "Recomendação",
+    thinking: "Avaliando as opções…",
+    recommended: "Recomendado",
+    disclaimer: "Este veredicto é o raciocínio da IA sobre os números da tabela abaixo — ao contrário de cada célula da tabela, não é verificado individualmente em relação à fonte. Confirme os números na tabela antes de decidir.",
+    recError: "Recomendação indisponível — a tabela de comparação abaixo continua precisa.",
+  },
 } as const;
 
 const TRACE = {
   en: { source: "Source", notLocated: "Couldn't locate the exact snippet — showing the full text." },
   zh: { source: "原文出处", notLocated: "未能精确定位片段——显示全文。" },
   es: { source: "Origen", notLocated: "No se pudo localizar el fragmento exacto: se muestra el texto completo." },
+  pt: { source: "Origem", notLocated: "Não foi possível localizar o trecho exato — exibindo o texto completo." },
 } as const;
 
 // Localized dimension labels (the backend returns English labels).

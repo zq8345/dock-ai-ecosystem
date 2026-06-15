@@ -6,7 +6,7 @@ import { encryptedPdfMessage } from "@/lib/pdf-errors";
 
 import { useCallback, useRef, useState } from "react";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Pg = { idx: number; thumb: string };
 
 const STR = {
@@ -54,6 +54,21 @@ const STR = {
     needOne: "Conserva al menos una página.",
     page: "Página",
     err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "Reordenar páginas",
+    subtitle: "Envie um PDF e arraste as miniaturas das páginas para a ordem desejada. Exclua as páginas desnecessárias. Tudo acontece no seu navegador.",
+    drop: "Arraste e solte um PDF aqui, ou clique para escolher",
+    choose: "Escolher PDF",
+    rendering: "Processando páginas…",
+    hint: "Arraste uma página para movê-la. Clique em ✕ para excluir uma página.",
+    apply: "Aplicar e baixar",
+    working: "Gerando PDF…",
+    reset: "Recomeçar",
+    removed: (n: number) => `${n} página${n === 1 ? "" : "s"} excluída${n === 1 ? "" : "s"}`,
+    needOne: "Mantenha pelo menos uma página.",
+    page: "Página",
+    err: "Algo deu errado: ",
   },
 };
 

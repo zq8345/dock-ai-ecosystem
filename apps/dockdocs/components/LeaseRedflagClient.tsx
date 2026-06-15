@@ -9,7 +9,7 @@ import { authHeader } from "@/lib/supabase";
 
 import { useCallback, useMemo, useState } from "react";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type RiskLevel = "high" | "medium" | "low";
 type Risk = { type: string; level: RiskLevel; quote: string | null; why: string; suggestion: string };
 
@@ -93,6 +93,32 @@ const STR = {
     errPrefix: "No se pudo completar el análisis: ",
     retry: "Reintentar",
     privacy: "Tu arrendamiento se lee en tu navegador; solo se envía el texto extraído para analizarlo.",
+  },
+  pt: {
+    title: "Verificação de cláusulas problemáticas no contrato de aluguel",
+    subtitle:
+      "Envie seu contrato de aluguel (residencial ou comercial) e receba uma lista em linguagem simples de cláusulas arriscadas, abusivas ou ausentes — cada uma marcada em vermelho / âmbar / verde, citada do seu documento, com o que perguntar antes de assinar.",
+    proBadge: "PRO",
+    drop: "Arraste um PDF do contrato de aluguel aqui, ou clique para escolher",
+    choose: "Escolher PDF do contrato de aluguel",
+    extracting: "Lendo o contrato de aluguel…",
+    pagesChars: (p: number, c: number) => `${p} páginas · ${c.toLocaleString()} caracteres`,
+    noText: "Nenhum texto selecionável encontrado. É um contrato digitalizado? Execute o OCR primeiro.",
+    tooLong: `O contrato de aluguel ultrapassa o limite de ${MAX_CHARS.toLocaleString()} caracteres; apenas a primeira parte será revisada.`,
+    analyze: "Buscar cláusulas problemáticas",
+    analyzing: "Revisando…",
+    result: (n: number) => `${n} cláusula${n === 1 ? "" : "s"} para revisar`,
+    noRisks: "Nenhuma cláusula problemática clara foi encontrada. Isso não garante que o contrato seja justo — leia-o na íntegra e considere consultar um advogado.",
+    disclaimer: "Esta é uma revisão automatizada para ajudar inquilinos a identificar cláusulas que merecem atenção. Não constitui aconselhamento jurídico. Para assuntos importantes, consulte um advogado ou uma organização de direitos do inquilino.",
+    levelHigh: "Alto", levelMedium: "Médio", levelLow: "Baixo",
+    quoteLabel: "Do seu contrato de aluguel",
+    notLocated: "Sinalizada como proteção ausente/inexistente (sem citação).",
+    whyLabel: "Por que importa",
+    suggestionLabel: "O que perguntar",
+    reset: "Analisar outro",
+    errPrefix: "Não foi possível concluir a análise: ",
+    retry: "Tentar novamente",
+    privacy: "Seu contrato de aluguel é lido no seu navegador; apenas o texto extraído é enviado para análise.",
   },
 };
 

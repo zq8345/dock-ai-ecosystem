@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Spinner } from "@/components/Spinner";
 import { createZipArchive } from "../../../shared/templates/pdf-tool-page/pdf-runtime";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Mode = "crop" | "delete";
 type Edges = { top: number; right: number; bottom: number; left: number };
 type Status = "queued" | "done" | "error";
@@ -79,6 +79,27 @@ const STR = {
     needDel: "Introduce los números de página a eliminar.",
     note: "Todo se ejecuta en tu navegador; tus archivos nunca salen de tu dispositivo. El recorte oculta el área recortada (se puede restaurar); eliminar quita las páginas.",
     err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "Corrigir digitalizações em lote",
+    subtitle:
+      "Limpe uma pasta inteira de PDFs digitalizados de uma vez: apare as mesmas margens em cada página ou exclua as mesmas páginas (como uma capa) de cada arquivo. Tudo no seu navegador, empacotado em um único ZIP.",
+    crop: "Aparar margens",
+    del: "Excluir páginas",
+    top: "Cima", right: "Direita", bottom: "Baixo", left: "Esquerda",
+    preview: "Pré-visualização (primeiro arquivo)",
+    cropHint: "Arraste para aparar cada borda (% da página). A área limpa é o que é mantido. Aplicado a cada página de cada arquivo.",
+    delLabel: "Páginas a excluir de cada arquivo",
+    delPlaceholder: "ex.: 1 ou 1,3-4",
+    delHint: "Esses números de página são removidos de cada arquivo. Arquivos que ficariam sem páginas são ignorados.",
+    run: "Processar tudo", running: "Processando", download: "Baixar ZIP", reset: "Recomeçar",
+    files: (n: number) => `${n} / ${MAX_FILES} arquivos`,
+    done: "pronto", failed: "falhou",
+    need: "Adicione pelo menos um PDF.",
+    needCrop: "Defina pelo menos uma margem para aparar.",
+    needDel: "Insira os números de página a excluir.",
+    note: "Tudo é executado no seu navegador — seus arquivos nunca saem do seu dispositivo. Aparar oculta a área cortada (pode ser restaurada); excluir remove as páginas.",
+    err: "Algo deu errado: ",
   },
 };
 

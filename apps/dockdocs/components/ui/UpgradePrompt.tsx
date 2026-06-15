@@ -4,7 +4,7 @@ import { useState } from "react";
 import { createBillingCheckoutSession } from "@/lib/subscription-runtime";
 import type { PaidSubscriptionPlan } from "@/lib/billing-config";
 
-type PromptLocale = "en" | "zh" | "es";
+type PromptLocale = "en" | "zh" | "es" | "pt";
 
 const STR: Record<
   PromptLocale,
@@ -33,6 +33,14 @@ const STR: Record<
     redir: "Redirigiendo…",
     all: "Ver todos los planes",
     pricing: "/es/pricing",
+  },
+  pt: {
+    title: "Você atingiu o limite gratuito de hoje",
+    body: (n) => `O plano gratuito permite ${n}/dia. Faça upgrade para mais capacidade e todos os recursos de IA premium.`,
+    cta: "Upgrade para Plus · $5/mês",
+    redir: "Redirecionando…",
+    all: "Ver todos os planos",
+    pricing: "/pricing",
   },
 };
 

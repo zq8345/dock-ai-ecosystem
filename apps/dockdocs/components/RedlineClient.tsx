@@ -5,7 +5,7 @@ import { Spinner } from "@/components/Spinner";
 import { ToolFaq } from "@/components/ToolFaq";
 import { encryptedPdfMessage } from "@/lib/pdf-errors";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Op = { type: "eq" | "del" | "ins"; text: string };
 
 const STR = {
@@ -44,6 +44,18 @@ const STR = {
     need: "Agrega ambos PDF para comparar.",
     err: "Algo salió mal: ",
     note: "Compara el texto extraído oración por oración. El formato y las imágenes no forman parte de la comparación.",
+  },
+  pt: {
+    title: "Comparar versões",
+    subtitle: "Envie um PDF original e um revisado para ver exatamente o que mudou — o texto adicionado é destacado e o texto removido é tachado. Tudo é processado no seu navegador.",
+    original: "Original (v1)", revised: "Revisado (v2)",
+    choose: "Escolher PDF", reading: "Lendo…", change: "Substituir",
+    compare: "Comparar versões", comparing: "Comparando…", reset: "Recomeçar",
+    added: "Adicionado", removed: "Removido", unchanged: "Nenhuma alteração textual encontrada.",
+    summary: (a: number, d: number) => `${a} adicionado · ${d} removido`,
+    need: "Adicione ambos os PDFs para comparar.",
+    err: "Algo deu errado: ",
+    note: "Compara o texto extraído frase por frase. Formatação e imagens não fazem parte da comparação.",
   },
 };
 

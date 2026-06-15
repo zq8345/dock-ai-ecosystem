@@ -6,7 +6,7 @@ import { encryptedPdfMessage } from "@/lib/pdf-errors";
 
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type PosKey = "tl" | "tc" | "tr" | "ml" | "c" | "mr" | "bl" | "bc" | "br";
 
 // Anchor as fractions of page width / height (y measured from the BOTTOM, pdf-lib style).
@@ -50,6 +50,17 @@ const STR = {
     pages: "Páginas", from: "desde", to: "hasta", apply: "Aplicar y descargar", working: "Estampando…",
     reset: "Empezar de nuevo", preview: "Vista previa en vivo", needText: "Escribe el texto de la marca de agua.", needImg: "Elige una imagen.",
     nonLatin: "La marca de agua de texto admite por ahora letras/dígitos/símbolos latinos.", err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "Marca d'água em PDF",
+    subtitle: "Envie um PDF, crie uma marca d'água de texto ou imagem, visualize ao vivo na página e aplique-a nas páginas que escolher.",
+    drop: "Arraste e solte um PDF aqui, ou clique para escolher",
+    choose: "Escolher PDF", rendering: "Gerando pré-visualização…",
+    text: "Texto", image: "Imagem", wmText: "Texto da marca d'água", size: "Tamanho", color: "Cor",
+    chooseImg: "Escolher imagem", position: "Posição", opacity: "Opacidade", rotate: "Girar 45°",
+    pages: "Páginas", from: "de", to: "até", apply: "Aplicar e baixar", working: "Aplicando…",
+    reset: "Recomeçar", preview: "Pré-visualização ao vivo", needText: "Digite o texto da marca d'água.", needImg: "Escolha uma imagem.",
+    nonLatin: "A marca d'água de texto suporta por enquanto letras/dígitos/símbolos latinos.", err: "Algo deu errado: ",
   },
 };
 

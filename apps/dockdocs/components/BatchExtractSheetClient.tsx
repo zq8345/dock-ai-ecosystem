@@ -5,7 +5,7 @@ import { Spinner } from "@/components/Spinner";
 import { encryptedPdfMessage } from "@/lib/pdf-errors";
 import { authHeader } from "@/lib/supabase";
 
-type Locale = "en" | "zh";
+type Locale = "en" | "zh" | "es" | "pt";
 type DocType = "invoice" | "quote" | "contract";
 type Dim = { key: string; label: string };
 type Field = { value: string | null; source: string | null };
@@ -37,6 +37,28 @@ const STR = {
     files: (n: number) => `${n} / ${MAX_FILES} 份`, needFile: "至少添加一个 PDF。",
     err: "出错了：",
     note: "字段由 AI 抽取，建议快速核对。找不到的值会留空——不会瞎编。",
+  },
+  es: {
+    title: "Extraer datos en lote a una sola hoja",
+    subtitle: "Arrastra toda una carpeta de facturas, presupuestos o contratos — DockDocs extrae los campos clave de cada archivo en una sola tabla, una fila por documento, lista para descargar como CSV. La IA solo informa lo que realmente está ahí.",
+    drop: "Arrastra y suelta PDF (o una carpeta) aquí, o haz clic para elegir", choose: "Elegir PDF", folder: "Elegir carpeta", add: "Agregar más", reading: "Leyendo archivos…",
+    type: "Tipo de documento", invoice: "Facturas", quote: "Presupuestos", contract: "Contratos",
+    extract: "Extraer todo", extracting: "Extrayendo", reset: "Empezar de nuevo",
+    download: "Descargar CSV", doc: "Documento", dash: "—",
+    files: (n: number) => `${n} / ${MAX_FILES} archivos`, needFile: "Agrega al menos un PDF.",
+    err: "Algo salió mal: ",
+    note: "Los campos los extrae la IA y puede que necesiten una revisión rápida. Los valores que no encuentra se dejan en blanco; no los inventa.",
+  },
+  pt: {
+    title: "Extração em lote de dados para uma única planilha",
+    subtitle: "Arraste uma pasta inteira de faturas, orçamentos ou contratos — o DockDocs extrai os campos-chave de cada arquivo em uma única tabela, uma linha por documento, pronta para baixar como CSV. A IA relata apenas o que realmente está lá.",
+    drop: "Arraste e solte PDFs (ou uma pasta) aqui, ou clique para escolher", choose: "Escolher PDFs", folder: "Escolher pasta", add: "Adicionar mais", reading: "Lendo arquivos…",
+    type: "Tipo de documento", invoice: "Faturas", quote: "Orçamentos", contract: "Contratos",
+    extract: "Extrair tudo", extracting: "Extraindo", reset: "Recomeçar",
+    download: "Baixar CSV", doc: "Documento", dash: "—",
+    files: (n: number) => `${n} / ${MAX_FILES} arquivos`, needFile: "Adicione pelo menos um PDF.",
+    err: "Algo deu errado: ",
+    note: "Os campos são extraídos por IA e podem precisar de uma verificação rápida. Valores não encontrados são deixados em branco — a IA não os inventa.",
   },
 };
 

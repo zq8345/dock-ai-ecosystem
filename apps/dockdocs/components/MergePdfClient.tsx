@@ -7,7 +7,7 @@ import { encryptedPdfMessage, isEncryptedPdfError, encryptedPdfNotice } from "@/
 
 import { useCallback, useRef, useState } from "react";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Item = { id: string; name: string; pages: number; thumb: string; file: File };
 
 const STR = {
@@ -43,6 +43,17 @@ const STR = {
     pagesLabel: (n: number) => `${n} página${n === 1 ? "" : "s"}`,
     merge: "Unir y descargar", working: "Uniendo…", reset: "Empezar de nuevo",
     needTwo: "Agrega al menos 2 PDF para unirlos.", err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "Unir PDF",
+    subtitle: "Adicione seus PDFs, arraste-os na ordem desejada e combine-os em um só: você vê cada arquivo antes de uni-los, não depois.",
+    drop: "Arraste e solte os PDFs aqui, ou clique para escolher",
+    choose: "Escolher PDFs", add: "Adicionar mais", rendering: "Lendo arquivos…",
+    hint: "Arraste para reordenar. Serão unidos de cima para baixo e da esquerda para a direita.",
+    files: (n: number, p: number) => `${n} arquivo${n === 1 ? "" : "s"} · ${p} páginas no total`,
+    pagesLabel: (n: number) => `${n} página${n === 1 ? "" : "s"}`,
+    merge: "Unir e baixar", working: "Unindo…", reset: "Recomeçar",
+    needTwo: "Adicione pelo menos 2 PDFs para uni-los.", err: "Algo deu errado: ",
   },
 };
 

@@ -9,7 +9,7 @@ import { authHeader } from "@/lib/supabase";
 
 import { useCallback, useState } from "react";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 
 const MAX_CHARS = 14_000;
 
@@ -97,6 +97,27 @@ const STR = {
     reset: "Empezar de nuevo",
     errPrefix: "La traducción falló: ",
     privacy: "Tu archivo se lee en tu navegador; solo se envía el texto extraído para traducirlo.",
+  },
+  pt: {
+    title: "Traduzir PDF",
+    subtitle:
+      "Envie um PDF, escolha um idioma e receba o texto traduzido. A IA traduz o texto do documento — processado de forma privada, somente texto por enquanto (preservação do layout em breve).",
+    drop: "Arraste e solte um PDF aqui, ou clique para escolher",
+    choose: "Escolher PDF",
+    extracting: "Lendo o PDF…",
+    pagesChars: (p: number, c: number) => `${p} páginas · ${c.toLocaleString()} caracteres`,
+    noText: "Nenhum texto selecionável encontrado. É um PDF digitalizado? Execute o OCR primeiro.",
+    tooLong: `Este PDF tem mais texto do que o limite de ${MAX_CHARS.toLocaleString()} caracteres. Use um documento mais curto (cerca de 10 páginas).`,
+    target: "Traduzir para",
+    translate: "Traduzir",
+    translating: "Traduzindo…",
+    result: "Tradução",
+    copy: "Copiar",
+    copied: "Copiado!",
+    download: "Baixar .txt",
+    reset: "Recomeçar",
+    errPrefix: "A tradução falhou: ",
+    privacy: "Seu arquivo é lido no seu navegador; apenas o texto extraído é enviado para tradução.",
   },
 };
 

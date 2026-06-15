@@ -6,7 +6,7 @@ import { useCallback, useRef, useState } from "react";
 import { Spinner } from "@/components/Spinner";
 import { runPdfRuntime, createZipArchive } from "../../../shared/templates/pdf-tool-page/pdf-runtime";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Level = "low" | "recommended" | "high";
 type Item = { id: string; name: string; file: File; status: "queued" | "done" | "error"; saved?: number; outSize?: number; blob?: Blob; msg?: string };
 
@@ -45,6 +45,17 @@ const STR = {
     totalSaved: (p: number) => `${p}% más pequeño en total`,
     need: "Agrega al menos un PDF.", err: "Algo salió mal: ",
     note: "La compresión convierte las páginas en imágenes, por lo que los PDF con mucho texto quizá no se reduzcan demasiado. Todo permanece en tu dispositivo.",
+  },
+  pt: {
+    title: "Comprimir em lote",
+    subtitle: "Arraste uma pasta inteira de PDFs e reduza todos de uma vez: cada um é comprimido no seu navegador e empacotado em um único ZIP. Nada é enviado.",
+    drop: "Arraste e solte PDFs (ou uma pasta) aqui, ou clique para escolher", choose: "Escolher PDFs", folder: "Escolher pasta", reading: "Lendo…",
+    level: "Compressão", low: "Leve", recommended: "Recomendada", high: "Forte",
+    run: "Comprimir tudo", running: "Comprimindo", download: "Baixar ZIP", reset: "Recomeçar",
+    files: (n: number) => `${n} / ${MAX_FILES} arquivos`, saved: "reduzido", failed: "falhou",
+    totalSaved: (p: number) => `${p}% menor no total`,
+    need: "Adicione pelo menos um PDF.", err: "Algo deu errado: ",
+    note: "A compressão converte as páginas em imagens, por isso PDFs com muito texto podem não encolher muito. Tudo permanece no seu dispositivo.",
   },
 };
 

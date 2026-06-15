@@ -20,40 +20,43 @@ import type { PaidSubscriptionPlan } from "@/lib/billing-config";
 
 type AuthView = "loading" | "signed-out" | "email-sent" | "signed-in";
 
-type AccountLocale = "en" | "zh" | "es";
+type AccountLocale = "en" | "zh" | "es" | "pt";
 
 function getCopy(locale: AccountLocale) {
   const zh = locale === "zh";
   const es = locale === "es";
+  const pt = locale === "pt";
   return {
-    redirecting: (label: string) => (zh ? `正在跳转到${label}…` : es ? `Redirigiendo a ${label}…` : `Redirecting to ${label}…`),
-    oauthFailed: (label: string) => (zh ? `${label}登录失败` : es ? `Error al iniciar sesión con ${label}` : `${label} sign-in failed`),
-    sendFailed: zh ? "发送失败，请重试" : es ? "Error al enviar, inténtalo de nuevo" : "Failed to send, please try again",
-    signOutFailed: zh ? "退出失败" : es ? "Error al cerrar sesión" : "Sign out failed",
-    checkoutFailed: zh ? "结算失败" : es ? "Error en el pago" : "Checkout failed",
-    portalFailed: zh ? "账单管理打开失败" : es ? "No se pudo abrir el portal de facturación" : "Couldn't open billing portal",
-    magicSentTitle: zh ? "登录链接已发送" : es ? "Enlace de acceso enviado" : "Magic link sent",
+    redirecting: (label: string) => (zh ? `正在跳转到${label}…` : es ? `Redirigiendo a ${label}…` : pt ? `Redirecionando para ${label}…` : `Redirecting to ${label}…`),
+    oauthFailed: (label: string) => (zh ? `${label}登录失败` : es ? `Error al iniciar sesión con ${label}` : pt ? `Falha ao entrar com ${label}` : `${label} sign-in failed`),
+    sendFailed: zh ? "发送失败，请重试" : es ? "Error al enviar, inténtalo de nuevo" : pt ? "Falha ao enviar, tente novamente" : "Failed to send, please try again",
+    signOutFailed: zh ? "退出失败" : es ? "Error al cerrar sesión" : pt ? "Falha ao sair" : "Sign out failed",
+    checkoutFailed: zh ? "结算失败" : es ? "Error en el pago" : pt ? "Falha no pagamento" : "Checkout failed",
+    portalFailed: zh ? "账单管理打开失败" : es ? "No se pudo abrir el portal de facturación" : pt ? "Não foi possível abrir o portal de cobrança" : "Couldn't open billing portal",
+    magicSentTitle: zh ? "登录链接已发送" : es ? "Enlace de acceso enviado" : pt ? "Link de acesso enviado" : "Magic link sent",
     magicSentBody: (email: string) =>
       zh
         ? `我们已把登录链接发到 ${email}，点击邮件里的链接即可登录(可能在垃圾箱)。`
         : es
         ? `Hemos enviado un enlace de acceso a ${email}. Haz clic en él para iniciar sesión (revisa también spam).`
+        : pt
+        ? `Enviamos um link de acesso para ${email}. Clique nele para entrar (verifique também o spam).`
         : `We've sent a sign-in link to ${email}. Click it to sign in (check spam too).`,
-    back: zh ? "← 返回" : es ? "← Volver" : "← Back",
-    continueGoogle: zh ? "使用 Google 继续" : es ? "Continuar con Google" : "Continue with Google",
-    continueMicrosoft: zh ? "使用 Microsoft 继续" : es ? "Continuar con Microsoft" : "Continue with Microsoft",
-    orEmail: zh ? "或邮箱" : es ? "o correo" : "or email",
-    sending: zh ? "发送中…" : es ? "Enviando…" : "Sending…",
-    sendMagic: zh ? "发送登录链接" : es ? "Enviar enlace de acceso" : "Send magic link",
-    emailHint: zh ? "无需密码，我们会发一封登录邮件给你" : es ? "Sin contraseña — te enviaremos un enlace de acceso" : "No password — we'll email you a sign-in link",
-    appleSoon: zh ? "即将支持 Apple 登录" : es ? "Apple Sign-in próximamente" : "Apple sign-in coming soon",
-    signedIn: zh ? "已登录" : es ? "Sesión iniciada" : "Signed in",
-    currentPlan: zh ? "当前套餐" : es ? "Plan actual" : "Current plan",
-    upgradePlus: zh ? "升级 Plus" : es ? "Actualizar a Plus" : "Upgrade to Plus",
-    upgradePro: zh ? "升级 Pro" : es ? "Actualizar a Pro" : "Upgrade to Pro",
-    manageBilling: zh ? "管理账单" : es ? "Administrar facturación" : "Manage billing",
-    loading: zh ? "加载…" : es ? "Cargando…" : "Loading…",
-    signOut: zh ? "退出登录" : es ? "Cerrar sesión" : "Sign out",
+    back: zh ? "← 返回" : es ? "← Volver" : pt ? "← Voltar" : "← Back",
+    continueGoogle: zh ? "使用 Google 继续" : es ? "Continuar con Google" : pt ? "Continuar com Google" : "Continue with Google",
+    continueMicrosoft: zh ? "使用 Microsoft 继续" : es ? "Continuar con Microsoft" : pt ? "Continuar com Microsoft" : "Continue with Microsoft",
+    orEmail: zh ? "或邮箱" : es ? "o correo" : pt ? "ou e-mail" : "or email",
+    sending: zh ? "发送中…" : es ? "Enviando…" : pt ? "Enviando…" : "Sending…",
+    sendMagic: zh ? "发送登录链接" : es ? "Enviar enlace de acceso" : pt ? "Enviar link de acesso" : "Send magic link",
+    emailHint: zh ? "无需密码，我们会发一封登录邮件给你" : es ? "Sin contraseña — te enviaremos un enlace de acceso" : pt ? "Sem senha — enviaremos um link de acesso por e-mail" : "No password — we'll email you a sign-in link",
+    appleSoon: zh ? "即将支持 Apple 登录" : es ? "Apple Sign-in próximamente" : pt ? "Apple Sign-in em breve" : "Apple sign-in coming soon",
+    signedIn: zh ? "已登录" : es ? "Sesión iniciada" : pt ? "Sessão iniciada" : "Signed in",
+    currentPlan: zh ? "当前套餐" : es ? "Plan actual" : pt ? "Plano atual" : "Current plan",
+    upgradePlus: zh ? "升级 Plus" : es ? "Actualizar a Plus" : pt ? "Fazer upgrade para Plus" : "Upgrade to Plus",
+    upgradePro: zh ? "升级 Pro" : es ? "Actualizar a Pro" : pt ? "Fazer upgrade para Pro" : "Upgrade to Pro",
+    manageBilling: zh ? "管理账单" : es ? "Administrar facturación" : pt ? "Gerenciar cobrança" : "Manage billing",
+    loading: zh ? "加载…" : es ? "Cargando…" : pt ? "Carregando…" : "Loading…",
+    signOut: zh ? "退出登录" : es ? "Cerrar sesión" : pt ? "Sair" : "Sign out",
   };
 }
 

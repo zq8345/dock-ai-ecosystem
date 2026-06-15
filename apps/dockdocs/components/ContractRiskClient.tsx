@@ -9,7 +9,7 @@ import { authHeader } from "@/lib/supabase";
 
 import { useCallback, useMemo, useState } from "react";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type RiskLevel = "high" | "medium" | "low";
 type Risk = { type: string; level: RiskLevel; quote: string | null; why: string; suggestion: string };
 
@@ -93,6 +93,32 @@ const STR = {
     errPrefix: "No se pudo completar la revisión: ",
     retry: "Reintentar",
     privacy: "Tu contrato se lee en tu navegador; solo se envía el texto extraído para analizarlo.",
+  },
+  pt: {
+    title: "Verificação de riscos do contrato",
+    subtitle:
+      "Envie um contrato e receba uma lista em linguagem simples de cláusulas arriscadas, unilaterais ou ausentes — cada uma marcada em vermelho / âmbar / verde, citada do seu documento, com o que perguntar antes de assinar.",
+    proBadge: "PRO",
+    drop: "Arraste um PDF de contrato aqui, ou clique para escolher",
+    choose: "Escolher PDF do contrato",
+    extracting: "Lendo o contrato…",
+    pagesChars: (p: number, c: number) => `${p} páginas · ${c.toLocaleString()} caracteres`,
+    noText: "Nenhum texto selecionável encontrado. É um contrato digitalizado? Execute o OCR primeiro.",
+    tooLong: `O contrato ultrapassa o limite de ${MAX_CHARS.toLocaleString()} caracteres; apenas a primeira parte será revisada.`,
+    analyze: "Verificar riscos",
+    analyzing: "Revisando…",
+    result: (n: number) => `${n} ponto${n === 1 ? "" : "s"} para revisar`,
+    noRisks: "Nenhuma cláusula de risco clara foi sinalizanda. Isso não garante que o contrato seja seguro — leia-o na íntegra.",
+    disclaimer: "Esta é uma revisão automatizada para ajudá-lo a identificar cláusulas que merecem atenção. Não constitui aconselhamento jurídico. Para assuntos importantes, consulte um advogado.",
+    levelHigh: "Alto", levelMedium: "Médio", levelLow: "Baixo",
+    quoteLabel: "Do seu contrato",
+    notLocated: "Sinalizada como proteção ausente/inexistente (sem citação).",
+    whyLabel: "Por que importa",
+    suggestionLabel: "O que perguntar",
+    reset: "Verificar outro",
+    errPrefix: "Não foi possível concluir a revisão: ",
+    retry: "Tentar novamente",
+    privacy: "Seu contrato é lido no seu navegador; apenas o texto extraído é enviado para análise.",
   },
 };
 

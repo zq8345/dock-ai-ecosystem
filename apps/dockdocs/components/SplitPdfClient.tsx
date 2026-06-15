@@ -6,7 +6,7 @@ import { ToolFaq } from "@/components/ToolFaq";
 import { UploadDropzone } from "@/components/UploadDropzone";
 import { encryptedPdfMessage } from "@/lib/pdf-errors";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Pg = { idx: number; thumb: string };
 
 const SEG_TINTS = ["", "bg-[rgba(62,207,142,0.06)]", "bg-[rgba(52,211,153,0.07)]", "bg-[rgba(251,191,36,0.08)]", "bg-[rgba(96,165,250,0.07)]"];
@@ -44,6 +44,17 @@ const STR = {
     fileN: (n: number) => `Archivo ${n}`, apply: "Dividir y descargar", working: "Dividiendo…",
     reset: "Empezar de nuevo", needSplit: "Agrega al menos un punto de división.", err: "Algo salió mal: ",
     every: "Dividir cada", everyUnit: "páginas", everySet: "Aplicar",
+  },
+  pt: {
+    title: "Dividir PDF",
+    subtitle: "Envie um PDF e clique em ✂ entre as páginas para cortá-lo em arquivos separados: você vê exatamente quais páginas vão em cada arquivo antes de baixar.",
+    drop: "Arraste e solte um PDF aqui, ou clique para escolher",
+    choose: "Escolher PDF", rendering: "Processando páginas…",
+    hint: "Clique em ✂ após uma página para iniciar um novo arquivo. Clique novamente para desfazer.",
+    splitAfter: "Dividir aqui", files: (n: number) => `Será${n === 1 ? "" : "ão"} criado${n === 1 ? "" : "s"} ${n} arquivo${n === 1 ? "" : "s"}`,
+    fileN: (n: number) => `Arquivo ${n}`, apply: "Dividir e baixar", working: "Dividindo…",
+    reset: "Recomeçar", needSplit: "Adicione pelo menos um ponto de divisão.", err: "Algo deu errado: ",
+    every: "Dividir a cada", everyUnit: "páginas", everySet: "Aplicar",
   },
 };
 

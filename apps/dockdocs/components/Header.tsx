@@ -582,7 +582,7 @@ export function Header() {
         onClick={() => setLangOpen((v) => !v)}
         className="flex w-full items-center justify-between rounded-[var(--radius-sm)] px-3 py-2 text-left text-[13px] font-medium text-[color:var(--muted)] transition hover:bg-[color:var(--surface-subtle)] hover:text-[color:var(--foreground)]"
       >
-        <span>{locale === "zh" ? "语言" : locale === "es" ? "Idioma" : "Language"}</span>
+        <span>{locale === "zh" ? "语言" : locale === "es" ? "Idioma" : locale === "pt" ? "Idioma" : "Language"}</span>
         <span className="flex items-center gap-1.5">
           <span className="text-[12px] text-[color:var(--faint)]">{localeLabels[locale as keyof typeof localeLabels] ?? locale}</span>
           <svg className={`h-3 w-3 transition-transform ${langOpen ? "rotate-180" : ""}`} viewBox="0 0 12 12" fill="none">
@@ -607,13 +607,6 @@ export function Header() {
               {l === locale && <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--accent)]" />}
             </button>
           ))}
-          <button
-            disabled
-            className="flex w-full cursor-not-allowed items-center justify-between rounded-[var(--radius-sm)] px-3 py-1.5 text-left text-[13px] font-medium text-[color:var(--faint)] opacity-50"
-          >
-            {localeLabels.pt}
-            <span className="text-[10px] font-semibold uppercase tracking-wide">soon</span>
-          </button>
         </div>
       )}
     </div>
@@ -684,8 +677,8 @@ export function Header() {
               className="hidden rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--background)] px-3 py-1.5 text-[13px] font-medium text-[color:var(--muted)] transition hover:border-[color:var(--line-strong)] hover:text-[color:var(--foreground)] md:inline-flex"
             >
               {authUser
-                ? (authUser.name ?? authUser.email ?? (locale === "zh" ? "账户" : locale === "es" ? "Cuenta" : "Account"))
-                : (locale === "zh" ? "登录" : locale === "es" ? "Iniciar sesión" : "Sign in")}
+                ? (authUser.name ?? authUser.email ?? (locale === "zh" ? "账户" : locale === "es" ? "Cuenta" : locale === "pt" ? "Conta" : "Account"))
+                : (locale === "zh" ? "登录" : locale === "es" ? "Iniciar sesión" : locale === "pt" ? "Entrar" : "Sign in")}
             </button>
 
             {/* Consolidated "More" menu (desktop) — Pricing/Blog/About + language + theme */}
@@ -774,8 +767,8 @@ export function Header() {
                     className="ml-auto rounded-[var(--radius-sm)] border border-[color:var(--line)] bg-[color:var(--background)] px-3 py-1.5 text-[13px] font-semibold text-[color:var(--foreground)] transition hover:border-[color:var(--line-strong)]"
                   >
                     {authUser
-                      ? (authUser.name ?? authUser.email ?? (locale === "zh" ? "账户" : locale === "es" ? "Cuenta" : "Account"))
-                      : (locale === "zh" ? "登录" : locale === "es" ? "Iniciar sesión" : "Sign in")}
+                      ? (authUser.name ?? authUser.email ?? (locale === "zh" ? "账户" : locale === "es" ? "Cuenta" : locale === "pt" ? "Conta" : "Account"))
+                      : (locale === "zh" ? "登录" : locale === "es" ? "Iniciar sesión" : locale === "pt" ? "Entrar" : "Sign in")}
                   </button>
                 </div>
               </div>

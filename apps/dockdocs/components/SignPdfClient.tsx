@@ -5,7 +5,7 @@ import { UploadDropzone } from "@/components/UploadDropzone";
 import { ToolFaq } from "@/components/ToolFaq";
 import { encryptedPdfMessage } from "@/lib/pdf-errors";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type PosKey = "tl" | "tc" | "tr" | "ml" | "c" | "mr" | "bl" | "bc" | "br";
 
 const POS: Record<PosKey, { x: number; y: number }> = {
@@ -39,6 +39,14 @@ const STR = {
     apply: "Firmar y descargar", working: "Firmando…", reset: "Empezar de nuevo", preview: "Vista previa en vivo", sig: "Tu firma",
     needSig: "Primero dibuja o escribe una firma.", err: "Algo salió mal: ",
     drawHint: "Dibuja con el mouse o el dedo.",
+  },
+  pt: {
+    title: "Assinar PDF", subtitle: "Envie um PDF, desenhe ou digite sua assinatura, posicione-a na página e baixe: tudo no seu navegador.",
+    drop: "Arraste e solte um PDF aqui, ou clique para escolher", choose: "Escolher PDF", rendering: "Processando página…",
+    draw: "Desenhar", type: "Digitar", clear: "Limpar", typed: "Digite seu nome", page: "Página", position: "Posição", size: "Tamanho",
+    apply: "Assinar e baixar", working: "Assinando…", reset: "Recomeçar", preview: "Prévia ao vivo", sig: "Sua assinatura",
+    needSig: "Primeiro desenhe ou digite uma assinatura.", err: "Algo deu errado: ",
+    drawHint: "Desenhe com o mouse ou o dedo.",
   },
 };
 

@@ -6,7 +6,7 @@ import { useCallback, useRef, useState } from "react";
 import { Spinner } from "@/components/Spinner";
 import { runPdfRuntime, createZipArchive } from "../../../shared/templates/pdf-tool-page/pdf-runtime";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Mode = "merge" | "split";
 type Item = { id: string; name: string; file: File; status: "queued" | "done" | "error"; parts?: number; msg?: string };
 
@@ -54,6 +54,20 @@ const STR = {
     needTwo: "Agrega al menos 2 PDF para combinar.", needFile: "Agrega al menos un PDF.",
     note: "Al combinar se mantiene el orden de carga. La división separa cada PDF en bloques de N páginas. Todo permanece en tu dispositivo.",
     err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "Dividir ou combinar PDFs em lote",
+    titleSplit: "Divisão em lote",
+    subSplit: "Divida cada PDF de uma pasta inteira em arquivos menores de N páginas, tudo no seu navegador e pronto para download. Nada é enviado.",
+    subtitle: "Combine uma pasta inteira de PDFs em um só, ou divida cada PDF em arquivos menores, tudo no seu navegador e pronto para download. Nada é enviado.",
+    drop: "Arraste e solte os PDFs (ou uma pasta) aqui, ou clique para escolher", choose: "Escolher PDFs", folder: "Escolher pasta",
+    merge: "Combinar em um", split: "Dividir cada um",
+    every: "Páginas por arquivo", order: "Os arquivos são combinados na ordem exibida.",
+    run: "Executar", running: "Processando", dlMerge: "Baixar PDF combinado", dlSplit: "Baixar ZIP", reset: "Recomeçar",
+    files: (n: number) => `${n} / ${MAX_FILES} arquivos`, parts: (n: number) => `${n} parte${n === 1 ? "" : "s"}`, failed: "falhou",
+    needTwo: "Adicione pelo menos 2 PDFs para combinar.", needFile: "Adicione pelo menos um PDF.",
+    note: "Ao combinar, a ordem de carregamento é mantida. A divisão separa cada PDF em blocos de N páginas. Tudo permanece no seu dispositivo.",
+    err: "Algo deu errado: ",
   },
 };
 

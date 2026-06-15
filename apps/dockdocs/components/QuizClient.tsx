@@ -7,7 +7,7 @@ import { Spinner } from "@/components/Spinner";
 import { encryptedPdfMessage } from "@/lib/pdf-errors";
 import { authHeader } from "@/lib/supabase";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Card = { q: string; a: string };
 
 const STR = {
@@ -43,6 +43,17 @@ const STR = {
     noText: "No se encontró texto en este PDF. Si es un escaneo, ejecuta primero el OCR.",
     err: "Algo salió mal: ",
     note: "Las tarjetas las genera la IA a partir de tu documento. Revísalas rápidamente antes de estudiar.",
+  },
+  pt: {
+    title: "Flashcards de PDF",
+    subtitle: "Envie um capítulo de livro didático, notas de aula ou um manual e transforme-o em flashcards de estudo — perguntas e respostas extraídas apenas do seu documento. Toque em um cartão para virar e se testar.",
+    drop: "Arraste e solte um PDF aqui, ou clique para escolher",
+    choose: "Escolher PDF", reading: "Lendo…", count: "Cartões", change: "Substituir",
+    generate: "Gerar cartões", generating: "Gerando…", reset: "Recomeçar",
+    flip: "Toque para virar", question: "P", answer: "R",
+    noText: "Nenhum texto encontrado neste PDF. Se for um documento digitalizado, execute o OCR primeiro.",
+    err: "Algo deu errado: ",
+    note: "Os cartões são gerados pela IA a partir do seu documento. Verifique-os rapidamente antes de estudar.",
   },
 };
 

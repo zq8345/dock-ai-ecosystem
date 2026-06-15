@@ -21,9 +21,8 @@ const maxPages = 12;
 const maxCharacters = 40000;
 const maxFileBytes = 25 * 1024 * 1024;
 
-export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale | "es" }) {
-  const effectiveLocale: RuntimeLocale = locale === "es" ? "en" : locale;
-  const copy = getRuntimeCopy(effectiveLocale).chat;
+export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale | "es" | "pt" }) {
+  const copy = getRuntimeCopy(locale).chat;
   const [fileName, setFileName] = useState("");
   const [documentText, setDocumentText] = useState("");
   const [question, setQuestion] = useState("");
@@ -352,7 +351,7 @@ export function ChatWithPdfClient({ locale = "en" }: { locale?: RuntimeLocale | 
           </div>
 
           {limitHit !== null ? (
-            <UpgradePrompt locale={locale === "zh" ? "zh" : locale === "es" ? "es" : "en"} limit={limitHit} />
+            <UpgradePrompt locale={locale === "zh" ? "zh" : locale === "es" ? "es" : locale === "pt" ? "pt" : "en"} limit={limitHit} />
           ) : null}
 
           {/* Input */}

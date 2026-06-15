@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from "react";
 import { Spinner } from "@/components/Spinner";
 import { authHeader } from "@/lib/supabase";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 
 const STR = {
   en: {
@@ -68,6 +68,27 @@ const STR = {
       ["¿Cómo funciona?", "Pega una URL y renderizamos la página a un PDF con el motor de navegador de CloudConvert; luego se descarga en tu dispositivo."],
       ["¿Qué páginas funcionan mejor?", "Páginas públicas y en su mayoría estáticas (artículos, documentos, facturas). Las páginas que requieren iniciar sesión o que usan mucho JavaScript podrían no renderizarse por completo."],
       ["¿Es gratis?", "Sí: convertir una página web a PDF es gratis."],
+    ] as const,
+  },
+  pt: {
+    title: "Converter página web em PDF",
+    subtitle: "Cole uma URL pública e baixe-a como um PDF limpo — renderizado com um motor de navegador real. Sem upload, sem instalação.",
+    label: "URL da página",
+    placeholder: "https://example.com/article",
+    convert: "Converter para PDF",
+    working: "Renderizando a página…",
+    done: "Pronto — seu PDF foi baixado.",
+    again: "Converter outra",
+    errInvalid: "Digite uma URL completa começando com http:// ou https://.",
+    errFailed: "Não foi possível iniciar a conversão. Tente novamente.",
+    errConvert: "Não foi possível renderizar essa página. Ela pode bloquear acesso automatizado ou exigir login.",
+    errTimeout: "A página demorou demais para renderizar. Tente uma página mais simples ou leve.",
+    note: "Funciona melhor com páginas públicas e autossuficientes. Páginas com login ou que dependem muito de scripts podem não renderizar completamente.",
+    faqTitle: "Página web para PDF: perguntas frequentes",
+    faqs: [
+      ["Como funciona?", "Cole uma URL e renderizamos a página em PDF usando o motor de navegador do CloudConvert; depois é baixado para o seu dispositivo."],
+      ["Quais páginas funcionam melhor?", "Páginas públicas e principalmente estáticas (artigos, documentos, faturas). Páginas que exigem login ou usam muito JavaScript podem não renderizar completamente."],
+      ["É gratuito?", "Sim — converter uma página web em PDF é gratuito."],
     ] as const,
   },
 };

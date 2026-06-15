@@ -6,7 +6,7 @@ import { useCallback, useRef, useState } from "react";
 import { Spinner } from "@/components/Spinner";
 import { runPdfRuntime, createZipArchive } from "../../../shared/templates/pdf-tool-page/pdf-runtime";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Item = { id: string; name: string; file: File; status: "queued" | "done" | "error"; blob?: Blob; msg?: string };
 
 const MAX_FILES = 30;
@@ -48,6 +48,18 @@ const STR = {
     needFile: "Agrega al menos un PDF.", needPw: "Ingresa una contraseña válida (de 4 a 32: letras, dígitos y guion bajo).",
     note: "Cada PDF requerirá esta contraseña para abrirse. Los PDF que ya están cifrados se omiten. Todo permanece en tu dispositivo.",
     err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "Criptografar em lote",
+    subtitle: "Defina uma senha e bloqueie uma pasta inteira de PDFs: cada um é criptografado no seu navegador e empacotado em um único ZIP. Nada é enviado.",
+    drop: "Arraste e solte os PDFs (ou uma pasta) aqui, ou clique para escolher", choose: "Escolher PDFs", folder: "Escolher pasta",
+    pw: "Senha", pwPlaceholder: "Senha para abrir os arquivos", show: "Mostrar", hide: "Ocultar",
+    pwRule: "De 4 a 32 caracteres: letras, dígitos e sublinhado (_).",
+    run: "Criptografar tudo", running: "Criptografando", download: "Baixar ZIP", reset: "Recomeçar",
+    files: (n: number) => `${n} / ${MAX_FILES} arquivos`, done: "criptografado", failed: "erro",
+    needFile: "Adicione pelo menos um PDF.", needPw: "Insira uma senha válida (4 a 32: letras, dígitos e sublinhado).",
+    note: "Cada PDF exigirá esta senha para ser aberto. PDFs já criptografados são ignorados. Tudo permanece no seu dispositivo.",
+    err: "Algo deu errado: ",
   },
 };
 

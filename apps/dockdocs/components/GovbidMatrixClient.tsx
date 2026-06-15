@@ -9,7 +9,7 @@ import { authHeader } from "@/lib/supabase";
 
 import { useCallback, useMemo, useState } from "react";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type RequirementType = "mandatory" | "advisory";
 type Requirement = {
   id: string;
@@ -100,6 +100,32 @@ const STR = {
     filterMandatory: "Solo obligatorios",
     filterAdvisory: "Solo recomendados",
     noQuote: "Cita no verificada",
+  },
+  pt: {
+    title: "Matriz de conformidade para licitações públicas",
+    eyebrow: "PRO · IA doc único",
+    subtitle: "Envie um RFP ou edital — extraia cada requisito 'shall/must' em uma matriz numerada com referências de seção.",
+    upload: "Solte seu PDF de licitação aqui",
+    analyze: "Extrair requisitos",
+    analyzing: "Analisando licitação…",
+    noText: "Nenhum texto legível encontrado. Execute OCR neste PDF primeiro.",
+    errPrefix: "Análise falhou:",
+    retry: "Tentar novamente",
+    privacy: "📋 Apenas o texto extraído é enviado para análise. Seu arquivo nunca sai do seu dispositivo.",
+    mandatory: "Obrigatório",
+    advisory: "Recomendado",
+    colId: "#",
+    colSection: "Seção",
+    colRequirement: "Requisito",
+    colPage: "Página",
+    colType: "Tipo",
+    colQuote: "Texto fonte",
+    downloadCsv: "Baixar CSV",
+    found: (n: number) => `${n} requisito${n === 1 ? "" : "s"} encontrado${n === 1 ? "" : "s"}`,
+    filterAll: "Todos",
+    filterMandatory: "Somente obrigatórios",
+    filterAdvisory: "Somente recomendados",
+    noQuote: "Citação não verificável",
   },
 };
 

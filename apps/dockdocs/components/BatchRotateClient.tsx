@@ -6,7 +6,7 @@ import { useCallback, useRef, useState } from "react";
 import { Spinner } from "@/components/Spinner";
 import { createZipArchive } from "../../../shared/templates/pdf-tool-page/pdf-runtime";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type Angle = 90 | 180 | 270;
 type Item = { id: string; name: string; file: File; status: "queued" | "done" | "error"; blob?: Blob; msg?: string };
 
@@ -45,6 +45,17 @@ const STR = {
     need: "Agrega al menos un PDF.",
     note: "Cada página de cada PDF se gira según el ángulo elegido. Los PDF cifrados se omiten. Todo permanece en tu dispositivo.",
     err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "Girar em lote",
+    subtitle: "Corrija de uma vez uma pasta inteira de digitalizações tortas ou de cabeça para baixo: gire cada página de cada PDF e empacote tudo em um único ZIP. Tudo no seu navegador; nada é enviado.",
+    drop: "Arraste e solte PDFs (ou uma pasta) aqui, ou clique para escolher", choose: "Escolher PDFs", folder: "Escolher pasta",
+    rotate: "Girar",
+    run: "Girar tudo", running: "Girando", download: "Baixar ZIP", reset: "Recomeçar",
+    files: (n: number) => `${n} / ${MAX_FILES} arquivos`, done: "girado", failed: "falhou",
+    need: "Adicione pelo menos um PDF.",
+    note: "Cada página de cada PDF é girada pelo ângulo escolhido. PDFs criptografados são ignorados. Tudo permanece no seu dispositivo.",
+    err: "Algo deu errado: ",
   },
 };
 

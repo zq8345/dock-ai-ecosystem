@@ -5,7 +5,7 @@ import { encryptedPdfMessage } from "@/lib/pdf-errors";
 import { UploadDropzone } from "@/components/UploadDropzone";
 import { ToolFaq } from "@/components/ToolFaq";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 // Boxes are stored in NORMALIZED page fractions (0–1) so they map to any render scale.
 type Box = { id: string; page: number; x: number; y: number; w: number; h: number; auto?: boolean };
 type Pg = { idx: number; url: string; ratio: number }; // ratio = height / width
@@ -82,6 +82,20 @@ const STR = {
     needBox: "Agrega al menos una censura primero.",
     note: "El resultado es un PDF de imagen aplanada: el contenido censurado se elimina de forma permanente y el texto de la página ya no se puede seleccionar; eso es justamente lo que lo hace irrecuperable.",
     err: "Algo salió mal: ", tooMany: `Este PDF tiene más de ${MAX_PAGES} páginas. Divídelo primero y luego censúralo.`,
+  },
+  pt: {
+    title: "Redigir PDF",
+    subtitle: "Oculte nomes, números e qualquer texto sensível — depois baixe uma cópia onde eles foram realmente removidos. Ao contrário de uma caixa preta pela qual é possível copiar o texto, o DockDocs achata cada página como imagem para que o texto oculto seja destruído permanentemente. Executado no seu navegador; seu arquivo nunca sai do seu dispositivo.",
+    drop: "Arraste e solte um PDF aqui, ou clique para escolher",
+    choose: "Escolher PDF", rendering: "Processando páginas…",
+    hint: "Arraste sobre uma página para ocultar uma área. Os itens sugeridos automaticamente vêm pré-marcados — clique no ✕ de qualquer caixa para removê-la.",
+    autoFound: (n: number) => `${n} item${n === 1 ? "" : "ns"} provavelmente sensível${n === 1 ? "" : "is"} detectado${n === 1 ? "" : "s"} automaticamente (e-mails, telefones, CPF/SSN, cartões, IPs). Revise e adicione os seus.`,
+    autoNone: "Nenhum e-mail/número óbvio detectado automaticamente — arraste sobre as páginas para redigir manualmente.",
+    boxes: (n: number) => `${n} redação${n === 1 ? "" : "ões"}`,
+    clear: "Limpar tudo", apply: "Aplicar e baixar", working: "Removendo e achatando…", reset: "Recomeçar",
+    needBox: "Adicione pelo menos uma redação primeiro.",
+    note: "O resultado é um PDF de imagem achatada: o conteúdo redigido é removido permanentemente e o texto da página não pode mais ser selecionado — é exatamente isso que o torna irrecuperável.",
+    err: "Algo deu errado: ", tooMany: `Este PDF tem mais de ${MAX_PAGES} páginas. Divida-o primeiro e depois redija.`,
   },
 };
 

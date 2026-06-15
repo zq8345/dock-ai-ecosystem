@@ -5,7 +5,7 @@ import { ToolFaq } from "@/components/ToolFaq";
 import { UploadDropzone } from "@/components/UploadDropzone";
 import { encryptedPdfMessage } from "@/lib/pdf-errors";
 
-type Locale = "en" | "zh" | "es";
+type Locale = "en" | "zh" | "es" | "pt";
 type PosKey = "tl" | "tc" | "tr" | "bl" | "bc" | "br";
 type Fmt = "n" | "page" | "slash" | "of";
 
@@ -46,6 +46,17 @@ const STR = {
     fmtN: "1", fmtPage: "Página 1", fmtSlash: "1 / N", fmtOf: "1 de N",
     apply: "Agregar números y descargar", working: "Numerando…", reset: "Empezar de nuevo", preview: "Vista previa en vivo",
     err: "Algo salió mal: ",
+  },
+  pt: {
+    title: "Adicionar números de página",
+    subtitle: "Envie um PDF, escolha onde os números vão, o formato e quais páginas; veja na pré-visualização ao vivo antes de baixar.",
+    drop: "Arraste e solte um PDF aqui, ou clique para escolher",
+    choose: "Escolher PDF", rendering: "Gerando pré-visualização…",
+    position: "Posição", margin: "Margem", small: "Pequena", medium: "Média", large: "Grande",
+    startAt: "Começar em", format: "Formato", pages: "Páginas", from: "de", to: "até",
+    fmtN: "1", fmtPage: "Página 1", fmtSlash: "1 / N", fmtOf: "1 de N",
+    apply: "Adicionar números e baixar", working: "Numerando…", reset: "Recomeçar", preview: "Pré-visualização ao vivo",
+    err: "Algo deu errado: ",
   },
 };
 
