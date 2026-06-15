@@ -95,6 +95,7 @@ export const navCategories: Record<"en" | "zh" | "es", NavCat[]> = {
             { name: "Translate PDF", slug: "/translate-pdf" },
             { name: "PDF Flashcards", slug: "/flashcards" },
             { name: "Contract Risk Check", slug: "/contract-risk" },
+            { name: "Lease Red Flag Check", slug: "/lease-redflag" },
           ],
         },
         {
@@ -211,6 +212,7 @@ export const navCategories: Record<"en" | "zh" | "es", NavCat[]> = {
             { name: "PDF 翻译", slug: "/translate-pdf" },
             { name: "PDF 抽认卡", slug: "/flashcards" },
             { name: "合同风险体检", slug: "/contract-risk" },
+            { name: "租约红旗扫描", slug: "/lease-redflag" },
           ],
         },
         {
@@ -327,6 +329,7 @@ export const navCategories: Record<"en" | "zh" | "es", NavCat[]> = {
             { name: "Traducir PDF", slug: "/translate-pdf" },
             { name: "Tarjetas de estudio de PDF", slug: "/flashcards" },
             { name: "Revisión de riesgos del contrato", slug: "/contract-risk" },
+            { name: "Análisis de riesgos del arrendamiento", slug: "/lease-redflag" },
           ],
         },
         {

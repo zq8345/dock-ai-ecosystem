@@ -29,6 +29,32 @@ const FAQS: Record<string, { title: { en: string; zh: string; es: string }; item
       ],
     },
   },
+  "lease-redflag": {
+    title: { en: "Lease Red Flag Check — FAQ", zh: "租约红旗扫描常见问题", es: "Análisis de riesgos del arrendamiento — preguntas frecuentes" },
+    items: {
+      en: [
+        { q: "What does it flag?", a: "It scans your lease for clauses that could hurt you as a tenant — aggressive rent escalation, harsh early-termination penalties, unreasonable landlord entry rights, unclear maintenance splits, excessive security-deposit deductions, subletting restrictions, unfair holdover charges, and missing standard protections (no grace period, no habitability warranty, no right to cure before eviction). Each finding is flagged red (high), amber (medium), or green (low), quoted from your lease, with what to ask or negotiate." },
+        { q: "Is this legal advice?", a: "No. It's an automated review to help tenants spot clauses that deserve attention — it is not legal advice and not a substitute for a lawyer or tenant-rights organization. For anything important, consult a qualified attorney. Flagging nothing is not a guarantee the lease is fair." },
+        { q: "Does it make up quotes?", a: "Every quote is verified against your actual lease text — if the AI returns a quote we can't find in your document, we drop it rather than show a fabricated citation. Missing-clause risks are shown without a quote and labelled as such." },
+        { q: "Is my lease uploaded or stored?", a: "Your lease is read in your browser; only the extracted text is sent for analysis, and it is not stored afterwards. The file itself never leaves your device." },
+        { q: "What lease formats work?", a: "Text-based PDFs (born-digital). Scanned leases have no selectable text — run OCR first. It works in English, Chinese, Spanish and more; quotes stay in the lease's original language." },
+      ],
+      zh: [
+        { q: "它会标出哪些问题?", a: "它扫描租约里可能对租客不利的条款——激进的租金涨价条款、高额提前解约违约金、房东进入检查的不合理权利、不明确的维修分工、过度的押金扣除权利、转租限制、不公平的续租条款,以及缺失的标准保护(没有逾期宽限期、没有宜居性保证、没有驱逐前改正权利)。每条标红(高)/黄(中)/绿(低),引用原文,附该问什么。" },
+        { q: "这是法律意见吗?", a: "不是。这是帮租客发现值得注意条款的自动审查,不构成法律意见,也不能替代律师或租客权益机构。重要事项请咨询律师。没标出问题不代表租约一定公平。" },
+        { q: "它会伪造引文吗?", a: "每条原文引用都会和租约实际文字核对——如果 AI 给出的引用在文档里找不到,我们会丢弃而不是显示伪造的出处。缺失类风险不带引用并明确标注。" },
+        { q: "我的租约会被上传或保存吗?", a: "租约在浏览器中读取,只有提取的文字会被发送去分析,且事后不保存。文件本身不离开你的设备。" },
+        { q: "哪类租约效果最好?", a: "文字版 PDF(电子原生)。扫描件请先 OCR。支持中文、英文、西班牙语等;原文引用保持租约的原始语言。" },
+      ],
+      es: [
+        { q: "¿Qué señala?", a: "Escanea tu contrato de arrendamiento en busca de cláusulas que podrían perjudicarte como inquilino: escalada agresiva del alquiler, penalizaciones duras por rescisión anticipada, derechos de entrada del arrendador no razonables, repartos de mantenimiento poco claros, deducciones excesivas del depósito, restricciones de subarrendamiento, cargos injustos por permanencia y protecciones estándar ausentes. Cada hallazgo se marca en rojo, ámbar o verde, con cita y qué preguntar." },
+        { q: "¿Es asesoramiento legal?", a: "No. Es una revisión automatizada para ayudar a los inquilinos a detectar cláusulas que merecen atención; no es asesoramiento legal ni sustituye a un abogado o una organización de derechos del inquilino. Para algo importante, consulta a un abogado calificado." },
+        { q: "¿Inventa citas?", a: "Cada cita se verifica contra el texto real de tu contrato: si la IA devuelve una cita que no encontramos en tu documento, la descartamos. Los riesgos por cláusula ausente se muestran sin cita y se etiquetan como tales." },
+        { q: "¿Se sube o almacena mi arrendamiento?", a: "Tu arrendamiento se lee en tu navegador; solo se envía el texto extraído para analizarlo y no se almacena. El archivo nunca sale de tu dispositivo." },
+        { q: "¿Qué formatos funcionan?", a: "PDF basados en texto (digitales de origen). Los escaneados necesitan OCR primero. Funciona en español, inglés, chino y más; las citas se mantienen en el idioma original del arrendamiento." },
+      ],
+    },
+  },
   "batch-fix-scans": {
     title: { en: "Batch fix scans — FAQ", zh: "批量修扫描常见问题", es: "Arreglar escaneos por lotes — preguntas frecuentes" },
     items: {

@@ -57,6 +57,7 @@ import { BatchOfficeToPdfClient } from "@/components/BatchOfficeToPdfClient";
 import { BatchTranslateClient } from "@/components/BatchTranslateClient";
 import { BatchFixScansClient } from "@/components/BatchFixScansClient";
 import { ContractRiskClient } from "@/components/ContractRiskClient";
+import { LeaseRedflagClient } from "@/components/LeaseRedflagClient";
 import { SignPdfClient } from "@/components/SignPdfClient";
 import { ToolRuntimeClient } from "@/components/ToolRuntimeClient";
 import { UploadPanel } from "@/components/UploadPanel";
@@ -633,6 +634,23 @@ async function generateMetadataInner({
     };
   }
 
+  if (slug === "lease-redflag") {
+    return {
+      title:
+        uiLocale === "zh"
+          ? "租约红旗扫描 — 签字前识别租约风险条款"
+          : "Lease Red Flag Check — Spot Risky Clauses Before You Sign",
+      description:
+        uiLocale === "zh"
+          ? "上传住宅或商业租约,标红不公平条款——租金飞涨、高额违约、入侵检查权等。逐条引用原文,附签字前该问什么。仅供参考,非法律意见。"
+          : "Upload a lease and get a plain-language list of risky, unfair, or missing tenant clauses — flagged red/amber/green, quoted from your document. Informational, not legal advice.",
+      alternates: {
+        canonical: localizedPath(uiLocale, "lease-redflag"),
+        languages: languageAlternates("lease-redflag"),
+      },
+    };
+  }
+
   if (slug === "my-chats") {
     return {
       title: uiLocale === "zh" ? "我的对话 — DockDocs" : "My Chats — DockDocs",
@@ -952,6 +970,10 @@ export default async function LocalizedRoute({
 
   if (slug === "contract-risk") {
     return <ContractRiskClient locale={rawLocale} />;
+  }
+
+  if (slug === "lease-redflag") {
+    return <LeaseRedflagClient locale={rawLocale} />;
   }
 
   if (slug === "my-chats") {
