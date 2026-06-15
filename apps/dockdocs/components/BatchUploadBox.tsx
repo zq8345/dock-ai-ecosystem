@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { Spinner } from "@/components/Spinner";
 
-type Locale = "en" | "zh" | "es" | "pt";
+type Locale = "en" | "zh" | "es" | "pt" | "fr";
 
 const STR = {
   en: {
@@ -29,6 +29,12 @@ const STR = {
     folder: "Escolher uma pasta",
     note: "ou arraste arquivos / pasta aqui",
     privacy: "Processado localmente — nunca enviado",
+  },
+  fr: {
+    choose: "Choisir des PDF",
+    folder: "Choisir un dossier",
+    note: "ou déposez des fichiers / un dossier ici",
+    privacy: "Traité localement — jamais envoyé",
   },
 } as const;
 

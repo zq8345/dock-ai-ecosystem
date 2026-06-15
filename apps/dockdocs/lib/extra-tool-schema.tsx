@@ -5,7 +5,7 @@ import { siteUrl } from "@/lib/i18n";
 // PdfToolPageConfig and never went through createPdfToolSchema. This keeps GEO /
 // structured-data coverage complete across both render paths (the non-prefixed
 // app/<slug>/page.tsx and the /zh|/es catch-all). en/zh authored; es → en.
-type Loc = "en" | "zh" | "es" | "pt";
+type Loc = "en" | "zh" | "es" | "pt" | "fr";
 type Label = { name: string; description: string; crumb: string };
 
 const EXTRA_TOOL_LABELS: Record<string, Partial<Record<Loc, Label>>> = {

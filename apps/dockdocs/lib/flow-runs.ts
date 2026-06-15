@@ -53,7 +53,7 @@ export function saveRun(run: Omit<FlowRun, "id" | "createdAt">): FlowRun {
   return next;
 }
 
-export function relativeTime(iso: string, locale: "en" | "zh" | "es" | "pt"): string {
+export function relativeTime(iso: string, locale: "en" | "zh" | "es" | "pt" | "fr"): string {
   const diff = Date.now() - new Date(iso).getTime();
   const mins = Math.floor(diff / 60_000);
   const hours = Math.floor(diff / 3_600_000);

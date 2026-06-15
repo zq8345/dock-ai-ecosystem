@@ -32,7 +32,7 @@ export type PdfToolUpload = {
 
 export type PdfToolPageConfig = {
   slug: string;
-  locale?: "en" | "zh" | "es" | "pt";
+  locale?: "en" | "zh" | "es" | "pt" | "fr";
   canonicalPath?: string;
   alternateLanguages?: Record<string, string>;
   title: string;
@@ -236,6 +236,26 @@ const templateCopy = {
     indexingTitle: "Guias e recursos relacionados a este fluxo de trabalho.",
     indexingDescription:
       "Continue da página da ferramenta para guias, recursos e conteúdo de ajuda do DockDocs.",
+  },
+  fr: {
+    toolEyebrow: "Plateforme de documents IA",
+    previewWorkflow: "Aperçu du flux de travail",
+    workflowEyebrow: "Flux de l'outil",
+    workflowTitle: "Un flux réaliste, du chargement au résultat.",
+    workflowDescription:
+      "Ces pages présentent les états réels du flux de travail du produit.",
+    benefits: "Avantages",
+    features: "Fonctionnalités",
+    workflow: "Flux de travail",
+    faq: "Questions fréquentes",
+    relatedTools: "Outils associés",
+    relatedTitle: "Continuez avec un autre flux PDF.",
+    relatedDescription:
+      "Passez d'un outil DockDocs à l'autre sans quitter la plateforme.",
+    indexingEyebrow: "Lectures recommandées",
+    indexingTitle: "Guides et ressources liés à ce flux de travail.",
+    indexingDescription:
+      "Poursuivez depuis la page de l'outil vers les guides, ressources et contenus d'aide DockDocs.",
   },
 } as const;
 
@@ -601,7 +621,7 @@ function RelatedPdfTools({
   useLocalePrefix = false,
 }: {
   currentSlug: string;
-  locale?: "en" | "zh" | "es" | "pt";
+  locale?: "en" | "zh" | "es" | "pt" | "fr";
   useLocalePrefix?: boolean;
 }) {
   const copy = templateCopy[locale];
@@ -846,7 +866,7 @@ function getIndexingLinks(config: PdfToolPageConfig): IndexingLink[] {
   return [...(articleLinks[config.slug] ?? []), ...common];
 }
 
-function localizeTemplateHref(href: string, locale?: "en" | "zh" | "es" | "pt") {
+function localizeTemplateHref(href: string, locale?: "en" | "zh" | "es" | "pt" | "fr") {
   const clean = href === "/" ? "" : href.replace(/\/+$/g, "");
   const path = clean ? `${clean}/` : "/";
 
@@ -857,7 +877,7 @@ function localizeTemplateHref(href: string, locale?: "en" | "zh" | "es" | "pt") 
   return path === "/" ? `/${locale}/` : `/${locale}${path}`;
 }
 
-function absoluteHref(href: string, locale?: "en" | "zh" | "es" | "pt") {
+function absoluteHref(href: string, locale?: "en" | "zh" | "es" | "pt" | "fr") {
   return `${siteUrl}${localizeTemplateHref(href, locale)}`;
 }
 
