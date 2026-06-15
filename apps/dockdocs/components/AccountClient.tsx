@@ -17,8 +17,10 @@ import {
   type SubscriptionSnapshot,
 } from "@/lib/subscription-runtime";
 import type { PaidSubscriptionPlan } from "@/lib/billing-config";
+import { supabase, authHeader } from "@/lib/supabase";
 
 type AuthView = "loading" | "signed-out" | "email-sent" | "signed-in";
+type DeleteState = "idle" | "confirm" | "deleting" | "done";
 
 type AccountLocale = "en" | "zh" | "es" | "pt";
 
@@ -57,6 +59,37 @@ function getCopy(locale: AccountLocale) {
     manageBilling: zh ? "管理账单" : es ? "Administrar facturación" : pt ? "Gerenciar cobrança" : "Manage billing",
     loading: zh ? "加载…" : es ? "Cargando…" : pt ? "Carregando…" : "Loading…",
     signOut: zh ? "退出登录" : es ? "Cerrar sesión" : pt ? "Sair" : "Sign out",
+    privateSpace: zh ? "私密工作区" : es ? "Espacio privado" : pt ? "Espaço privado" : "Private Space",
+    privateDesc: zh
+      ? "启用后，你的流程模板和执行记录将加密同步到云端，跨设备访问，随时可删除。"
+      : es
+      ? "Cuando está activado, tus plantillas de flujo e historial de ejecuciones se sincronizan cifrados en la nube para acceso entre dispositivos. Puedes borrarlos en cualquier momento."
+      : pt
+      ? "Quando ativado, seus modelos de fluxo e histórico de execuções são sincronizados criptografados na nuvem para acesso entre dispositivos. Você pode excluí-los a qualquer momento."
+      : "When enabled, your flow templates and run history sync encrypted to the cloud for cross-device access. You can delete them at any time.",
+    privateOn: zh ? "已启用" : es ? "Activado" : pt ? "Ativado" : "Enabled",
+    privateOff: zh ? "未启用" : es ? "Desactivado" : pt ? "Desativado" : "Disabled",
+    enableSync: zh ? "启用同步" : es ? "Activar sincronización" : pt ? "Ativar sincronização" : "Enable sync",
+    disableSync: zh ? "停用同步" : es ? "Desactivar sincronización" : pt ? "Desativar sincronização" : "Disable sync",
+    deleteData: zh ? "删除所有数据" : es ? "Eliminar todos los datos" : pt ? "Excluir todos os dados" : "Delete all data",
+    deleteConfirm: zh
+      ? "确认删除？此操作不可撤销。"
+      : es
+      ? "¿Confirmar eliminación? Esta acción no se puede deshacer."
+      : pt
+      ? "Confirmar exclusão? Esta ação não pode ser desfeita."
+      : "Confirm delete? This cannot be undone.",
+    deleteCancel: zh ? "取消" : es ? "Cancelar" : pt ? "Cancelar" : "Cancel",
+    deleting: zh ? "删除中…" : es ? "Eliminando…" : pt ? "Excluindo…" : "Deleting…",
+    deleteOk: (t: number, r: number) =>
+      zh
+        ? `已删除 ${t} 个模板，${r} 条运行记录。`
+        : es
+        ? `Se eliminaron ${t} plantilla(s) y ${r} registro(s) de ejecución.`
+        : pt
+        ? `${t} modelo(s) e ${r} registro(s) de execução excluídos.`
+        : `Deleted ${t} template(s) and ${r} run(s).`,
+    saving: zh ? "保存中…" : es ? "Guardando…" : pt ? "Salvando…" : "Saving…",
   };
 }
 
@@ -70,6 +103,10 @@ export function AccountClient({ locale = "en" }: { locale?: AccountLocale }) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState("");
   const [billingLoading, setBillingLoading] = useState("");
+  const [flowOptin, setFlowOptin] = useState<boolean | null>(null);
+  const [flowOptinSaving, setFlowOptinSaving] = useState(false);
+  const [deleteState, setDeleteState] = useState<DeleteState>("idle");
+  const [deleteMsg, setDeleteMsg] = useState("");
 
   useEffect(() => {
     let mounted = true;
@@ -80,7 +117,14 @@ export function AccountClient({ locale = "en" }: { locale?: AccountLocale }) {
         if (current) {
           setUser(current);
           setView("signed-in");
-          setSubscription(await getSubscriptionSnapshot());
+          const [snap, sbUser] = await Promise.all([
+            getSubscriptionSnapshot(),
+            supabase.auth.getUser(),
+          ]);
+          if (mounted) {
+            setSubscription(snap);
+            setFlowOptin(sbUser.data.user?.user_metadata?.flow_optin === true);
+          }
         } else {
           setView("signed-out");
         }
@@ -95,10 +139,18 @@ export function AccountClient({ locale = "en" }: { locale?: AccountLocale }) {
       setUser(changed);
       if (changed) {
         setView("signed-in");
-        setSubscription(await getSubscriptionSnapshot());
+        const [snap, sbUser] = await Promise.all([
+          getSubscriptionSnapshot(),
+          supabase.auth.getUser(),
+        ]);
+        if (mounted) {
+          setSubscription(snap);
+          setFlowOptin(sbUser.data.user?.user_metadata?.flow_optin === true);
+        }
       } else {
         setView("signed-out");
         setSubscription(null);
+        setFlowOptin(null);
       }
     });
     return () => { mounted = false; unsub(); };
@@ -125,6 +177,42 @@ export function AccountClient({ locale = "en" }: { locale?: AccountLocale }) {
   async function handleSignOut() {
     setError("");
     try { await signOut(); } catch (err) { setError(err instanceof Error ? err.message : t.signOutFailed); }
+  }
+
+  async function handleFlowOptinToggle() {
+    if (flowOptin === null || flowOptinSaving) return;
+    const next = !flowOptin;
+    setFlowOptinSaving(true);
+    try {
+      const { error: updateError } = await supabase.auth.updateUser({
+        data: { flow_optin: next },
+      });
+      if (!updateError) setFlowOptin(next);
+    } catch {
+      // Leave state unchanged on error.
+    } finally {
+      setFlowOptinSaving(false);
+    }
+  }
+
+  async function handleDeleteData() {
+    setDeleteState("deleting");
+    try {
+      const headers = await authHeader();
+      const res = await fetch("/api/delete-user-data", {
+        method: "POST",
+        headers,
+      });
+      const data = (await res.json()) as { ok: boolean; deleted?: { templates: number; runs: number } };
+      if (data.ok) {
+        setDeleteMsg(t.deleteOk(data.deleted?.templates ?? 0, data.deleted?.runs ?? 0));
+        setDeleteState("done");
+      } else {
+        setDeleteState("idle");
+      }
+    } catch {
+      setDeleteState("idle");
+    }
   }
 
   async function handleBilling(plan: PaidSubscriptionPlan) {
@@ -238,6 +326,56 @@ export function AccountClient({ locale = "en" }: { locale?: AccountLocale }) {
               </button>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Private Space */}
+      {flowOptin !== null && (
+        <div className="rounded-[var(--radius)] border border-[color:var(--line)] bg-[color:var(--surface)] p-5">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--faint)]">{t.privateSpace}</p>
+              <p className="mt-2 text-[13px] leading-5 text-[color:var(--muted)]">{t.privateDesc}</p>
+            </div>
+            <button
+              type="button"
+              onClick={handleFlowOptinToggle}
+              disabled={flowOptinSaving}
+              className={`mt-0.5 shrink-0 rounded-full px-3 py-1 text-[11px] font-semibold transition disabled:opacity-50 ${
+                flowOptin
+                  ? "bg-[color:var(--soft-accent)] text-[color:var(--accent-strong)]"
+                  : "border border-[color:var(--line)] text-[color:var(--muted)] hover:border-[color:var(--line-strong)]"
+              }`}
+            >
+              {flowOptinSaving ? t.saving : flowOptin ? t.privateOn : t.privateOff}
+            </button>
+          </div>
+          {flowOptin && (
+            <div className="mt-4 border-t border-[color:var(--line)] pt-4">
+              {deleteState === "done" ? (
+                <p className="text-[13px] text-[color:var(--success)]">{deleteMsg}</p>
+              ) : deleteState === "confirm" ? (
+                <div className="flex items-center gap-3">
+                  <p className="text-[13px] text-[color:var(--muted)]">{t.deleteConfirm}</p>
+                  <button type="button" onClick={handleDeleteData} className="rounded-[var(--radius-sm)] bg-[color:var(--error)] px-3 py-1 text-[12px] font-semibold text-white transition hover:opacity-90">
+                    {t.deleteData}
+                  </button>
+                  <button type="button" onClick={() => setDeleteState("idle")} className="text-[12px] text-[color:var(--muted)] hover:text-[color:var(--foreground)]">
+                    {t.deleteCancel}
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setDeleteState("confirm")}
+                  disabled={deleteState === "deleting"}
+                  className="text-[13px] text-[color:var(--error)] transition hover:opacity-80 disabled:opacity-50"
+                >
+                  {deleteState === "deleting" ? t.deleting : t.deleteData}
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
 

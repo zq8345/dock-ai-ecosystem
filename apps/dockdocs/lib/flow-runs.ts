@@ -1,9 +1,10 @@
 "use client";
 
-// Flow run history — Phase A (localStorage).
-// Records each compare-extract execution triggered by a saved template,
-// so users can see when they last ran a template and with which files.
-// Phase B will persist these to Supabase document_texts / pipeline_runs.
+// Flow run history — Phase A (localStorage) + Phase B (Supabase sync).
+// Phase B activates only when the user has opted into the private workspace.
+// localStorage is always the source of truth; Supabase is a best-effort mirror.
+
+import { supabase } from "@/lib/supabase";
 
 export type FlowRun = {
   id: string;
@@ -45,6 +46,10 @@ export function saveRun(run: Omit<FlowRun, "id" | "createdAt">): FlowRun {
   const existing = loadRuns();
   const updated = [next, ...existing].slice(0, MAX_RUNS);
   localStorage.setItem(KEY, JSON.stringify(updated));
+
+  // Phase B: mirror to Supabase if user opted in. Fire-and-forget.
+  void syncRunInsert(next);
+
   return next;
 }
 
@@ -65,10 +70,49 @@ export function relativeTime(iso: string, locale: "en" | "zh" | "es" | "pt"): st
     if (hours < 24) return `hace ${hours} h`;
     return `hace ${days} día${days > 1 ? "s" : ""}`;
   }
+  if (locale === "pt") {
+    if (mins < 1) return "agora";
+    if (mins < 60) return `há ${mins} min`;
+    if (hours < 24) return `há ${hours} h`;
+    return `há ${days} dia${days > 1 ? "s" : ""}`;
+  }
   if (mins < 1) return "just now";
   if (mins < 60) return `${mins}m ago`;
   if (hours < 24) return `${hours}h ago`;
   return `${days}d ago`;
+}
+
+// ── Phase B helpers ────────────────────────────────────────────────────────
+
+async function isFlowOptedIn(): Promise<string | null> {
+  try {
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) return null;
+    if (data.user.user_metadata?.flow_optin !== true) return null;
+    return data.user.id;
+  } catch {
+    return null;
+  }
+}
+
+async function syncRunInsert(run: FlowRun): Promise<void> {
+  const userId = await isFlowOptedIn();
+  if (!userId) return;
+  try {
+    await supabase.from("flow_runs").insert({
+      id: run.id,
+      user_id: userId,
+      template_id: run.templateId,
+      template_name: run.templateName,
+      file_names: run.fileNames,
+      doc_type: run.docType,
+      status: run.status,
+      error: run.error ?? null,
+      created_at: run.createdAt,
+    });
+  } catch {
+    // Best-effort.
+  }
 }
 
 function isRun(x: unknown): x is FlowRun {
