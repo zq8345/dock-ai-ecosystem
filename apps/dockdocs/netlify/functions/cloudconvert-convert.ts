@@ -1,4 +1,5 @@
 import type { Context } from "@netlify/functions";
+import { enforceFeatureGate } from "./_shared/feature-gate";
 
 declare const Netlify: {
   env: {
@@ -35,7 +36,6 @@ const ALLOWED_ORIGIN = /^https:\/\/([a-z0-9-]+\.)*(dockdocs\.app|netlify\.app)$/
 
 // Best-effort per-IP sliding-window limiter (per warm instance) to bound CloudConvert credit abuse.
 const rlHits = new Map<string, number[]>();
-const rlHitsDay = new Map<string, number[]>();
 function isRateLimited(req: Request, limit: number, windowMs: number, store = rlHits): boolean {
   const ip =
     req.headers.get("x-nf-client-connection-ip") ||
@@ -136,8 +136,14 @@ export default async (req: Request, _context: Context) => {
   if (isRateLimited(req, 12, 60_000)) {
     return json({ ok: false, code: "RATE_LIMITED", message: "Too many conversions — please wait a minute and try again." }, 429);
   }
-  if (isRateLimited(req, 40, 86_400_000, rlHitsDay)) {
-    return json({ ok: false, code: "DAILY_LIMIT", message: "Daily conversion limit reached. Sign in or upgrade for higher limits." }, 429);
+
+  // Per-plan daily/monthly cap (by Supabase user via Bearer token, or anon by IP) —
+  // the authoritative bound on CloudConvert credit burn that replaces the old
+  // best-effort in-memory daily counter. Only the costly CREATE path is gated;
+  // status polling above is exempt. Counted (gate.commit) only after a job is created.
+  const gate = await enforceFeatureGate(req, "convert");
+  if (!gate.ok) {
+    return gate.response;
   }
 
   // ── CREATE: build a job and return the direct-upload form ──
@@ -165,6 +171,7 @@ export default async (req: Request, _context: Context) => {
         return json({ ok: false, code: "JOB_CREATE_FAILED", status: jobRes.status, message: cloudConvertFailMessage(jobRes.status) }, 502);
       }
       const job = await jobRes.json() as CloudConvertJob;
+      await gate.commit();
       return json({ ok: true, jobId: job.data.id, outputExt: "pdf" });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error";
@@ -240,6 +247,7 @@ export default async (req: Request, _context: Context) => {
       return json({ ok: false, code: "UPLOAD_TASK_MISSING", message: "CloudConvert did not return an upload form." }, 502);
     }
 
+    await gate.commit();
     return json({
       ok: true,
       jobId: job.data.id,

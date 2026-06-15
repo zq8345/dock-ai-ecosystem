@@ -17,7 +17,8 @@ export type UsageFeature =
   | "compress"
   | "analyzer"
   | "contractAnalyzer"
-  | "compare";
+  | "compare"
+  | "convert";
 
 export type UsagePeriod = "day" | "month";
 
@@ -30,6 +31,7 @@ export const meteredFeatures: UsageFeature[] = [
   "analyzer",
   "contractAnalyzer",
   "compare",
+  "convert",
 ];
 
 export const featureAliases: Record<string, UsageFeature> = {
@@ -54,6 +56,19 @@ export const featureAliases: Record<string, UsageFeature> = {
   "contract-analyzer": "contractAnalyzer",
   compare: "compare",
   "compare-docs": "compare",
+  // Server-side CloudConvert gate — all paid/metered conversion routes that can
+  // fall back to (or only run on) CloudConvert map to the single "convert" meter.
+  convert: "convert",
+  "word-to-pdf": "convert",
+  "ppt-to-pdf": "convert",
+  "excel-to-pdf": "convert",
+  "html-to-pdf": "convert",
+  "url-to-pdf": "convert",
+  "pdf-to-pdfa": "convert",
+  "pdf-to-word": "convert",
+  "pdf-to-excel": "convert",
+  "pdf-to-ppt": "convert",
+  "protect-pdf": "convert",
 };
 
 export const featureLimits: Record<
@@ -72,6 +87,11 @@ export const featureLimits: Record<
     analyzer: { limit: 10, period: "day" },
     contractAnalyzer: { limit: 10, period: "day" },
     compare: { limit: 3, period: "day" },
+    // CloudConvert costs real money per conversion (the only metered cost left after
+    // self-hosting). Free callers (mostly anonymous, counted by IP) get a modest daily
+    // cap so scrapers can't burn credits; most conversions run $0 on the self-hosted
+    // box and never reach this gate. ADJUSTABLE — Joe's call on the exact numbers.
+    convert: { limit: 15, period: "day" },
   },
   PLUS: {
     chat: { limit: 500, period: "month" },
@@ -82,6 +102,7 @@ export const featureLimits: Record<
     analyzer: { limit: 500, period: "month" },
     contractAnalyzer: { limit: 500, period: "month" },
     compare: { limit: 500, period: "month" },
+    convert: { limit: 1500, period: "month" },
   },
   PRO: {
     chat: { limit: 5000, period: "month" },
@@ -92,6 +113,7 @@ export const featureLimits: Record<
     analyzer: { limit: 5000, period: "month" },
     contractAnalyzer: { limit: 5000, period: "month" },
     compare: { limit: 5000, period: "month" },
+    convert: { limit: 15000, period: "month" },
   },
 };
 
