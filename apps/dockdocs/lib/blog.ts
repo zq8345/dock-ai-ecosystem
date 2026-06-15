@@ -24,6 +24,7 @@ export const blogArticleSlugs = [
   "compress-pdf-quality-complete-guide",
   "chat-with-pdf-vs-chatgpt-vs-chatpdf",
   "convert-doc-to-pdf-free",
+  "pdf-to-markdown-for-developers",
 ] as const;
 
 export type BlogArticleSlug = (typeof blogArticleSlugs)[number];
@@ -277,6 +278,186 @@ export const blogArticles: BlogArticle[] = [
             question: "之后能把 PDF 再转回 Word 文档吗?",
             answer:
               "可以。需要修改时,用「PDF 转 Word」从 PDF 重建可编辑的 .docx。",
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: "pdf-to-markdown-for-developers",
+    category: "Convert",
+    publishedAt: "2026-06-15",
+    updatedAt: "2026-06-15",
+    keywords: [
+      "pdf to markdown",
+      "pdf to md",
+      "pdf to markdown converter",
+      "convert pdf to markdown",
+      "pdf to markdown for llm",
+    ],
+    toolHref: "/pdf-to-markdown",
+    toolLabel: "PDF to Markdown",
+    relatedTools: [
+      { label: "PDF to Markdown", href: "/pdf-to-markdown" },
+      { label: "PDF to Word", href: "/pdf-to-word" },
+      { label: "Chat with PDF", href: "/chat-with-pdf" },
+      { label: "Help Center", href: "/help" },
+    ],
+    relatedArticleSlugs: [
+      "convert-pdf-to-word-editable-document",
+      "chat-with-pdf-vs-chatgpt-vs-chatpdf",
+      "how-to-ocr-scanned-pdf-files",
+    ],
+    content: {
+      en: {
+        title: "PDF to Markdown: Convert PDFs to Clean .md for Docs, Git & LLMs",
+        description:
+          "Convert PDF to Markdown (.md) online free — turn reports, papers, and manuals into clean Markdown for documentation, Git, and feeding context to LLMs.",
+        excerpt:
+          "Developers increasingly need PDFs as Markdown — for docs sites, Git repos, and as clean context for LLMs. This guide covers how to convert PDF to .md and what to expect.",
+        readingTime: "6 min read",
+        ctaTitle: "Convert a PDF to Markdown now",
+        ctaDescription:
+          "Use DockDocs PDF to Markdown to turn a PDF into clean, reusable .md — ready for docs, Git, and LLM context.",
+        ctaLabel: "Open PDF to Markdown",
+        sections: [
+          {
+            heading: "Why convert PDF to Markdown",
+            paragraphs: [
+              "Markdown is the lingua franca of technical writing — README files, documentation sites, static-site generators, wikis, and issue trackers all speak it. When source material arrives as a PDF (a spec, a whitepaper, a vendor manual), turning it into Markdown lets you version it in Git, diff it, search it, and reuse pieces of it without wrestling with PDF layout.",
+              "There is also a fast-growing reason: feeding documents to large language models. Clean Markdown is one of the best formats for LLM context — it keeps headings and structure while stripping the binary noise of a PDF, so the model gets more signal per token. \"pdf to markdown\" and \"pdf to md\" are increasingly developer-and-AI workflows, not just writing tasks.",
+            ],
+            links: [
+              { label: "Start with PDF to Markdown", href: "/pdf-to-markdown" },
+            ],
+          },
+          {
+            heading: "How to convert PDF to Markdown (free)",
+            paragraphs: [
+              "Open the PDF to Markdown tool, upload your PDF, and download a .md file — no install, no signup. The converter extracts the text and re-expresses the document's structure (headings, lists, paragraphs) as Markdown you can drop straight into a repo or docs site.",
+              "Step by step: 1) Open PDF to Markdown. 2) Upload the PDF. 3) Let it extract and convert. 4) Download the .md and open it in your editor to review headings, lists, and tables before committing it.",
+            ],
+            links: [
+              { label: "Convert PDF to .md", href: "/pdf-to-markdown" },
+            ],
+          },
+          {
+            heading: "Getting clean Markdown: what works and what to check",
+            paragraphs: [
+              "Text-based PDFs convert best — headings, paragraphs, and simple lists map cleanly to Markdown. Tables and multi-column layouts are harder: PDF stores them as positioned text, not real table structures, so complex tables may need a quick manual tidy after conversion. Scanned (image-only) PDFs need OCR first to become text before any Markdown is possible.",
+              "Treat conversion as a first draft: convert, then skim the .md for heading levels, list nesting, and any tables that need reformatting. For most specs, papers, and manuals this is minutes of cleanup versus hours of retyping.",
+            ],
+            links: [
+              { label: "OCR a scanned PDF first", href: "/ocr-pdf" },
+            ],
+          },
+          {
+            heading: "Markdown as LLM context (RAG and Q&A)",
+            paragraphs: [
+              "If your goal is to ask an AI questions about a document, Markdown is an excellent intermediate format: it is compact, preserves structure, and is easy to chunk for retrieval-augmented generation (RAG). Convert the PDF to .md, split it by heading, and you have clean passages to embed or paste into a prompt.",
+              "If you would rather skip the pipeline, Chat with PDF does the reading for you — upload a PDF and ask questions, with answers that cite the source passage. PDF-to-Markdown is the right tool when you want the raw text in your own stack; Chat with PDF is right when you just want answers.",
+            ],
+            links: [
+              { label: "Try Chat with PDF", href: "/chat-with-pdf" },
+            ],
+          },
+        ],
+        faq: [
+          {
+            question: "Is PDF to Markdown free?",
+            answer:
+              "Yes. DockDocs converts PDF to Markdown (.md) for free, with no account required.",
+          },
+          {
+            question: "Does it keep headings, lists, and tables?",
+            answer:
+              "Headings, paragraphs, and lists convert cleanly. Complex or multi-column tables may need a small manual cleanup, because PDFs store tables as positioned text rather than real table structures.",
+          },
+          {
+            question: "Is 'pdf to md' the same as 'pdf to markdown'?",
+            answer:
+              "Yes — .md is the Markdown file extension, so 'pdf to md' and 'pdf to markdown' mean the same conversion.",
+          },
+          {
+            question: "Is Markdown good for feeding documents to an LLM?",
+            answer:
+              "Yes. Markdown keeps structure while removing PDF binary noise, so it is one of the best formats for LLM context and RAG. For direct answers without a pipeline, use Chat with PDF.",
+          },
+        ],
+      },
+      zh: {
+        title: "PDF 转 Markdown:把 PDF 转成干净的 .md(文档、Git、喂给 LLM)",
+        description:
+          "免费在线把 PDF 转成 Markdown(.md)——把报告、论文、手册转成干净的 Markdown,用于文档、Git 版本管理,以及给 LLM 提供上下文。",
+        excerpt:
+          "开发者越来越需要把 PDF 转成 Markdown——用于文档站、Git 仓库,以及作为喂给 LLM 的干净上下文。本文讲怎么把 PDF 转成 .md,以及效果如何。",
+        readingTime: "6 分钟阅读",
+        ctaTitle: "现在就把 PDF 转成 Markdown",
+        ctaDescription:
+          "用 DockDocs「PDF 转 Markdown」把 PDF 转成干净、可复用的 .md——直接用于文档、Git 和 LLM 上下文。",
+        ctaLabel: "打开 PDF 转 Markdown",
+        sections: [
+          {
+            heading: "为什么要把 PDF 转成 Markdown",
+            paragraphs: [
+              "Markdown 是技术写作的通用语——README、文档站、静态站点生成器、Wiki、Issue 系统都用它。当原始资料是 PDF(规范、白皮书、厂商手册)时,转成 Markdown 就能用 Git 版本管理、做 diff、全文搜索、按需复用片段,而不用跟 PDF 的版式较劲。",
+              "还有一个快速增长的理由:把文档喂给大语言模型。干净的 Markdown 是 LLM 上下文的最佳格式之一——它保留标题和结构,同时去掉 PDF 的二进制噪音,让模型每个 token 拿到更多有效信息。\"pdf 转 markdown\"和\"pdf 转 md\"越来越是开发者和 AI 的工作流,而不只是写作任务。",
+            ],
+            links: [
+              { label: "从 PDF 转 Markdown 开始", href: "/pdf-to-markdown" },
+            ],
+          },
+          {
+            heading: "怎么免费把 PDF 转成 Markdown",
+            paragraphs: [
+              "打开「PDF 转 Markdown」,上传 PDF,下载 .md 文件——无需安装、无需注册。转换器会提取文字,并把文档结构(标题、列表、段落)重新表达为 Markdown,可直接放进仓库或文档站。",
+              "分步:1）打开 PDF 转 Markdown;2）上传 PDF;3）等它提取并转换;4）下载 .md,在编辑器里检查标题、列表和表格,确认无误再提交。",
+            ],
+            links: [
+              { label: "把 PDF 转成 .md", href: "/pdf-to-markdown" },
+            ],
+          },
+          {
+            heading: "拿到干净 Markdown:什么好转、要检查什么",
+            paragraphs: [
+              "文本型 PDF 转换效果最好——标题、段落、简单列表都能干净地映射成 Markdown。表格和多栏版式较难:PDF 把它们存成定位文字而非真正的表格结构,所以复杂表格转换后可能需要手动整理一下。扫描件(纯图片)PDF 需要先做 OCR 变成文字,才能转 Markdown。",
+              "把转换当成初稿:转完后快速浏览 .md,检查标题层级、列表缩进,以及需要重排的表格。对大多数规范、论文和手册,这是几分钟的整理,而不是几小时的重打。",
+            ],
+            links: [
+              { label: "先给扫描件做 OCR", href: "/ocr-pdf" },
+            ],
+          },
+          {
+            heading: "把 Markdown 当作 LLM 上下文(RAG 与问答)",
+            paragraphs: [
+              "如果你的目标是让 AI 回答关于某文档的问题,Markdown 是极好的中间格式:它紧凑、保留结构、易于切分做检索增强生成(RAG)。把 PDF 转成 .md,按标题切块,就得到了可嵌入或粘进提示词的干净段落。",
+              "如果不想搭这套流程,「PDF 问答」直接帮你读——上传 PDF 提问,答案会标出处。想把原始文字放进自己的技术栈,用 PDF 转 Markdown;只想要答案,用 PDF 问答。",
+            ],
+            links: [
+              { label: "试试 PDF 问答", href: "/chat-with-pdf" },
+            ],
+          },
+        ],
+        faq: [
+          {
+            question: "PDF 转 Markdown 免费吗?",
+            answer:
+              "免费。DockDocs 免费把 PDF 转成 Markdown(.md),无需注册。",
+          },
+          {
+            question: "会保留标题、列表和表格吗?",
+            answer:
+              "标题、段落、列表都能干净转换。复杂或多栏表格可能需要少量手动整理,因为 PDF 把表格存成定位文字而非真正的表格结构。",
+          },
+          {
+            question: "\"pdf 转 md\"和\"pdf 转 markdown\"是一回事吗?",
+            answer:
+              "是的——.md 就是 Markdown 的文件扩展名,所以\"pdf 转 md\"和\"pdf 转 markdown\"指同一种转换。",
+          },
+          {
+            question: "Markdown 适合喂给 LLM 吗?",
+            answer:
+              "适合。Markdown 保留结构、去掉 PDF 二进制噪音,是 LLM 上下文和 RAG 的最佳格式之一。想不搭流程直接要答案,用 PDF 问答。",
           },
         ],
       },
