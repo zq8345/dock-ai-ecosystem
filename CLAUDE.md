@@ -42,6 +42,7 @@
 
 ## Build Discipline (CRITICAL)
 - **Before pushing**: run `npm run build` — zero errors required (postbuild i18n-guard must stay green)
+- **Pre-push hook (installed 2026-06-15, auto-enforced):** `.git/hooks/pre-push` runs `tsc --noEmit` and BLOCKS the push if type-check fails — broken commits can no longer reach Netlify. Shared `.git` → covers all 4 working-tree windows. If your push is blocked, fix the TS errors shown (shared tree: the error may come from another window's uncommitted work). Emergency bypass only: `git push --no-verify`.
 - NEVER claim code is "ready" without passing build
 - Do NOT involve DeepSeek in any work / cross-review (dropped 2026-06-12 per Joe).
 - Use C:\Users\47203\Documents\Dock\apps\dockdocs\... for file tools
