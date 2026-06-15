@@ -2,6 +2,8 @@
 # Gotenberg (Chromium + LibreOffice) behind Caddy (auto-HTTPS + shared-secret auth).
 # Drives Office->PDF / html->PDF / url->PDF / PDF/A marginal cost to ~$0.
 # Full provisioning guide: ./README.md
+# 2026-06-15 redeploy: bring the reverse (pdf->docx/xlsx) service online — the box
+# was still running the pre-reverse build, so /reverse/* 404'd through to Gotenberg.
 services:
   gotenberg:
     build: .                       # ./Dockerfile = gotenberg/gotenberg:8 + Liberation/Noto/Carlito fonts

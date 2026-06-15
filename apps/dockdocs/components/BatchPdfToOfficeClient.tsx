@@ -196,7 +196,7 @@ export function BatchPdfToOfficeClient({ locale = "en" }: { locale?: Locale }) {
       />
 
       {items.length === 0 ? (
-        <BatchUploadBox locale={locale} onFiles={addFiles} />
+        <BatchUploadBox locale={locale} onFiles={addFiles} privacyLabel={locale === "zh" ? "在我们的服务器转换" : locale === "es" ? "Convertido en nuestro servidor" : "Converted on our server"} />
       ) : (
         <>
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
