@@ -2915,6 +2915,16 @@ const esFaq: Partial<Record<ToolSlug, { faqTitle: string; faq: Array<{ question:
       { question: "¿Puedo convertir solo algunas páginas?", answer: "Sí. Ingresa un rango de páginas para convertir solo las que necesitas, o deja el campo vacío para convertir todo el documento." },
     ],
   },
+  "pdf-to-image": {
+    faqTitle: "Preguntas sobre PDF a imagen",
+    faq: [
+      { question: "¿Cómo convierto un PDF a JPG?", answer: "Sube tu PDF y cada página aparece como miniatura. Selecciona las que quieras, elige el formato JPG y haz clic en «Convertir y descargar». Una sola página se descarga como imagen; varias se empaquetan en un ZIP." },
+      { question: "¿Cuál es la diferencia entre JPG y PNG?", answer: "PNG es sin pérdidas y es la mejor opción para texto nítido, capturas de pantalla y diagramas. JPG produce archivos más pequeños y es ideal para fotografías. Recuerda que JPG no admite transparencia." },
+      { question: "¿Mi PDF se envía a un servidor?", answer: "No. Todo el procesamiento ocurre en tu navegador. Tu PDF nunca sale de tu dispositivo." },
+      { question: "¿Cuál es la resolución de las imágenes?", answer: "Las imágenes se renderizan al doble de la resolución original (escala 2×) para obtener resultados nítidos aptos para impresión y uso profesional." },
+      { question: "¿Es gratis?", answer: "Sí: completamente gratis, sin cuenta ni marca de agua." },
+    ],
+  },
   "pdf-to-markdown": {
     faqTitle: "Preguntas sobre PDF a Markdown",
     faq: [
@@ -2922,6 +2932,8 @@ const esFaq: Partial<Record<ToolSlug, { faqTitle: string; faq: Array<{ question:
       { question: "¿Mi PDF se envía a un servidor?", answer: "No. Toda la conversión ocurre en tu navegador." },
       { question: "¿Funciona con PDF escaneados?", answer: "Los PDF escaneados no contienen texto seleccionable, así que primero conviene aplicarles OCR. La herramienta funciona mejor con PDF basados en texto." },
       { question: "¿Tiene algún costo?", answer: "No. Convertir de PDF a Markdown es gratis y sin límites de uso." },
+      { question: "¿Para qué sirve un conversor de PDF a Markdown?", answer: "Los archivos Markdown son ideales para documentación, blogs, wikis y sistemas de gestión de contenido. Convertir informes o artículos de PDF a formato .md te permite editarlos directamente en GitHub, Notion o cualquier editor de texto compatible." },
+      { question: "¿Puedo usar el resultado con ChatGPT o Claude?", answer: "Sí. Un archivo Markdown limpio funciona muy bien como contexto para modelos de IA. Puedes pegarlo directamente en ChatGPT o Claude para hacer preguntas, resumir contenido o extraer datos sin perder la estructura del texto." },
     ],
   },
   "word-to-pdf": {
@@ -2931,6 +2943,8 @@ const esFaq: Partial<Record<ToolSlug, { faqTitle: string; faq: Array<{ question:
       { question: "¿Se conserva el formato?", answer: "Sí. CloudConvert usa LibreOffice para una representación fiel." },
       { question: "¿Necesito instalar Microsoft Word?", answer: "No. La conversión se hace en línea, así que no necesitas tener Word ni ningún otro programa instalado en tu equipo." },
       { question: "¿Qué tamaño de archivo admite?", answer: "Puedes convertir archivos DOCX y DOC de hasta 100 MB, suficiente para la mayoría de los contratos, informes y propuestas." },
+      { question: "¿Cómo convierto Word a PDF en Mac o iPhone?", answer: "Simplemente accede a DockDocs desde el navegador de tu Mac, iPhone o iPad. La herramienta funciona en cualquier dispositivo sin necesidad de instalar software ni aplicaciones adicionales." },
+      { question: "¿Puedo convertir varios archivos Word a PDF a la vez?", answer: "Por ahora la herramienta procesa un archivo a la vez. Para convertir varios documentos, súbelos y conviértelos uno por uno." },
     ],
   },
   "excel-to-pdf": {
@@ -3213,6 +3227,16 @@ const ptFaq: Partial<Record<ToolSlug, { faqTitle: string; faq: Array<{ question:
       { question: "Posso converter apenas algumas páginas?", answer: "Sim. Informe um intervalo de páginas para converter apenas as que precisar, ou deixe o campo vazio para converter o documento inteiro." },
     ],
   },
+  "pdf-to-image": {
+    faqTitle: "PDF para imagem — perguntas frequentes",
+    faq: [
+      { question: "Como converter um PDF em imagem?", answer: "Envie seu PDF e cada página aparece como miniatura. Selecione as que quiser, escolha JPG ou PNG e clique em «Converter e baixar». Uma única página é baixada como imagem; várias páginas são agrupadas em um ZIP." },
+      { question: "Qual é a diferença entre JPG e PNG?", answer: "PNG é sem perdas e é a melhor opção para texto nítido, capturas de tela e diagramas. JPG produz arquivos menores e é ideal para fotos. Lembre-se: JPG não suporta transparência." },
+      { question: "Meu PDF é enviado a algum lugar?", answer: "Não. Todo o processamento acontece no seu navegador. Seu PDF nunca sai do seu dispositivo." },
+      { question: "Qual é a resolução das imagens?", answer: "As imagens são renderizadas no dobro da resolução original (escala 2×) para resultados nítidos e adequados para impressão e uso profissional." },
+      { question: "É grátis?", answer: "Sim: completamente grátis, sem conta nem marca d'água." },
+    ],
+  },
   "pdf-to-markdown": {
     faqTitle: "Perguntas sobre PDF para Markdown",
     faq: [
@@ -3220,6 +3244,8 @@ const ptFaq: Partial<Record<ToolSlug, { faqTitle: string; faq: Array<{ question:
       { question: "Meu PDF é enviado a um servidor?", answer: "Não. Toda a conversão acontece no seu navegador." },
       { question: "Funciona com PDFs digitalizados?", answer: "PDFs digitalizados não contêm texto selecionável, então é melhor aplicar OCR primeiro. A ferramenta funciona melhor com PDFs baseados em texto." },
       { question: "Tem algum custo?", answer: "Não. Converter de PDF para Markdown é grátis e sem limites de uso." },
+      { question: "Para que serve um conversor de PDF para Markdown?", answer: "Arquivos Markdown são ideais para documentação, blogs, wikis e sistemas de gerenciamento de conteúdo. Converter relatórios ou artigos de PDF para o formato .md permite editá-los diretamente no GitHub, Notion ou em qualquer editor de texto compatível." },
+      { question: "Posso usar o resultado com ChatGPT ou Claude?", answer: "Sim. Um arquivo Markdown limpo funciona muito bem como contexto para modelos de IA. Você pode colá-lo diretamente no ChatGPT ou no Claude para fazer perguntas, resumir conteúdo ou extrair dados sem perder a estrutura do texto." },
     ],
   },
   "word-to-pdf": {
@@ -3229,6 +3255,8 @@ const ptFaq: Partial<Record<ToolSlug, { faqTitle: string; faq: Array<{ question:
       { question: "A formatação é preservada?", answer: "Sim. A CloudConvert usa o LibreOffice para uma renderização fiel." },
       { question: "Preciso instalar o Microsoft Word?", answer: "Não. A conversão é feita online, então você não precisa ter o Word nem nenhum outro programa instalado no seu computador." },
       { question: "Qual é o limite de tamanho de arquivo?", answer: "Você pode converter arquivos DOCX e DOC de até 100 MB, suficiente para a maioria dos contratos, relatórios e propostas." },
+      { question: "Como converter Word em PDF no Mac ou iPhone?", answer: "Basta acessar o DockDocs pelo navegador do seu Mac, iPhone ou iPad. A ferramenta funciona em qualquer dispositivo sem precisar instalar nenhum software ou aplicativo adicional." },
+      { question: "Posso converter vários arquivos Word em PDF de uma vez?", answer: "Por enquanto, a ferramenta processa um arquivo por vez. Para converter vários documentos, envie e converta-os um a um." },
     ],
   },
   "excel-to-pdf": {
